@@ -2,8 +2,14 @@
 	"folders":
 	[
 		{
-			"path": ".",
+			"path": "workflow-development-server",
       "folder_exclude_patterns": ["tmp", "bin"]
-		}
+		},
+    {
+      "path": "thesis",
+      "root": "thesis/main.tex",
+      "pdf": "Master Thesis - Lars Greiving",
+      "program": "xelatex"
+    }
 	]
 }
