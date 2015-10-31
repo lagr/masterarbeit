@@ -1,0 +1,10 @@
+%nav#menu
+  #navigation
+  #tab-menu
+    .tab-menu-entry{ ng_repeat: '(tabId, tab) in appCtrl.tabManagement.tabs()', tab_menu_entry: 'tab' }
+      {{tabId}}{{tab}}
+
+%main#tab-content
+  .tab{ ng_repeat: '(tabId, tab) in appCtrl.tabManagement.tabs()', ng_show: '$state.is("{{tabId}}")'}
+    .tab-top-bar{ ui_view: '{{tabId}}_top_bar', ng_class: '{{tab.topBarType}}' }
+    .tab-content{ ui_view: '{{tabId}}_content', ng_class: '{{tab.contentType}}' }
