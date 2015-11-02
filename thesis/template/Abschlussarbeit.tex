@@ -1,0 +1,73 @@
+\documentclass[style=is]{wiwwuwordrprt}
+
+\usepackage{wiwwubildertabellen}
+\usepackage{wiwwumathe}
+\usepackage{wiwwulistings}
+\usepackage{wiwwuabkuerzungen}
+
+%\usepackage{lmodern}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% Angaben ueber Autor / Betreuer / Titel etc %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setThema{Thema\\der\\Arbeit}
+\setTyp{Bachelorarbeit / Diplomhausarbeit / Masterarbeit}
+\setFachgebiet{Entscheidungslehre}
+\setLehrstuhl{Institut für Wirtschaftsinformatik --- Quantiative Methoden}
+\setThemensteller{Prof.\ Dr.\ Ulrich Müller-Funk}
+\setBetreuer{MScIS Vorname Name}
+\setAutor{Max Mustermann}
+\setStrasse{Semesteranschrift}
+\setOrt{PLZ Wohnort}
+\setTelefonnummer{Telefonnummer}
+\setEMail{mustermann@uni-muenster.de} % optional
+% leider vervollständigen einige PDF-Reader die E-Mail-Adresse mit einem Link. Wäre halb so wild, wenn sie dabei nicht den Teil *VOR* einem Punkt (also max bei max.mustermann@uni-muenster.de) übersehen würden. Dann lieber manuell den Link eintragen: \href{mailto:max.mustermann@uni-muenster.de}{max.mustermann@uni-muenster.de} 
+\setAbgabetermin{JJJJ-MM-TT}
+
+\begin{document}
+
+\EinfTitelseite
+
+%Verzeichnisse
+\pagenumbering{Roman} % Seitennummerierung durch roemische Ziffern
+\tableofcontents
+\listoffigures
+\listoftables
+
+\begin{AbkVerzeichnis}
+	\acro{BBN}{Bundeseinheitliche Betriebsnummer}
+	\acro{CCG}{Centrale für Coorganisation}
+	\acro{DFÜ}{Datenfernübertragung}
+	\acro{dpi}{dots per inch}
+	\acro{EAN}{Europäische Artikelnumerierung}
+	\acro{GoM}{Grundsätze ordnungsmäßiger Modellierung}
+	\acro{VBA}{Visual Basic for Applications}
+	\acro{WWS}{Warenwirtschaftssystem}
+	\acro{ZfB}{Zeitschrift für Betriebswirtschaft}
+	\acro{ZuO}{Zuordnung}
+\end{AbkVerzeichnis}
+
+\begin{Verzeichnis}{Symbolverzeichnis}
+	\VerzEintrag{$a_0$}{Anschaffungsauszahlung in $t = 0$}
+	\VerzEintrag{$C$}{Kapitalwert}
+	\VerzEintrag{$dt$}{Einzahlungsüberschuss in bezug auf $t$}
+	\VerzEintrag{$i$}{Kalkulationszinsfuß}
+	\VerzEintrag{$n$}{Nutzungsdauer}
+	\VerzEintrag{$q$}{Zinsfaktor $1 + i$}
+	\VerzEintrag{$r_s$}{Abstand der Stufe s in cm vom Seitenrand}
+	\VerzEintrag{$s$}{Stufenindex}
+	\VerzEintrag{$t$}{Periodenindex}
+\end{Verzeichnis}
+
+\clearpage
+\pagenumbering{arabic} % Seitennummerierung durch arabische Ziffern
+
+\include{InhaltAbschlussarbeit}
+
+\Literaturverzeichnisse{Literatur} % ACHTUNG, falls Stil 'in': zwei Argumente!
+
+\include{AnhangAbschlussarbeit} % falls notwendig
+
+\AbschlErklaerung{01. Januar 2002}
+
+\end{document}
