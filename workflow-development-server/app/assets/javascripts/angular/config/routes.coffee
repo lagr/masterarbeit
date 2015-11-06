@@ -13,9 +13,7 @@ angular.module 'WorkflowDevelopmentApplication'
       title: 'Dashboard'
       sticky: true
       views:
-        top_bar: 
-          template: ''
-        application_content:
+        asd:
           templateUrl: 'dashboard.html'
           controller: 'DashboardController'
           controllerAs: 'dbCtrl'

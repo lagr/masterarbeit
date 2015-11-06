@@ -1,5 +1,5 @@
 angular.module 'TabManagement'
-.factory 'PageTypes', (uuid4) ->
+.factory 'PageTypes', (uuid4, Restangular) ->
   contentTemplateUrl = (type) -> "templates/#{type}/edit"
   topBarTemplateUrl = (type) -> "templates/#{type}/top_bar"
 
@@ -8,6 +8,8 @@ angular.module 'TabManagement'
     params: (id) -> 
       type: 'User'
       id: id
+    resolves: (params) ->
+      user: Restangular.one('users', params['id']).get()
     template: contentTemplateUrl 'user'
     controller: 'UserPageController'
 
@@ -16,5 +18,7 @@ angular.module 'TabManagement'
     params: (id) -> 
       type: 'Workflow'
       id: id
+    resolves: (params) ->
+      workflow: Restangular.one('workflows', params['id']).get()
     template: contentTemplateUrl('workflow')
     controller: 'WorkflowPageController'

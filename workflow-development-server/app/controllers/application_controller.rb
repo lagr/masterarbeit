@@ -7,19 +7,6 @@ class ApplicationController < ActionController::Base
   end
 
   def workflow
-    render json: {id: params[:id]}
-  end
-  #   render layout: layout_name
-  # end
-
-  # private
-
-  # def layout_name
-  #   if params[:layout] == 0
-  #     false
-  #   else
-  #     'application'
-  #   end
-  # end
-  
-  end
+    render json: {id: params[:id], name: 'Workflow 1'}
+  end  
+end

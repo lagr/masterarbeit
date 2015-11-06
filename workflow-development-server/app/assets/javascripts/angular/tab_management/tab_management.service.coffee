@@ -1,5 +1,5 @@
 angular.module 'TabManagement'
-.factory 'tabManagement', (uuid4, $state, $previousState, $stickyState, $window, FutureTabState, PageTypes, Tab) ->
+.factory 'tabManagement', ($rootScope, uuid4, $state, $previousState, $stickyState, $window, FutureTabState, PageTypes, Tab) ->
   closedTabs = []
   states = -> $state.get()
   tabs = -> (state for state in states() when state instanceof Tab and state.name not in closedTabs)
@@ -9,7 +9,7 @@ angular.module 'TabManagement'
     window.futureStateProvider.futureState(futureTabState)
     futureTabState
 
-  activateTab = (tab, stateParams) ->
+  activateTab = (tab) ->
     return unless tab
     $state.go(tab.name, tab.page)
 
@@ -34,12 +34,14 @@ angular.module 'TabManagement'
     if target.name is 'application.dashboard'
       openPageInNewTab(type, id)
     else
+      console.log pageParams
       $state.go target.name, pageParams
 
   openPageInNewTab = (type, id) ->
     return unless type
     pageParams = PageTypes[type].params(id)
-    $state.go createTab(null, pageParams).stateName, pageParams
+    target = createTab(null, pageParams)
+    $state.go target.stateName, pageParams
 
   $window.state = $state
 

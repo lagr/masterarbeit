@@ -1,3 +1,3 @@
 angular.module 'User'
-.controller 'UserPageController', (tab, page, PageController) -> 
+.controller 'UserPageController', (PageController) -> 
   controller = new PageController

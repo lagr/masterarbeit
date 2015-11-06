@@ -4,9 +4,9 @@ angular.module 'Common'
   scope:
     type: '='
   link: (scope, elem, attrs) ->
-    scope.$watch 'type', (newVal, oldVal) ->
-      return unless scope.type?
-      newTypeClass = PageTypes[newVal].icon
-      oldTypeClass = PageTypes[oldVal].icon
+    scope.$watch 'type', (newType, oldType) ->
+      return unless newType && newType?
+      newTypeClass = PageTypes[newType].icon
+      oldTypeClass = PageTypes[oldType].icon if oldType && oldType?
       elem.removeClass(oldTypeClass || '')
       elem.addClass(newTypeClass || '')
