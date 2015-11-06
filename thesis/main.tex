@@ -11,7 +11,7 @@
 \usepackage{minted}
 \usemintedstyle{tango}
 \robustify\textellipsis
-\addtokomafont{section}{\clearpage}
+% \addtokomafont{section}{\clearpage}
 
 \usepackage{fontspec}
 \setmainfont[
@@ -21,13 +21,14 @@
   BoldItalicFont={Crimson Text Bold Italic}
   ]{Crimson Text}
 \setmonofont{Source Code Pro}
+\setsansfont{Lato}
 
-  \setThema{Prototypical Development of a Docker-based Workflow Management System}
+  \setThema{Prototypical Development of a \\Docker-based Workflow Management System}
   \setTyp{Masterthesis}
   \setFachgebiet{}
   \setLehrstuhl{Department of Information Systems --- Practical Computer Science}
   \setThemensteller{Prof.\ Dr.\ Herbert Kuchen}
-  \setBetreuer{MScIS Vincent von Hof Name}
+  \setBetreuer{MScIS Vincent von Hof}
   \setAutor{Lars Greiving}
   \setStrasse{Dettenstraße 4}
   \setOrt{48147 Münster}
@@ -36,8 +37,6 @@
   % leider vervollständigen einige PDF-Reader die E-Mail-Adresse mit einem Link. Wäre halb so wild, wenn sie dabei nicht den Teil *VOR* einem Punkt (also max bei max.mustermann@uni-muenster.de) übersehen würden. Dann lieber manuell den Link eintragen: \href{mailto:max.mustermann@uni-muenster.de}{max.mustermann@uni-muenster.de} 
   \setAbgabetermin{2016-02-24}
 
-% \title{Prototypical Development of a Docker-based Workflow Management System}
-% \author{Lars Greiving}
 
 \begin{document}
 
@@ -75,44 +74,9 @@
   \end{Verzeichnis}
 
   \clearpage
+  \include{content/text/abstract}
+
   \pagenumbering{arabic} % Seitennummerierung durch arabische Ziffern
 
-  \begin{abstract}
-    \textit{Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et} \textbf{accusam et justo duo dolores et ea rebum.} Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \textit{\textbf{Spotify fiffi fiff megastory}}
-  \end{abstract}
-
-  \begin{lstlisting}
-  Put your code here.
-  \end{lstlisting}
-
-  \inputminted{ruby}{../workflow-development-server/app/models/workflow.rb}
-
-  \section{Motivation and Background} % (fold)
-  \label{sec:motivation}
-
-  % section motivation (end)
-
-  \newpage
-  \section{WFMS Requirements and Archtitecture} % (fold)
-  \label{sec:wfms_requirements_and_archtitecture}
-
-  % section wfms_requirements_and_archtitecture (end)
-
-  \newpage
-  \section{Prototypical Implementation} % (fold)
-  \label{sec:prototypical_implementation}
-
-  % section prototypical_implementation (end)
-
-  \newpage
-  \section{Discussion} % (fold)
-  \label{sec:discussion}
-
-  % section discussion (end)
-
-  \newpage
-  \section{Conclusion and Outlook} % (fold)
-  \label{sec:conclusion}
-
-  % section conclusion (end)
+  \include{content/text/introduction_motivation}
 \end{document}

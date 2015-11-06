@@ -1,5 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYGtango{k}{class} \PYGtango{n+nc}{Workflow} \PYGtango{o}{\PYGtangoZlt{}} \PYGtango{n+no}{ActiveRecord}\PYGtango{o}{::}\PYGtango{n+no}{Base}
-  \PYGtango{n+no}{WORKFLOW\PYGtangoZus{}ELEMENT\PYGtangoZus{}TYPES} \PYGtango{o}{=} \PYGtango{l+s+sx}{\PYGtangoZpc{}w[ StartElement EndElement OrSplit OrJoin AndSplit AndJoin ManualActivity AutomaticActivity ]}
-\PYGtango{k}{end}
-\end{Verbatim}

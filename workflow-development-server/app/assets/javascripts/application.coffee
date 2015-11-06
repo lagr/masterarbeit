@@ -15,6 +15,7 @@
 #= require lodash
 #= require angular
 #= require angular-uuid4
+#= require restangular
 #= require ui-router
 #= require ui-router-extras
 #= require angular/app

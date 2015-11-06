@@ -37,3 +37,29 @@ bower.json
 
 #sublime
 masterarbeit.sublime-workspace
+
+
+# latex
+thesis/*.aux
+thesis/*.glo
+thesis/*.idx
+thesis/*.log
+thesis/*.toc
+thesis/*.ist
+thesis/*.acn
+thesis/*.acr
+thesis/*.alg
+thesis/*.bbl
+thesis/*.blg
+thesis/*.dvi
+thesis/*.glg
+thesis/*.gls
+thesis/*.ilg
+thesis/*.ind
+thesis/*.lof
+thesis/*.lot
+thesis/*.maf
+thesis/*.mtc
+thesis/*.mtc1
+thesis/*.out
+thesis/*.synctex.gz

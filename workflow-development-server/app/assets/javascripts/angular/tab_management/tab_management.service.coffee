@@ -28,11 +28,20 @@ angular.module 'TabManagement'
 
   openPage = (type, id) ->
     return unless type
+    pageParams = PageTypes[type].params(id)
     target = $state.current
+    
+    if target.name is 'application.dashboard'
+      openPageInNewTab(type, id)
+    else
+      $state.go target.name, pageParams
 
   openPageInNewTab = (type, id) ->
     return unless type
-    $state.go createTab().stateName, PageTypes[type].params(id)
+    pageParams = PageTypes[type].params(id)
+    $state.go createTab(null, pageParams).stateName, pageParams
+
+  $window.state = $state
 
   $window.tabManagement =
     tabs: tabs

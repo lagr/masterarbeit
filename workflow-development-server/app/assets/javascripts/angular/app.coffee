@@ -4,16 +4,13 @@
 
 angular.module 'WorkflowDevelopmentApplication', [
   # helper modules
-  'uuid4',
-
-  # routing related
-  'ui.router', 'ct.ui.router.extras', 
+  'uuid4', 'ui.router', 'ct.ui.router.extras', 'restangular'
 
   # custom helper modules
   'TabManagement',
   
   # topic modules
-  'Dashboard', 'Workflows'
+  'Dashboard', 'Workflow', 'Common', 'User'
   ]
 
 .controller 'ApplicationController', (tabManagement) ->

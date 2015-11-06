@@ -1,3 +1,5 @@
 angular.module 'Dashboard', []
-angular.module 'Workflows', []
+angular.module 'Common', []
+angular.module 'Workflow', []
+angular.module 'User', []
 angular.module 'TabManagement', []

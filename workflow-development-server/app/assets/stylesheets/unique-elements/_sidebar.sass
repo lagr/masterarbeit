@@ -1,0 +1,33 @@
+$sidebar-width: 64 *$bu
+$sidebar-background: $card-background-color
+$tab-menu-entry-height: 16 *$bu
+
+#sidebar *
+  +user-select(none)
+
+#sidebar
+  +high
+  width: $sidebar-width
+  height: 100%
+  background: $sidebar-background
+  border-left: 4px solid $theme-color
+  position: absolute
+  left: 0 
+  top: 0
+
+#navigation
+  height: double($tab-menu-entry-height)
+
+#tab-menu
+  +display-flex
+  +align-items(left)
+  +flex-direction(column)
+
+.tab-menu-entry
+  height: $tab-menu-entry-height
+  +display-flex
+  +align-items(center)
+  +flex-direction(row)
+
+  &.active
+    background: rgba($theme-color, 0.3)

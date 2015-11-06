@@ -1,5 +1,7 @@
-.tab-menu-entry
+.tab-menu-entry{ ng_class: '{active: $root.$state.is(tab.name)}' }
+  %i.tab-menu-entry-icon{ type: 'tab.type()'}
   %span.tab-menu-entry-title{ ng_click: 'tabManagement.activateTab(tab)'}
     {{tab.title()}}
   %span.tab-menu-entry-close{ ng_click: 'tabManagement.closeTab(tab)'}
     x
+  %span {{$state.is(tab.name)}}

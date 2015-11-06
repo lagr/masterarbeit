@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
 
   def index
   end
+
+  def workflow
+    render json: {id: params[:id]}
+  end
   #   render layout: layout_name
   # end
 

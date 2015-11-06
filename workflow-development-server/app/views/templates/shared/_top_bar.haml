@@ -1,0 +1,7 @@
+.top-bar-title
+  {{pageCtrl.tab.title()}}
+
+.top-bar-actions
+  .button{ ng_click: 'pageCtrl.startEditing()', ng_hide: 'pageCtrl.editing' } Edit
+  .button{ ng_click: 'pageCtrl.stopEditing()', ng_show: 'pageCtrl.editing' } Cancel
+  .button Delete
