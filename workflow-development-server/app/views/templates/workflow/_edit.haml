@@ -4,5 +4,15 @@
     {{pageCtrl.pageData}}
     %a{ ng_click: 'appCtrl.tabManagement.openPage("User", 1)' } User
 
+  .workflow-versions.card
+    %h3 Workflow Versions
+    %table
+      %thead
+
+      %tbody
+        %tr{ ng_repeat: 'wfv in pageCtrl.workflow.workflow_versions', ng_click: 'appCtrl.tabManagement.openPage("WorkflowVersion", wfv.id)' }
+          %td {{wfv.id}}
+          %td {{wfv.name}}
+
 .tab-top-bar
   = render partial: 'templates/shared/top_bar'

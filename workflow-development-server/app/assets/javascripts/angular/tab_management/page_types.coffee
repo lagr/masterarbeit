@@ -9,7 +9,7 @@ angular.module 'TabManagement'
       type: 'User'
       id: id
     resolves: (params) ->
-      user: Restangular.one('users', params['id']).get()
+      user: Restangular.one('users', params['id']).get().$object
     template: contentTemplateUrl 'user'
     controller: 'UserPageController'
 
@@ -19,6 +19,16 @@ angular.module 'TabManagement'
       type: 'Workflow'
       id: id
     resolves: (params) ->
-      workflow: Restangular.one('workflows', params['id']).get()
+      workflow: Restangular.one('workflows', params['id']).get().$object
     template: contentTemplateUrl('workflow')
     controller: 'WorkflowPageController'
+
+  WorkflowVersion:
+    icon: 'icon-workflow'
+    params: (id) -> 
+      type: 'WorkflowVersion'
+      id: id
+    resolves: (params) ->
+      workflow_version: Restangular.one('workflow_versions', params['id']).get().$object
+    template: contentTemplateUrl('workflow_version')
+    controller: 'WorkflowVersionPageController'

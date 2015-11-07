@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   root 'application#index'
-
-  get 'workflows/:id', to: 'application#workflow'
+  
+  resources :workflows, :workflow_versions
+  #get 'workflows/:id', to: 'application#workflow'
   get 'templates/*template', to: 'templates#serve'
-  get '*path', to: 'application#index'
+  #get '*path', to: 'application#index'
 end

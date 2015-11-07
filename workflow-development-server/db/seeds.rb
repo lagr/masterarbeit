@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+user = User.create(first_name: 'David', last_name: 'Hasselhoff') 
+wf = Workflow.create(name: 'WF 1')
+wfv = WorkflowVersion.create(name: 'WFV 1', workflow: wf)
