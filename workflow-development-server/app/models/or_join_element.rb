@@ -1,4 +1,4 @@
-class OrJoin < ActiveRecord::Base
+class OrJoinElement < ActiveRecord::Base
   include HasManyPredecessors
   include HasOneSuccessor
   include IsWorkflowElement

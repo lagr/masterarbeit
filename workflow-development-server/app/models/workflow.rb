@@ -1,4 +1,6 @@
 class Workflow < ActiveRecord::Base
-  WORKFLOW_ELEMENT_TYPES = %w[ StartElement EndElement OrSplit OrJoin AndSplit AndJoin ManualActivity AutomaticActivity ]
-  has_many :workflow_versions  
+  WORKFLOW_ELEMENT_TYPES = %w[ StartElement EndElement OrSplitElement OrJoinElement AndSplitElement ManualActivity AutomaticActivity ContainerizedActivity ]
+
+  has_many :workflow_versions
+  belongs_to :author, class_name: 'User'
 end

@@ -2,6 +2,6 @@ module HasWorkflowElementRepresentation
   extend ActiveSupport::Concern
 
   included do
-    has_one :workflow_element_representation, as: :workflow_element
+    has_one :workflow_element_representation
   end
 end

@@ -10,7 +10,7 @@ angular.module 'WorkflowDevelopmentApplication', [
   'TabManagement',
   
   # topic modules
-  'Dashboard', 'Workflow', 'WorkflowVersion', 'Common', 'User'
+  'Dashboard', 'Workflow', 'WorkflowVersion', 'Common', 'User', 'ProcessDesigner'
   ]
 
 .controller 'ApplicationController', (tabManagement) ->

@@ -1,0 +1,15 @@
+.tab-content
+  .workflows.card
+
+  .workflows.card
+    %h3 Workflow Versions
+    %table
+      %thead
+
+      %tbody
+        %tr{ ng_repeat: 'wf in pageCtrl.workflows', ng_click: 'appCtrl.tabManagement.openPage("Workflow", wf.id)' }
+          %td {{wf.id}}
+          %td {{wf.name}}
+
+.tab-top-bar
+  = render partial: 'templates/shared/top_bar'

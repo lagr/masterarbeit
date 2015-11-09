@@ -2,7 +2,7 @@
   .workflow-metadata.card
     TEST TEST
     {{pageCtrl.pageData}}
-    %a{ ng_click: 'appCtrl.tabManagement.openPage("User", 1)' } User
+    %a{ ng_click: 'appCtrl.tabManagement.openPage("ProcessDesigner", pageCtrl.pageData.workflow_version.id)' } User
 
 .tab-top-bar
   = render partial: 'templates/shared/top_bar'

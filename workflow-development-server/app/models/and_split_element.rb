@@ -1,4 +1,4 @@
-class OrSplit < ActiveRecord::Base
+class AndSplitElement < ActiveRecord::Base
   include HasOnePredecessor
   include HasManySuccessors
   include IsWorkflowElement

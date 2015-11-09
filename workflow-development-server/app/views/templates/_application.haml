@@ -2,5 +2,6 @@
 
 %nav#sidebar
   #navigation
+    .button{ ng_click: 'appCtrl.tabManagement.openPage("Workflows")' } Workflows
   #tab-menu
     .tab-menu-entry{ ng_repeat: 'tab in appCtrl.tabManagement.tabs()', tab_menu_entry: 'tab' }
