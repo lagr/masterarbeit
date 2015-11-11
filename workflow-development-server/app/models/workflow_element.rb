@@ -3,4 +3,5 @@ class WorkflowElement < ActiveRecord::Base
 
   belongs_to :workflow_version
   belongs_to :element, polymorphic: true
+  has_one :workflow_element_representation
 end

@@ -1,5 +1,10 @@
 angular.module 'ProcessDesigner'
 .controller 'ProcessDesignerPageController', (tab, pageData, PageController) ->
-  controller = new PageController(tab, pageData)
-  controller.setPageTitle "Design: #{pageData.workflow_version.workflow.name}"
-  controller
+  vm = new PageController(tab, pageData)
+  vm.workflow_version = pageData.workflow_version
+
+  vm.setPageTitle "Design: #{vm.workflow_version.workflow.name}"
+
+  vm.workflow_elements = -> vm.workflow_version.workflow_elements
+
+  vm

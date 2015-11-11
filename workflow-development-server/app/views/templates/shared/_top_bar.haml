@@ -1,7 +1,8 @@
-.top-bar-title
+.top-bar-title.md-display-2
   {{pageCtrl.tab.title()}}
 
 .top-bar-actions
-  .button{ ng_click: 'pageCtrl.startEditing()', ng_hide: 'pageCtrl.editing' } Edit
-  .button{ ng_click: 'pageCtrl.stopEditing()', ng_show: 'pageCtrl.editing' } Cancel
-  .button Delete
+  %md-button.md-primary.md-raised{ ng_click: 'pageCtrl.startEditing()', ng_hide: 'pageCtrl.editing' } Edit
+  %md-button.md-primary{ md_no_ink: true, ng_click: 'pageCtrl.stopEditing()', ng_show: 'pageCtrl.editing' } Cancel
+  %md-button.md-primary.md-raised{ ng_click: 'pageCtrl.save()', ng_show: 'pageCtrl.editing' } Save
+  %md-button.md-warn{ ng_click: 'pageCtrl.delete()' } Delete

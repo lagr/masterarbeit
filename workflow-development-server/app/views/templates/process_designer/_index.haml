@@ -1,1 +1,13 @@
-%div Process Designer
+.tab-content.workflow-designer
+  %svg.workflow-designer--canvas
+    %defs
+      = render partial: 'templates/process_designer/definitions/grid'
+      / = render partial: 'templates/process_designer/definitions/grid'
+      / = render partial: 'templates/process_designer/definitions/grid'
+
+    %rect.grid{width: '100%', height: '100%', fill: 'url(#grid)' }
+    = render partial: 'templates/process_designer/workflow_elements'
+    = render partial: 'templates/process_designer/circle_menu'
+
+= render partial: 'templates/process_designer/context_menu'
+= render partial: 'templates/process_designer/top_bar'

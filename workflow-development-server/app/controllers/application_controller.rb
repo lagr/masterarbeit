@@ -5,4 +5,8 @@ class ApplicationController < ActionController::Base
 
   def index
   end 
+
+  def wfv_to_container
+    
+  end
 end

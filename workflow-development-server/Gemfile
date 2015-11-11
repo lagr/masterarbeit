@@ -34,12 +34,17 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-angular'
   gem 'rails-assets-lodash'
+  gem 'rails-assets-angular'
   gem 'rails-assets-ui-router'
   gem 'rails-assets-ui-router-extras'
+  gem 'rails-assets-angular-animate'
+  gem 'rails-assets-angular-aria'
+  gem 'rails-assets-angular-material'
   gem 'rails-assets-angular-uuid4'
+  gem 'rails-assets-angular-formly'
   gem 'rails-assets-restangular'
+  gem 'rails-assets-api-check'
 end
 
 gem 'webhostinghub-glyphs-rails'

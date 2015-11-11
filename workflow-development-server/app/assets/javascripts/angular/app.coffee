@@ -4,7 +4,7 @@
 
 angular.module 'WorkflowDevelopmentApplication', [
   # helper modules
-  'uuid4', 'ui.router', 'ct.ui.router.extras', 'restangular'
+  'uuid4', 'ui.router', 'ct.ui.router.extras', 'restangular', 'ngMaterial', 'formly'
 
   # custom helper modules
   'TabManagement',

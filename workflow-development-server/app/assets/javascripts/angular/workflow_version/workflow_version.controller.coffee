@@ -1,5 +1,14 @@
 angular.module 'WorkflowVersion'
 .controller 'WorkflowVersionPageController', (tab, pageData, PageController) ->
-  controller = new PageController(tab, pageData)
-  controller.setPageTitle pageData.workflow_version.workflow.name
-  controller
+  vm = new PageController(tab, pageData)
+
+  vm.setPageTitle(pageData.workflow_version.workflow.name)
+  vm.workflow_version = pageData.workflow_version
+
+  vm.save = ->
+    vm.stopEditing()
+
+  vm.delete = ->
+    vm.stopEditing()
+
+  vm

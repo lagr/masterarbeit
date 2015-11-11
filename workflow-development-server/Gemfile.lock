@@ -160,10 +160,22 @@ GEM
       railties (= 4.2.4)
       sprockets-rails
     rails-assets-angular (1.4.7)
+    rails-assets-angular-animate (1.4.7)
+      rails-assets-angular (= 1.4.7)
+    rails-assets-angular-aria (1.4.7)
+      rails-assets-angular (= 1.4.7)
+    rails-assets-angular-formly (7.3.2)
+      rails-assets-angular (>= 1.2.0, < 2)
+      rails-assets-api-check (>= 7.0.0, < 8)
+    rails-assets-angular-material (0.11.4)
+      rails-assets-angular
+      rails-assets-angular-animate
+      rails-assets-angular-aria
     rails-assets-angular-ui-router (0.2.15)
       rails-assets-angular (>= 1.0.8)
     rails-assets-angular-uuid4 (0.3.1)
       rails-assets-angular (> 0.9.0)
+    rails-assets-api-check (7.5.5)
     rails-assets-lodash (3.10.1)
     rails-assets-restangular (1.5.1)
       rails-assets-angular (~> 1.0)
@@ -247,7 +259,12 @@ DEPENDENCIES
   pg
   rails (= 4.2.4)
   rails-assets-angular!
+  rails-assets-angular-animate!
+  rails-assets-angular-aria!
+  rails-assets-angular-formly!
+  rails-assets-angular-material!
   rails-assets-angular-uuid4!
+  rails-assets-api-check!
   rails-assets-lodash!
   rails-assets-restangular!
   rails-assets-ui-router!
