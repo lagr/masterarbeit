@@ -2,6 +2,7 @@ angular.module 'TabManagement'
 .factory 'tabManagement', ($rootScope, uuid4, $state, $previousState, $stickyState, $window, FutureTabState, PageTypes, Tab) ->
   closedTabs = []
   states = -> $state.get()
+  loading = false
   tabs = -> (state for state in states() when state instanceof Tab and state.name not in closedTabs)
 
   createTab = (tabId, futurePage) ->
@@ -34,7 +35,6 @@ angular.module 'TabManagement'
     if target.name is 'application.dashboard'
       openPageInNewTab(type, id)
     else
-      console.log pageParams
       $state.go target.name, pageParams
 
   openPageInNewTab = (type, id) ->
@@ -42,6 +42,15 @@ angular.module 'TabManagement'
     pageParams = PageTypes[type].params(id)
     target = createTab(null, pageParams)
     $state.go target.stateName, pageParams
+
+  isLoading = -> loading
+  stopLoading = -> loading = false
+  startLoading = -> loading = true
+
+  $rootScope.$on '$stateChangeStart',  -> 
+    startLoading()
+    console.log arguments[2]
+  $rootScope.$on '$stateChangeSuccess', -> stopLoading()
 
   $window.state = $state
 
@@ -52,3 +61,6 @@ angular.module 'TabManagement'
     closeTab: closeTab
     openPage: openPage
     openPageInNewTab: openPageInNewTab
+    isLoading: isLoading
+    stopLoading: stopLoading
+    startLoading: startLoading

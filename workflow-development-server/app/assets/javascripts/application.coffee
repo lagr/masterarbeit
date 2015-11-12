@@ -12,12 +12,15 @@
 #
 #= require jquery
 #= require jquery_ujs
+#= require svg-pan-zoom
 #= require api-check
 #= require lodash
+#= require lib/lodash-mixins
 #= require angular
 #= require angular-aria
 #= require angular-animate
 #= require angular-material
+#= require angular-material-data-table
 #= require angular-formly
 #= require angular-uuid4
 #= require restangular

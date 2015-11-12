@@ -28,6 +28,7 @@ angular.module 'TabManagement'
     icon: 'icon-workflow'
     params: -> 
       type: 'Workflows'
+      id: null
     resolves: (params) -> 
       workflows: Restangular.all('workflows').getList().$object
     template: indexTemplateUrl('workflow')

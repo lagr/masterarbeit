@@ -1,6 +1,6 @@
 angular.module 'Common', []
 angular.module 'Dashboard', []
-angular.module 'ProcessDesigner', []
+angular.module 'ProcessDesign', []
 angular.module 'TabManagement', []
 angular.module 'User', []
 angular.module 'Workflow', []

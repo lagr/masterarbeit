@@ -5,3 +5,5 @@
     .button{ ng_click: 'appCtrl.tabManagement.openPage("Workflows")' } Workflows
   #tab-menu
     .tab-menu-entry{ ng_repeat: 'tab in appCtrl.tabManagement.tabs()', tab_menu_entry: 'tab' }
+  #loading-indicator
+    %md-progress-circular.md-primary{ mg_mode: 'indeterminate', ng_show: 'appCtrl.tabManagement.isLoading()', md_diameter: '40' }

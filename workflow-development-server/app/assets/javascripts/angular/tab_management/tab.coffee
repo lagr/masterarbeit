@@ -21,7 +21,7 @@ angular.module 'TabManagement'
           deferred = $q.defer()
           resolves = PageTypes[$stateParams.type]?.resolves($stateParams)
           promises = (promise for key, promise of resolves)
-          $q.all(promises).then => deferred.resolve(resolves)
+          $q.all(promises).then -> deferred.resolve(resolves)
           deferred.promise
 
     title: -> @page?.title || 'Title'
@@ -30,4 +30,3 @@ angular.module 'TabManagement'
     sticky: true
     params:
       type: ''
-      template: 'templates/page_loading'
