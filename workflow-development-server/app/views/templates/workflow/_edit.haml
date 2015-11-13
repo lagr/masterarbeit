@@ -4,11 +4,11 @@
       %form
         %md-input-container
           %label ID
-          %input{ type: 'text', ng_model: 'pageCtrl.pageData.workflow.id', disabled: true }
+          %input{ type: 'text', ng_model: 'pageCtrl.workflow.id', disabled: true }
 
         %md-input-container
           %label Name
-          %input{ type: 'text', ng_model: 'pageCtrl.pageData.workflow.name', ng_disabled: '!pageCtrl.editing' }
+          %input{ type: 'text', ng_model: 'pageCtrl.workflow.name', ng_disabled: '!pageCtrl.editing' }
 
   %md-card.workflow-versions.card
     %h3 Workflow Versions

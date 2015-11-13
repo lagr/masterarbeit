@@ -14,13 +14,23 @@ angular.module 'TabManagement'
     template: editTemplateUrl 'user'
     controller: 'UserPageController'
 
+  Users:
+    icon: 'icon-users'
+    params: (id) -> 
+      type: 'Users'
+      id: null
+    resolves: (params) ->
+      users: Restangular.all('users').getList()
+    template: indexTemplateUrl 'user'
+    controller: 'UsersPageController'
+
   Workflow:
     icon: 'icon-workflow'
     params: (id) -> 
       type: 'Workflow'
       id: id
     resolves: (params) -> 
-      workflow: Restangular.one('workflows', params['id']).get().$object
+      workflow: Restangular.one('workflows', params['id']).get()
     template: editTemplateUrl('workflow')
     controller: 'WorkflowPageController'
 
@@ -30,7 +40,7 @@ angular.module 'TabManagement'
       type: 'Workflows'
       id: null
     resolves: (params) -> 
-      workflows: Restangular.all('workflows').getList().$object
+      workflows: Restangular.all('workflows').getList()
     template: indexTemplateUrl('workflow')
     controller: 'WorkflowsPageController'
 
@@ -40,7 +50,7 @@ angular.module 'TabManagement'
       type: 'WorkflowVersion'
       id: id
     resolves: (params) ->
-      workflow_version: Restangular.one('workflow_versions', params['id']).get().$object
+      workflow_version: Restangular.one('workflow_versions', params['id']).get()
     template: editTemplateUrl('workflow_version')
     controller: 'WorkflowVersionPageController'
 
@@ -50,6 +60,6 @@ angular.module 'TabManagement'
       type: 'ProcessDesigner'
       id: id
     resolves: (params) ->
-      workflow_version: Restangular.one('workflow_versions', params['id']).get(for_designer: true).$object
+      workflow_version: Restangular.one('workflow_versions', params['id']).get(for_designer: true)
     template: 'templates/process_designer/index'
     controller: 'ProcessDesignerPageController'

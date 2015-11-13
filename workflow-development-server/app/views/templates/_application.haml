@@ -2,7 +2,8 @@
 
 %nav#sidebar
   #navigation
-    .button{ ng_click: 'appCtrl.tabManagement.openPage("Workflows")' } Workflows
+    .button{ ng_click: 'appCtrl.tabManagement.openPageInNewTab("Workflows")' } Workflows
+    .button{ ng_click: 'appCtrl.tabManagement.openPageInNewTab("Users")' } Users
   #tab-menu
     .tab-menu-entry{ ng_repeat: 'tab in appCtrl.tabManagement.tabs()', tab_menu_entry: 'tab' }
   #loading-indicator

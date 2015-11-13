@@ -2,7 +2,7 @@
   %md-card.workflows
     %h3 Workflows
     %md-virtual-repeat-container
-      .workflow{ md_virtual_repeat: 'wf in pageCtrl.workflows', ng_click: 'appCtrl.tabManagement.openPage("Workflow", wf.id)' }
+      .workflow{ md_virtual_repeat: 'wf in pageCtrl.pageData.workflows', ng_click: 'appCtrl.tabManagement.openPage("Workflow", wf.id)' }
         %span {{wf.name}}
         %span {{wf.id}}
 

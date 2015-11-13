@@ -3,5 +3,8 @@ angular.module 'ProcessDesign'
   canvas:
     raster: 10
     panZoom:
-      minZoom: 0.5
       maxZoom: 10
+      fit: false 
+      minZoom: 0.5
+      viewportSelector: 'g.workflow-elements'
+      preventMouseEventsDefault: false

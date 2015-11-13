@@ -1,0 +1,10 @@
+.tab-content
+  %md-card.users
+    %h3 Users
+    %md-virtual-repeat-container
+      .workflow{ md_virtual_repeat: 'user in pageCtrl.users', ng_click: 'appCtrl.tabManagement.openPage("User", user.id)' }
+        %span {{user.first_name}} {{user.last_name}}
+        %span {{user.id}}
+
+.tab-top-bar
+  = render partial: 'templates/shared/top_bar'

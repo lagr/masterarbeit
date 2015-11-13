@@ -21,7 +21,7 @@ angular.module 'TabManagement'
           deferred = $q.defer()
           resolves = PageTypes[$stateParams.type]?.resolves($stateParams)
           promises = (promise for key, promise of resolves)
-          $q.all(promises).then -> deferred.resolve(resolves)
+          $q.all(promises).then -> deferred.resolve(_.mapValues(resolves, '$object'))
           deferred.promise
 
     title: -> @page?.title || 'Title'

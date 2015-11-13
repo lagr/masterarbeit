@@ -7,5 +7,11 @@
     ng_class: '{selected: processDesigner.isSelected(element), dragging: processDesigner.isSelected(element) && processDesigner.dragging }',
     ng_attr_transform: 'translate({{element.representation.x}} {{element.representation.y}})',
     ng_mousedown: 'processDesigner.elementMousedown(element, $event)' }
-    %rect{ height: '40', width: '40' }
+    %rect{ height: '100', width: '100' }
     %text {{element.element_data.name}}
+    %g{ transform: 'translate(0, 50)' }
+      %circle{ r: '20' }
+      %text In Mapping
+    %g{ transform: 'translate(100, 50)'  }
+      %circle{ r: '20' }
+      %text Out Mapping

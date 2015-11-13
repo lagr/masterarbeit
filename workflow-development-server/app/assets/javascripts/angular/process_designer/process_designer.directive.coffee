@@ -105,13 +105,16 @@ angular.module 'ProcessDesign'
   link = (scope, elem, attrs, ctrl) ->
     isBound = scope.$watch 'processDesigner.workflow_version', ->
       return unless scope.processDesigner.workflow_version
-      svg = elem.find("svg")[0]
+      svg = elem.find('svg')[0]
+      grid = elem.find('#grid')[0]
 
+      #zoomableGrid = svgPanZoom(svg, { viewportSelector: 'g.grid', fit: false })
       scope.processDesigner.canvas = zoomableCanvas = svgPanZoom(svg, processDesignerConfig.canvas.panZoom)
-      zoomableGrid = svgPanZoom(svg, { viewportSelector: 'rect.grid', fit: false })
+      viewport = elem.find('svg .svg-pan-zoom_viewport')[0]
+      grid.setAttribute('patternTransform', viewport.getAttribute('transform'))
       
-      zoomableCanvas.setOnPan (point) -> zoomableGrid.pan(point)
-      zoomableCanvas.setOnZoom (level) -> zoomableGrid.zoom(level)
+      zoomableCanvas.setOnPan (point) -> 
+        grid.setAttribute('patternTransform', viewport.getAttribute('transform'))
 
       scope.processDesigner.zoom = zoomableCanvas.getZoom
 
