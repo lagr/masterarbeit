@@ -319,10 +319,6 @@ INPUT /usr/share/texmf-dist/tex/latex/fontspec/fontspec.cfg
 INPUT /usr/share/texmf-dist/tex/latex/fontspec/fontspec.cfg
 INPUT /home/ownsminthits/prog/ma/thesis/main.aux
 INPUT /home/ownsminthits/prog/ma/thesis/main.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/abstract.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/abstract.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/introduction_motivation.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/introduction_motivation.aux
 OUTPUT /home/ownsminthits/prog/ma/thesis/main.aux
 INPUT /usr/share/texmf-dist/tex/latex/base/ts1cmr.fd
 INPUT /usr/share/texmf-dist/tex/latex/base/ts1cmr.fd
@@ -420,14 +416,4 @@ OUTPUT /home/ownsminthits/prog/ma/thesis/main.lof
 INPUT /home/ownsminthits/prog/ma/thesis/main.lot
 INPUT /home/ownsminthits/prog/ma/thesis/main.lot
 OUTPUT /home/ownsminthits/prog/ma/thesis/main.lot
-OUTPUT /home/ownsminthits/prog/ma/thesis/content/text/abstract.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/abstract.tex
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/abstract.tex
-OUTPUT /home/ownsminthits/prog/ma/thesis/content/text/introduction_motivation.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/introduction_motivation.tex
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/introduction_motivation.tex
 INPUT /home/ownsminthits/prog/ma/thesis/main.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/abstract.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/abstract.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/introduction_motivation.aux
-INPUT /home/ownsminthits/prog/ma/thesis/content/text/introduction_motivation.aux
