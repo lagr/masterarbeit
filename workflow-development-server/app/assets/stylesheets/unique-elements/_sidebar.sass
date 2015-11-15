@@ -28,9 +28,34 @@ $tab-menu-entry-height: 16 *$bu
   +display-flex
   +align-items(center)
   +flex-direction(row)
+  cursor: pointer
 
+  &:hover
+    background: $blue-300
+    
   &.active
-    background: rgba($theme-color, 0.3)
+    background: $theme-color
+
+.tab-menu-entry-close, .tab-menu-entry-title
+  height: 100%
+  display: flex
+  align-items: center
+
+.tab-menu-entry-icon
+  justify-content: center
+  text-align: center
+  width: 64px
+  font-size: 24px
+  
+.tab-menu-entry-title
+  justify-content: flex-start
+  flex-grow: 1
+
+.tab-menu-entry-close
+  justify-content: center
+  width: 32px
+  &:hover
+    background: $blue-100
 
 #loading-indicator
   bottom: 0

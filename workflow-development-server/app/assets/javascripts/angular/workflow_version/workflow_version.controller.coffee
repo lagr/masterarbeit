@@ -1,13 +1,24 @@
 angular.module 'WorkflowVersion'
 .controller 'WorkflowVersionPageController', (tab, pageData, PageController) ->
   vm = new PageController(tab, pageData)
-  vm.workflow_version = pageData.workflow_version
-  vm.setPageTitle(vm.workflow_version?.workflow?.name)
+  
+  pageData.workflow_version.then (workflowVersion) ->
+    setWorkflowVersion(workflowVersion)
 
   vm.save = ->
-    vm.stopEditing()
+    saveOperation = vm.workflowVersion.save()
+      .then (workflowVersion) ->
+        setWorkflowVersion(workflowVersion)
+        $mdToast.simple().content('Workflow Version has been saved')
 
-  vm.delete = ->
+      .catch (response) ->
+        $mdToast.simple().content('Error while saving Workflow Version')
+
+    saveOperation.then (toast) -> $mdToast.show(toast.position('top right'))
+
+  setWorkflowVersion = (workflowVersion) ->
+    vm.workflowVersion = workflowVersion
+    vm.setPageTitle(vm.workflowVersion.name)
     vm.stopEditing()
 
   vm

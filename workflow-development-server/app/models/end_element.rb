@@ -1,4 +1,4 @@
 class EndElement < ActiveRecord::Base
   include HasOnePredecessor
-  include IsWorkflowElement
+  include IsProcessElement
 end

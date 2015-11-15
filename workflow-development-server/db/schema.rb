@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20151106231005) do
 
   create_table "roles", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "name"
+    t.uuid     "parent_role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -34,26 +35,35 @@ ActiveRecord::Schema.define(version: 20151106231005) do
   create_table "execution_environment", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "name"
     t.string   "ip"
+    t.string   "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "workflows", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "name"
+    t.string   "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "workflow_versions", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.string   "name"
+    t.integer  "version", null: false, default: 0
+    t.integer  "subversion", null: false, default: 0
+    t.integer  "subsubversion", null: false, default: 0
     t.uuid     "workflow_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  create_table "control_flows", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.string   "name"
+  create_table "process_definitions", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.uuid     "workflow_version_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "control_flows", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "process_definition_id"
     t.uuid     "successor_id"
     t.string   "successor_type"
     t.uuid     "predecessor_id"
@@ -68,26 +78,26 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "workflow_bundles_workflow_versions" do |t|
+  create_table "workflow_bundles_versions" do |t|
     t.uuid     "workflow_version_id"
     t.uuid     "workflow_bundle_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  create_table "workflow_elements", id: :uuid, default: "uuid_generate_v4()" do |t|
+  create_table "process_elements", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.uuid     "element_id"
     t.string   "element_type"
-    t.uuid     "workflow_version_id"
+    t.uuid     "process_definition_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  create_table "workflow_element_representations", id: :uuid, default: "uuid_generate_v4()" do |t|
+  create_table "process_element_representations", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "name"
-    t.uuid     "workflow_element_id"
-    t.integer  "x"
-    t.integer  "y"
+    t.uuid     "process_element_id"
+    t.integer  "x", default: 0
+    t.integer  "y", default: 0
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
@@ -161,4 +171,17 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "process_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "process_definition_id"
+    t.string   "instance_state"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "activity_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "process_instance_id"
+    t.string   "instance_state"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 end

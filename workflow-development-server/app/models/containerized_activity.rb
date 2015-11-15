@@ -1,5 +1,5 @@
 class ContainerizedActivity < ActiveRecord::Base
   include HasOnePredecessor
   include HasOneSuccessor
-  include IsWorkflowElement
+  include IsProcessElement
 end

@@ -1,7 +1,24 @@
 angular.module 'ProcessDesign'
 .controller 'ProcessDesignerPageController', (tab, pageData, PageController) ->
   vm = new PageController(tab, pageData)
-  vm.workflow_version = pageData.workflow_version
-  vm.setPageTitle "Design: #{vm.workflow_version?.workflow?.name}"
+  
+  pageData.workflow_version.then (workflowVersion) ->
+    setWorkflowVersion(workflowVersion)
+
+  vm.save = ->
+    saveOperation = vm.workflowVersion.save()
+      .then (workflowVersion) ->
+        setWorkflowVersion(workflowVersion)
+        $mdToast.simple().content('Workflow Version has been saved')
+
+      .catch (response) ->
+        $mdToast.simple().content('Error while saving Workflow Version')
+
+    saveOperation.then (toast) -> $mdToast.show(toast.position('top right'))
+
+  setWorkflowVersion = (workflowVersion) ->
+    vm.workflowVersion = workflowVersion
+    vm.setPageTitle(vm.workflowVersion.name)
+    vm.stopEditing()
 
   vm

@@ -1,10 +1,23 @@
 .tab-content
   %md-card.workflows
-    %h3 Workflows
-    %md-virtual-repeat-container
-      .workflow{ md_virtual_repeat: 'wf in pageCtrl.pageData.workflows', ng_click: 'appCtrl.tabManagement.openPage("Workflow", wf.id)' }
-        %span {{wf.name}}
-        %span {{wf.id}}
+    / %h3 Workflows
+    / %md-virtual-repeat-container
+    /   .workflow{ md_virtual_repeat: 'wf in pageCtrl.workflows', ng_click: 'appCtrl.tabManagement.openPage("Workflow", wf.id)' }
+    /     %span {{wf.name}}
+    /     %span {{wf.id}}
+
+    %md-data-table-toolbar
+      %h2.md-title Workflows
+      
+    %md-data-table-container
+      %table.md-primary{ "md-data-table" => true }
+        %thead{ "md-table-head" => true }
+          %td Name
+          %td ID
+        %tbody
+          %tr{ "md-table-row" => true, ng_repeat: "wf in pageCtrl.workflows", ng_click: 'appCtrl.tabManagement.openPage("Workflow", wf.id)' }
+            %td.md-table-cell {{wf.name}}
+            %td.md-table-cell {{wf.id}}
 
 .tab-top-bar
   = render partial: 'templates/shared/top_bar'

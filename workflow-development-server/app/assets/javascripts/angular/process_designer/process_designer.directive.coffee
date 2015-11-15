@@ -1,11 +1,11 @@
 angular.module 'ProcessDesign'
-.directive 'processDesigner', (tabManagement, processDesignerConfig) ->
-  controller = ($element) ->
+.directive 'processDesigner', (tabManagement, processDesignerConfig, ProcessElementRepresentations) ->
+  controller = ($scope, $element) ->
     vm = @
     vm.config = processDesignerConfig
 
     vm.svg = $element.find("svg")[0]
-    vm.elementsContainer = $element.find("svg").find('.workflow-elements')[0]
+    vm.elementsContainer = $element.find("svg").find('.process-elements')[0]
     vm.referencePoint = vm.svg.createSVGPoint()
 
     activate = ->
@@ -18,7 +18,13 @@ angular.module 'ProcessDesign'
       vm.canvasMousemove = canvasMousemove
       vm.isSelected = isSelected
 
-      vm.workflowElements = -> vm.workflow_version.workflow_elements
+      bindWorkflowVersion = $scope.$watch 'processDesigner.workflowVersion', (newVal, oldVal) ->
+        return unless newVal?
+        vm.processDefinition = vm.workflowVersion.process_definition
+        vm.processElements = vm.processDefinition.process_elements
+        vm.controlFlows = vm.processDefinition.control_flows
+        bindWorkflowVersion()
+
       vm
 
     toRelativeCoordinates = (element, clientX, clientY) ->
@@ -57,6 +63,10 @@ angular.module 'ProcessDesign'
       toggleCircleMenu(event)
 
     stopDragging = ->
+      if vm.dragging and vm.dragTarget?
+        for element in vm.selected
+          saveElementRepresentation(element)
+
       vm.dragging = false
       vm.dragTarget = undefined
 
@@ -100,15 +110,17 @@ angular.module 'ProcessDesign'
       vm.circleMenuPos = x: x, y: y
       vm.circleMenuVisible = true
 
+    saveElementRepresentation = (element) ->
+      ProcessElementRepresentations.update(element.representation)
+
     activate()
 
   link = (scope, elem, attrs, ctrl) ->
-    isBound = scope.$watch 'processDesigner.workflow_version', ->
-      return unless scope.processDesigner.workflow_version
+    isBound = scope.$watch 'processDesigner.workflowVersion', ->
+      return unless scope.processDesigner.workflowVersion
       svg = elem.find('svg')[0]
       grid = elem.find('#grid')[0]
 
-      #zoomableGrid = svgPanZoom(svg, { viewportSelector: 'g.grid', fit: false })
       scope.processDesigner.canvas = zoomableCanvas = svgPanZoom(svg, processDesignerConfig.canvas.panZoom)
       viewport = elem.find('svg .svg-pan-zoom_viewport')[0]
       grid.setAttribute('patternTransform', viewport.getAttribute('transform'))
@@ -124,7 +136,7 @@ angular.module 'ProcessDesign'
   restrict: 'A'
   scope: true
   bindToController:
-    workflow_version: '=processDesigner'
+    workflowVersion: '=processDesigner'
   controllerAs: 'processDesigner'
   link: link
   controller: controller

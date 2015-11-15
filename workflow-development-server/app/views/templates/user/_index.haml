@@ -6,5 +6,22 @@
         %span {{user.first_name}} {{user.last_name}}
         %span {{user.id}}
 
+    %md-data-table-toolbar
+      %h2.md-title Users
+      
+    %md-data-table-container
+      %table.md-primary{ "md-data-table" => true }
+        %thead{ "md-table-head" => true }
+          %td Name
+          %td ID
+          %td
+        %tbody
+          %tr{ "md-table-row" => true, ng_repeat: 'user in pageCtrl.users', ng_click: 'appCtrl.tabManagement.openPage("User", user.id)' }
+            %td.md-table-cell {{user.first_name}} {{user.last_name}}
+            %td.md-table-cell {{user.id}}
+            %td.md-table-cell
+              %button{ ng_click: 'user.delete()' } Delete
+
+
 .tab-top-bar
   = render partial: 'templates/shared/top_bar'

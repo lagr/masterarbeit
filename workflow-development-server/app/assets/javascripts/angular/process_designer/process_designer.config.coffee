@@ -6,5 +6,5 @@ angular.module 'ProcessDesign'
       maxZoom: 10
       fit: false 
       minZoom: 0.5
-      viewportSelector: 'g.workflow-elements'
+      viewportSelector: 'g.process-elements'
       preventMouseEventsDefault: false

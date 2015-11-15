@@ -10,6 +10,10 @@
     -ms-user-select: none
     user-select: none
 
+    &:focus
+      outline: none
+      border: 0
+
 #grid
   path
     stroke: transparentize($light-grey, .8)
@@ -24,14 +28,14 @@
 
 .workflow-designer--circle-menu
   circle
-    fill: $blue-100
+    fill: $blue-50
 
 .element
   fill: $blue-300
   cursor: default
 
   &.selected
-    fill: $blue-200
+    fill: $blue-100
     cursor: -webkit-grab
     cursor: -moz-grab
 

@@ -1,9 +1,9 @@
 %g.workflow-designer--paths
-  %g.arrow{ ng_repeat: 'cf in processDesigner.controlFlows()' }
+  %g.arrow{ ng_repeat: 'cf in processDesigner.controlFlows' }
     / %line{"ng-attr-x1" => "{{x1}}", "ng-attr-y1" => "{{y1}}", "ng-attr-x2" => "{{x2}}", "ng-attr-y2" => "{{y2}}", "style" => "marker-end: url(#markerArrow);"}}
 
-%g.workflow-designer--workflow-elements
-  %g.element{ ng_repeat: 'element in processDesigner.workflowElements()', id: '{{element.id}}',
+%g.workflow-designer--process-elements
+  %g.element{ ng_repeat: 'element in processDesigner.processElements', id: '{{element.id}}',
     ng_class: '{selected: processDesigner.isSelected(element), dragging: processDesigner.isSelected(element) && processDesigner.dragging }',
     ng_attr_transform: 'translate({{element.representation.x}} {{element.representation.y}})',
     ng_mousedown: 'processDesigner.elementMousedown(element, $event)' }

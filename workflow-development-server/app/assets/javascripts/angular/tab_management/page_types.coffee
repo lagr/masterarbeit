@@ -1,5 +1,5 @@
 angular.module 'TabManagement'
-.factory 'PageTypes', (uuid4, Restangular) ->
+.factory 'PageTypes', (uuid4, Restangular, Workflows) ->
   editTemplateUrl = (type) -> "templates/#{type}/edit"
   indexTemplateUrl = (type) -> "templates/#{type}/index"
   topBarTemplateUrl = (type) -> "templates/#{type}/top_bar"
@@ -10,12 +10,12 @@ angular.module 'TabManagement'
       type: 'User'
       id: id
     resolves: (params) ->
-      user: Restangular.one('users', params['id']).get().$object
+      user: Restangular.one('users', params['id']).get()
     template: editTemplateUrl 'user'
     controller: 'UserPageController'
 
   Users:
-    icon: 'icon-users'
+    icon: 'icon-groups-friends'
     params: (id) -> 
       type: 'Users'
       id: null
@@ -25,27 +25,27 @@ angular.module 'TabManagement'
     controller: 'UsersPageController'
 
   Workflow:
-    icon: 'icon-workflow'
+    icon: 'icon-algorhythm'
     params: (id) -> 
       type: 'Workflow'
       id: id
     resolves: (params) -> 
-      workflow: Restangular.one('workflows', params['id']).get()
+      workflow: Workflows.get(params['id'])
     template: editTemplateUrl('workflow')
     controller: 'WorkflowPageController'
 
   Workflows:
-    icon: 'icon-workflow'
+    icon: 'icon-algorhythm'
     params: -> 
       type: 'Workflows'
       id: null
     resolves: (params) -> 
-      workflows: Restangular.all('workflows').getList()
+      workflows: Workflows.index()
     template: indexTemplateUrl('workflow')
     controller: 'WorkflowsPageController'
 
   WorkflowVersion:
-    icon: 'icon-workflow'
+    icon: 'icon-algorhythm'
     params: (id) -> 
       type: 'WorkflowVersion'
       id: id
@@ -54,8 +54,28 @@ angular.module 'TabManagement'
     template: editTemplateUrl('workflow_version')
     controller: 'WorkflowVersionPageController'
 
+  WorkflowBundle:
+    icon: 'icon-stacks'
+    params: (id) -> 
+      type: 'WorkflowBundle'
+      id: id
+    resolves: (params) -> 
+      workflow_bundle: WorkflowBundles.get(params['id'])
+    template: editTemplateUrl('workflow_bundle')
+    controller: 'WorkflowBundlePageController'
+
+  WorkflowBundles:
+    icon: 'icon-stacks'
+    params: -> 
+      type: 'WorkflowBundles'
+      id: null
+    resolves: (params) -> 
+      workflows: WorkflowBundles.index()
+    template: indexTemplateUrl('workflow_bundle')
+    controller: 'WorkflowBundlesPageController'
+
   ProcessDesigner:
-    icon: 'icon-workflow-designer'
+    icon: 'icon-websitebuilder'
     params: (id) -> 
       type: 'ProcessDesigner'
       id: id
