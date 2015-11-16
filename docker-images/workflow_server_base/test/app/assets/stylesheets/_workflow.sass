@@ -1,0 +1,32 @@
+@import 'compass/reset' 
+// reset style before applying own
+
+// Configuration
+@import "config/*"
+@import 'components/*'
+@import 'unique-elements/*'
+
+// Main styles
+
+*
+  @include box-sizing(border-box)
+
+  &:before, &:after
+    @include box-sizing(border-box)
+
+  &:focus
+    outline: none
+    border: 0
+
+body
+  background: $background-color
+  color: $text-on-dark
+  font-size: $body-1
+  +open-sans
+  overflow: hidden
+  // +debug
+
+#main-view-container
+  height: 100%
+  width: 100%
+  position: absolute

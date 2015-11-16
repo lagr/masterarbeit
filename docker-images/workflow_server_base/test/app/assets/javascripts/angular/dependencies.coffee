@@ -1,0 +1,8 @@
+angular.module 'Common', []
+angular.module 'Dashboard', []
+angular.module 'ProcessDesign', []
+angular.module 'TabManagement', []
+angular.module 'User', []
+angular.module 'Workflow', []
+angular.module 'WorkflowVersion', []
+angular.module 'WorkflowBundle', []

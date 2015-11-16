@@ -1,0 +1,12 @@
+I"!(function() {
+  angular.module('User').controller('UsersPageController', function(tab, pageData, PageController) {
+    var vm;
+    vm = new PageController(tab, pageData);
+    pageData.users.then(function(users) {
+      return vm.users = users;
+    });
+    return vm;
+  });
+
+}).call(this);
+:ET

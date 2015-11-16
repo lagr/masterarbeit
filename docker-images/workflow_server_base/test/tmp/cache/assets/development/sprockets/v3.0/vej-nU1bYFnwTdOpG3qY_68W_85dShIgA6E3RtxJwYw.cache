@@ -1,0 +1,13 @@
+I"F(function() {
+  angular.module('User').controller('UserPageController', function(tab, pageData, PageController) {
+    var vm;
+    vm = new PageController(tab, pageData);
+    pageData.user.then(function(user) {
+      vm.user = user;
+      return vm.setPageTitle(vm.user.last_name);
+    });
+    return vm;
+  });
+
+}).call(this);
+:ET

@@ -1,0 +1,14 @@
+I"5(function() {
+  angular.module('Workflow').factory('Workflows', function(Restangular) {
+    return {
+      get: function(id) {
+        return Restangular.one('workflows', id).get();
+      },
+      index: function() {
+        return Restangular.all('workflows').getList();
+      }
+    };
+  });
+
+}).call(this);
+:ET

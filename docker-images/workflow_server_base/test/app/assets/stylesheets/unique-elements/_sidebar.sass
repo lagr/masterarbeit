@@ -1,0 +1,65 @@
+$sidebar-width: 64 *$bu
+$sidebar-background: $card-background-color
+$tab-menu-entry-height: 16 *$bu
+
+#sidebar *
+  +user-select(none)
+
+#sidebar
+  +high
+  width: $sidebar-width
+  height: 100%
+  background: $sidebar-background
+  border-left: 4px solid $theme-color
+  position: absolute
+  left: 0 
+  top: 0
+
+#navigation
+  height: double($tab-menu-entry-height)
+
+#tab-menu
+  +display-flex
+  +align-items(left)
+  +flex-direction(column)
+
+.tab-menu-entry
+  height: $tab-menu-entry-height
+  +display-flex
+  +align-items(center)
+  +flex-direction(row)
+  cursor: pointer
+
+  &:hover
+    background: $blue-300
+    
+  &.active
+    background: $theme-color
+
+.tab-menu-entry-close, .tab-menu-entry-title
+  height: 100%
+  display: flex
+  align-items: center
+
+.tab-menu-entry-icon
+  justify-content: center
+  text-align: center
+  width: 64px
+  font-size: 24px
+  
+.tab-menu-entry-title
+  justify-content: flex-start
+  flex-grow: 1
+
+.tab-menu-entry-close
+  justify-content: center
+  width: 32px
+  &:hover
+    background: $blue-100
+
+#loading-indicator
+  bottom: 0
+  position: absolute
+  display: flex
+  width: 100%
+  justify-content: center
