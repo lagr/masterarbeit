@@ -7,16 +7,17 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 organization = Role.create(name: 'Organization')
-it_department = Role.create(name: 'IT-Department', parent_role: organization)
-accounting_department = Role.create(name: 'Accounting', parent_role: organization)
-developer = Role.create(name: 'Developer', parent_role: it_department)
-clerk = Role.create(name: 'Clerk', parent_role: accounting_department)
 
-dev_user = User.create(first_name: 'David', last_name: 'Hasselhoff', role: developer) 
-clerk_user = User.create(first_name: 'Bernhard Egon', last_name: 'Nutzer', role: clerk) 
+it_department         = organization.child_roles.create(name: 'IT-Department')
+accounting_department = organization.child_roles.create(name: 'Accounting')
+developer             = it_department.child_roles.create(name: 'Developer')
+clerk                 = accounting_department.child_roles.create(name: 'Clerk')
 
-wf = Workflow.create(name: 'Sachbearbeitung')
-wfv = WorkflowVersion.create(version: 1, workflow: wf)
+dev_user    = User.create(first_name: 'David',         last_name: 'Hasselhoff', role: developer) 
+clerk_user  = User.create(first_name: 'Bernhard Egon', last_name: 'Nutzer',     role: clerk) 
+
+wf  = Workflow.create(name: 'Sachbearbeitung')
+wfv = WorkflowVersion.create(subsubversion: 1, workflow: wf)
 wfb = WorkflowBundle.create workflow_versions: [wfv]
 
 # default data types
