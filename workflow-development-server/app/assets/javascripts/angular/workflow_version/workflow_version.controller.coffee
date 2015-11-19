@@ -1,5 +1,5 @@
 angular.module 'WorkflowVersion'
-.controller 'WorkflowVersionPageController', (tab, pageData, PageController) ->
+.controller 'WorkflowVersionPageController', (tab, pageData, PageController, $mdToast) ->
   vm = new PageController(tab, pageData)
   
   pageData.workflow_version.then (workflowVersion) ->

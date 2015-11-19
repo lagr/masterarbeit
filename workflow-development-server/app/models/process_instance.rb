@@ -1,20 +1,18 @@
 class ProcessInstance < ActiveRecord::Base
   include AASM
 
+  belongs_to :process_definition
+  belongs_to :workflow_version_instance
+
   aasm column: :instance_state do
     after_all_transitions :log_status_change
 
-    state :uninitiated
-    state :initiated
+    state :initiated, initial: true
     state :running
     state :active
     state :suspended
     state :completed
     state :terminated
-
-    event :initiate do
-      transitions from: :uninitiated, to: :initiated
-    end
 
     event :start do
       transitions from: :initiated, to: :running

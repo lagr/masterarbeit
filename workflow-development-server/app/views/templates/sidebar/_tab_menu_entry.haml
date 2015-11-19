@@ -3,5 +3,5 @@
   %span.tab-menu-entry-title{ ng_click: 'tabManagement.activateTab(tab)'}
     {{tab.title()}}
   %span.tab-menu-entry-close{ ng_click: 'tabManagement.closeTab(tab)'}
-    x
+    %i.icon-remove-sign
   %span {{$state.is(tab.name)}}

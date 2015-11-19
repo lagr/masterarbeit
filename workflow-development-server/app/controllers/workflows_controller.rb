@@ -16,6 +16,23 @@ class WorkflowsController < ApplicationController
     end
   end
 
+  def create
+    if @workflow = Workflow.create
+      render json: @workflow
+    else
+      render json: {}, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @workflow = Workflow.find(params[:id])
+    if @workflow.destroy
+      render json: @workflow, status: :ok
+    else
+      render json: {}, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def workflow_params

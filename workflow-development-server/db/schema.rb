@@ -32,6 +32,15 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at", null: false
   end
 
+
+  create_table "assignments", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "role_id"
+    t.uuid     "assignable_id"
+    t.string   "assignable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "execution_environment", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "name"
     t.string   "ip"
@@ -171,9 +180,19 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "workflow_version_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "workflow_version_id"
+    t.string   "instance_state"
+    t.jsonb    "instance_data", null: false, default: '{}'
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "process_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.uuid     "process_definition_id"
+    t.uuid     "workflow_version_instance_id"
     t.string   "instance_state"
+    t.jsonb    "instance_data", null: false, default: '{}'
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
@@ -181,6 +200,15 @@ ActiveRecord::Schema.define(version: 20151106231005) do
   create_table "activity_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.uuid     "process_instance_id"
     t.string   "instance_state"
+    t.jsonb    "instance_data", null: false, default: '{}'
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "data_schemas", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "data_schema_owner_id"
+    t.string   "data_schema_owner_type"
+    t.jsonb    "template", null: false, default: '{}'
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

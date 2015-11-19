@@ -1,2 +1,2 @@
-class BasicDataType
+class DynamicType
 end

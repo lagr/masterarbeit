@@ -2,6 +2,8 @@ class Role < ActiveRecord::Base
   has_many :users
   belongs_to :parent_role, class_name: 'Role', foreign_key: 'parent_role_id'
   has_many :child_roles, class_name: 'Role', foreign_key: 'parent_role_id'
+  has_many :assignments
+  has_many :assigned_activities, through: :role_assignments
 
   def ancestors
     return [] if parent_role.nil?

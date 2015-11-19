@@ -1,5 +1,5 @@
 angular.module 'ProcessDesign'
-.controller 'ProcessDesignerPageController', (tab, pageData, PageController) ->
+.controller 'ProcessDesignerPageController', (tab, pageData, PageController, $mdToast) ->
   vm = new PageController(tab, pageData)
   
   pageData.workflow_version.then (workflowVersion) ->
