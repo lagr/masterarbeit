@@ -3,5 +3,4 @@ class Workflow < ActiveRecord::Base
 
   has_many :workflow_versions
   belongs_to :author, class_name: 'User', foreign_key: 'user_id'
-  before_create :build_workflow_version
 end
