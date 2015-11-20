@@ -1,0 +1,16 @@
+.workflow-designer--element-form{ ng_if: 'processDesigner.selectedElementHasType("StartElement")'}
+  %md-tabs
+  
+    %md-tab{ label: 'General' }
+      %form
+        %md-input-container
+          %label Name
+          %input{ type: 'text', ng_model: 'pageCtrl.selected[0].name' }
+
+    %md-tab{ label: 'Triggers' }
+    
+    %md-tab{ label: 'Data Mapping' }
+      %h3 Input Data Mapping
+      %h3 Output Data Mapping
+      
+

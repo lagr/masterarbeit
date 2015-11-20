@@ -1,4 +1,4 @@
-angular.module 'TabManagement'
+angular.module 'WFMS.TabManagement'
 .factory 'Tab', (uuid4, $q, $state, $injector, PageTypes) ->
   class Tab
     constructor: (futureTabState) ->

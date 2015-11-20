@@ -1,4 +1,4 @@
-angular.module 'WorkflowBundle'
+angular.module 'WFMS.WorkflowBundle'
 .controller 'WorkflowBundlePageController', (tab, pageData, PageController) ->
   vm = new PageController(tab, pageData)
   vm.workflowBundle = pageData.workflow_bundle

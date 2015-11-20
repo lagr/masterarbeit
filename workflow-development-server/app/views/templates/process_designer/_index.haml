@@ -6,7 +6,6 @@
     %defs
       = render partial: 'templates/process_designer/definitions/grid'
       = render partial: 'templates/process_designer/definitions/marker_arrow'
-      / = render partial: 'templates/process_designer/definitions/grid'
 
     %rect.grid{ width: '100%', height: '100%', fill: 'url(#grid)', ng_click: 'processDesigner.canvasClicked($event)' }
 
@@ -15,5 +14,6 @@
       
     = render partial: 'templates/process_designer/circle_menu'
 
-= render partial: 'templates/process_designer/context_menu'
+  = render partial: 'templates/process_designer/details_bar'
+  = render partial: 'templates/process_designer/context_menu'
 = render partial: 'templates/process_designer/top_bar'

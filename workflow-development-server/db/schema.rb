@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at", null: false
   end
 
-
   create_table "assignments", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.uuid     "role_id"
     t.uuid     "assignable_id"
@@ -134,6 +133,8 @@ ActiveRecord::Schema.define(version: 20151106231005) do
 
   create_table "containerized_activities", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "name"
+    t.string   "image"
+    t.text     "parameters",  array: true, default: []
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

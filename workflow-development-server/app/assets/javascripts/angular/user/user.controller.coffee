@@ -1,4 +1,4 @@
-angular.module 'User'
+angular.module 'WFMS.User'
 .controller 'UserPageController', (tab, pageData, PageController) -> 
   vm = new PageController tab, pageData
   pageData.user.then (user) ->

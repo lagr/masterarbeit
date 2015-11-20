@@ -1,4 +1,4 @@
-angular.module 'ProcessDesign'
+angular.module 'WFMS.ProcessDesign'
 .factory 'ProcessElementRepresentations', (Restangular) ->
   update: (processElementRepresentation) -> 
     prElRep = Restangular.restangularizeElement(null, processElementRepresentation, 'process_element_representations')

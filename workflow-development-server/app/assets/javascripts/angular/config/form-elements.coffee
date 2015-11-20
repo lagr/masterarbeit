@@ -1,4 +1,4 @@
-angular.module 'WorkflowDevelopmentApplication'
+angular.module 'WFMS.WorkflowDevelopmentApplication'
 .run (formlyConfig) ->
 
   types =

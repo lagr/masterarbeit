@@ -1,4 +1,4 @@
-angular.module 'WorkflowDevelopmentApplication'
+angular.module 'WFMS.WorkflowDevelopmentApplication'
 .config ($mdThemingProvider) ->
 
   $mdThemingProvider.definePalette('wfm', {"50":"#d2d9e7","100":"#a1afcc","200":"#7d90b8","300":"#546a9a","400":"#495d86","500":"#3e4f72","600":"#33415e","700":"#28344a","800":"#1e2637","900":"#131823","A100":"#d2d9e7","A200":"#a1afcc","A400":"#495d86","A700":"#28344a"});

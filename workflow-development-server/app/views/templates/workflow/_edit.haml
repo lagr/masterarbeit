@@ -13,6 +13,7 @@
   %md-card.workflow-versions.card
     %md-data-table-toolbar
       %h2.md-title Workflow Versions
+      %button.md-button{ ng_click: "pageCtrl.createWorkflowVersion()" } Add
       
     %md-data-table-container
       %table.md-primary{ "md-data-table" => true }
@@ -25,4 +26,5 @@
             %td.md-table-cell {{wfv.id}}
 
 .tab-top-bar
-  = render partial: 'templates/shared/top_bar'
+  = render layout: 'templates/shared/top_bar' do
+    = render partial: 'templates/shared/default_actions'

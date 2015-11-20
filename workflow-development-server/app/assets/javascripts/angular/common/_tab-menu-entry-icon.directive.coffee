@@ -1,4 +1,4 @@
-angular.module 'Common'
+angular.module 'WFMS.Common'
 .directive 'tabMenuEntryIcon', (PageTypes) ->
   restrict: 'C'
   scope:

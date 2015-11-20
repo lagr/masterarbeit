@@ -1,4 +1,4 @@
-angular.module 'WorkflowDevelopmentApplication'
+angular.module 'WFMS.WorkflowDevelopmentApplication'
 .config ($stateProvider, $urlRouterProvider, $locationProvider, $futureStateProvider) ->
   states =
     'application':

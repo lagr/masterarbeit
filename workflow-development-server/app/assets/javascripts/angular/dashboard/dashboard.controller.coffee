@@ -1,2 +1,2 @@
-angular.module 'Dashboard'
+angular.module 'WFMS.Dashboard'
 .controller 'DashboardController', () ->

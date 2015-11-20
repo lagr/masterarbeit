@@ -1,3 +1,5 @@
+$details-bar-width: 400px
+
 .workflow-designer--canvas
   width: 100%
   height: 100%
@@ -30,6 +32,17 @@
   circle
     fill: $blue-50
 
+.workflow-designer--details-bar
+  position: absolute
+  right: -1 * $details-bar-width
+  width: $details-bar-width
+  background-color: $card-background-color
+  height: 100%
+  transition: right 0.3s
+
+  &.active
+    right: 0
+    
 .element
   fill: $blue-300
   cursor: default
@@ -43,3 +56,4 @@
     cursor: move
     cursor: -webkit-grabbing
     cursor: -moz-grabbing
+

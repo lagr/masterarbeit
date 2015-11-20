@@ -18,4 +18,6 @@
               %md-button{ ng_click: 'pageCtrl.deleteWorkflow(wf, $event)' } Delete
 
 .tab-top-bar
-  = render partial: 'templates/shared/top_bar'
+  = render layout: 'templates/shared/top_bar' do
+    %md-button.md-primary{ md_no_ink: true, ng_click: 'pageCtrl.reload()'} Refresh
+

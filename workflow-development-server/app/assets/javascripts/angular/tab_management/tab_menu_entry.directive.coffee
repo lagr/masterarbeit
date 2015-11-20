@@ -1,4 +1,4 @@
-angular.module 'TabManagement'
+angular.module 'WFMS.TabManagement'
 .directive 'tabMenuEntry', (tabManagement) ->
   replace: true
   scope:

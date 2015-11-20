@@ -1,4 +1,4 @@
-angular.module 'TabManagement'
+angular.module 'WFMS.TabManagement'
 .factory 'tabManagement', ($rootScope, uuid4, $state, $previousState, $stickyState, $window, FutureTabState, PageTypes, Tab) ->
   closedTabs = []
   states = -> $state.get()
@@ -16,7 +16,7 @@ angular.module 'TabManagement'
 
   closeTab = (tab) ->
     openTabs = tabs()
-    if openTabs.length < 2
+    action = if openTabs.length < 2
       $state.go 'application.dashboard'
     else
       if $state.is(tab.name)
@@ -24,7 +24,7 @@ angular.module 'TabManagement'
         goIndex = if currentIndex is 0 then 1 else currentIndex - 1
         activateTab openTabs[goIndex]
 
-    $stickyState.reset(tab.name)
+    action.then(-> $stickyState.reset(tab.name)) if action.then?
     closedTabs.push tab.name
 
   openPage = (type, id) ->

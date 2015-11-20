@@ -1,4 +1,4 @@
-angular.module 'TabManagement'
+angular.module 'WFMS.TabManagement'
 .factory 'FutureTabState', (uuid4) ->
   class FutureTabState
     type: 'tabState'  # determines futureStateProvider

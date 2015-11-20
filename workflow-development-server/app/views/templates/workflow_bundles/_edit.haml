@@ -18,4 +18,5 @@
         %span {{wfv.id}}
 
 .tab-top-bar
-  = render partial: 'templates/shared/top_bar'
+  = render layout: 'templates/shared/top_bar' do
+    = render partial: 'templates/shared/default_actions'

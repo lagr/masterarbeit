@@ -1,4 +1,4 @@
-angular.module 'User'
+angular.module 'WFMS.User'
 .factory 'Users', (Restangular, uuid4) ->
   klass = 'users'
 

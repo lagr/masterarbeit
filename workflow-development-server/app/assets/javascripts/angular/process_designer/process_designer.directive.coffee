@@ -1,4 +1,4 @@
-angular.module 'ProcessDesign'
+angular.module 'WFMS.ProcessDesign'
 .directive 'processDesigner', (tabManagement, processDesignerConfig, ProcessElementRepresentations) ->
   controller = ($scope, $element) ->
     vm = @
@@ -17,6 +17,9 @@ angular.module 'ProcessDesign'
       vm.canvasMouseup = canvasMouseup
       vm.canvasMousemove = canvasMousemove
       vm.isSelected = isSelected
+
+      vm.detailsBarVisible = detailsBarVisible
+      vm.selectedElementHasType = selectedElementHasType
 
       bindWorkflowVersion = $scope.$watch 'processDesigner.workflowVersion', (newVal, oldVal) ->
         return unless newVal?
@@ -37,9 +40,21 @@ angular.module 'ProcessDesign'
       transformed = pt.matrixTransform(element.getScreenCTM().inverse())
       [transformed.x, transformed.y]
 
-    isSelected = (element) ->_.contains(vm.selected, element)
-    isCanvas = (target) -> _.contains(target.classList, 'grid')
-    applyRaster = (number) -> Math.round(number / vm.config.canvas.raster, 0) * vm.config.canvas.raster
+    isSelected = (element) ->
+      _.contains(vm.selected, element)
+
+    isCanvas = (target) ->
+      _.contains(target.classList, 'grid')
+
+    applyRaster = (number) -> 
+      Math.round(number / vm.config.canvas.raster, 0) * vm.config.canvas.raster
+
+    detailsBarVisible = ->
+      vm.selected.length is 1 and not vm.dragging
+
+    selectedElementHasType = (type) ->
+      return unless type && vm.selected.length is 1
+      _.first(vm.selected)?.element_type is type
 
     elementMousedown = (element, event) ->
       vm.canvas.disablePan()

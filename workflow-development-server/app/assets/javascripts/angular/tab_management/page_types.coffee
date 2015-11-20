@@ -1,4 +1,4 @@
-angular.module 'TabManagement'
+angular.module 'WFMS.TabManagement'
 .factory 'PageTypes', (uuid4, Restangular, Workflows) ->
   editTemplateUrl = (type) -> "templates/#{type}/edit"
   indexTemplateUrl = (type) -> "templates/#{type}/index"

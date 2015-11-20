@@ -12,4 +12,5 @@
     %a{ ng_click: 'appCtrl.tabManagement.openPage("ProcessDesigner", pageCtrl.workflowVersion.id)' } Edit Process
 
 .tab-top-bar
-  = render partial: 'templates/shared/top_bar'
+  = render layout: 'templates/shared/top_bar' do
+    = render partial: 'templates/shared/default_actions'

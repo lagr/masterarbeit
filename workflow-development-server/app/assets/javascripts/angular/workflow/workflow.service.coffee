@@ -1,4 +1,4 @@
-angular.module 'Workflow'
+angular.module 'WFMS.Workflow'
 .factory 'Workflows', (Restangular, uuid4) ->
   klass = 'workflows'
 
