@@ -102,11 +102,15 @@ GEM
     compass-import-once (1.0.5)
       sass (>= 3.2, < 3.5)
     debug_inspector (0.0.2)
+    docker-api (1.23.0)
+      excon (>= 0.38.0)
+      json
     em-hiredis (0.3.0)
       eventmachine (~> 1.0)
       hiredis (~> 0.5.0)
     erubis (2.7.0)
     eventmachine (1.0.8)
+    excon (0.45.4)
     execjs (2.6.0)
     faye-websocket (0.10.0)
       eventmachine (>= 0.12.0)
@@ -146,6 +150,8 @@ GEM
     mini_portile (0.6.2)
     minitest (5.8.1)
     multi_json (1.11.2)
+    net-ping (1.7.8)
+    net-ssh (3.0.1)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     pg (0.18.3)
@@ -265,9 +271,12 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   compass-rails!
+  docker-api
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails
+  net-ping
+  net-ssh
   pg
   rails (= 4.2.4)
   rails-assets-angular!

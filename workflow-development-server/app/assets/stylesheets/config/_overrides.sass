@@ -3,6 +3,9 @@ md-data-table-toolbar, table[md-data-table]
 
 table[md-data-table]
   tbody
-    tr:hover
-      background-color: $blue-500!important
-      cursor: pointer
+    tr
+      &:hover
+        background-color: $blue-500!important
+        cursor: pointer
+      td
+        color: $text-on-dark

@@ -11,7 +11,7 @@ angular.module 'WFMS.WorkflowDevelopmentApplication', [
   
   # topic modules
   'WFMS.Common',
-  'WFMS.Dashboard', 'WFMS.Workflow', 'WFMS.WorkflowBundle', 'WFMS.WorkflowVersion',  'WFMS.User', 'WFMS.ProcessDesign'
+  'WFMS.Dashboard', 'WFMS.Infrastructure', 'WFMS.Workflow', 'WFMS.WorkflowBundle', 'WFMS.WorkflowVersion',  'WFMS.User', 'WFMS.ProcessDesign'
   ]
 
 .controller 'ApplicationController', (tabManagement) ->

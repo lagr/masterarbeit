@@ -9,7 +9,7 @@
         %label Name
         %input{ type: 'text', ng_model: 'pageCtrl.workflowVersion.name', ng_disabled: '!pageCtrl.editing' }
         
-    %a{ ng_click: 'appCtrl.tabManagement.openPage("ProcessDesigner", pageCtrl.workflowVersion.id)' } Edit Process
+    %md-button{ ng_click: 'appCtrl.tabManagement.openPage("ProcessDesigner", pageCtrl.workflowVersion.id)' } Edit Process
 
 .tab-top-bar
   = render layout: 'templates/shared/top_bar' do

@@ -1,7 +1,16 @@
 .tab-content
-  .user-metadata.card
-    TEST TEST
-    %a{ ng_click: 'appCtrl.tabManagement.openPage("Workflow", 1)' } Workflow
+  %md-card.user-metadata
+    %md-card-content
+      %form
+        %md-input-container
+          %label ID
+          %input{ type: 'text', ng_model: 'pageCtrl.user.id', disabled: true }
+        %md-input-container
+          %label Firstname
+          %input{ type: 'text', ng_model: 'pageCtrl.user.first_name', ng_disabled: '!pageCtrl.editing' }
+        %md-input-container
+          %label Lastname
+          %input{ type: 'text', ng_model: 'pageCtrl.user.last_name', ng_disabled: '!pageCtrl.editing' }
 
 .tab-top-bar
   = render layout: 'templates/shared/top_bar' do

@@ -20,12 +20,13 @@ default: &default
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
+  host: db
+  user: workflow_development_server
+  password: masterarbeit
 
 development:
   <<: *default
   database: workflow-development-server_development
-  user: workflow_development_server
-  password: masterarbeit
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.

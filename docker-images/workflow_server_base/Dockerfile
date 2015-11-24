@@ -1,39 +1,13 @@
-FROM docker:1.9-dind
+FROM ruby:2.2
 
-ADD ./test/Gemfile /app/  
-ADD ./test/Gemfile.lock /app/
+# Postgres prerequirements
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" >>/etc/apt/sources.list.d/pgdg.list && \
+    curl -q https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
-RUN apk --update add --virtual \ 
-    build-dependencies \
-    build-base \
+RUN apt-get update && \
+    apt-get install -y \
+    postgresql-server-dev-9.4 \
     git \
-    ruby \
-    ruby-irb \
-    ruby-json \
-    ruby-rake \
-    ruby-bigdecimal \
-    ruby-io-console \
-    libstdc++ \
-    libffi-dev \
-    tzdata \
-    postgresql-client \
-    nodejs \
-    ruby-nokogiri \
-    ruby-dev \
-    openssl-dev \  
-    postgresql-dev \
-    libc-dev \
-    linux-headers && \
-    gem install --no-document bundler && \
-    cd /app ; bundle install --without development test && \
-    apk del build-dependencies
+  && rm -rf /var/lib/apt/lists/*
 
-ADD ./test /app  
-RUN chown -R nobody:nogroup /app  
-USER nobody
-
-ENV RAILS_ENV production  
-WORKDIR /app
- 
-#CMD ["bundle", "exec", "rails", "s"]
-CMD []
+RUN gem install --no-document bundler --pre

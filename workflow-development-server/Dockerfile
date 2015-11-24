@@ -1,13 +1,18 @@
 FROM ruby:2.2
 
-# Postgres prerequirements
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" >>/etc/apt/sources.list.d/pgdg.list && \
-    curl -q https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+RUN mkdir /app
 
 RUN apt-get update && \
     apt-get install -y \
-    postgresql-server-dev-9.4 \
     git \
   && rm -rf /var/lib/apt/lists/*
 
+ADD Gemfile /app/Gemfile
+ADD Gemfile.lock/ /app/Gemfile.lock
+
 RUN gem install --no-document bundler --pre
+
+WORKDIR /app
+RUN bundle install
+
+ADD . /app

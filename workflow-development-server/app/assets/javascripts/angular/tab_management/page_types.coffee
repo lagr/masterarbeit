@@ -83,3 +83,25 @@ angular.module 'WFMS.TabManagement'
       workflow_version: Restangular.one('workflow_versions', params['id']).get(for_designer: true)
     template: 'templates/process_designer/index'
     controller: 'ProcessDesignerPageController'
+
+  Server:
+    icon: 'icon-server'
+    params: (id) -> 
+      type: 'Server'
+      id: id
+    resolves: (params) ->
+      server: Restangular.one('servers', params['id']).get()
+      images: Restangular.one('servers', params['id']).customGET('index_images')
+    template: 'templates/infrastructure_management/edit'
+    controller: 'ServerPageController'
+
+  InfrastructureManagement:
+    icon: 'icon-servers'
+    params: ->
+      type: 'InfrastructureManagement'
+      id: null
+    resolves: ->
+      repositories: Restangular.all('servers').getList(role: 'repository')
+      servers: Restangular.all('servers').getList()
+    template: 'templates/infrastructure_management/index'
+    controller: 'InfrastructureManagementPageController'

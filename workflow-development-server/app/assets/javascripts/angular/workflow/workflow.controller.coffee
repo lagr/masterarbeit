@@ -1,5 +1,5 @@
 angular.module 'WFMS.Workflow'
-.controller 'WorkflowPageController', (tab, pageData, PageController, Workflows, $mdToast) ->
+.controller 'WorkflowPageController', (tab, pageData, PageController, tabManagement, Workflows, $mdToast) ->
   vm = new PageController(tab, pageData)
 
   pageData.workflow.then (workflow) ->
@@ -13,6 +13,15 @@ angular.module 'WFMS.Workflow'
 
       .catch (response) ->
         vm.showToast('Error while saving workflow')
+
+  vm.delete = (event) ->
+    Workflows.delete(vm.workflow)
+      .then -> 
+        tabManagement.openPage('Workflows')
+        vm.showToast('Workflow has been deleted')
+
+      .catch ->
+        vm.showToast('Error while deleting Workflow')
 
   setWorkflow = (workflow) ->
     vm.workflow = workflow

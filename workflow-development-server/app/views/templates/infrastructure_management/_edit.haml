@@ -1,0 +1,52 @@
+.tab-content
+  %md-card.server-metadata
+    %md-card-content
+      %form
+        %md-input-container
+          %label ID
+          %input{ type: 'text', ng_model: 'pageCtrl.server.id', disabled: true }
+
+        %md-input-container
+          %label Name
+          %input{ type: 'text', ng_model: 'pageCtrl.server.name', ng_disabled: '!pageCtrl.editing' }
+
+  %md-card.workflow-bundles.card
+    %md-data-table-toolbar
+      %h2.md-title Workflow Bundles
+      %button.md-button{ ng_click: "pageCtrl.addWorkflowBundle()" } Add
+      
+    %md-data-table-container
+      %table.md-primary{ "md-data-table" => true }
+        %thead{ "md-table-head" => true }
+          %td ID
+          %td Name
+        %tbody
+          %tr{ "md-table-row" => true, ng_repeat: 'wfb in pageCtrl.workflow_bundles', ng_click: 'appCtrl.tabManagement.openPage("WorkflowBundle", wfb.id)' }
+            %td.md-table-cell {{wfb.id}}
+            %td.md-table-cell {{wfb.name}}
+
+  %md-card.docker-images.card
+    %md-data-table-toolbar
+      %h2.md-title Docker Images
+      %button.md-button{ ng_click: "pageCtrl.addWorkflowBundle()" } Add
+      
+    %md-data-table-container
+      %table.md-primary{ "md-data-table" => true }
+        %thead{ "md-table-head" => true }
+          /%td ID
+          %td Status
+          %td Name
+          %td Installed
+          %td Required
+        %tbody
+          %tr{ "md-table-row" => true, ng_repeat: 'image in pageCtrl.images' }
+            /%td.md-table-cell {{image.id}}
+            %td.md-table-cell
+              %i{ ng_class: 'pageCtrl.imageStatusClass(image)' }
+            %td.md-table-cell {{image.name}}
+            %td.md-table-cell {{image.installed}}
+            %td.md-table-cell {{image.required}}
+
+.tab-top-bar
+  = render layout: 'templates/shared/top_bar' do
+    = render partial: 'templates/shared/default_actions'

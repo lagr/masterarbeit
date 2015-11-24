@@ -1,3 +1,3 @@
 class ControlFlowSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :predecessor, :successor
 end

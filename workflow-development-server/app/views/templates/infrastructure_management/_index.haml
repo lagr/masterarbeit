@@ -1,0 +1,49 @@
+.tab-content
+  %md-card.servers
+    %md-data-table-toolbar
+      %h2.md-title Servers
+      %button.md-button{ ng_click: "pageCtrl.addServer()" } Add
+      
+    %md-data-table-container
+      %table.md-primary{ "md-data-table" => true }
+        %thead{ "md-table-head" => true }
+          %td Name
+          %td IP
+          %td Reachable
+          %td Docker available
+          %td
+        %tbody
+          %tr{ "md-table-row" => true, ng_repeat: "server in pageCtrl.servers", ng_click: 'appCtrl.tabManagement.openPage("Server", server.id)' }
+            %td.md-table-cell {{server.name}}
+            %td.md-table-cell {{server.ip}}
+            %td.md-table-cell
+              %i.server-status.icon-networksignal{ ng_class: '{available: server.reachable}' }
+            %td.md-table-cell
+              %i.docker-status.icon-fish{ ng_class: '{available: server.docker}' }
+            %td.md-table-cell
+              %md-button{ ng_click: 'pageCtrl.removeServer(server, $event)' } Delete
+
+  %md-card.repositories
+    %md-data-table-toolbar
+      %h2.md-title Repositories
+      %button.md-button{ ng_click: "pageCtrl.addRepository()" } Add
+      
+    %md-data-table-container
+      %table.md-primary{ "md-data-table" => true }
+        %thead{ "md-table-head" => true }
+          %td Name
+          %td IP
+          %td Reachable
+          %td
+        %tbody
+          %tr{ "md-table-row" => true, ng_repeat: "repo in pageCtrl.repositories", ng_click: 'appCtrl.tabManagement.openPage("Server", repo.id)' }
+            %td.md-table-cell {{repo.name}}
+            %td.md-table-cell {{repo.ip}}
+            %td.md-table-cell
+              %i.repo-status.icon-networksignal{ ng_class: '{available: repo.reachable}' }
+            %td.md-table-cell
+              %md-button{ ng_click: 'pageCtrl.removeServer(repo, $event)' } Delete
+
+.tab-top-bar
+  = render layout: 'templates/shared/top_bar' do
+    %md-button.md-primary{ md_no_ink: true, ng_click: 'pageCtrl.reload()'} Refresh

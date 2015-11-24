@@ -6,6 +6,7 @@ gem 'rails', '4.2.4'
 gem "active_model_serializers", github: "rails-api/active_model_serializers"
 gem 'actioncable', github: 'rails/actioncable'
 gem 'sprockets'
+gem 'therubyracer'
 
 # DB related
 gem 'pg'
@@ -19,7 +20,9 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Misc
 gem 'aasm'
-#gem 'net-ssh'
+gem 'net-ssh'
+gem 'net-ping'
+gem 'docker-api'
 
 # Web related
 gem 'jquery-rails'

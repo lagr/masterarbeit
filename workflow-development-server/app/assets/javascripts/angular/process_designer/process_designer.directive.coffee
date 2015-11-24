@@ -1,5 +1,24 @@
 angular.module 'WFMS.ProcessDesign'
-.directive 'processDesigner', (tabManagement, processDesignerConfig, ProcessElementRepresentations) ->
+.directive 'processDesigner', (tabManagement, processDesignerConfig, ProcessElementRepresentations, ControlFlows) ->
+  class ProcessElement
+    constructor: (element) ->
+      _.extend @, element
+
+    center: ->
+
+  class ControlFlow
+    constructor: (controlFlow, @processDesigner) ->
+      @successor = _.find @processDesigner.processElements, (element) -> 
+        element.element_data.id == controlFlow.successor.id
+
+      @predecessor = _.find @processDesigner.processElements, (element) -> 
+        element.element_data.id == controlFlow.predecessor.id
+
+    xFrom: -> @predecessor.representation.x
+    yFrom: -> @predecessor.representation.y
+    xTo: -> @successor.representation.x
+    yTo: -> @successor.representation.y
+
   controller = ($scope, $element) ->
     vm = @
     vm.config = processDesignerConfig
@@ -10,22 +29,25 @@ angular.module 'WFMS.ProcessDesign'
 
     activate = ->
       vm.selected = []
-      vm.selectMultiple = false
+      vm.dragging = false
+      vm.connecting = false
 
       vm.canvasClicked = canvasClicked
       vm.elementMousedown = elementMousedown
+      vm.elementMouseup = elementMouseup
       vm.canvasMouseup = canvasMouseup
       vm.canvasMousemove = canvasMousemove
       vm.isSelected = isSelected
 
       vm.detailsBarVisible = detailsBarVisible
+      vm.newControlFlowVisible = newControlFlowVisible
       vm.selectedElementHasType = selectedElementHasType
 
       bindWorkflowVersion = $scope.$watch 'processDesigner.workflowVersion', (newVal, oldVal) ->
         return unless newVal?
         vm.processDefinition = vm.workflowVersion.process_definition
-        vm.processElements = vm.processDefinition.process_elements
-        vm.controlFlows = vm.processDefinition.control_flows
+        vm.processElements = (new ProcessElement(element) for element in vm.processDefinition.process_elements)
+        vm.controlFlows = (new ControlFlow(controlFlow, vm) for controlFlow in vm.processDefinition.control_flows)
         bindWorkflowVersion()
 
       vm
@@ -52,30 +74,73 @@ angular.module 'WFMS.ProcessDesign'
     detailsBarVisible = ->
       vm.selected.length is 1 and not vm.dragging
 
+    newControlFlowVisible = ->
+      vm.connecting &&
+      vm.newControlFlow.element.representation.x? &&
+      vm.newControlFlow.element.representation.y? &&
+      vm.newControlFlow.xTo? &&
+      vm.newControlFlow.yTo?
+
     selectedElementHasType = (type) ->
       return unless type && vm.selected.length is 1
       _.first(vm.selected)?.element_type is type
 
     elementMousedown = (element, event) ->
       vm.canvas.disablePan()
-      if event.shiftKey
-        toggleElementSelected(element)
-      else
-        selectElement(element)
 
-      startDragging(element, event) 
+      if event.shiftKey
+        startNewControlFlow(element, event)
+      else
+        if event.ctrlKey
+          toggleElementSelected(element)
+        else
+          selectElement(element)
+
+        startDragging(element, event) 
+
+    elementMouseup = (element, event) ->
+      if vm.connecting
+        vm.newControlFlow.targetElement = element
+        createControlFlow()
+        stopNewControlFlow()
 
     canvasMouseup = (event) ->
       vm.canvas.enablePan()
-      stopDragging()
+      stopDragging() if vm.dragging
+      stopNewControlFlow(event) if vm.connecting
 
     canvasMousemove = (event) ->
-      drag(event)
+      updateCursorPos(event)
+      drag(event) if vm.dragging
+      moveControlFlow(event) if vm.connecting
 
     canvasClicked = (event) ->
       return unless isCanvas(event.target)
       vm.selected = []
       toggleCircleMenu(event)
+
+    updateCursorPos = (event) ->
+      [x, y] = toElementCoordinates(vm.svg, event.clientX, event.clientY)
+      vm.cursor = x: x, y: y
+
+    moveControlFlow = (event) ->
+      [x, y] = toElementCoordinates(vm.newControlFlow.startNode, event.clientX, event.clientY)
+      vm.newControlFlow.xTo = x + vm.newControlFlow.element.representation.x
+      vm.newControlFlow.yTo = y + vm.newControlFlow.element.representation.y
+
+    startNewControlFlow = (element, event) ->
+      vm.connecting = true
+      vm.newControlFlow = element: element, startNode: event.target
+
+    stopNewControlFlow = ->
+      vm.connecting = false
+      vm.newControlFlow = {}
+
+    createControlFlow = ->
+      ControlFlows.create(vm.newControlFlow, vm.processDefinition)
+      .then (controlFlow) -> 
+        vm.controlFlows.push new ControlFlow(controlFlow, vm)
+      .catch -> console.log "ERROR"
 
     stopDragging = ->
       if vm.dragging and vm.dragTarget?

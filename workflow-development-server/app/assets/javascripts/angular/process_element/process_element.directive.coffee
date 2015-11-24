@@ -10,6 +10,8 @@ angular.module 'WFMS.ProcessDesign'
   scope:
     element: '=processElement'
   link: (scope, domElement, attrs) ->
+    scope.element.domElement = domElement
+
     scope.$watch 'element', ->
       return unless scope.element?.element_type?
       templatePromise = elementTemplate(scope.element)
