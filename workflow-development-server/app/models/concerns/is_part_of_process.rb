@@ -1,4 +1,4 @@
-module IsProcessElement
+module IsPartOfProcess
   extend ActiveSupport::Concern
 
   included do

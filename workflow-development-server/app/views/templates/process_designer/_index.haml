@@ -1,7 +1,9 @@
 .tab-content.workflow-designer{ process_designer: 'pageCtrl.workflowVersion' }
   %svg.workflow-designer--canvas{ ng_click: 'processDesigner.canvasClicked($event)',
-    ng_mouseup:   'processDesigner.canvasMouseup($event)',
-    ng_mousemove: 'processDesigner.canvasMousemove($event)' }
+    ng_mouseup:     'processDesigner.canvasMouseup($event)',
+    ng_mousedown: 'processDesigner.canvasMousedown($event)',
+    ng_keypress: 'processDesigner.canvasKeypress($event)',
+    ng_mousemove:   'processDesigner.canvasMousemove($event)' }
 
     %defs
       = render partial: 'templates/process_designer/definitions/grid'

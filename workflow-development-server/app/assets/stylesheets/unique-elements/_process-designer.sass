@@ -29,8 +29,12 @@ $details-bar-width: 400px
     stroke: $medium-grey
 
 .workflow-designer--circle-menu
-  circle
+  circle, rect
     fill: $blue-50
+    stroke: $blue-500
+
+  text
+    color: $text-on-light
 
 .workflow-designer--details-bar
   position: absolute
@@ -45,7 +49,7 @@ $details-bar-width: 400px
     
 .element
   fill: $blue-300
-  cursor: default
+  cursor: pointer
 
   &.selected
     fill: $blue-100

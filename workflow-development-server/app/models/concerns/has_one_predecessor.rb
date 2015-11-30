@@ -2,7 +2,7 @@ module HasOnePredecessor
   extend ActiveSupport::Concern
 
   included do
-    has_many :incoming_control_flows, foreign_key: 'successor_id', class_name: 'ControlFlow'
+    has_many :incoming_control_flows, foreign_key: 'successor_id', class_name: 'ControlFlow', dependent: :destroy
     validates_length_of :incoming_control_flows, maximum: 1
   end
 

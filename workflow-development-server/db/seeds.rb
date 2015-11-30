@@ -29,23 +29,30 @@ wfv4 = workflow2.workflow_versions.create(subsubversion: 2)
 
 wfb = WorkflowBundle.create workflow_versions: [wfv, wfv3]
 
-# default data types
-#BasicDataType.create(name: 'string')
-
 [wfv, wfv2, wfv3, wfv4].each do |workflow_version|
-  # process
-  start_elem = StartElement.create 
-  end_elem = EndElement.create 
-  manual_activity = ManualActivity.create
-  
-  workflow_version.process_definition.process_elements.create! element: start_elem
-  workflow_version.process_definition.process_elements.create! element: end_elem
-  workflow_version.process_definition.process_elements.create! element: manual_activity
+  wfv_process_definition = workflow_version.process_definition
+  wfv_process_elements = wfv_process_definition.process_elements
 
-  manual_activity.process_element_representation.name = "Name"
-  manual_activity.assignments.create assigned_role: clerk
+  start1     = wfv_process_elements.create! element: StartElement.create
+  start2     = wfv_process_elements.create! element: StartElement.create
+  join1      = wfv_process_elements.create! element: OrJoinElement.create
+  split1     = wfv_process_elements.create! element: AndSplitElement.create
+  activity   = wfv_process_elements.create! element: ContainerizedActivity.create, process_element_representation: ProcessElementRepresentation.new(name: 'Date')
+  m_activity = wfv_process_elements.create! element: ManualActivity.create, process_element_representation: ProcessElementRepresentation.new(name: 'Date')
+  join2      = wfv_process_elements.create! element: AndJoinElement.create
+  end1       = wfv_process_elements.create! element: EndElement.create
 
-  workflow_version.process_definition.control_flows.create predecessor: start_elem, successor: manual_activity
-  workflow_version.process_definition.control_flows.create successor: end_elem, predecessor: manual_activity
+  m_activity.element.assignments.create assigned_role: clerk
+
+  start1     .outgoing_control_flows.create! successor: join1
+  start2     .outgoing_control_flows.create! successor: join1
+  join1      .outgoing_control_flows.create! successor: split1
+  split1     .outgoing_control_flows.create! successor: activity
+  split1     .outgoing_control_flows.create! successor: m_activity
+  activity   .outgoing_control_flows.create! successor: join2
+  m_activity .outgoing_control_flows.create! successor: join2
+  join2      .outgoing_control_flows.create! successor: end1
+  # end1       .outgoing_control_flows.create! successor: end1
 end
 
+# puts ControlFlow.all.collect(&:predecessor).reject(&:valid?).map(&:errors).map(&:messages)

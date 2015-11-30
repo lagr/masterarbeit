@@ -1,16 +1,3 @@
-# encoding: UTF-8
-# This file is auto-generated from the current state of the database. Instead
-# of editing this file, please use the migrations feature of Active Record to
-# incrementally modify your database, and then regenerate this schema definition.
-#
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
-#
-# It's strongly recommended that you check this file into your version control system.
-
 ActiveRecord::Schema.define(version: 20151106231005) do
 
   # These are extensions that must be enabled in order to support this database
@@ -94,9 +81,9 @@ ActiveRecord::Schema.define(version: 20151106231005) do
   end
 
   create_table "process_elements", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "process_definition_id"
     t.uuid     "element_id"
     t.string   "element_type"
-    t.uuid     "process_definition_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
@@ -110,7 +97,7 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "activity_mappings", id: :uuid, default: "uuid_generate_v4()" do |t|
+  create_table "activity_data_mappings", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "name"
     t.uuid     "workflow_version_id"
     t.uuid     "activity_id"
@@ -222,4 +209,18 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  create_table "worklist_items", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "worklist_id"
+    t.uuid     "activity_instance_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "worklists", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
 end

@@ -1,6 +1,5 @@
 class StartElement < ActiveRecord::Base
-  include HasOneSuccessor
-  include IsProcessElement
+  include IsPartOfProcess
   
   has_one :trigger
 end

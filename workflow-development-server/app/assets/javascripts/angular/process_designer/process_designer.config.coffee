@@ -16,3 +16,15 @@ angular.module 'WFMS.ProcessDesign'
       templateName: 'end_element'
     ManualActivity:
       templateName: 'manual_activity'
+    OrSplitElement:
+      templateName: 'or_split_element'
+    OrJoinElement:
+      templateName: 'or_join_element'
+    AndSplitElement:
+      templateName: 'and_split_element'
+    AndJoinElement:
+      templateName: 'and_join_element'
+    AutomaticActivity:
+      templateName: 'automatic_activity'
+    ContainerizedActivity:
+      templateName: 'containerized_activity'

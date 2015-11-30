@@ -18,6 +18,6 @@ class ControlFlowsController < ApplicationController
 
   private
   def control_flow_params
-    params.require(:control_flow).permit(:successor_id, :successor_type, :predecessor_id, :predecessor_type, :process_definition_id)
+    params.require(:control_flow).permit(:successor_id, :predecessor_id)
   end
 end

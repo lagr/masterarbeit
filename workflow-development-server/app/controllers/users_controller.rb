@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    render json: User.find(params[:id])
+    render json: User.find(params[:id]), include: ['worklist', 'worklist.worklist_items']
   end
 
   def create

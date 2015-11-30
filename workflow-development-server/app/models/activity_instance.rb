@@ -27,5 +27,7 @@ class ActivityInstance < ActiveRecord::Base
   end
 
   def log_status_change
+    puts "======================================================================="
+    puts "Activity #{id} is now #{aasm_to_state}. Activity was #{aasm.from_state}"
   end
 end

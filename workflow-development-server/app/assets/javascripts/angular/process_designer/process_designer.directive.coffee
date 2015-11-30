@@ -1,23 +1,21 @@
 angular.module 'WFMS.ProcessDesign'
-.directive 'processDesigner', (tabManagement, processDesignerConfig, ProcessElementRepresentations, ControlFlows) ->
+.directive 'processDesigner', (tabManagement, processDesignerConfig, ProcessElements, ProcessElementRepresentations, ControlFlows, $mdToast) ->
   class ProcessElement
     constructor: (element) ->
       _.extend @, element
 
-    center: ->
-
   class ControlFlow
     constructor: (controlFlow, @processDesigner) ->
-      @successor = _.find @processDesigner.processElements, (element) -> 
-        element.element_data.id == controlFlow.successor.id
+      @successor = _.find @processDesigner.processElements, (element) ->
+        element.id == controlFlow.successor.id
 
       @predecessor = _.find @processDesigner.processElements, (element) -> 
-        element.element_data.id == controlFlow.predecessor.id
+        element.id == controlFlow.predecessor.id
 
-    xFrom: -> @predecessor.representation.x
-    yFrom: -> @predecessor.representation.y
+    xFrom: -> @predecessor.representation.x + 100
+    yFrom: -> @predecessor.representation.y + 50
     xTo: -> @successor.representation.x
-    yTo: -> @successor.representation.y
+    yTo: -> @successor.representation.y + 50
 
   controller = ($scope, $element) ->
     vm = @
@@ -36,12 +34,18 @@ angular.module 'WFMS.ProcessDesign'
       vm.elementMousedown = elementMousedown
       vm.elementMouseup = elementMouseup
       vm.canvasMouseup = canvasMouseup
+      vm.canvasMousedown = canvasMousedown
       vm.canvasMousemove = canvasMousemove
+      vm.canvasKeypress = canvasKeypress
       vm.isSelected = isSelected
 
       vm.detailsBarVisible = detailsBarVisible
       vm.newControlFlowVisible = newControlFlowVisible
       vm.selectedElementHasType = selectedElementHasType
+
+      vm.createProcessElement = createProcessElement
+      vm.deleteProcessElement = deleteProcessElement
+      vm.saveProcessElement = saveProcessElement
 
       bindWorkflowVersion = $scope.$watch 'processDesigner.workflowVersion', (newVal, oldVal) ->
         return unless newVal?
@@ -106,18 +110,29 @@ angular.module 'WFMS.ProcessDesign'
 
     canvasMouseup = (event) ->
       vm.canvas.enablePan()
-      stopDragging() if vm.dragging
+      closeCircleMenu()         if vm.circleMenuVisible
+      stopDragging()            if vm.dragging
       stopNewControlFlow(event) if vm.connecting
+
+    canvasMousedown = (event) ->
+      if event.shiftKey and isCanvas(event.target)
+        vm.canvas.disablePan()
+        [x, y] = toRelativeCoordinates(vm.svg, event.clientX, event.clientY)
+        showCircleMenuAt(x, y)
 
     canvasMousemove = (event) ->
       updateCursorPos(event)
-      drag(event) if vm.dragging
+      drag(event)            if vm.dragging
       moveControlFlow(event) if vm.connecting
 
     canvasClicked = (event) ->
       return unless isCanvas(event.target)
       vm.selected = []
-      toggleCircleMenu(event)
+
+    canvasKeypress = (event) ->
+      switch event.keyCode
+        when 127
+          deleteSelected()
 
     updateCursorPos = (event) ->
       [x, y] = toElementCoordinates(vm.svg, event.clientX, event.clientY)
@@ -176,6 +191,15 @@ angular.module 'WFMS.ProcessDesign'
       else
         vm.selected.push(element)
 
+    deleteSelected = ->
+      if vm.selected.length
+        for element in vm.selected
+          ProcessElements.delete(element).then ->
+            _.remove(vm.processElements, element)
+
+            for controlFlow in vm.controlFlows
+              _.remove(vm.controlFlows, controlFlow) if controlFlow.predecessor is element or controlFlow.successor is element
+
     closeCircleMenu = ->
       vm.circleMenuVisible = false
 
@@ -192,6 +216,20 @@ angular.module 'WFMS.ProcessDesign'
 
     saveElementRepresentation = (element) ->
       ProcessElementRepresentations.update(element.representation)
+
+    createProcessElement = (type) ->
+      ProcessElements.create(type, vm.processDefinition.id)
+      .then (element) -> 
+        vm.processElements.push(new ProcessElement(element))
+      .catch (response) ->
+
+    deleteProcessElement = (element) ->
+      ProcessElements.delete(element)
+      .then (element) ->
+
+    saveProcessElement = (element) ->
+      ProcessElements.update(element)
+      .then (element) ->
 
     activate()
 

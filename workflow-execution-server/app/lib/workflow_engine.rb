@@ -1,2 +1,2 @@
-class WorkflowEngine
+module WorkflowEngine
 end

@@ -24,7 +24,7 @@ angular.module 'WFMS.TabManagement'
         goIndex = if currentIndex is 0 then 1 else currentIndex - 1
         activateTab openTabs[goIndex]
 
-    action.then(-> $stickyState.reset(tab.name)) if action.then?
+    action.then(-> $stickyState.reset(tab.name)) if action?.then?
     closedTabs.push tab.name
 
   openPage = (type, id) ->
@@ -49,7 +49,8 @@ angular.module 'WFMS.TabManagement'
 
   $rootScope.$on '$stateChangeStart',  -> 
     startLoading()
-    console.log arguments[2]
+    console.log 'State change:'
+    console.log type: arguments[2]?.type, id: arguments[2]?.id || arguments[2]? 'all' | ''
   $rootScope.$on '$stateChangeSuccess', -> stopLoading()
 
   $window.state = $state

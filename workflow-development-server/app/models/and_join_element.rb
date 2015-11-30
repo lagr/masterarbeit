@@ -1,5 +1,3 @@
 class AndJoinElement < ActiveRecord::Base
-  include HasManyPredecessors
-  include HasOneSuccessor
-  include IsProcessElement
+  include IsPartOfProcess
 end
