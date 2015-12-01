@@ -10,10 +10,10 @@
           %label Name
           %input{ type: 'text', ng_model: 'pageCtrl.workflow.name', ng_disabled: '!pageCtrl.editing' }
 
-  %md-card.workflow-bundle-worfklow-versions.card
-    %h3 Workflow Versions
+  %md-card.workflow-bundle-worfklow.card
+    %h3 Workflows
     %md-virtual-repeat-container
-      .workflow-bundle-version{ md_virtual_repeat: 'wfv in pageCtrl.workflow_bundle.workflow_versions', ng_click: 'appCtrl.tabManagement.openPage("WorkflowVersion", wfv.id)' }
+      .workflow-bundle-version{ md_virtual_repeat: 'wfv in pageCtrl.workflow_bundle.workflows', ng_click: 'appCtrl.tabManagement.openPage("Workflow", wfv.id)' }
         %span {{wfv.name}}
         %span {{wfv.id}}
 

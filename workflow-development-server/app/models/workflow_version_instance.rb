@@ -1,4 +1,4 @@
-class WorkflowVersionInstance < ActiveRecord::Base
-  belongs_to :workflow_version
+class WorkflowInstance < ActiveRecord::Base
+  belongs_to :workflow
   has_one :process_instance
 end

@@ -47,9 +47,9 @@ angular.module 'WFMS.ProcessDesign'
       vm.deleteProcessElement = deleteProcessElement
       vm.saveProcessElement = saveProcessElement
 
-      bindWorkflowVersion = $scope.$watch 'processDesigner.workflowVersion', (newVal, oldVal) ->
+      bindWorkflowVersion = $scope.$watch 'processDesigner.workflow', (newVal, oldVal) ->
         return unless newVal?
-        vm.processDefinition = vm.workflowVersion.process_definition
+        vm.processDefinition = vm.workflow.process_definition
         vm.processElements = (new ProcessElement(element) for element in vm.processDefinition.process_elements)
         vm.controlFlows = (new ControlFlow(controlFlow, vm) for controlFlow in vm.processDefinition.control_flows)
         bindWorkflowVersion()
@@ -234,8 +234,8 @@ angular.module 'WFMS.ProcessDesign'
     activate()
 
   link = (scope, elem, attrs, ctrl) ->
-    isBound = scope.$watch 'processDesigner.workflowVersion', ->
-      return unless scope.processDesigner.workflowVersion
+    isBound = scope.$watch 'processDesigner.workflow', ->
+      return unless scope.processDesigner.workflow
       svg = elem.find('svg')[0]
       grid = elem.find('#grid')[0]
 
@@ -254,7 +254,7 @@ angular.module 'WFMS.ProcessDesign'
   restrict: 'A'
   scope: true
   bindToController:
-    workflowVersion: '=processDesigner'
+    workflow: '=processDesigner'
   controllerAs: 'processDesigner'
   link: link
   controller: controller

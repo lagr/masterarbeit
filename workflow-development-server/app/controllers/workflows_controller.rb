@@ -2,9 +2,16 @@ class WorkflowsController < ApplicationController
   def index
     render json: Workflow.all
   end
-
+  
   def show
-    render json: Workflow.find(params[:id])
+    @workflow = Workflow.find(params[:id])
+    if params[:for_designer]
+      render json: @workflow, serializer: WorkflowFullSerializer, include: [
+        'process_definition', 'process_definition.process_elements', 'process_definition.control_flows', 'workflow.name'
+      ]
+    else
+      render json: @workflow, serializer: WorkflowSerializer
+    end
   end
 
   def update

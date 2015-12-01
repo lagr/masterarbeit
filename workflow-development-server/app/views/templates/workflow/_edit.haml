@@ -8,22 +8,9 @@
 
         %md-input-container
           %label Name
-          %input{ type: 'text', ng_model: 'pageCtrl.workflow.name', ng_disabled: '!pageCtrl.editing' }
+          %input{ type: 'text', ng_model: 'pageCtrl.workflow.name', ng_disabled: '!pageCtrl.editing' }      
 
-  %md-card.workflow-versions.card
-    %md-data-table-toolbar
-      %h2.md-title Workflow Versions
-      %button.md-button{ ng_click: "pageCtrl.createWorkflowVersion()" } Add
-      
-    %md-data-table-container
-      %table.md-primary{ "md-data-table" => true }
-        %thead{ "md-table-head" => true }
-          %td Version
-          %td ID
-        %tbody
-          %tr{ "md-table-row" => true, ng_repeat: 'wfv in pageCtrl.workflow.workflow_versions', ng_click: 'appCtrl.tabManagement.openPage("WorkflowVersion", wfv.id)' }
-            %td.md-table-cell {{wfv.name}}
-            %td.md-table-cell {{wfv.id}}
+    %md-button{ ng_click: 'appCtrl.tabManagement.openPage("ProcessDesigner", pageCtrl.workflow.id)' } Edit Process
 
 .tab-top-bar
   = render layout: 'templates/shared/top_bar' do

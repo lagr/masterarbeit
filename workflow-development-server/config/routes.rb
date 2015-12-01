@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   resources :process_element_representations, only: [:update]
   resources :process_elements
   resources :workflow_bundles
-  resources :workflow_versions
   resources :workflows
 
   resources :servers do

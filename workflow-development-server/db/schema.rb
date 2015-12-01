@@ -42,17 +42,8 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "workflow_versions", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.integer  "version", null: false, default: 0
-    t.integer  "subversion", null: false, default: 0
-    t.integer  "subsubversion", null: false, default: 0
-    t.uuid     "workflow_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
   create_table "process_definitions", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.uuid     "workflow_version_id"
+    t.uuid     "workflow_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
@@ -73,8 +64,8 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "workflow_bundles_versions" do |t|
-    t.uuid     "workflow_version_id"
+  create_table "workflow_bundles_workflows" do |t|
+    t.uuid     "workflow_id"
     t.uuid     "workflow_bundle_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -99,7 +90,7 @@ ActiveRecord::Schema.define(version: 20151106231005) do
 
   create_table "activity_data_mappings", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "name"
-    t.uuid     "workflow_version_id"
+    t.uuid     "workflow_id"
     t.uuid     "activity_id"
     t.string   "activity_type"
     t.datetime "created_at", null: false
@@ -168,8 +159,8 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "workflow_version_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.uuid     "workflow_version_id"
+  create_table "workflow_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "workflow_id"
     t.string   "instance_state"
     t.jsonb    "instance_data", null: false, default: '{}'
     t.datetime "created_at",  null: false
@@ -178,7 +169,7 @@ ActiveRecord::Schema.define(version: 20151106231005) do
 
   create_table "process_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.uuid     "process_definition_id"
-    t.uuid     "workflow_version_instance_id"
+    t.uuid     "workflow_instance_id"
     t.string   "instance_state"
     t.jsonb    "instance_data", null: false, default: '{}'
     t.datetime "created_at",  null: false

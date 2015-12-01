@@ -9,14 +9,4 @@
     before_create :build_process_definition
 
     validates_presence_of :workflow#, :process_definition, :version, :subversion, :subsubversion
-
-    def name
-      "#{version}.#{subversion}.#{subsubversion}"
-    end
-
-    def is_valid_input_data?(input_data)
-      # matches data scheme
-      # required fields have values
-      true
-    end
   end

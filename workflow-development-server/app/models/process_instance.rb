@@ -2,7 +2,7 @@ class ProcessInstance < ActiveRecord::Base
   include AASM
 
   belongs_to :process_definition
-  belongs_to :workflow_version_instance
+  belongs_to :workflow_instance
 
   aasm column: :instance_state do
     after_all_transitions :log_status_change

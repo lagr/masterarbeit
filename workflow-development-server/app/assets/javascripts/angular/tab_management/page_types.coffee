@@ -44,16 +44,6 @@ angular.module 'WFMS.TabManagement'
     template: indexTemplateUrl('workflow')
     controller: 'WorkflowsPageController'
 
-  WorkflowVersion:
-    icon: 'icon-algorhythm'
-    params: (id) -> 
-      type: 'WorkflowVersion'
-      id: id
-    resolves: (params) ->
-      workflow_version: Restangular.one('workflow_versions', params['id']).get()
-    template: editTemplateUrl('workflow_version')
-    controller: 'WorkflowVersionPageController'
-
   WorkflowBundle:
     icon: 'icon-stacks'
     params: (id) -> 
@@ -80,7 +70,7 @@ angular.module 'WFMS.TabManagement'
       type: 'ProcessDesigner'
       id: id
     resolves: (params) ->
-      workflow_version: Restangular.one('workflow_versions', params['id']).get(for_designer: true)
+      workflow: Restangular.one('workflows', params['id']).get(for_designer: true)
     template: 'templates/process_designer/index'
     controller: 'ProcessDesignerPageController'
 
