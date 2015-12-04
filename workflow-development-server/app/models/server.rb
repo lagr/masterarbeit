@@ -2,7 +2,8 @@ require 'net/ping'
 Net::Ping::TCP.service_check = true       # interpret actively refused connection as signal for running server
 
 class Server < ActiveRecord::Base
-  validates_presence_of :ip, :docker_port
+  validates_presence_of :ip, :execution_environment_port, :docker_port
+
   DEFAULT_REQUIRED_IMAGES = [
     { name: 'alpine:3.2' }
   ].freeze
@@ -20,6 +21,10 @@ class Server < ActiveRecord::Base
     Net::Ping::TCP.new(ip).ping?
   end
 
+  def execution_environment_avaliable?
+    Net::PING::TCP.new(ip, execution_environment_port)
+  end
+
   def docker_available?
     Docker.version if name == 'localhost'
     #name == 'localhost' ? Docker.version : Docker.version(docker_connection)
@@ -32,5 +37,8 @@ class Server < ActiveRecord::Base
 
   def installed_images
     Docker::Image.all
+  end
+
+  def running_containers
   end
 end

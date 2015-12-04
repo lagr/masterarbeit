@@ -4,7 +4,7 @@ gem 'rails', '4.2.4'
 
 # Rails extensions
 gem "active_model_serializers", github: "rails-api/active_model_serializers"
-gem 'actioncable', github: 'rails/actioncable'
+#gem 'actioncable', github: 'rails/actioncable'
 gem 'sprockets'
 gem 'therubyracer'
 
@@ -54,7 +54,7 @@ end
 
 group :development do
   gem 'web-console', '~> 2.0'
-  gem "rails-erd"
+  #gem "rails-erd"
 
   gem 'spring'
 end

@@ -159,31 +159,6 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "workflow_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.uuid     "workflow_id"
-    t.string   "instance_state"
-    t.jsonb    "instance_data", null: false, default: '{}'
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "process_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.uuid     "process_definition_id"
-    t.uuid     "workflow_instance_id"
-    t.string   "instance_state"
-    t.jsonb    "instance_data", null: false, default: '{}'
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "activity_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.uuid     "process_instance_id"
-    t.string   "instance_state"
-    t.jsonb    "instance_data", null: false, default: '{}'
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
   create_table "data_schemas", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.uuid     "data_schema_owner_id"
     t.string   "data_schema_owner_type"
@@ -196,22 +171,9 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.string   "name"
     t.string   "ip"
     t.string   "docker_port", default: '2375'
+    t.string   "execution_environment_port", default: '3001'
     t.string   "role"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
-
-  create_table "worklist_items", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.uuid     "worklist_id"
-    t.uuid     "activity_instance_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "worklists", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.uuid     "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
 end
