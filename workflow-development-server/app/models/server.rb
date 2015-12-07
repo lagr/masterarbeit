@@ -3,6 +3,7 @@ Net::Ping::TCP.service_check = true       # interpret actively refused connectio
 
 class Server < ActiveRecord::Base
   validates_presence_of :ip, :execution_environment_port, :docker_port
+  has_and_belongs_to_many :workflow_bundles
 
   DEFAULT_REQUIRED_IMAGES = [
     { name: 'alpine:3.2' }
@@ -31,8 +32,8 @@ class Server < ActiveRecord::Base
   end
 
   def required_images
-    DEFAULT_REQUIRED_IMAGES
-    # workflow_bundles.required_images
+    #DEFAULT_REQUIRED_IMAGES
+    workflow_bundles.map(&:required_images)
   end
 
   def installed_images

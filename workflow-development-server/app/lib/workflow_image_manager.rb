@@ -2,49 +2,44 @@ require 'fileutils'
 
 module WorkflowImageManager
   extend self
-  IMAGE_REGISTRY = '0.0.0.0:5000'
   CONTAINER_TEMPLATE_FILES_PATH = File.expand_path('app/lib/activity_components')
   CONTAINER_TEMPLATE_FILES = %w[map.rb run.rb validate.rb Dockerfile]
 
-  def register_container
-  end
+  ELEMENT_TYPE_TO_IMAGE_NAME = {
+    'StartElement' => 'start',
+    'EndElement' => 'end',
+    'OrSplitElement' => 'or_split',
+    'OrJoinElement' => 'or_join',
+    'AndSplitElement' => 'and_split',
+    'AndJoinElement' => 'and_join',
+    'ManualActivity' => 'manual',
+    'AutomaticActivity' => 'automatic',
+    'ContainerizedActivity' => 'containerized'
+  }.with_indifferent_access.freeze
 
-  def fetch_workflow_container(workflow_container_name)
-    result = %x( docker pull #{IMAGE_REGISTRY}/#{workflow_container_name} )
-    byebug
-  end
+  def create_process_element_images
+    images = { successful: {}, failed: [] }
 
-  def link_container
-  end
-
-  def publish_configuration
-  end
-
-  def containers
-    result = %x( docker ps )
-  end
-
-  def create_container_image
-    temp_folder = find_or_create
-    %x ()
-  end
-
-  def create_control_flow_activity_images
-    images = { successful: {}, failed: []}
-
-    %w[and_split and_join].each do |activity|
+    %w[StartElement EndElement OrSplitElement OrJoinElement AndSplitElement AndJoinElement AutomaticActivity ContainerizedActivity]
+    .each do |activity|
       begin 
+        byebug
         image = create_activity_image(
-          image_name: "#{IMAGE_REGISTRY}/cf_#{activity}",
+          image_name: "#{image_registry}/#{image_name_for(type: activity).first}",
           options: { activity_file: activity_file_path_for(activity) }
         )
         images[:successful][activity.to_sym] = image.id
-      rescue
+      rescue Exception => e
         images[:failed] << activity 
       end
     end
 
     images
+  end
+
+  def image_name_for(type: nil, types: [])
+    types = [type] if types.empty?
+    types.collect { |t| "wfms_#{ELEMENT_TYPE_TO_IMAGE_NAME[t]}" }
   end
 
   def create_activity_image(image_name:, options: {})
@@ -62,9 +57,7 @@ module WorkflowImageManager
         else
           raise ArgumentError, 'Either activity file or contents must be given'
         end
-        byebug
 
-        #build_result = %x( docker build -t '#{image_name}:latest' #{tmpdir} )
         puts "Building #{image_name}..."
         image = Docker::Image.build_from_dir(tmpdir)
         image.tag repo: image_name, tag: :latest, force: true
@@ -73,23 +66,22 @@ module WorkflowImageManager
     end
     return image
   end
-  # if image does not exist
-    # copy files in temporary directory
-    # build image
-    # push image to repository
-    # store existence of said containers
 
   private
 
   def activity_file_path_for(activity)
-    "#{CONTAINER_TEMPLATE_FILES_PATH}/#{activity}/activity.rb"
+    "#{CONTAINER_TEMPLATE_FILES_PATH}/#{ELEMENT_TYPE_TO_IMAGE_NAME[activity]}/activity.rb"
   end
 
   def image_exists?(image_name)
-    false #TODO
+    false #Docker::Image.exist?(image_name)
   end
 
   def valid_image_name?(image_name)
     !image_name.blank?
+  end
+
+  def image_registry
+    Configuration.current.settings['registry'] || 'localhost:5000'
   end
 end

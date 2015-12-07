@@ -1,20 +1,18 @@
 db:
   image: postgres
   volumes_from:
-    - data
+    - db_data
   environment:
     POSTGRES_PASSWORD: masterarbeit
     POSTGRES_USER: workflow_development_server
 web:
-  image: workflow_development_server
+  image: localhost:5000/workflow_development_server
   command: bundle exec rails s -p 3000 -b '0.0.0.0'
   volumes:
-  - /var/run/docker.sock:/var/run/docker.sock
+    - /var/run/docker.sock:/var/run/docker.sock
   ports:
     - "3000:3000"
-  links:
-    - db
-data:
+db_data:
   image: cogniteev/echo
   command: echo 'Data Container for PostgreSQL'
   volumes:

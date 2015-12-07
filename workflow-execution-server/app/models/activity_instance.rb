@@ -1,4 +1,9 @@
 class ActivityInstance < ActiveRecord::Base
+
+  belongs_to :activity
+  belongs_to :process_instance
+  has_one :workflow_instance, through: :process_instance
+
   include AASM
 
   aasm column: :instance_state do

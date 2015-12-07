@@ -57,6 +57,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.3.8)
     angular_rails_csrf (1.0.4)
       rails (>= 3, < 5)
     arel (6.0.3)
@@ -117,6 +118,8 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.3)
+    json-schema (2.5.2)
+      addressable (~> 2.3.8)
     libv8 (3.16.14.13)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
@@ -247,6 +250,7 @@ DEPENDENCIES
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails
+  json-schema
   net-ping
   net-ssh
   pg
@@ -273,4 +277,4 @@ DEPENDENCIES
   webhostinghub-glyphs-rails
 
 BUNDLED WITH
-   1.10.6
+   1.11.0.pre.1

@@ -1,5 +1,6 @@
 require 'rubygems'
-# require 'json-schema'
+require 'json-schema'
+require 'fileutils'
 
 class Validator
   attr_accessor :schema, :data 
@@ -15,8 +16,9 @@ class Validator
   private
 
   def validate_schema
-    puts "Validated"
-    true
-    # JSON::Validator.validate(schema, data)
+    puts "Validating..."
+    
+    return false unless File.exist?(data)
+    JSON::Validator.validate(schema, data)
   end
 end

@@ -3,15 +3,15 @@
 	[
     {
       "path": "workflow-development-server",
-      "folder_exclude_patterns": ["tmp", "bin", "test", "public", "vendor"]
+      "folder_exclude_patterns": ["bin", "test", "public", "vendor"]
     },
     {
       "path": "workflow-execution-server",
       "folder_exclude_patterns": ["tmp", "bin", "test", "public", "vendor"]
     },
 		{
-			"path": "docker-images",
-      "folder_exclude_patterns": []
+			"path": "server-configurations",
+      "folder_exclude_patterns": ["*_bak", "*_base", "*_dind"]
 		},
     {
       "path": "thesis",

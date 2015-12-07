@@ -9,7 +9,7 @@ class Activity
 
   def run
     forward_input
-    puts "And-Join-Activity did something!!"
+    puts "Start-Activity did something!!"
   end
 
   private

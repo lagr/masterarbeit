@@ -3,7 +3,7 @@ class ProcessElementsController < ApplicationController
     @process_definition = ProcessDefinition.find(process_element_creation_params[:process_definition_id])
     element_type = process_element_creation_params[:element_type]
 
-    return unless @process_definition && element_type.in?(Workflow::PROCESS_ELEMENT_TYPES)
+    return unless @process_definition && element_type.in?(ProcessElement::PROCESS_ELEMENT_TYPES)
 
     @actual_element = element_type.constantize.new
     @process_element = @process_definition.process_elements.build element: @actual_element
@@ -38,6 +38,6 @@ class ProcessElementsController < ApplicationController
   end
 
   def allowed_process_element_type?(type)
-    type.in? Workflow::PROCESS_ELEMENT_TYPES
+    type.in? ProcessElement::PROCESS_ELEMENT_TYPES
   end
 end

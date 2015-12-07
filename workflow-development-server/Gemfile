@@ -20,6 +20,8 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Misc
 gem 'aasm'
+
+# Environment management related
 gem 'net-ssh'
 gem 'net-ping'
 gem 'docker-api'

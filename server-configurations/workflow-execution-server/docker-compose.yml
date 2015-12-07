@@ -1,0 +1,34 @@
+db:
+  image: postgres
+  volumes_from:
+    - db_data
+  environment:
+    POSTGRES_PASSWORD: masterarbeit
+    POSTGRES_USER: workflow_development_server
+web:
+  image: localhost:5000/workflow_execution_server
+  command: /app/start
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  volumes_from:
+    - gem_data
+    - workflow_relevant_data
+  ports:
+    - "3001:3001"
+  environment:
+    EXECUTION_SERVER_PORT: 3001
+db_data:
+  image: cogniteev/echo
+  command: echo 'Data Container for PostgreSQL'
+  volumes:
+    - /var/lib/postgresql/data
+gem_data:
+  image: cogniteev/echo
+  command: echo 'Data Container for Ruby Gems'
+  volumes:
+    - /usr/local/bundle
+workflow_relevant_data:
+  image: cogniteev/echo
+  command: echo 'Data Container for Ruby Gems'
+  volumes:
+    - /app/tmp/workflow_relevant_data

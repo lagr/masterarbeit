@@ -4,6 +4,14 @@ ActiveRecord::Schema.define(version: 20151106231005) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
+  create_table "configurations", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.string   "name"
+    t.jsonb    "settings"
+    t.boolean  "current", null: false, default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -109,9 +117,24 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "sub_workflow_activities", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.string   "name"
+    t.uuid     "sub_workflow_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "containerized_activities", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.string   "name"
     t.string   "image"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "container_activities", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.string   "name"
+    t.string   "image"
+    t.string   "linked_ports",array: true, default: []
     t.text     "parameters",  array: true, default: []
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -173,6 +196,13 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.string   "docker_port", default: '2375'
     t.string   "execution_environment_port", default: '3001'
     t.string   "role"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "servers_workflow_bundles", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.uuid     "server_id"
+    t.uuid     "workflow_bundle_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

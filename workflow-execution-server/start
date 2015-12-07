@@ -1,0 +1,7 @@
+#!/bin/bash
+gem list -i bundler || gem install --no-document bundler --pre
+
+bundle check || bundle install
+bundle check --gemfile=ExecutionEnvironmentGemfile || bundle install --gemfile=ExecutionEnvironmentGemfile
+
+bundle exec rails s -b 0.0.0.0 -p $EXECUTION_SERVER_PORT
