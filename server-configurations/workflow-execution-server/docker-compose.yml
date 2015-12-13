@@ -9,7 +9,7 @@ web:
   image: localhost:5000/workflow_execution_server
   command: /app/start
   volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+    - /var/run/docker.sock:/var/run/docker.sock:ro
   volumes_from:
     - gem_data
     - workflow_relevant_data
@@ -17,6 +17,10 @@ web:
     - "3001:3001"
   environment:
     EXECUTION_SERVER_PORT: 3001
+    WORKFLOW_RELATED_DATA: 'workflowexecutionserver_workflow_relevant_data_1'
+#    WORKFLOW_WORKER_DATABASE: 'workflowexecutionserver_worker_db_1'
+#worker_db:
+#  image: redis
 db_data:
   image: cogniteev/echo
   command: echo 'Data Container for PostgreSQL'

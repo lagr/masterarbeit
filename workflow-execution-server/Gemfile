@@ -20,6 +20,7 @@ gem 'coffee-rails', '~> 4.1.0'
 # Workflow execution related
 gem 'aasm'
 gem 'json-schema'
+gem 'sidekiq'
 
 # Environment management related
 gem 'net-ssh'
@@ -51,6 +52,7 @@ gem 'webhostinghub-glyphs-rails'
 
 group :development, :test do
   gem 'byebug'
+  gem 'awesome_print'
 end
 
 group :development do

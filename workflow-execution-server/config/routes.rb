@@ -25,7 +25,7 @@ Rails.application.routes.draw do
         post '/install_image', to: 'docker#install_image'
         post '/install_images', to: 'docker#install_images'
 
-        get '/running_containers', to: 'docker#index_running_containers'
+        get '/index_containers', to: 'docker#index_containers'
         patch '/stop_container', to: 'docker#stop_container'
       end
     end

@@ -1,8 +1,10 @@
 require 'fileutils'
 
-module WorkflowImageManager
+module ImageManager
   extend self
   CONTAINER_TEMPLATE_FILES_PATH = File.expand_path('app/lib/activity_components')
+  WORKFLOW_CONTAINER_TEMPLATE_FILES_PATH = File.expand_path('app/lib/workflow_components')
+  WORKFLOW_CONTAINER_TEMPLATE_FILES = %w[mapper.rb run.rb validator.rb activity_instance.rb process_definition.rb process_instance.rb Dockerfile]
   CONTAINER_TEMPLATE_FILES = %w[map.rb run.rb validate.rb Dockerfile]
 
   ELEMENT_TYPE_TO_IMAGE_NAME = {
@@ -35,6 +37,19 @@ module WorkflowImageManager
     end
 
     images
+  end
+
+  def create_workflow_image
+    image = nil
+    Dir.mktmpdir do |tmpdir|
+      FileUtils.cd WORKFLOW_CONTAINER_TEMPLATE_FILES_PATH do
+        FileUtils.copy(Dir.glob('*'), tmpdir)
+        image = Docker::Image.build_from_dir(tmpdir)
+        image.tag repo: "localhost:5000/wfms_workflow", tag: :latest, force: true
+        image.push
+      end
+    end
+    return image
   end
 
   def image_name_for(type: nil, types: [])

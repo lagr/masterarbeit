@@ -1,8 +1,9 @@
 class ActivityInstance < ActiveRecord::Base
-
-  belongs_to :activity
+  #belongs_to :activity
   belongs_to :process_instance
   has_one :workflow_instance, through: :process_instance
+
+  attr_accessor :container, :activity
 
   include AASM
 
@@ -33,6 +34,6 @@ class ActivityInstance < ActiveRecord::Base
 
   def log_status_change
     puts "======================================================================="
-    puts "Activity #{id} is now #{aasm_to_state}. Activity was #{aasm.from_state}"
+    puts "Activity #{id} is now #{aasm.to_state}. Activity was #{aasm.from_state}"
   end
 end
