@@ -14,6 +14,7 @@ Rails.application.routes.draw do
         post '/workflows/:id', to: 'workflows#install'
         delete '/workflows/:id', to: 'workflows#uninstall'
         
+        post 'workflow_instances', to: 'workflow_instances#create'
       end
 
       namespace :system do

@@ -21,6 +21,7 @@ module ImageManager
     #make_gem_container_available(wf_id)
     begin
       response = run_data_container(wf_id)
+      copy_input_data_to_data_container(wf_id)
       response = run_workflow_container(wf_id)
     ensure
       leave_network(wf_id)
@@ -53,13 +54,24 @@ module ImageManager
   end
 
   def run_data_container(workflow_id)
-    %x( docker run \
-      --net=net_#{workflow_id} \
-      --name=data_#{workflow_id} \
-      -v /app/tmp/workflow_relevant_data \
-      cogniteev/echo \
-      echo 'Data Container for #{workflow_id}'
-    )
+    # %x( docker run \
+    #   --net=net_#{workflow_id} \
+    #   --name=data_#{workflow_id} \
+    #   -v /workflow_relevant_data \
+    #   cogniteev/echo \
+    #   echo 'Data Container for #{workflow_id}'
+    # )
+    
+    command = [
+      "docker run",
+      container("data_#{workflow_id}"),
+      network("net_#{workflow_id}"),
+      volume("/workflow_relevant_data"),
+      image('cogniteev/echo'),
+      "echo 'Data Container for #{workflow_id}'"
+    ].join(' ')
+
+    %x(#{command})
   end
 
   def run_workflow_container(workflow_id)
@@ -70,10 +82,15 @@ module ImageManager
       volumes_from("data_#{workflow_id}"),
       volumes_from("workflowexecutionserver_gem_data_1"),
       workdir("/workflow"),
+      environment_variable("MAIN_WORKFLOW_ID", workflow_id),
       environment_variable("WORKFLOW_ID", workflow_id),
-      environment_variable("WORKDIR", "/app/tmp/workflow_relevant_data"),
+      environment_variable("WORKDIR", "/workflow_relevant_data"),
+      environment_variable("NETWORK", "net_#{workflow_id}"),
+      environment_variable("DATA_CONTAINER", "data_#{workflow_id}"),
+      environment_variable("GEM_DATA_CONTAINER", "workflowexecutionserver_gem_data_1"),
       environment_variable("WORKFLOW_ENGINE_CONTAINER", ENV['HOSTNAME']),
-      "-v /var/run/docker.sock:/var/run/docker.sock",
+      environment_variable("TRIGGERED_ACTIVITY", "bdb17d3a-5b0b-42d6-9fbd-8b20355ec3f2"),
+      volume("/var/run/docker.sock", "/var/run/docker.sock"),
       image("wfms_workflow"),
       file_to_run("run.rb")
     ].join(' ')
@@ -82,6 +99,28 @@ module ImageManager
 
     result = %x(#{command})
     byebug
+  end
+
+  def example_input_data
+    { 
+      address: {
+        city: 'London',
+        street: 'Baker Street',
+        number: '221B'
+      }
+    }.to_json
+  end
+
+  def copy_input_data_to_data_container(workflow_id)
+    %x(docker cp - data_#{workflow_id}:/workflow_relevant_data/input/input.data.json)
+  end
+
+  def copy_to_container(container_name, destination, data)
+    %x(docker cp - #{container_name}:#{destination})
+  end
+
+  def volume(container_dir, host_dir = nil)
+    host_dir.present? ? "-v #{host_dir}:#{container_dir}" : "-v #{container_dir}"
   end
 
   def environment_variable(name, value)

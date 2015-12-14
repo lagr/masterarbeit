@@ -1,44 +1,34 @@
 require 'rubygems'
-require 'docker-api'
 require 'json'
 require 'fileutils'
 require 'aasm'
 require 'excon'
 
+require_relative 'configuration'
 require_relative 'logger'
 require_relative 'validator'
 require_relative 'mapper'
 require_relative 'process_definition'
-#require_relative 'workflow_instance'
+require_relative 'process_instance'
+require_relative 'activity_instance'
+require_relative 'docker'
 
 module Workflow
   extend self
 
   def start
-    # process_instance = Workflow::ProcessInstance.new(
-    #   start_element: ENV['TRIGGERED_START_ELEMENT'],
-    #   workdir: ENV['WORKDIR'],
-    #   logger: Workflow::Logger.new(engine_url: ENV['WORKFLOW_ENGINE_URL']),
-    #   process_definition: Workflow::ProcessDefinition.new
-    # )
+    config = Workflow::Configuration
+    #Excon.post("#{config.execution_server_api_url}/workflow_management/workflow_instance")
 
-    # process_instance.start
-    puts Excon.get("http://workflowexecutionserver_web_1.net_#{ENV['WORKFLOW_ID']}:3001/images").body
+    process_instance = Workflow::ProcessInstance.new(
+      start_activity_id: "bdb17d3a-5b0b-42d6-9fbd-8b20355ec3f2",
+      config: config,
+      logger: Workflow::Logger.new,
+      process_definition: Workflow::ProcessDefinition.new(definition_path: "#{config.workdir}/process_definition.json")
+    )
+
+    process_instance.start
   end
 end
 
 Workflow.start
-
-# puts "reading envs"
-# puts workflow_id = ENV['WORKFLOW_ID']
-# puts workdir = ENV['WORKDIR']
-# ENV.each_pair(&method(:puts))
-
-# %x( docker run \
-#   --net=net_#{workflow_id} \
-#   --name=activity_in_#{workflow_id} \
-#   --rm \
-#   -v /woanders \
-#   cogniteev/echo \
-#   echo '#{workflow_id}'
-# )

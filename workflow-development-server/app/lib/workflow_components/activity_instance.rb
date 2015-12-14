@@ -1,65 +1,55 @@
 require 'aasm'
-class Workflow::ActivityInstance
-  include AASM
+require 'securerandom'
 
-  attr_accessor :fiber, :activity, :completed_predecessors, :state
+module Workflow
+  class ActivityInstance
+    include AASM
 
-  def initialize(activity)
-    @activity = activity
-    @fiber = activity_fiber(activity)
-  end
+    attr_accessor :fiber, :activity, :completed_predecessors, :state, :id
 
-  def return_control
-    Fiber.yield(aasm.current_state)
-  end
+    def initialize(activity)
+      @id = SecureRandom.uuid
+      @activity = activity
+      @completed_predecessors = []
 
-  def update_state(*args)
-    @fiber.resume(*args)
-  end
+      puts ""
+      puts "======== Activity #{activity.id} (#{activity.type}) is now #{aasm.current_state}."
+    end
 
-  def activity_fiber(activity)
-    Fiber.new do
-      completed_predecessors = []
+    def all_predecessors_completed?
+      return true if @activity.predecessors.empty?
+      completed_predecessors_activity_ids = @completed_predecessors.map(&:activity).collect(&:id)
+      (@activity.predecessors.collect(&:id) - completed_predecessors_activity_ids).empty?
+    end
 
-      loop do
-        required_predecessors_completed?(element, completed_predecessors) ? break : completed_predecessors << return_control
+    aasm do
+      after_all_transitions :log_status_change
+
+      state :inactive
+      state :active
+      state :suspended
+      state :completed
+
+      event :suspend do
+        transitions from: [:active, :inactive], to: :suspended
       end
 
-      activate do
-        element_container = create_container_for(element)
+      event :resume do
+        transitions from: :suspended, to: :inactive
       end
-      
-      loop { container_stopped?(element_container) ? break : return_control }
-    end
-  end
 
-  aasm do
-    after_all_transitions :log_status_change
+      event :activate do
+        transitions from: :inactive, to: :active
+      end
 
-    state :inactive
-    state :active
-    state :suspended
-    state :completed
-
-    event :suspend do
-      transitions from: [:active, :inactive], to: :suspended
+      event :complete do
+        transitions from: :active, to: :completed
+      end    
     end
 
-    event :resume do
-      transitions from: :suspended, to: :inactive
+    def log_status_change
+      puts ""
+      puts "======== Activity #{activity.id} is now #{aasm.to_state}. Activity was #{aasm.from_state}"
     end
-
-    event :activate do
-      transitions from: :inactive, to: :active
-    end
-
-    event :complete do
-      transitions from: :active, to: :completed, if: :completion_conditions_met?
-    end    
-  end
-
-  def log_status_change
-    puts "======================================================================="
-    puts "Activity #{activity.id} is now #{aasm.to_state}. Activity was #{aasm.from_state}"
   end
 end

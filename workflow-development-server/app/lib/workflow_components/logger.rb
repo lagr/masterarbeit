@@ -1,6 +1,7 @@
 module Workflow
   class Logger
-    def initialize(engine_url:)
+    def initialize
+      @config = Workflow::Configuration
     end
   end
 end
