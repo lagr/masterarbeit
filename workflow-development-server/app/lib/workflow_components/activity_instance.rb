@@ -9,15 +9,17 @@ module Workflow
 
     def initialize(activity)
       @id = SecureRandom.uuid
+      @logger = Workflow::Logger.new
       @activity = activity
       @completed_predecessors = []
 
-      puts ""
-      puts "======== Activity #{activity.id} (#{activity.type}) is now #{aasm.current_state}."
+      @logger.event({ id: @id, type: 'ActivityInstance' }, { info: "Activity #{activity.id} (#{activity.type}) is now #{aasm.current_state}." })
     end
 
     def all_predecessors_completed?
       return true if @activity.predecessors.empty?
+      return true if @activity.type == "OrJoin" && @completed_predecessors.length > 0
+      return true if @completed_predecessors.length > 0
       completed_predecessors_activity_ids = @completed_predecessors.map(&:activity).collect(&:id)
       (@activity.predecessors.collect(&:id) - completed_predecessors_activity_ids).empty?
     end
@@ -48,8 +50,7 @@ module Workflow
     end
 
     def log_status_change
-      puts ""
-      puts "======== Activity #{activity.id} is now #{aasm.to_state}. Activity was #{aasm.from_state}"
+      @logger.event({ id: @id, type: 'ActivityInstance' }, { info: "Activity #{activity.id} is now #{aasm.to_state}. Activity was #{aasm.from_state}" })
     end
   end
 end

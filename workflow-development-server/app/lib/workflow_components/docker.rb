@@ -1,9 +1,9 @@
+require 'awesome_print'
 module Workflow
   module Docker
     extend self
 
     class Container
-
       attr_accessor :full_id
       def initialize(name:, image:, network_name:, volumes_from:, environment_variables:)
         command = ["docker create"]
@@ -22,10 +22,12 @@ module Workflow
       end
 
       def start
+        return false if id.nil? || id == ''
+        %x(docker start #{id})
       end
 
       def id
-        @full_id.present? ? @full_id[0...12] : nil
+        @full_id.nil? ? nil : @full_id[0...12]
       end
 
       private

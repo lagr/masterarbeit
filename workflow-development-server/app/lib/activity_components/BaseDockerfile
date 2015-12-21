@@ -1,6 +1,6 @@
 FROM ruby:2.2
 
-COPY ["run.rb", "validate.rb", "map.rb", "/activity/"]
+COPY ["run.rb", "validator.rb", "mapper.rb", "configuration.rb", "logger.rb", "/activity/"]
 RUN chmod +x /activity/run.rb
 
 # copy activity later to utilize cached "base image",

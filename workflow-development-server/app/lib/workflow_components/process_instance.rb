@@ -6,54 +6,67 @@ module Workflow
       @process_definition = process_definition
       @start_activity_id = start_activity_id
       @activity_instances = {}
-      @finished_activity_instances = []
       @queue = []
+      @meta = { type: "WorkflowInstance", id: @config.main_workflow_id }
+
+      FileUtils.mkdir(workflow_input_dir) unless Dir.exist?(workflow_input_dir)
     end
 
     def start
-      FileUtils.mkdir(workflow_input_dir) unless Dir.exist?(workflow_input_dir)
+      validate_input_data
+      @logger.event @meta, { info: 'Input valid' }
+
       prepare_start_activity
 
       loop do
         break if @queue.compact.empty?
+        process_queued_activities
+      end
+    end
 
-        @queue.each do |activity_instance|
-          next unless activity_instance.all_predecessors_completed?
-          activity_instance_container = create_activity_container(activity_instance)
+    def process_queued_activities
+      @queue.reject{ |ai| ai.completed? }.each do |activity_instance|
+        next unless activity_instance.all_predecessors_completed?
 
-          activity_instance.activate do 
-            activity_instance_container.start 
-          end
-
-          activity_instance.complete
-          @finished_activity_instances << @queue.delete(activity_instance)
-
-          activity_instance.activity.successors.each do |successor|
-            @activity_instances[successor.id] ||= []
-            successor_instance = @activity_instances[successor.id].find { |ai| !ai.completed? }
-            if successor_instance.nil?  
-              successor_instance = Workflow::ActivityInstance.new(successor)
-              prepare_activity_instance_workdir(successor_instance)
-              @queue << successor_instance
-              @activity_instances[successor.id] << successor_instance
-            end
-            successor_instance.completed_predecessors << activity_instance
-            link_output_to_successor_input(activity_instance, successor_instance)
-          end
-          
-          @queue.clear if activity_instance.activity.type == 'EndElement'
+        activity_instance_container = create_activity_container(activity_instance)
+        activity_instance.activate do
+          activity_instance_container.start
         end
+        activity_instance.complete
+
+        activity_instance.activity.successors.each do |successor|
+          successor_instance = find_or_create_instance_for_activity(successor)
+          successor_instance.completed_predecessors << activity_instance
+          link_output_to_successor_input(activity_instance, successor_instance)
+        end
+        
+        if activity_instance.activity.type == 'EndElement'
+          @queue.clear
+          link_output_to_workflow_output(activity_instance)
+        end 
       end
     end
 
     def find_or_create_instance_for_activity(activity)
+      @activity_instances[activity.id] ||= []
       successor_instance = @activity_instances[activity.id].find { |ai| !ai.completed? }
+
       if successor_instance.nil?  
         successor_instance = Workflow::ActivityInstance.new(activity)
         prepare_activity_instance_workdir(successor_instance)
         @queue << successor_instance
         @activity_instances[activity.id] << successor_instance
       end
+
+      successor_instance
+    end
+
+    def validate_input_data
+      validator = Workflow::Validator.new(
+        schema: "/workflow/input.schema.json", 
+        data: "#{workflow_input_dir}/input.data.json"
+      )
+      validator.validate
     end
 
     def prepare_start_activity
@@ -76,6 +89,18 @@ module Workflow
         "#{@config.workdir}/input/", 
         "#{activity_instance_input_dir(activity_instance)}"
       )
+    end
+
+    def link_output_to_workflow_output(activity_instance)
+      output_dir = activity_instance_output_dir(activity_instance)
+      if Dir.exist?(output_dir)
+        FileUtils.ln_s(
+          "#{output_dir}",
+          "#{@config.workdir}/output" 
+        )
+      else
+        FileUtils.mkdir(workflow_output_dir) unless Dir.exist?(workflow_output_dir)
+      end
     end
 
     def link_output_to_successor_input(activity_instance, successor_instance)
@@ -106,6 +131,10 @@ module Workflow
       "#{@config.workdir}/input"
     end
 
+    def workflow_output_dir
+      "#{@config.workdir}/output"
+    end
+
     def activity_instance_workdir(activity_instance)
       "#{@config.workdir}/#{activity_instance.id}"
     end
@@ -121,7 +150,7 @@ module Workflow
     def create_activity_container(activity_instance)
       Workflow::Docker::Container.new( 
         name: "ac_#{activity_instance.id}",
-        image: "ac_#{activity_instance.activity.id}",
+        image: "#{@config.image_repository}/ac_#{activity_instance.activity.id}",
         network_name: @config.network,
         volumes_from: [
           "workflowexecutionserver_gem_data_1",

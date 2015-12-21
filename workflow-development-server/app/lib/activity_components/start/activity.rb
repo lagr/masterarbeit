@@ -7,7 +7,7 @@ class Activity
     @input_data = input_data
   end
 
-  def run
+  def start
     forward_input
     puts "Start-Activity did something!!"
   end

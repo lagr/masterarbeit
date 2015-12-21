@@ -8,7 +8,7 @@ class Workflow < ActiveRecord::Base
 
   def required_images
     [
-      WorkflowImageManager.image_name_for(types: process_elements.map(&:element_type).uniq),
+      ImageManager.image_name_for(types: process_elements.map(&:element_type).uniq),
       process_elements.container_activities.map(&:element).map(&:image).uniq + process_elements.containerized_activities.map(&:element).map(&:image).uniq,
       process_elements.sub_workflow_activities.map(&:element).map(&:sub_workflow).map(&:required_images).uniq
     ].flatten.compact.uniq

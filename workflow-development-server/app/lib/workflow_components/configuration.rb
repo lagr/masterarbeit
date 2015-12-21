@@ -10,16 +10,24 @@ module Workflow
       ENV['WORKFLOW_ID']
     end
 
+    def image_repository
+      ENV['IMAGE_REPOSITORY'] || 'localhost:5000'
+    end
+
     def network
-      "net_#{main_workflow_id}"
+      ENV['NETWORK'] || "net_#{main_workflow_id}"
     end
 
     def gem_data_container
       ENV['GEM_DATA_CONTAINER'] || 'workflowexecutionserver_gem_data_1'
     end
 
+    def execution_server_url
+      "http://#{execution_server_name}.#{network}:#{execution_server_port}"
+    end
+
     def execution_server_name
-      "workflowexecution_server_web_1"
+      "workflowexecutionserver_web_1"
     end
 
     def execution_server_port

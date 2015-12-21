@@ -10,6 +10,7 @@
           %td Name
           %td IP
           %td Reachable
+          %td Execution Environment running?
           %td Docker available
           %td
         %tbody
@@ -19,7 +20,9 @@
             %td.md-table-cell
               %i.server-status.icon-networksignal{ ng_class: '{available: server.reachable}' }
             %td.md-table-cell
-              %i.docker-status.icon-fish{ ng_class: '{available: server.docker}' }
+              %i.server-status.icon-networksignal{ ng_class: '{available: server.execution_environment_available}' }
+            %td.md-table-cell
+              %i.docker-status.icon-fish{ ng_class: '{available: server.docker_available}' }
             %td.md-table-cell
               %md-button{ ng_click: 'pageCtrl.removeServer(server, $event)' } Delete
 

@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/rails-api/active_model_serializers.git
-  revision: e6d1d6be0c69ca333da90f1e850415739a6abc72
+  revision: f562449bd439d1295b91b41b01d5b780c793100a
   specs:
     active_model_serializers (0.10.0.rc3)
       actionpack (>= 4.0)
@@ -60,6 +60,7 @@ GEM
     angular_rails_csrf (1.0.4)
       rails (>= 3, < 5)
     arel (6.0.3)
+    awesome_print (1.6.1)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
@@ -234,6 +235,7 @@ DEPENDENCIES
   aasm
   active_model_serializers!
   angular_rails_csrf
+  awesome_print
   byebug
   coffee-rails (~> 4.1.0)
   compass-rails!
@@ -267,4 +269,4 @@ DEPENDENCIES
   webhostinghub-glyphs-rails
 
 BUNDLED WITH
-   1.10.6
+   1.11.0.pre.1

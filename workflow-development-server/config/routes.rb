@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
   resources :servers do
     member do
+      get :status, to: 'servers#status'
       get :index_images, to: 'servers#index_images'
+      post :deploy_workflow_bundles, to: 'servers#deploy_workflow_bundles'
     end
   end
 

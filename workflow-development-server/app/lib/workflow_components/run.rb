@@ -18,13 +18,12 @@ module Workflow
 
   def start
     config = Workflow::Configuration
-    #Excon.post("#{config.execution_server_api_url}/workflow_management/workflow_instance")
 
     process_instance = Workflow::ProcessInstance.new(
-      start_activity_id: "bdb17d3a-5b0b-42d6-9fbd-8b20355ec3f2",
+      start_activity_id: "cad62eb7-0170-4241-a8e7-34d719c7bdd6", #"bdb17d3a-5b0b-42d6-9fbd-8b20355ec3f2",
       config: config,
       logger: Workflow::Logger.new,
-      process_definition: Workflow::ProcessDefinition.new(definition_path: "#{config.workdir}/process_definition.json")
+      process_definition: Workflow::ProcessDefinition.new(definition_path: "/workflow/process_definition.json")
     )
 
     process_instance.start

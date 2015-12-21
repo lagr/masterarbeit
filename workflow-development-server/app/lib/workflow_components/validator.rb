@@ -10,14 +10,15 @@ module Workflow
     end
 
     def validate
-      raise 'Invalid data' unless validate_schema
+      validation_result = validate_with_schema
+      raise "Invalid data: #{validation_result.join('\n')}" unless validation_result.empty?
     end
 
     private
 
-    def validate_schema
-      return false unless File.exist?(data)
-      JSON::Validator.validate(schema, data)
+    def validate_with_schema
+      return JSON::Validator.validate(schema, "{}") unless File.exist?(data)
+      JSON::Validator.fully_validate(schema, data)
     end
   end
 end

@@ -9,6 +9,8 @@ class ProcessElement < ActiveRecord::Base
   belongs_to :element, polymorphic: true
   has_one :process_element_representation, dependent: :destroy
   before_create :build_process_element_representation
+
+  store_accessor :input_schema
   
   include HasManyPredecessors
   include HasManySuccessors

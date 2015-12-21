@@ -1,6 +1,6 @@
 require 'uri'
 
-module Workflow
+module Activity
   class Logger
     def initialize
       @config = Workflow::Configuration

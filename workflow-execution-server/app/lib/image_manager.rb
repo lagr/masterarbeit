@@ -13,24 +13,19 @@ module ImageManager
     'ContainerizedActivity' => 'containerized'
   }.with_indifferent_access.freeze
 
-  def run_workflow
-    wf_id = SecureRandom.uuid
-    return unless gem_container_exists?
-    create_network(wf_id)
-    join_network(wf_id)
-    #make_gem_container_available(wf_id)
+  def run_workflow(workflow_id=nil)
+    wf_id = workflow_id || "aa350fb7-77f0-420f-a30e-4200e5370549"
+    wf_instance_id = SecureRandom.uuid
+    create_network(wf_instance_id)
+    join_network(wf_instance_id)
     begin
-      response = run_data_container(wf_id)
-      copy_input_data_to_data_container(wf_id)
-      response = run_workflow_container(wf_id)
+      run_data_container(wf_instance_id)
+      copy_input_data_to_data_container(wf_instance_id)
+      run_workflow_container(wf_instance_id, wf_id)
     ensure
-      leave_network(wf_id)
-      remove_network(wf_id)
+      leave_network(wf_instance_id)
+      remove_network(wf_instance_id)
     end
-  end
-
-  def gem_container_exists?
-    true
   end
 
   def create_network(workflow_id)
@@ -54,14 +49,6 @@ module ImageManager
   end
 
   def run_data_container(workflow_id)
-    # %x( docker run \
-    #   --net=net_#{workflow_id} \
-    #   --name=data_#{workflow_id} \
-    #   -v /workflow_relevant_data \
-    #   cogniteev/echo \
-    #   echo 'Data Container for #{workflow_id}'
-    # )
-    
     command = [
       "docker run",
       container("data_#{workflow_id}"),
@@ -74,45 +61,39 @@ module ImageManager
     %x(#{command})
   end
 
-  def run_workflow_container(workflow_id)
+  def run_workflow_container(workflow_instance_id, workflow_id)
     command = [ 
       "docker run",
-      container("wf_#{workflow_id}"),
-      network("net_#{workflow_id}"),
-      volumes_from("data_#{workflow_id}"),
+      container("wf_#{workflow_instance_id}"),
+      network("net_#{workflow_instance_id}"),
+      volumes_from("data_#{workflow_instance_id}"),
       volumes_from("workflowexecutionserver_gem_data_1"),
       workdir("/workflow"),
-      environment_variable("MAIN_WORKFLOW_ID", workflow_id),
-      environment_variable("WORKFLOW_ID", workflow_id),
+      environment_variable("MAIN_WORKFLOW_ID", workflow_instance_id),
+      environment_variable("WORKFLOW_ID", workflow_instance_id),
       environment_variable("WORKDIR", "/workflow_relevant_data"),
-      environment_variable("NETWORK", "net_#{workflow_id}"),
-      environment_variable("DATA_CONTAINER", "data_#{workflow_id}"),
+      environment_variable("NETWORK", "net_#{workflow_instance_id}"),
+      environment_variable("DATA_CONTAINER", "data_#{workflow_instance_id}"),
       environment_variable("GEM_DATA_CONTAINER", "workflowexecutionserver_gem_data_1"),
       environment_variable("WORKFLOW_ENGINE_CONTAINER", ENV['HOSTNAME']),
       environment_variable("TRIGGERED_ACTIVITY", "bdb17d3a-5b0b-42d6-9fbd-8b20355ec3f2"),
       volume("/var/run/docker.sock", "/var/run/docker.sock"),
-      image("wfms_workflow"),
+      image("localhost:5000/wf_#{workflow_id}"),
+      #image("wfms_workflow"),
       file_to_run("run.rb")
     ].join(' ')
 
     puts "starting #{workflow_id}"
 
     result = %x(#{command})
-    byebug
-  end
-
-  def example_input_data
-    { 
-      address: {
-        city: 'London',
-        street: 'Baker Street',
-        number: '221B'
-      }
-    }.to_json
   end
 
   def copy_input_data_to_data_container(workflow_id)
-    %x(docker cp - data_#{workflow_id}:/workflow_relevant_data/input/input.data.json)
+    Dir.mktmpdir do |tmpdir|
+      FileUtils.mkdir "#{tmpdir}/input"
+      File.open("#{tmpdir}/input/input.data.json", 'w') { |i| i.write ({this: "is test data"}).to_json }
+      %x(docker cp #{tmpdir}/input/ data_#{workflow_id}:/workflow_relevant_data/input/)
+    end
   end
 
   def copy_to_container(container_name, destination, data)

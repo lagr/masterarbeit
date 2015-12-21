@@ -19,7 +19,7 @@ clerk_user  = User.create(first_name: 'Bernhard Egon', last_name: 'Nutzer',     
 
 localhost        = Server.create(ip: '0.0.0.0', name: 'localhost', role: 'repository')
 execution_server = Server.create(ip: '0.0.0.0', name: 'localhost', role: 'execution')
-other_server     = Server.create(ip: '192.168.2.123', name: 'other')
+other_server     = Server.create(ip: '192.168.2.111', name: 'other', role: 'execution')
 
 wf = Workflow.create(name: 'Sachbearbeitung', author: dev_user)
 wf2 = Workflow.create(name: 'Regulation', author: dev_user)
@@ -61,3 +61,5 @@ end1        = wf_process_elements.create! element: EndElement.create
 
 start1      .outgoing_control_flows.create! successor: subworkflow
 subworkflow .outgoing_control_flows.create! successor: end1
+
+ProcessElement.all.each { |pe| pe.update_attributes input_schema: {} }

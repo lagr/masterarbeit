@@ -42,6 +42,13 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "events", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.string   "subject_type"
+    t.uuid     "subject_id"
+    t.jsonb    "data"
+    t.datetime "created_at",  null: false
+  end
+
   #### Instance Models
 
   create_table "workflow_instances", id: :uuid, default: "uuid_generate_v4()" do |t|
@@ -69,89 +76,22 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",  null: false
   end
 
-  #### Workflow Components
+  ## Workflow data
 
   create_table "workflows", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.string   "name"
-    t.string   "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
-  create_table "process_definitions", id: :uuid, default: "uuid_generate_v4()" do |t|
+  create_table "activities", id: :uuid, default: "uuid_generate_v4()" do |t|
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "activities_workflows", id: :uuid, default: "uuid_generate_v4()" do |t|
     t.uuid     "workflow_id"
+    t.uuid     "activity_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-  end
-
-  create_table "control_flows", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.uuid     "process_definition_id"
-    t.uuid     "successor_id"
-    t.string   "successor_type"
-    t.uuid     "predecessor_id"
-    t.string   "predecessor_type"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "process_elements", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.string   "name"
-    t.uuid     "process_definition_id"
-    t.uuid     "element_id"
-    t.string   "element_type"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "manual_activities", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "automatic_activities", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "sub_workflow_activities", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.uuid     "sub_workflow_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "containerized_activities", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.string   "image"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "container_activities", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.string   "image"
-    t.string   "linked_ports",array: true, default: []
-    t.text     "parameters",  array: true, default: []
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "start_elements", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "end_elements", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "triggers", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "events", id: :uuid, default: "uuid_generate_v4()" do |t|
-    t.string   "type"
-    t.uuid     "subject"
-    t.jsonb    "data"
-    t.datetime "created_at",  null: false
   end
 end

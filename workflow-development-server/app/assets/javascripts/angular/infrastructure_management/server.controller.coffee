@@ -13,11 +13,11 @@ angular.module 'WFMS.Infrastructure'
   pageData.images.then (images) ->
     vm.images = (new DockerImage(image.id, image.name, true) for image in images.required)
     for image in images.installed
-      requiredImage = _.find(vm.images, name: _.first(image.info.RepoTags))
+      requiredImage = _.find(vm.images, name: image.name)
       if requiredImage
         requiredImage.installed = true
       else    
-        vm.images.push new DockerImage(image.id, _.first(image.info.RepoTags), false, true)
+        vm.images.push new DockerImage(image.id, image.name, false, true)
 
     vm.images = _.sortBy(vm.images, 'name')
 

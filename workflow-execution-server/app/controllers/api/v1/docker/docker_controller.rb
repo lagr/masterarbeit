@@ -1,7 +1,15 @@
 module Api::V1::Docker
   class DockerController < Api::ApiController
+    ImageStruct = Struct.new(:id, :name)
+
+    def status
+      render json: { available: Docker.version.present? }
+    end
+
     def index_installed_images
-      @images = Docker::Image.all.collect { |image| image.info['RepoTags'].last }
+      @images = Docker::Image.all.collect do |image| 
+        ImageStruct.new image.id, image.info['RepoTags'].last  
+      end
       render json: @images
     end
 

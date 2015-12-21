@@ -1,0 +1,3 @@
+FROM wfms_workflow
+
+COPY . /workflow

@@ -2,7 +2,7 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: 5
-  host: workflowdevelopmentserver_db_1
+  host: <%= ENV['WORKFLOW-DEVELOPMENT-SERVER_DATABASE'] || 'workflowdevelopmentserver_db_1' %>
   user: workflow_development_server
   password: masterarbeit
 

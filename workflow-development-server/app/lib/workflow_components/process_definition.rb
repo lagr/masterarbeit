@@ -1,3 +1,4 @@
+require 'awesome_print'
 module Workflow
   class ProcessDefinition
     Activity = Struct.new(:id, :type, :successors, :predecessors)
@@ -35,6 +36,11 @@ module Workflow
             'successors' => []
           }
         ]}
+        @definition = { 'activities' => [
+          { 
+            'id' => "cad62eb7-0170-4241-a8e7-34d719c7bdd6", 'type' => "EndElement",
+            'successors' => []
+          }]}
       end
 
       @activities = []
