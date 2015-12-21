@@ -52,7 +52,7 @@ class ServersController < ApplicationController
 
     create_required_images
 
-    if successful? connector.deploy(workflows: @workflows)
+    if connector.deploy(@workflows)
       render json: {}, status: :ok
     else
       render json: {}, status: :error

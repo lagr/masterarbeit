@@ -7,11 +7,16 @@ class ExecutionServerConnector
   end
 
   ## Workflow management
-  def deploy(workflows: [], activities: [])
-    responses = []
-    responses << deploy_collection(workflows: workflows) unless workflows.empty?
-    responses << deploy_collection(activities: activities) unless activities.empty?
-    responses
+  def deploy(workflows)
+    return if workflows.empty?
+
+    serializable = ActiveModel::SerializableResource.new(workflows, serializer: ActiveModel::Serializer::CollectionSerializer, each_serializer: WorkflowDeploymentSerializer)
+
+    response = @connection.post( 
+      path: api_path("/workflow_management/workflows/"), 
+      :body => URI.encode_www_form(workflows: serializable.to_json),
+      headers: { "Content-Type" => "application/x-www-form-urlencoded" })
+    response.status.to_s.first == "2"
   end
 
   def installed_workflows
@@ -76,13 +81,5 @@ class ExecutionServerConnector
 
   def api_get(path, query={})
     @connection.get path: api_path(path)
-  end 
-
-  def deploy_collection(collection)
-    response = @connection.post( 
-      path: api_path("/workflow_management/#{collection.keys.first}/"), 
-      :body => URI.encode_www_form(collection),
-      headers: { "Content-Type" => "application/x-www-form-urlencoded" })
-    response.status
   end
 end
