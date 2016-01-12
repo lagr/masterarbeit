@@ -1,3 +1,74 @@
 % -*- root: ../../main.tex -*- %
+  When multiple applications or application instances shall be run on one machine, they are usually isolated from each other in terms of execution environments and provided with a controllable share of system resources \cite{Felter2014Updated}. These goals can be fulfilled by both virtual machines and containers.
 
-- container virtualization technology
+  ** here be dragons **
+
+  Docker is a tool, that simplifies container creation and management. In Section \ref{sec:concepts} the underlying concepts will be presented. Based on that, the functionality that Docker provides will be explained in Section \ref{sec:functionality}. Finally, the Docker ecosystem, \ie the set of tools that enhance the core docker tool, is introduced in Section \ref{sec:docker_ecosystem}.
+
+\section{Concepts} % (fold)
+\label{sec:concepts}
+
+  \subsection{Application Containers} % (fold)
+  \label{sub:application_containers}
+  
+  % subsection application_containers (end)
+
+  \subsection{Docker Images} % (fold)
+  \label{sub:docker_images}
+    - image layering
+    \cite{Docker????Docker}
+  % subsection docker_images (end)
+
+  \subsection{Docker Containers} % (fold)
+  \label{sub:docker_containers}
+    - runtime instance of a docker image
+    - last layer on top of the other images
+    - *lifecycle of a docker container here*
+  % subsection docker_containers (end)
+
+  \subsection{Data Volumes} % (fold)
+  \label{sub:data_volumes}
+  
+  % subsection data_volumes (end)
+
+  \subsection{Dockerfiles} % (fold)
+  \label{sub:dockerfiles}
+  
+  % subsection dockerfiles (end)
+
+  \subsection{Registries and Repositories} % (fold)
+  \label{sub:registries_and_repositories}
+  
+  % subsection registries_and_repositories (end)
+
+% section concepts (end)
+
+\section{Functionality} % (fold)
+\label{sec:functionality}
+
+% section functionality (end)
+
+\section{Docker Ecosystem} % (fold)
+\label{sec:docker_ecosystem}
+
+  \subsection{Docker Swarm} % (fold)
+  \label{sub:docker_swarm}
+    
+  % subsection docker_swarm (end)
+
+  \subsection{Docker Machine} % (fold)
+  \label{sub:docker_machine}
+  
+  % subsection docker_machine (end)
+
+  \subsection{Docker Compose} % (fold)
+  \label{sub:docker_compose}
+  
+  % subsection docker_compose (end)
+
+  \subsection{Docker Hub} % (fold)
+  \label{sub:docker_hub}
+  
+  % subsection docker_hub (end)
+
+% section docker_ecosystem (end)

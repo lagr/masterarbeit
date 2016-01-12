@@ -23,7 +23,7 @@
 \setmonofont{Source Code Pro}
 \setsansfont{Lato}
 
-  \setThema{Prototypical Development of a \\Docker-based Workflow Management System}
+  \setThema{Prototypical Development of a\\Docker-based Workflow Management System}
   \setTyp{Masterthesis}
   \setFachgebiet{}
   \setLehrstuhl{Department of Information Systems --- Practical Computer Science}
@@ -39,41 +39,19 @@
 
 \begin{document}
 
-  % \EinfTitelseite
+  \EinfTitelseite
 
   %Verzeichnisse
   \pagenumbering{Roman} % Seitennummerierung durch roemische Ziffern
   \tableofcontents
-  % \listoffigures
-  % \listoftables
+  \listoffigures
+  \listoftables
 
-  % \begin{AbkVerzeichnis}
-  %   \acro{BBN}{Bundeseinheitliche Betriebsnummer}
-  %   \acro{CCG}{Centrale für Coorganisation}
-  %   \acro{DFÜ}{Datenfernübertragung}
-  %   \acro{dpi}{dots per inch}
-  %   \acro{EAN}{Europäische Artikelnumerierung}
-  %   \acro{GoM}{Grundsätze ordnungsmäßiger Modellierung}
-  %   \acro{VBA}{Visual Basic for Applications}
-  %   \acro{WWS}{Warenwirtschaftssystem}
-  %   \acro{ZfB}{Zeitschrift für Betriebswirtschaft}
-  %   \acro{ZuO}{Zuordnung}
-  % \end{AbkVerzeichnis}
-
-  % \begin{Verzeichnis}{Symbolverzeichnis}
-  %   \VerzEintrag{$a_0$}{Anschaffungsauszahlung in $t = 0$}
-  %   \VerzEintrag{$C$}{Kapitalwert}
-  %   \VerzEintrag{$dt$}{Einzahlungsüberschuss in bezug auf $t$}
-  %   \VerzEintrag{$i$}{Kalkulationszinsfuß}
-  %   \VerzEintrag{$n$}{Nutzungsdauer}
-  %   \VerzEintrag{$q$}{Zinsfaktor $1 + i$}
-  %   \VerzEintrag{$r_s$}{Abstand der Stufe s in cm vom Seitenrand}
-  %   \VerzEintrag{$s$}{Stufenindex}
-  %   \VerzEintrag{$t$}{Periodenindex}
-  % \end{Verzeichnis}
+  \include{content/util/acro}
+  \include{content/util/symbols}
 
   \clearpage
-  % \include{content/text/abstract}
+  \include{content/text/abstract}
 
   \pagenumbering{arabic} % Seitennummerierung durch arabische Ziffern
 
@@ -82,96 +60,34 @@
   \label{cha:introduction_and_motivation}
 
     \section{Research Methodology} % (fold)
-    \label{sec:research_methodology}
-    
-    % section research_methodology (end)
+      \label{sec:research_methodology}
+      
+      % section research_methodology (end)
 
     \section{Related Work} % (fold)
-    \label{sec:related_work}
-    
-    % section related_work (end)
+      \label{sec:related_work}
+      
+      % section related_work (end)
   
   % chapter introduction_and_motivation (end)
 
   \chapter{Workflow Management Systems} % (fold)
-  \label{cha:workflow_management_systems}
-    \section{Workflow} % (fold)
-    \label{sec:workflow}
-    
-    % section workflow (end)
-
-    \section{Typical Architecture of a WFMS} % (fold)
-    \label{sec:typical_architecture_of_a_wfms}
-    
-    % section typical_architecture_of_a_wfms (end)
-
-  % chapter workflow_management_systems (end)
+    \label{cha:workflow_management_systems}
+    \include{content/text/wfms}
+    % chapter workflow_management_systems (end)
 
   \chapter{Docker} % (fold)
-  \label{cha:docker}
-  % \include{content/text/docker}
-    \section{Functionality} % (fold)
-    \label{sec:functionality}
-    
-    % section functionality (end)
+    \label{cha:docker}
+      \include{content/text/docker}
+    % chapter docker (end)
 
-    \section{Software containers} % (fold)
-    \label{sec:software_containers}
-    
-    % section software_containers (end)
-
-    \section{Docker Ecosystem} % (fold)
-    \label{sec:docker_ecosystem}
-    
-    % section docker_ecosystem (end)
-  
-  % chapter docker (end)
   \chapter{Application Design} % (fold)
-  \label{cha:solution_design}
+    \label{cha:solution_design}
 
-    \section{Problem Identification} % (fold)
-    \label{sec:problem_identification}
-    
-    % section problem_identification (end)
-
-    \section{Derivation of Objectives} % (fold)
-    \label{sec:derivation_of_objectives}
-
-      \subsection{Functional Requirements} % (fold)
-      \label{sub:functional_requirements}
-
-        \subsubsection{Infrastructure and Infrastructure Management} % (fold)
-        \label{ssub:infrastructure_management}
-        
-        % subsubsection infrastructure_management (end)
-
-        \subsubsection{Workflow Modeling} % (fold)
-        \label{ssub:workflow_modeling}
-        
-        % subsubsection workflow_modeling (end)
-        
-        \subsubsection{Workflow Distribution} % (fold)
-        \label{ssub:workflow_distribution}
-        
-        % subsubsection workflow_distribution (end)
-
-        \subsubsection{Workflow Execution} % (fold)
-        \label{ssub:workflow_execution}
-        
-        % subsubsection workflow_execution (end)
-
-        \subsubsection{Integration of Third Party Containers} % (fold)
-        \label{ssub:integration_of_third_party_containers}
-        
-        % subsubsection integration_of_third_party_containers (end)
-      % subsection functional_requirements (end)
-
-      \subsection{Intangible Requirements} % (fold)
-      \label{sub:intangible_requirements}
-        ``It should be easier to use''
-      % subsection intangible_requirements (end)
-    
-    % section derivation_of_objectives (end)
+    \section{Determination of Objectives} % (fold)
+      \label{sec:determination_of_objectives}
+      \include{content/text/objectives}
+      % section determination_of_objectives (end)
     
     \section{Architecture} % (fold)
     \label{sec:architecture}
