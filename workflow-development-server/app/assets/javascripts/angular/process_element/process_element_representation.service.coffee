@@ -1,5 +1,5 @@
 angular.module 'WFMS.ProcessDesign'
-.factory 'ProcessElementRepresentations', (Restangular) ->
-  update: (processElementRepresentation) -> 
-    prElRep = Restangular.restangularizeElement(null, processElementRepresentation, 'process_element_representations')
+.factory 'ActivityRepresentations', (Restangular) ->
+  update: (activityRepresentation) -> 
+    prElRep = Restangular.restangularizeActivity(null, activityRepresentation, 'activity_representations')
     prElRep.put()

@@ -1,3 +1,3 @@
-class OrJoinElement < ActiveRecord::Base
+class OrJoinActivity < ActiveRecord::Base
   include IsPartOfProcess
 end

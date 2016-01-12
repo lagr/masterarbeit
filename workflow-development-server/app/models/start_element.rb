@@ -1,4 +1,4 @@
-class StartElement < ActiveRecord::Base
+class StartActivity < ActiveRecord::Base
   include IsPartOfProcess
   
   has_one :trigger

@@ -8,12 +8,12 @@ module ImageManager
   CONTAINER_TEMPLATE_FILES = %w[map.rb run.rb validate.rb Dockerfile]
 
   ELEMENT_TYPE_TO_IMAGE_NAME = {
-    'StartElement' => 'start',
-    'EndElement' => 'end',
-    'OrSplitElement' => 'or_split',
-    'OrJoinElement' => 'or_join',
-    'AndSplitElement' => 'and_split',
-    'AndJoinElement' => 'and_join',
+    'StartActivity' => 'start',
+    'EndActivity' => 'end',
+    'OrSplitActivity' => 'or_split',
+    'OrJoinActivity' => 'or_join',
+    'AndSplitActivity' => 'and_split',
+    'AndJoinActivity' => 'and_join',
     'ManualActivity' => 'manual',
     'AutomaticActivity' => 'automatic',
     'ContainerActivity' => 'container',
@@ -64,7 +64,7 @@ module ImageManager
     images = { successful: {}, failed: [] }
     activities.each do |activity|
       begin 
-        image = create_activity_image(process_element: activity)
+        image = create_activity_image(activity: activity)
         images[:successful][activity.id] = image.try(:id) || image[:id]
       rescue Exception => e
         puts e
@@ -103,17 +103,17 @@ module ImageManager
     return image
   end
 
-  def create_activity_image(process_element:, options: {})
-    image_name = "#{image_registry}/ac_#{process_element.element_id}"
-    base_image_name = image_name_for(type: process_element.element_type).first
+  def create_activity_image(activity:, options: {})
+    image_name = "#{image_registry}/ac_#{activity.activity_id}"
+    base_image_name = image_name_for(type: activity.activity_type).first
     return unless valid_image_name?(image_name)
     return { id: Docker::Image.get(image_name).id[0...12] } if Docker::Image.exist?(image_name)
 
     image = nil
     serialized_meta_files = {
       'input.schema' => {type: 'object', required: ['this'], properties: { this: {type: 'string'} } }.to_json,
-      #'input.schema' => process_element.input_schema.to_json,
-      'input.mapping' => "{}"#process_element.input_mapping
+      #'input.schema' => activity.input_schema.to_json,
+      'input.mapping' => "{}"#activity.input_mapping
     }
 
     Dir.mktmpdir do |tmpdir|
@@ -130,11 +130,11 @@ module ImageManager
     return image
   end
 
-  def create_process_element_images
+  def create_activity_types_images
     images = { successful: {}, failed: [] }
 
-    #%w[StartElement EndElement OrSplitElement OrJoinElement AndSplitElement AndJoinElement AutomaticActivity ContainerizedActivity]
-    %w[StartElement EndElement AndSplitElement AndJoinElement OrJoinElement AndJoinElement ContainerActivity ManualActivity SubWorkflowActivity].each do |activity|
+    #%w[StartActivity EndActivity OrSplitActivity OrJoinActivity AndSplitActivity AndJoinActivity AutomaticActivity ContainerizedActivity]
+    %w[StartActivity EndActivity AndSplitActivity AndJoinActivity OrJoinActivity AndJoinActivity ContainerActivity ManualActivity SubWorkflowActivity].each do |activity|
       begin 
         image = create_activity_base_image(
           image_name: "#{image_registry}/#{image_name_for(type: activity).first}",

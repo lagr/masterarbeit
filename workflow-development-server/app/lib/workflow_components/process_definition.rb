@@ -12,7 +12,7 @@ module Workflow
         puts "file doesnt exist: #{definition_path}"
         @definition = { 'activities' => [
           { 
-            'id' => "bdb17d3a-5b0b-42d6-9fbd-8b20355ec3f2", 'type' => "StartElement",
+            'id' => "bdb17d3a-5b0b-42d6-9fbd-8b20355ec3f2", 'type' => "StartActivity",
             'successors' => ["48fb9ab9-f0ce-44d2-8999-a198075470b2"]
           },
           { 
@@ -32,13 +32,13 @@ module Workflow
             'successors' => ["97d5d5bd-e14d-49a7-af90-c8ce90495b46"]
           },
           { 
-            'id' => "97d5d5bd-e14d-49a7-af90-c8ce90495b46", 'type' => "EndElement",
+            'id' => "97d5d5bd-e14d-49a7-af90-c8ce90495b46", 'type' => "EndActivity",
             'successors' => []
           }
         ]}
         @definition = { 'activities' => [
           { 
-            'id' => "cad62eb7-0170-4241-a8e7-34d719c7bdd6", 'type' => "EndElement",
+            'id' => "cad62eb7-0170-4241-a8e7-34d719c7bdd6", 'type' => "EndActivity",
             'successors' => []
           }]}
       end

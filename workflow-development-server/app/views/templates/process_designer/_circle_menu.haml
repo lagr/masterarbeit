@@ -1,6 +1,6 @@
 %g.workflow-designer--circle-menu{ ng_show: 'processDesigner.circleMenuVisible', ng_attr_transform: 'translate({{processDesigner.circleMenuPos.x}},{{processDesigner.circleMenuPos.y}}) ' }
   /%circle{ r: '100', opacity: '0.5', fill: 'blue' }
-  %g.create-element-button{ ng_repeat: "type in #{ProcessElement::PROCESS_ELEMENT_TYPES.to_json}", ng_mouseup: 'processDesigner.createProcessElement(type)', ng_attr_transform: 'translate(0,{{50 * $index}})' }
+  %g.create-element-button{ ng_repeat: "type in #{Activity::ACTIVITY_TYPES.to_json}", ng_mouseup: 'processDesigner.createActivity(type)', ng_attr_transform: 'translate(0,{{50 * $index}})' }
     %rect{ width: '200', height: '50', fill: 'blue' }
     %text{ x: '100', y: '25', "text-anchor" => 'middle' } {{type}}
 

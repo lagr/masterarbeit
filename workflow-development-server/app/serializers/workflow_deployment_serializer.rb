@@ -1,12 +1,12 @@
 class WorkflowDeploymentSerializer < ActiveModel::Serializer
   attributes :id, :name, :image
-  has_many :process_elements, key: :activities
+  has_many :activities
 
   def image
     "wf_#{object.id}"
   end
 
-  class ProcessElementSerializer < ActiveModel::Serializer
+  class ActivitySerializer < ActiveModel::Serializer
     attributes :id, :image
 
     def image

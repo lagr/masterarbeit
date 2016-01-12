@@ -82,7 +82,7 @@ class ServersController < ApplicationController
     failed_images = []
     @workflows.each do |workflow|
       workflow_images = ImageManager.create_workflow_image(workflow) 
-      activity_images = ImageManager.create_activity_images(workflow.process_elements)
+      activity_images = ImageManager.create_activity_images(workflow.activities)
 
       failed_images += workflow_images[:failed]
       failed_images += activity_images[:failed]

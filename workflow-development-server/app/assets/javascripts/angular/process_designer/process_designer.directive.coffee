@@ -1,16 +1,16 @@
 angular.module 'WFMS.ProcessDesign'
-.directive 'processDesigner', (tabManagement, processDesignerConfig, ProcessElements, ProcessElementRepresentations, ControlFlows, $mdToast) ->
-  class ProcessElement
-    constructor: (element) ->
-      _.extend @, element
+.directive 'processDesigner', (tabManagement, processDesignerConfig, Activities, ActivityRepresentations, ControlFlows, $mdToast) ->
+  class Activity
+    constructor: (activity) ->
+      _.extend @, activity
 
   class ControlFlow
     constructor: (controlFlow, @processDesigner) ->
-      @successor = _.find @processDesigner.processElements, (element) ->
-        element.id == controlFlow.successor.id
+      @successor = _.find @processDesigner.activities, (activity) ->
+        activity.id == controlFlow.successor.id
 
-      @predecessor = _.find @processDesigner.processElements, (element) -> 
-        element.id == controlFlow.predecessor.id
+      @predecessor = _.find @processDesigner.activities, (activity) -> 
+        activity.id == controlFlow.predecessor.id
 
     xFrom: -> @predecessor.representation.x + 100
     yFrom: -> @predecessor.representation.y + 50
@@ -22,7 +22,7 @@ angular.module 'WFMS.ProcessDesign'
     vm.config = processDesignerConfig
 
     vm.svg = $element.find("svg")[0]
-    vm.elementsContainer = $element.find("svg").find('.process-elements')[0]
+    vm.activitiesContainer = $element.find("svg").find('.activities')[0]
     vm.referencePoint = vm.svg.createSVGPoint()
 
     activate = ->
@@ -31,8 +31,8 @@ angular.module 'WFMS.ProcessDesign'
       vm.connecting = false
 
       vm.canvasClicked = canvasClicked
-      vm.elementMousedown = elementMousedown
-      vm.elementMouseup = elementMouseup
+      vm.activityMousedown = activityMousedown
+      vm.activityMouseup = activityMouseup
       vm.canvasMouseup = canvasMouseup
       vm.canvasMousedown = canvasMousedown
       vm.canvasMousemove = canvasMousemove
@@ -41,33 +41,33 @@ angular.module 'WFMS.ProcessDesign'
 
       vm.detailsBarVisible = detailsBarVisible
       vm.newControlFlowVisible = newControlFlowVisible
-      vm.selectedElementHasType = selectedElementHasType
+      vm.selectedActivityHasType = selectedActivityHasType
 
-      vm.createProcessElement = createProcessElement
-      vm.deleteProcessElement = deleteProcessElement
-      vm.saveProcessElement = saveProcessElement
+      vm.createActivity = createActivity
+      vm.deleteActivity = deleteActivity
+      vm.saveActivity = saveActivity
 
       bindWorkflowVersion = $scope.$watch 'processDesigner.workflow', (newVal, oldVal) ->
         return unless newVal?
         vm.processDefinition = vm.workflow.process_definition
-        vm.processElements = (new ProcessElement(element) for element in vm.processDefinition.process_elements)
+        vm.activities = (new Activity(activity) for activity in vm.processDefinition.activities)
         vm.controlFlows = (new ControlFlow(controlFlow, vm) for controlFlow in vm.processDefinition.control_flows)
         bindWorkflowVersion()
 
       vm
 
-    toRelativeCoordinates = (element, clientX, clientY) ->
-      bbRect = element.getBoundingClientRect()
+    toRelativeCoordinates = (activity, clientX, clientY) ->
+      bbRect = activity.getBoundingClientRect()
       [x, y] = [clientX - bbRect.left, clientY - bbRect.top]
 
-    toElementCoordinates = (element, x, y) ->
+    toActivityCoordinates = (activity, x, y) ->
       pt = vm.referencePoint
       [pt.x, pt.y] = [x, y]
-      transformed = pt.matrixTransform(element.getScreenCTM().inverse())
+      transformed = pt.matrixTransform(activity.getScreenCTM().inverse())
       [transformed.x, transformed.y]
 
-    isSelected = (element) ->
-      _.contains(vm.selected, element)
+    isSelected = (activity) ->
+      _.contains(vm.selected, activity)
 
     isCanvas = (target) ->
       _.contains(target.classList, 'grid')
@@ -80,31 +80,31 @@ angular.module 'WFMS.ProcessDesign'
 
     newControlFlowVisible = ->
       vm.connecting &&
-      vm.newControlFlow.element.representation.x? &&
-      vm.newControlFlow.element.representation.y? &&
+      vm.newControlFlow.activity.representation.x? &&
+      vm.newControlFlow.activity.representation.y? &&
       vm.newControlFlow.xTo? &&
       vm.newControlFlow.yTo?
 
-    selectedElementHasType = (type) ->
+    selectedActivityHasType = (type) ->
       return unless type && vm.selected.length is 1
-      _.first(vm.selected)?.element_type is type
+      _.first(vm.selected)?.activity_type is type
 
-    elementMousedown = (element, event) ->
+    activityMousedown = (activity, event) ->
       vm.canvas.disablePan()
 
       if event.shiftKey
-        startNewControlFlow(element, event)
+        startNewControlFlow(activity, event)
       else
         if event.ctrlKey
-          toggleElementSelected(element)
+          toggleActivitySelected(activity)
         else
-          selectElement(element)
+          selectActivity(activity)
 
-        startDragging(element, event) 
+        startDragging(activity, event) 
 
-    elementMouseup = (element, event) ->
+    activityMouseup = (activity, event) ->
       if vm.connecting
-        vm.newControlFlow.targetElement = element
+        vm.newControlFlow.targetActivity = activity
         createControlFlow()
         stopNewControlFlow()
 
@@ -135,17 +135,17 @@ angular.module 'WFMS.ProcessDesign'
           deleteSelected()
 
     updateCursorPos = (event) ->
-      [x, y] = toElementCoordinates(vm.svg, event.clientX, event.clientY)
+      [x, y] = toActivityCoordinates(vm.svg, event.clientX, event.clientY)
       vm.cursor = x: x, y: y
 
     moveControlFlow = (event) ->
-      [x, y] = toElementCoordinates(vm.newControlFlow.startNode, event.clientX, event.clientY)
-      vm.newControlFlow.xTo = x + vm.newControlFlow.element.representation.x
-      vm.newControlFlow.yTo = y + vm.newControlFlow.element.representation.y
+      [x, y] = toActivityCoordinates(vm.newControlFlow.startNode, event.clientX, event.clientY)
+      vm.newControlFlow.xTo = x + vm.newControlFlow.activity.representation.x
+      vm.newControlFlow.yTo = y + vm.newControlFlow.activity.representation.y
 
-    startNewControlFlow = (element, event) ->
+    startNewControlFlow = (activity, event) ->
       vm.connecting = true
-      vm.newControlFlow = element: element, startNode: event.target
+      vm.newControlFlow = activity: activity, startNode: event.target
 
     stopNewControlFlow = ->
       vm.connecting = false
@@ -159,46 +159,46 @@ angular.module 'WFMS.ProcessDesign'
 
     stopDragging = ->
       if vm.dragging and vm.dragTarget?
-        for element in vm.selected
-          saveElementRepresentation(element)
+        for activity in vm.selected
+          saveActivityRepresentation(activity)
 
       vm.dragging = false
       vm.dragTarget = undefined
 
-    startDragging = (element, event) ->
-      element.representation ||= {x: 0, y: 0}
+    startDragging = (activity, event) ->
+      activity.representation ||= {x: 0, y: 0}
       vm.dragging = true
       vm.dragTarget = event.target
-      [vm.dragStartX, vm.dragStartY] = toElementCoordinates(vm.dragTarget, event.clientX, event.clientY)
+      [vm.dragStartX, vm.dragStartY] = toActivityCoordinates(vm.dragTarget, event.clientX, event.clientY)
 
     drag = (event) ->
       return unless vm.dragging && vm.dragTarget
 
-      [dragPosX, dragPosY] = toElementCoordinates(vm.dragTarget, event.clientX, event.clientY)
-      for element in vm.selected
-        element.representation.x += dragPosX - vm.dragStartX
-        element.representation.y += dragPosY - vm.dragStartY
+      [dragPosX, dragPosY] = toActivityCoordinates(vm.dragTarget, event.clientX, event.clientY)
+      for activity in vm.selected
+        activity.representation.x += dragPosX - vm.dragStartX
+        activity.representation.y += dragPosY - vm.dragStartY
 
-        element.representation.x = applyRaster(element.representation.x)
-        element.representation.y = applyRaster(element.representation.y)
+        activity.representation.x = applyRaster(activity.representation.x)
+        activity.representation.y = applyRaster(activity.representation.y)
 
-    selectElement = (element) ->
-      vm.selected = [element] unless isSelected(element)
+    selectActivity = (activity) ->
+      vm.selected = [activity] unless isSelected(activity)
 
-    toggleElementSelected = (element) ->
-      if isSelected(element)
-        _.remove(vm.selected, element)
+    toggleActivitySelected = (activity) ->
+      if isSelected(activity)
+        _.remove(vm.selected, activity)
       else
-        vm.selected.push(element)
+        vm.selected.push(activity)
 
     deleteSelected = ->
       if vm.selected.length
-        for element in vm.selected
-          ProcessElements.delete(element).then ->
-            _.remove(vm.processElements, element)
+        for activity in vm.selected
+          Activities.delete(activity).then ->
+            _.remove(vm.activities, activity)
 
             for controlFlow in vm.controlFlows
-              _.remove(vm.controlFlows, controlFlow) if controlFlow.predecessor is element or controlFlow.successor is element
+              _.remove(vm.controlFlows, controlFlow) if controlFlow.predecessor is activity or controlFlow.successor is activity
 
     closeCircleMenu = ->
       vm.circleMenuVisible = false
@@ -214,22 +214,22 @@ angular.module 'WFMS.ProcessDesign'
       vm.circleMenuPos = x: x, y: y
       vm.circleMenuVisible = true
 
-    saveElementRepresentation = (element) ->
-      ProcessElementRepresentations.update(element.representation)
+    saveActivityRepresentation = (activity) ->
+      ActivityRepresentations.update(activity.representation)
 
-    createProcessElement = (type) ->
-      ProcessElements.create(type, vm.processDefinition.id)
-      .then (element) -> 
-        vm.processElements.push(new ProcessElement(element))
+    createActivity = (type) ->
+      Activities.create(type, vm.processDefinition.id)
+      .then (activity) -> 
+        vm.activities.push(new Activity(activity))
       .catch (response) ->
 
-    deleteProcessElement = (element) ->
-      ProcessElements.delete(element)
-      .then (element) ->
+    deleteActivity = (activity) ->
+      Activities.delete(activity)
+      .then (activity) ->
 
-    saveProcessElement = (element) ->
-      ProcessElements.update(element)
-      .then (element) ->
+    saveActivity = (activity) ->
+      Activities.update(activity)
+      .then (activity) ->
 
     activate()
 

@@ -40,7 +40,7 @@ module Workflow
           link_output_to_successor_input(activity_instance, successor_instance)
         end
         
-        if activity_instance.activity.type == 'EndElement'
+        if activity_instance.activity.type == 'EndActivity'
           @queue.clear
           link_output_to_workflow_output(activity_instance)
         end 

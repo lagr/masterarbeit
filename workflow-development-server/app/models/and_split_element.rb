@@ -1,3 +1,3 @@
-class AndSplitElement < ActiveRecord::Base
+class AndSplitActivity < ActiveRecord::Base
   include IsPartOfProcess
 end

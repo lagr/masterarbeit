@@ -1,3 +1,3 @@
-class AndJoinElement < ActiveRecord::Base
+class AndJoinActivity < ActiveRecord::Base
   include IsPartOfProcess
 end

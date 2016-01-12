@@ -29,16 +29,16 @@ wfb = WorkflowBundle.create workflows: [wf2, wf3], servers: [execution_server]
 
 [wf, wf2].each do |workflow|
   wf_process_definition = workflow.process_definition
-  wf_process_elements = wf_process_definition.process_elements
+  wf_activities = wf_process_definition.activities
 
-  start1      = wf_process_elements.create! element: StartElement.create
-  start2      = wf_process_elements.create! element: StartElement.create
-  join1       = wf_process_elements.create! element: OrJoinElement.create
-  split1      = wf_process_elements.create! element: AndSplitElement.create
-  activity    = wf_process_elements.create! element: ContainerActivity.create(image: 'alpine', parameters: ['ls']), process_element_representation: ProcessElementRepresentation.new(name: 'Date')
-  m_activity  = wf_process_elements.create! element: ManualActivity.create, process_element_representation: ProcessElementRepresentation.new(name: 'Mark as finished')
-  join2       = wf_process_elements.create! element: AndJoinElement.create
-  end1        = wf_process_elements.create! element: EndElement.create
+  start1      = wf_activities.create! element: StartActivity.create
+  start2      = wf_activities.create! element: StartActivity.create
+  join1       = wf_activities.create! element: OrJoinActivity.create
+  split1      = wf_activities.create! element: AndSplitActivity.create
+  activity    = wf_activities.create! element: ContainerActivity.create(image: 'alpine', parameters: ['ls']), activity_representation: ActivityRepresentation.new(name: 'Date')
+  m_activity  = wf_activities.create! element: ManualActivity.create, activity_representation: ActivityRepresentation.new(name: 'Mark as finished')
+  join2       = wf_activities.create! element: AndJoinActivity.create
+  end1        = wf_activities.create! element: EndActivity.create
 
   m_activity.element.assignments.create assigned_role: clerk
 
@@ -53,13 +53,13 @@ wfb = WorkflowBundle.create workflows: [wf2, wf3], servers: [execution_server]
 end
 
 wf_process_definition = wf3.process_definition
-wf_process_elements = wf_process_definition.process_elements
+wf_activities = wf_process_definition.activities
 
-start1      = wf_process_elements.create! element: StartElement.create
-subworkflow = wf_process_elements.create! element: SubWorkflowActivity.create(name: wf.name, sub_workflow: wf)
-end1        = wf_process_elements.create! element: EndElement.create
+start1      = wf_activities.create! element: StartActivity.create
+subworkflow = wf_activities.create! element: SubWorkflowActivity.create(name: wf.name, sub_workflow: wf)
+end1        = wf_activities.create! element: EndActivity.create
 
 start1      .outgoing_control_flows.create! successor: subworkflow
 subworkflow .outgoing_control_flows.create! successor: end1
 
-ProcessElement.all.each { |pe| pe.update_attributes input_schema: {} }
+Activity.all.each { |pe| pe.update_attributes input_schema: {} }

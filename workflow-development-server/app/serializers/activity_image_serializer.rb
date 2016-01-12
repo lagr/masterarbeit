@@ -1,6 +1,6 @@
-class ProcessElementImageSerializer < ActiveModel::Serializer
+class ActivityImageSerializer < ActiveModel::Serializer
   attribute :element_id, key: :id
-  attribute :element_type, key: :type
+  attribute :activity_type, key: :type
   has_many :outgoing_control_flows, key: :successors, embed: :id
 
   def outgoing_control_flows

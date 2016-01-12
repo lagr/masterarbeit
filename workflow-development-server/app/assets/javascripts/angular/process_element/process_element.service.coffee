@@ -1,16 +1,16 @@
 angular.module 'WFMS.ProcessDesign'
-.factory 'ProcessElements', (Restangular, $q) ->
+.factory 'Activities', (Restangular, $q) ->
   create: (type, processDefinitionId) ->
-    processElement =
-      element_type: type
+    activity =
+      activity_type: type
       process_definition_id: processDefinitionId
       
-    Restangular.restangularizeElement(null, processElement, 'process_elements').post()
+    Restangular.restangularizeActivity(null, activity, 'activities').post()
 
-  delete: (processElement) ->
-    Restangular.restangularizeElement(null, processElement, 'process_elements').remove()
+  delete: (activity) ->
+    Restangular.restangularizeActivity(null, activity, 'activities').remove()
 
-  update: (processElement) -> 
-    processElement = Restangular.restangularizeElement(null, processElement, 'process_elements')
-    processElement.put()
+  update: (activity) -> 
+    activity = Restangular.restangularizeActivity(null, activity, 'activities')
+    activity.put()
     $q.when()

@@ -2,12 +2,12 @@ module ImageManager
   extend self
 
   ELEMENT_TYPE_TO_IMAGE_NAME = {
-    'StartElement' => 'start',
-    'EndElement' => 'end',
-    'OrSplitElement' => 'or_split',
-    'OrJoinElement' => 'or_join',
-    'AndSplitElement' => 'and_split',
-    'AndJoinElement' => 'and_join',
+    'StartActivity' => 'start',
+    'EndActivity' => 'end',
+    'OrSplitActivity' => 'or_split',
+    'OrJoinActivity' => 'or_join',
+    'AndSplitActivity' => 'and_split',
+    'AndJoinActivity' => 'and_join',
     'ManualActivity' => 'manual',
     'AutomaticActivity' => 'automatic',
     'ContainerizedActivity' => 'containerized'

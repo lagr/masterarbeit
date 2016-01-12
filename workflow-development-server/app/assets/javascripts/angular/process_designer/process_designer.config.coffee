@@ -6,24 +6,24 @@ angular.module 'WFMS.ProcessDesign'
       maxZoom: 10
       fit: false 
       minZoom: 0.5
-      viewportSelector: 'g.process-elements'
+      viewportSelector: 'g.activities'
       preventMouseEventsDefault: false
 
-  processElements:
-    StartElement:
-      templateName: 'start_element'
-    EndElement:
-      templateName: 'end_element'
+  activities:
+    StartActivity:
+      templateName: 'start_activity'
+    EndActivity:
+      templateName: 'end_activity'
     ManualActivity:
       templateName: 'manual_activity'
-    OrSplitElement:
-      templateName: 'or_split_element'
-    OrJoinElement:
-      templateName: 'or_join_element'
-    AndSplitElement:
-      templateName: 'and_split_element'
-    AndJoinElement:
-      templateName: 'and_join_element'
+    OrSplitActivity:
+      templateName: 'or_split_activity'
+    OrJoinActivity:
+      templateName: 'or_join_activity'
+    AndSplitActivity:
+      templateName: 'and_split_activity'
+    AndJoinActivity:
+      templateName: 'and_join_activity'
     AutomaticActivity:
       templateName: 'automatic_activity'
     ContainerizedActivity:

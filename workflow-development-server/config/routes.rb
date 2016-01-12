@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   root 'application#index'
   
   resources :control_flows, only: [:create, :destroy]
-  resources :process_element_representations, only: [:update]
-  resources :process_elements
+  resources :activity_representations, only: [:update]
+  resources :activities
   resources :workflow_bundles
   resources :workflows
 

@@ -1,3 +1,3 @@
-class OrSplitElement < ActiveRecord::Base
+class OrSplitActivity < ActiveRecord::Base
   include IsPartOfProcess
 end

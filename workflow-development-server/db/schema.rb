@@ -119,19 +119,19 @@ ActiveRecord::Schema.define(version: 20151106231005) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "process_element_representations", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "activity_representations", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "name"
-    t.uuid     "process_element_id"
+    t.uuid     "activity_id"
     t.integer  "x",                  default: 0
     t.integer  "y",                  default: 0
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
   end
 
-  create_table "process_elements", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "activities", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.uuid     "process_definition_id"
     t.uuid     "element_id"
-    t.string   "element_type"
+    t.string   "activity_type"
     t.jsonb    "input_schema"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false

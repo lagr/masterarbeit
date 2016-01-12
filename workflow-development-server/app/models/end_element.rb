@@ -1,3 +1,3 @@
-class EndElement < ActiveRecord::Base
+class EndActivity < ActiveRecord::Base
   include IsPartOfProcess
 end

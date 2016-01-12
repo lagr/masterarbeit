@@ -1,20 +1,20 @@
 angular.module 'WFMS.ProcessDesign'
-.directive 'processElement', ($compile, $templateCache, $templateRequest, processDesignerConfig) ->
+.directive 'activity', ($compile, $templateCache, $templateRequest, processDesignerConfig) ->
 
-  elementTemplate = (element) ->
-    url = "/templates/process_designer/process_elements/#{processDesignerConfig.processElements[element.element_type].templateName}"
+  activityTemplate = (activity) ->
+    url = "/templates/process_designer/activities/#{processDesignerConfig.activities[activity.activity_type].templateName}"
     $templateRequest(url).then -> $templateCache.get(url)
 
   restrict: 'A'
   templateNamespace: 'svg'
   scope:
-    element: '=processElement'
+    activity: '=activity'
   link: (scope, domElement, attrs) ->
-    scope.element.domElement = domElement
+    scope.activity.domElement = domElement
 
-    scope.$watch 'element', ->
-      return unless scope.element?.element_type?
-      templatePromise = elementTemplate(scope.element)
+    scope.$watch 'activity', ->
+      return unless scope.activity?.activity_type?
+      templatePromise = activityTemplate(scope.activity)
       templatePromise.then (template) ->
         domElement.html(template).show()
         $compile(domElement.contents())(scope)

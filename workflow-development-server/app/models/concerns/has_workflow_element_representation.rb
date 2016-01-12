@@ -1,7 +1,7 @@
-module HasProcessElementRepresentation
+module HasActivityRepresentation
   extend ActiveSupport::Concern
 
   included do
-    has_one :process_element_representation
+    has_one :activity_representation
   end
 end

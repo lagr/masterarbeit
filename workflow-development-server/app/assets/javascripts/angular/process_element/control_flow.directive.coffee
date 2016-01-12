@@ -3,7 +3,7 @@ angular.module 'WFMS.ProcessDesign'
   restrict: 'A'
   replace: true
   templateNamespace: 'svg'
-  templateUrl: '/templates/process_designer/process_elements/control_flow'
+  templateUrl: '/templates/process_designer/activities/control_flow'
   scope:
     controlFlow: '=controlFlow'
     processDesigner: '=processDesigner'

@@ -11,8 +11,8 @@
 
     %rect.grid{ width: '100%', height: '100%', fill: 'url(#grid)', ng_click: 'processDesigner.canvasClicked($event)' }
 
-    %g.process-elements{ transform: 'matrix(1,0,0,1,0,0)' }
-      = render partial: 'templates/process_designer/process_elements'
+    %g.activities{ transform: 'matrix(1,0,0,1,0,0)' }
+      = render partial: 'templates/process_designer/activities'
       
     = render partial: 'templates/process_designer/circle_menu'
 

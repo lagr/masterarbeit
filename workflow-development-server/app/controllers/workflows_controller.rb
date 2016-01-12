@@ -7,7 +7,7 @@ class WorkflowsController < ApplicationController
     @workflow = Workflow.find(params[:id])
     if params[:for_designer]
       render json: @workflow, serializer: WorkflowFullSerializer, include: [
-        'process_definition', 'process_definition.process_elements', 'process_definition.control_flows', 'workflow.name'
+        'process_definition', 'process_definition.activities', 'process_definition.control_flows', 'workflow.name'
       ]
     else
       render json: @workflow, serializer: WorkflowSerializer
