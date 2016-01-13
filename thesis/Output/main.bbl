@@ -1,0 +1,98 @@
+\begin{thebibliography}{} \raggedright
+% this bibliography was produced with the style iswiwwu.bst v0.5.3.2
+\makeatletter
+\newcommand{\dinatlabel}[1]%
+\makeatother
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax\def\url#1{\texttt{#1}}\fi
+
+\backrefparscanfalse\bibitem[Alonso \bibUA(1997)Alonso, Agrawal, Abbadi,
+  Mohan]{Alonso1997Functionality}
+\dinatlabel{Alonso \bibUA 1997}  Alonso, G.; Agrawal, D.; Abbadi, A.~E.; Mohan,
+  C.:
+\newblock Functionality and Limitations of Current Workflow Management Systems.
+\newblock \bibIN~IEEE Expert,
+\newblock 12 (1997).
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Becker \bibUA(1999)Becker, Uthmann, zur Muhlen,
+  Rosemann]{Becker1999Identifying}
+\dinatlabel{Becker \bibUA 1999}  Becker, J.; Uthmann, C.V.; Muhlen, M. zur;
+  Rosemann, M.:
+\newblock Identifying the workflow potential of business processes.
+\newblock \bibIN~Proceedings of the 32nd Annual Hawaii International Conference
+  on Systems Sciences, 1999. HICSS-32. \bibBD~Track5, 1999, \bibSs~10 pp.--.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Casati \bibUA(1999)Casati, Ceri, Paraboschi,
+  Pozzi]{Casati1999Specification}
+\dinatlabel{Casati \bibUA 1999}  Casati, Fabio; Ceri, Stefano; Paraboschi,
+  Stefano; Pozzi, Guiseppe:
+\newblock \href{http://dx.doi.org/10.1145/328939.328996}{Specification and
+  implementation of exceptions in workflow management systems}.
+\newblock \bibIN~ACM Transactions on Database Systems,
+\newblock 24 (1999)   3, \bibSs~405--451.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Docker({\natexlab{a}})]{Docker????Docker}
+\dinatlabel{Docker {\natexlab{a}}}  Docker, Inc.:
+\newblock Docker Documentation.
+\newblock \url{https://docs.docker.com/}.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Docker({\natexlab{b}})]{Docker????Dockera}
+\dinatlabel{Docker {\natexlab{b}}}  Docker, Inc.:
+\newblock The Docker user guide.
+\newblock \url{https://docs.docker.com/engine/userguide/}.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Docker({\natexlab{c}})]{Docker????DockerCom}
+\dinatlabel{Docker {\natexlab{c}}}  Docker, Inc.:
+\newblock Docker.com.
+\newblock \url{http://docker.com}.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Felter \bibUA(2014)Felter, Ferreira, Rajamony,
+  Rubio, Felter, Ferreira, Rajamony, Rubio]{Felter2014Updated}
+\dinatlabel{Felter \bibUA 2014}  Felter, Wes; Ferreira, Re; Rajamony, Ram;
+  Rubio, Juan; Felter, Wes; Ferreira, Alexandre; Rajamony, Ram; Rubio, Juan:
+\newblock An Updated Performance Comparison of Virtual Machines and Linux
+  Containers.
+\newblock 2014.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Hollingsworth(1995)]{Hollingsworth1995Wfmc}
+\dinatlabel{Hollingsworth 1995}  Hollingsworth, David:
+\newblock WfMC: Workflow Reference Model. In: Specification
+\newblock Workflow Management Coalition,
+  \url{http://www.wfmc.org/standards/docs/tc003v11.pdf} 1995.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Initiative()]{Initiative????Open}
+\dinatlabel{Initiative }  Initiative, Open~C.:
+\newblock Open Containers Initative.
+\newblock \url{https://www.opencontainers.org}.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Lawrence(1997)]{Lawrence1997Workflow}
+\dinatlabel{Lawrence 1997}  Lawrence, Peter:
+\newblock Workflow Handbook 1997.
+\newblock New York, NY, USA: John Wiley \& Sons, Inc. 1997.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Pahl(2015)]{Pahl2015Containerization}
+\dinatlabel{Pahl 2015}  Pahl, Claus:
+\newblock \href{http://dx.doi.org/10.1109/MCC.2015.51}{Containerization and the
+  PaaS Cloud}.
+\newblock \bibIN~IEEE Cloud Computing,
+\newblock 2 (2015)   3, \bibSs~24--31.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Ruiz \bibUA(2015)Ruiz, Jeanvoine,
+  Nussbaum]{Ruiz2015Performance}
+\dinatlabel{Ruiz \bibUA 2015}  Ruiz, C.; Jeanvoine, E.; Nussbaum, L.:
+\newblock \href{http://dx.doi.org/10.1007/978-3-319-27308-2\_65}{Performance
+  evaluation of containers for HPC}.
+\newblock \bibIN~Lecture Notes in Computer Science (including subseries Lecture
+  Notes in Artificial Intelligence and Lecture Notes in Bioinformatics),
+\newblock 9523 (2015), \bibSs~813--824.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Wutke \bibUA(2008)Wutke, Martin,
+  Leymann]{Wutke2008Model}
+\dinatlabel{Wutke \bibUA 2008}  Wutke, Daniel; Martin, Daniel; Leymann, Frank:
+\newblock Model and Infrastructure for Decentralized Workflow Enactment.
+\newblock \bibIN~Proceedings of the 2008 ACM Symposium on Applied Computing.
+\newblock New York, NY, USA: ACM 2008 (SAC '08), \bibSs~90--94. --
+\newblock \url{http://doi.acm.org/10.1145/1363686.1363712}. --
+\newblock ISBN 978-1-59593-753-7.
+\backrefprint\backrefparscantrue
+\end{thebibliography}

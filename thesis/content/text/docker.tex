@@ -1,74 +1,102 @@
 % -*- root: ../../main.tex -*- %
-  When multiple applications or application instances shall be run on one machine, they are usually isolated from each other in terms of execution environments and provided with a controllable share of system resources \cite{Felter2014Updated}. These goals can be fulfilled by both virtual machines and containers.
+  When multiple applications or application instances shall be run on one physical machine without interfering with each other, they are usually isolated in terms of execution environments and provided with a controllable share of system resources \cite{Felter2014Updated}. These goals can be fulfilled by both virtual machines and software containers \cite{Ruiz2015Performance}. The difference between these two options and the basic principles of software containers are shown in \ref{sec:docker_concepts}.
 
-  ** here be dragons **
-
-  Docker is a tool, that simplifies container creation and management. In Section \ref{sec:concepts} the underlying concepts will be presented. Based on that, the functionality that Docker provides will be explained in Section \ref{sec:functionality}. Finally, the Docker ecosystem, \ie the set of tools that enhance the core docker tool, is introduced in Section \ref{sec:docker_ecosystem}.
+  Docker is a tool, that simplifies software container creation and management. In Section \ref{sec:docker_concepts} its underlying concepts will be presented. Based on that, the functionality that Docker provides will be explained in Section \ref{sec:functionality}. Finally, the Docker ecosystem, \ie the set of tools that enhance the core docker tool, is introduced in Section \ref{sec:docker_ecosystem}.
 
 \section{Concepts} % (fold)
-\label{sec:concepts}
+\label{sec:docker_concepts}
 
-  \subsection{Application Containers} % (fold)
-  \label{sub:application_containers}
-  
-  % subsection application_containers (end)
+  First, the concept of software containers will be presented and contrasted against the concept of virtual machines. This is necessary to understand \emph{what} Docker does. Then, internal constructs of Docker -- images, containers, data volumes, dockerfiles, registries and repositories -- are explained, in order to provide an understanding on \emph{how} Docker does what it does.
 
-  \subsection{Docker Images} % (fold)
-  \label{sub:docker_images}
-    - image layering
-    \cite{Docker????Docker}
-  % subsection docker_images (end)
+  \subsection{Virtualization and Software Containers} % (fold)
+  \label{sub:virtualization_and_software_containers}
+    The goal of \emph{virtualization} is to simulate the presence of multiple computers on one machine. The use of this is XXX. There are two kinds of virtualization, one that takes place on the hardware level and another that takes place on the \ac{OS} level \cite{Ruiz2015Performance}.
 
-  \subsection{Docker Containers} % (fold)
-  \label{sub:docker_containers}
-    - runtime instance of a docker image
-    - last layer on top of the other images
+    \paragraph{Hardware-level virtualization} % (fold)
+    \label{par:hardware_level_virtualization}
+      In most cases when speaking about virtualization, \emph{hardware-level virtualization} is referred to. It is usually driven by a \emph{hypervisor} -- a service that manages virtual machines and provides them with abstracted hardware devices to run on. This hypervisor either either runs in the OS of the host machine or directly on its hardware \cite{Ruiz2015Performance}. \\
+      The virtual machines, \ie the computers simulated on the host machine, require their own OS to be installed.
+    % paragraph hardware_level_virtualization (end)
+
+    \paragraph{OS-level virtualization -- or container-based virtualization} % (fold)
+    \label{par:os_level_virtualization}
+      The other kind of virtualization, \emph{OS-level virtualization}, is the one that Docker makes use of.
+      It utilizes functions of the host kernel which allow the execution of several isolated userspace instances that share the same kernel, but may differ in terms of their runtime environment, \eg file system or system libraries. These isolated userspace instances are usually called \emph{software containers} or just \emph{containers}. This type of virtualization is therefore also referred to as \emph{container-based virtualization} \cite{Ruiz2015Performance}. \\
+
+      The isolation and resource management in container-based virtualization on Linux systems are mainly achieved by two mechanisms, \emph{\ac{cgroups}} and \emph{namespaces}. While the former allows to group processes and manage their resource usage, the latter can be used on many system components. Namespaces may be introduced for example on network interfaces, the file system, users and user groups, \ac{PID}s, and other components, in order to achieve a fine grained control over the respective isolation \cite{Ruiz2015Performance}. \\
+      Besides Docker, there are several solutions that are all based on the aforementioned kernel features, \eg LXC, LXD, lmctfy, systemd-nspawn, etc \cite{Ruiz2015Performance}. There are ongoing efforts to create a common container standard \cite{Initiative????Open}.
+
+      Many container solutions rely on a strategy called \emph{\ac{CoW}} to provide a runtime enviroment, which on the one hand lets the containers reuse system libraries and the like while on the other hand limits the container in affecting its surroundings \cite{Docker????Dockera,Pahl2015Containerization}. This strategy is explained in a more detailed fashion in \ref{sub:docker_images_and_containers} on the example of Docker.
+
+    % paragraph os_level_virtualization (end)
+  % subsection virtualization_and_software_containers (end)
+
+  \subsection{Docker Images and Containers} % (fold)
+  \label{sub:docker_images_and_containers}
+    \ac{CoW} is a strategy which makes use of the benefits of both sharing files for read access and copying them to a local version previous to changing them. Processes that require access to a file share the same instance of that file. As soon as one process needs to alter the file, the operating system creates a copy to which only the process has access to. All other processes still use the original file \cite{Pahl2015Containerization,Docker????Dockera}.
+
+    Docker images (referred to as just \emph{images} from here) are the basis for Docker containers. Each image consists of a sequence of layers, where each layer summarizes one \ac{CoW} step, \ie the alterations to the file system that one command causes compared to the previous layer. Each layer is uniquely identifiable, which allows the same layer to be used by several images.
+
+    Docker containers are runtime instances of images.
+    In the context of storage, a Docker container can be considered as an image, \ie a set of read-only layers, with a writable layer on top of it -- the \emph{container layer}. Write operations within a container trigger a \ac{CoW} operation which copies the targeted file to the container layer, where the write operation is then performed. \\
+    Besides reducing the amount of space consumed by containers, the \ac{CoW} strategy also reduces the time required to start a container. This is because Docker only has to create the container layer instead of providing a copy of all the filed contained in the respective image \cite{Docker????Dockera}.
+
     - *lifecycle of a docker container here*
-  % subsection docker_containers (end)
+  % subsection docker_images_and_containers (end)
 
   \subsection{Data Volumes} % (fold)
   \label{sub:data_volumes}
-  
+    Any data written to the container layer is deleted as soon as its Docker container is deleted.
+    Also, Docker containers that store a lot of data are considerably larger than Docker containers that do not, since the write operations require space in the container layer. This is the reason why data volumes exist -- they are designed to persist data. Data volumes are directories or files that are mounted directly into a Docker container and thus bypass the storage driver \cite{Docker????Docker}. They are never deleted automatically and therefore must be cleaned up manually when they are not needed anymore \cite{Docker????Dockera}.
+
   % subsection data_volumes (end)
 
   \subsection{Dockerfiles} % (fold)
   \label{sub:dockerfiles}
-  
+    - text document that contains the commands one would normally execute manually in order to build a Docker image
+    - Docker builds images automatically by reading the instructions from a Dockerfile
+    \cite{Docker????Docker}
+
   % subsection dockerfiles (end)
 
   \subsection{Registries and Repositories} % (fold)
   \label{sub:registries_and_repositories}
-  
+    - registry: a hosted service containing repositories of images
+    - repository:  a set of Docker images
+    \cite{Docker????Docker}
+
   % subsection registries_and_repositories (end)
 
 % section concepts (end)
 
-\section{Functionality} % (fold)
-\label{sec:functionality}
+\section{Docker Engine} % (fold)
+\label{sec:docker_engine}
 
-% section functionality (end)
+ The Docker Engine forms the core of Docker. It features a daemon which provides the functionality and a \ac{CLI} which controls said daemon \cite{Docker????DockerCom}. Together, they enable the user to work with Docker containers.
+
+% section docker_engine (end)
 
 \section{Docker Ecosystem} % (fold)
 \label{sec:docker_ecosystem}
 
   \subsection{Docker Swarm} % (fold)
   \label{sub:docker_swarm}
-    
+
   % subsection docker_swarm (end)
 
   \subsection{Docker Machine} % (fold)
   \label{sub:docker_machine}
-  
+
   % subsection docker_machine (end)
 
   \subsection{Docker Compose} % (fold)
   \label{sub:docker_compose}
-  
+
   % subsection docker_compose (end)
 
   \subsection{Docker Hub} % (fold)
   \label{sub:docker_hub}
-  
+
   % subsection docker_hub (end)
 
 % section docker_ecosystem (end)
