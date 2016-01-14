@@ -53,19 +53,42 @@
 
   \subsection{Dockerfiles} % (fold)
   \label{sub:dockerfiles}
-    - text document that contains the commands one would normally execute manually in order to build a Docker image
-    - Docker builds images automatically by reading the instructions from a Dockerfile
-    \cite{Docker????Docker}
+    Instead of manually creating a container, running commands on it and then commiting it to create an image, Docker can be instructed by a recipe file -- the \emph{dockerfile}. In this file, the user states an image that the new image should be based on and the commands that otherwise would be entered manually \cite{Docker????Docker}. \\
+    To build an image, Docker is given a Dockerfile and a directory with files required for the build, the \emph{context}, which is usually the directory the Dockerfile is located in. This enables Docker to copy files from the context to some layer within the image, if needed \cite{Docker????Docker}.
 
   % subsection dockerfiles (end)
 
   \subsection{Registries and Repositories} % (fold)
   \label{sub:registries_and_repositories}
-    - registry: a hosted service containing repositories of images
-    - repository:  a set of Docker images
-    \cite{Docker????Docker}
+    A registry stores named Docker images and distributes them on request. Each image may be available in different tagged versions in a registry \cite{Docker????Dockera}. \\
+    Within a registry, images may be organized in collections, which are called \emph{repositories} \cite{Docker????Docker}.
 
   % subsection registries_and_repositories (end)
+
+  \subsection{Docker Networks} % (fold)
+  \label{sub:docker_networks}
+    As mentioned in \ref{sub:virtualization_and_software_containers}, Docker features virtual networks in order to isolate containers in this regard, but at the same time allow containers to communicate with the host, each other and the outside world. These networks are based on virtual interfaces and are managed by the Docker daemon. Containers may be member of multiple networks at the same time \cite{Docker????Dockera}.
+
+    By default, Docker installs three networks: a \emph{bridge} network, a \emph{host} network, and a \emph{none} network. \\
+    The \emph{bridge} network, titled \emph{docker0}, is a subnetwork that is connected to the host's networks. Docker connects containers to this network if it is not instructed otherwise. Containers that are membsers of this network can communicate with each other by using their respective IP addresses. They also may expose ports that can be mapped to the hosts network, which makes applications in them accessible from the outside. \\
+    The \emph{host} network represents the actual hosts network. If containers are assigned to this network, they will be placed in the hosts network stack, \ie all network interfaces defined on the host are available to the container \cite{Docker????Dockera}. \\
+    The \emph{none} network provides containers with their own network stack. Containers that are only members of the \emph{none} network are completely isolated in regards to network communication, unless futher configuration is undertaken \cite{Docker????Dockera}.
+
+    Besides the network types mentioned above, Docker features another type of network, the \emph{overlay} network. Overlay networks are virtual networks that are based on existing network connections. They are intended to simplify the communication between containers running on multiple hosts which, in turn, run on multiple machines themselves. If a container is member of an overlay network, it is able to communicate with all other containers that are also part of this network, no matter which Docker host (or host machine) they are running on \cite{Docker????Dockera}. \\
+    Docker's overlay network requires a key-value store to be present in order to persist information on its own state, \eg on lower level networks that it relies on, network members, etc.
+
+      %- service discovery
+
+      % The benefits of service discovery are very well known: it’s a great way to remove the need to manually specify topology network information (IP and port) of an environment (dev, prod, etc.) when launching containers.
+
+      % Docker links force you to use environment variables or “placeholder” hostnames in the application image configuration files. This is a great way to allow the image to be reusable across different environments. Both environment variables and DNS hostnames are supported in virtually any programming language, needing very little change to the application codebase.
+
+
+    % The intention of these networks is to segregate services such that the only things on a network are things that need to talk to each other. This means in practice you should have lots of networks with small amounts of containers in them. Networks are all isolated from each other. If two containers are not on the same network, they cannot talk.  http://www.container42.com/2015/10/30/docker-networking-reborn/
+
+    % Service discovery is one component of in an overall strategy aimed at making container deployments scalable and flexible. Service discovery is used so that containers can find out about the environment they have been introduced to without administrator intervention. They can find connection information for the components they must interact with, and they can register themselves so that other tools know that they are available. These tools also typically function as globally distributed configuration stores where arbitrary config settings can be set for the services operating in your infrastructure. https://www.digitalocean.com/community/tutorials/the-docker-ecosystem-an-introduction-to-common-components
+
+  % subsection docker_networks (end)
 
 % section concepts (end)
 
@@ -79,24 +102,27 @@
 \section{Docker Ecosystem} % (fold)
 \label{sec:docker_ecosystem}
 
+  Around the Docker Engine, several other solutions have evolved to cope with different specialized tasks that are asscociated with building and running containers. In the following, a selection from these solutions will be introduced briefly.
+
   \subsection{Docker Swarm} % (fold)
   \label{sub:docker_swarm}
+    Docker Swarm allows applications which rely on several Docker containers to be run on a cluster of machines. It provides an abstraction that lets a set of Docker Engines behave like a single Docker Engine. Further it features a mechanism that automatically assigns container to a specific host based on given rules \cite{Docker????Dockerb}.
+
+    A swarm setup typically consists of one or more \emph{swarm managers}, multiple Docker hosts, and, in case that no remote discovery service is used, a local discovery service \cite{Docker????Dockera}.
+
+    - scheduling
 
   % subsection docker_swarm (end)
 
   \subsection{Docker Machine} % (fold)
   \label{sub:docker_machine}
-
+    The goal of the Docker Machine tool is to facilitate the setup of Docker hosts. In order to fulfill this goal, Docker Machine creates one virtual machine per requested host \cite{Docker????Dockerb,Docker????Dockera}. This has several reasons. First, this proceeding allows several Docker hosts to run on the same machine without having them interfere with each other. Second, it enables machines with \ac{OS}s, which natively do not support Docker and Docker containers, to act as a host \cite{Docker????Dockera}. And third, as the virtual machine image is known, it lets the setup procedure make assumptions on its environment, which simplifies the installation and configuration of the Docker Engine.
   % subsection docker_machine (end)
 
   \subsection{Docker Compose} % (fold)
   \label{sub:docker_compose}
+    Docker Compose is a tool that enables the user to specify and run applications that consist of many containers. Similar to the way an image is described in a Dockerfile, the user lists the required containers and their respective run configuration in a YAML (?) file. Docker Compose interprets this file and sets the containers up accordingly \cite{Docker????Dockerb}.
 
   % subsection docker_compose (end)
-
-  \subsection{Docker Hub} % (fold)
-  \label{sub:docker_hub}
-
-  % subsection docker_hub (end)
 
 % section docker_ecosystem (end)

@@ -31,18 +31,24 @@
 \newblock \bibIN~ACM Transactions on Database Systems,
 \newblock 24 (1999)   3, \bibSs~405--451.
 \backrefprint\backrefparscantrue
-\backrefparscanfalse\bibitem[Docker({\natexlab{a}})]{Docker????Docker}
+\backrefparscanfalse\bibitem[Docker({\natexlab{a}})]{Docker????Dockera}
 \dinatlabel{Docker {\natexlab{a}}}  Docker, Inc.:
 \newblock Docker Documentation.
 \newblock \url{https://docs.docker.com/}.
 \backrefprint\backrefparscantrue
-\backrefparscanfalse\bibitem[Docker({\natexlab{b}})]{Docker????Dockera}
+\backrefparscanfalse\bibitem[Docker({\natexlab{b}})]{Docker????Dockerb}
 \dinatlabel{Docker {\natexlab{b}}}  Docker, Inc.:
+\newblock Docker Orchestration Product Brief.
+\newblock
+  \url{https://www.docker.com/sites/default/files/products/PB\_Orchestration\_03.06.2015.pdf}.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Docker({\natexlab{c}})]{Docker????Docker}
+\dinatlabel{Docker {\natexlab{c}}}  Docker, Inc.:
 \newblock The Docker user guide.
 \newblock \url{https://docs.docker.com/engine/userguide/}.
 \backrefprint\backrefparscantrue
-\backrefparscanfalse\bibitem[Docker({\natexlab{c}})]{Docker????DockerCom}
-\dinatlabel{Docker {\natexlab{c}}}  Docker, Inc.:
+\backrefparscanfalse\bibitem[Docker({\natexlab{d}})]{Docker????DockerCom}
+\dinatlabel{Docker {\natexlab{d}}}  Docker, Inc.:
 \newblock Docker.com.
 \newblock \url{http://docker.com}.
 \backrefprint\backrefparscantrue
@@ -85,6 +91,16 @@
 \newblock \bibIN~Lecture Notes in Computer Science (including subseries Lecture
   Notes in Artificial Intelligence and Lecture Notes in Bioinformatics),
 \newblock 9523 (2015), \bibSs~813--824.
+\backrefprint\backrefparscantrue
+\backrefparscanfalse\bibitem[Stubbs \bibUA(2015)Stubbs, Moreira,
+  Dooley]{Stubbs2015Distributed}
+\dinatlabel{Stubbs \bibUA 2015}  Stubbs, Joe; Moreira, Walter; Dooley, Rion:
+\newblock Distributed Systems of Microservices Using Docker and Serfnode, IEEE
+  2015, \bibSs~34--39. --
+\newblock
+  \url{http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=7217926}.
+  --
+\newblock ISBN 978-1-4673-7459-0.
 \backrefprint\backrefparscantrue
 \backrefparscanfalse\bibitem[Wutke \bibUA(2008)Wutke, Martin,
   Leymann]{Wutke2008Model}
