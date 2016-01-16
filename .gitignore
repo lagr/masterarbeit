@@ -63,3 +63,5 @@ thesis/*.mtc
 thesis/*.mtc1
 thesis/*.out
 thesis/*.synctex.gz
+
+.DS_store
