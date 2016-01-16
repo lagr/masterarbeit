@@ -1,0 +1,5 @@
+service:
+  restart: always
+  build: ./logging_service
+db:
+  image: redis

@@ -1,0 +1,22 @@
+db:
+  image: postgres
+  volumes_from:
+    - db_data
+  environment:
+    POSTGRES_PASSWORD: masterarbeit
+    POSTGRES_USER: organization_service
+db_data:
+  image: cogniteev/echo
+  command: echo 'Data Container for PostgreSQL'
+  volumes:
+    - /var/lib/postgresql/datap
+  environment:
+    - "constraint:node==development-machine"
+# service:
+#   build: ./organization_service
+#   command: bundle exec rails s -p 3000
+#   net: "organization_net"
+#   volumes:
+#     - /var/run/docker.sock:/var/run/docker.sock
+#   ports:
+#     - "3000:3000"
