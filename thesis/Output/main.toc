@@ -38,26 +38,26 @@
 \contentsline {section}{\numberline {3.3}Docker Ecosystem}{12}{section.3.3}
 \contentsline {subsection}{\numberline {3.3.1}Docker Swarm}{12}{subsection.3.3.1}
 \contentsline {subsection}{\numberline {3.3.2}Docker Machine}{12}{subsection.3.3.2}
-\contentsline {subsection}{\numberline {3.3.3}Docker Compose}{12}{subsection.3.3.3}
-\contentsline {chapter}{\numberline {4}Application Design}{13}{chapter.4}
-\contentsline {section}{\numberline {4.1}Determination of Objectives}{13}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}Functional Requirements}{13}{subsection.4.1.1}
-\contentsline {subsubsection}{Infrastructure and Infrastructure Management}{13}{subsection.4.1.1}
-\contentsline {subsubsection}{Workflow Modeling}{13}{subsection.4.1.1}
-\contentsline {subsubsection}{Workflow Distribution}{13}{subsection.4.1.1}
-\contentsline {subsubsection}{Workflow Execution}{13}{subsection.4.1.1}
-\contentsline {subsubsection}{Integration of Third Party Containers}{13}{subsection.4.1.1}
-\contentsline {subsection}{\numberline {4.1.2}Intangible Requirements}{13}{subsection.4.1.2}
-\contentsline {subsection}{\numberline {4.1.3}Derived Objectives}{13}{subsection.4.1.3}
-\contentsline {section}{\numberline {4.2}Architecture}{13}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}Application Architecture}{13}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}Workflow Execution Environment}{13}{subsection.4.2.2}
-\contentsline {subsection}{\numberline {4.2.3}Workflow Management Environment}{13}{subsection.4.2.3}
-\contentsline {subsection}{\numberline {4.2.4}Developer Client}{13}{subsection.4.2.4}
-\contentsline {subsection}{\numberline {4.2.5}User Client}{13}{subsection.4.2.5}
-\contentsline {chapter}{\numberline {5}Prototypical Implementation}{14}{chapter.5}
-\contentsline {section}{\numberline {5.1}Toolchain}{14}{section.5.1}
-\contentsline {section}{\numberline {5.2}Realization of the Architecture}{14}{section.5.2}
-\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{15}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{16}{chapter.7}
-\contentsline {chapter}{\nonumberline Bibliography}{17}{chapter*.14}
+\contentsline {subsection}{\numberline {3.3.3}Docker Compose}{13}{subsection.3.3.3}
+\contentsline {chapter}{\numberline {4}Application Design}{14}{chapter.4}
+\contentsline {section}{\numberline {4.1}Determination of Objectives}{14}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Functional Requirements}{14}{subsection.4.1.1}
+\contentsline {subsubsection}{Infrastructure and Infrastructure Management}{14}{subsection.4.1.1}
+\contentsline {subsubsection}{Workflow Modeling}{14}{subsection.4.1.1}
+\contentsline {subsubsection}{Workflow Distribution}{14}{subsection.4.1.1}
+\contentsline {subsubsection}{Workflow Execution}{14}{subsection.4.1.1}
+\contentsline {subsubsection}{Integration of Third Party Containers}{14}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Intangible Requirements}{14}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Derived Objectives}{14}{subsection.4.1.3}
+\contentsline {section}{\numberline {4.2}Architecture}{14}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Application Architecture}{14}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Workflow Execution Environment}{14}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3}Workflow Management Environment}{14}{subsection.4.2.3}
+\contentsline {subsection}{\numberline {4.2.4}Developer Client}{14}{subsection.4.2.4}
+\contentsline {subsection}{\numberline {4.2.5}User Client}{14}{subsection.4.2.5}
+\contentsline {chapter}{\numberline {5}Prototypical Implementation}{15}{chapter.5}
+\contentsline {section}{\numberline {5.1}Toolchain}{15}{section.5.1}
+\contentsline {section}{\numberline {5.2}Realization of the Architecture}{15}{section.5.2}
+\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{16}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{17}{chapter.7}
+\contentsline {chapter}{\nonumberline Bibliography}{18}{chapter*.15}

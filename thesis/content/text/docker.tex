@@ -1,7 +1,7 @@
 % -*- root: ../../main.tex -*- %
   When multiple applications or application instances shall be run on one physical machine without interfering with each other, they are usually isolated in terms of execution environments and provided with a controllable share of system resources \cite{Felter2014Updated}. These goals can be fulfilled by both virtual machines and software containers \cite{Ruiz2015Performance}. The difference between these two options and the basic principles of software containers are shown in \ref{sec:docker_concepts}.
 
-  Docker is a tool, that simplifies software container creation and management. In Section \ref{sec:docker_concepts} its underlying concepts will be presented. Based on that, the functionality that Docker provides will be explained in Section \ref{sec:functionality}. Finally, the Docker ecosystem, \ie the set of tools that enhance the core docker tool, is introduced in Section \ref{sec:docker_ecosystem}.
+  Docker is a tool, that aims at simplifying software container creation and management. In Section \ref{sec:docker_concepts} its underlying concepts will be presented. Based on that, the functionality that Docker provides will be explained in Section \ref{sec:functionality}. Finally, the Docker ecosystem, \ie the set of tools that enhance the core docker tool, is introduced in Section \ref{sec:docker_ecosystem}.
 
 \section{Concepts} % (fold)
 \label{sec:docker_concepts}
@@ -95,7 +95,8 @@
 \section{Docker Engine} % (fold)
 \label{sec:docker_engine}
 
- The Docker Engine forms the core of Docker. It features a daemon which provides the functionality and a \ac{CLI} which controls said daemon \cite{Docker????DockerCom}. Together, they enable the user to work with Docker containers.
+ The Docker Engine forms the core of Docker.
+ Docker uses a client-server architecture: it features a daemon which provides the functionality and a client that controls said daemon \cite{Docker????DockerCom}. Together, they enable the user to work with Docker containers. Both the client and the daemon may run on the same system, or be connected remotely via sockets or through a \ac{REST} \ac{API} \cite{Docker????Dockera}.
 
 % section docker_engine (end)
 
@@ -108,9 +109,10 @@
   \label{sub:docker_swarm}
     Docker Swarm allows applications which rely on several Docker containers to be run on a cluster of machines. It provides an abstraction that lets a set of Docker Engines behave like a single Docker Engine. Further it features a mechanism that automatically assigns container to a specific host based on given rules \cite{Docker????Dockerb}.
 
-    A swarm setup typically consists of one or more \emph{swarm managers}, multiple Docker hosts, and, in case that no remote discovery service is used, a local discovery service \cite{Docker????Dockera}.
+    A swarm setup typically consists of one or more \emph{swarm managers}, multiple Docker hosts, and, in case that no remote discovery service is used, a local discovery service. By default, every new container is assigned to a swarm-specific overlay network \cite{Docker????Dockera}.
 
-    - scheduling
+    Docker Swarm provides two kinds of mechanisms for the assignment of containers to Docker hosts, \emph{filters} and \emph{strategies}. Strategies tell Docker how to rank hosts for assignment by some specified criteria, \eg resource usage or number of deployed containers. \\
+    Filters allow to specify rules, which Docker tries to apply when searching for an assignment target. Possible rules could for example be matchers for the host's name or identifier, its \ac{OS}, or for custom tags, which may describe the host's role or properties like size of attached storage. It is also possible to declare the affinity of certain containers or images for being deployed on the same host \cite{Docker????Dockera}.
 
   % subsection docker_swarm (end)
 
