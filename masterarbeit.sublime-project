@@ -7,12 +7,15 @@
     },
     {
       "path": "workflow-execution-server",
-      "folder_exclude_patterns": ["tmp", "bin", "test", "public", "vendor"] 
+      "folder_exclude_patterns": ["tmp", "bin", "test", "public", "vendor"]
     },
-		{
-			"path": "server-configurations",
+    {
+      "path": "server-configurations",
       "folder_exclude_patterns": ["*_bak", "*_base", "*_dind"]
-		},
+    },
+    {
+      "path": "code"
+    },
     {
       "path": "thesis",
       "root": "thesis/main.tex",
