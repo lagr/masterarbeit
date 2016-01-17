@@ -19,7 +19,7 @@ echo "Consul machine ur is $consul_machine_url"
 
 #=========== Development machine ===========
 # Create machine on which the swarm master, the registry, and the development services will run
-echo "\n\nCreate machine on which the swarm master and the development services will run...\n"
+echo "\n\nCreate machine on which the swarm master and the development services will run..."
 docker-machine create -d virtualbox                  \
 	--swarm --swarm-master                           \
 	--swarm-discovery="$consul_machine_url"          \
@@ -36,7 +36,7 @@ registry_url=$(docker-machine ip development-machine):5000
 
 #=========== Internal machine ===========
 # Create machine on which the internal enactment will run
-echo "\n\nCreate machine on which the internal enactment will run...\n"
+echo "\n\nCreate machine on which the internal enactment will run..."
 docker-machine create -d virtualbox                  \
 	--swarm                                          \
 	--swarm-discovery="$consul_machine_url"          \
@@ -49,7 +49,7 @@ docker-machine create -d virtualbox                  \
 
 #=========== External machine ===========
 # Create machine on which the external enactment for wfs with space needs will run
-echo "\n\nCreate machine on which the external enactment for wfs with space needs will run...\n"
+echo "\n\nCreate machine on which the external enactment for wfs with space needs will run..."
 docker-machine create -d virtualbox                  \
 	--swarm                                          \
 	--swarm-discovery="$consul_machine_url"          \
@@ -66,9 +66,9 @@ eval "$(docker-machine env --swarm development-machine)"
 
 # create overlay networks
 echo "\n\n Create overlay networks..."
-docker network create backend_net
-docker network create frontend_net
-docker network create enactment_net
+echo "Create backend network: $(docker network create backend_net)"
+echo "Create frontend network: $(docker network create frontend_net)"
+echo "Create enactment network: $(docker network create enactment_net)"
 
 # show created machines and info on swarm master
 docker info
