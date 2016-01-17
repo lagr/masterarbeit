@@ -2,21 +2,28 @@ db:
   image: postgres
   volumes_from:
     - db_data
+  net: "backend_net"
   environment:
-    POSTGRES_PASSWORD: masterarbeit
-    POSTGRES_USER: organization_service
+    - "constraint:node==$TARGET_NODE"
+    - POSTGRES_PASSWORD=masterarbeit
+    - POSTGRES_USER=organization_service
 db_data:
   image: cogniteev/echo
   command: echo 'Data Container for PostgreSQL'
+  net: "backend_net"
   volumes:
     - /var/lib/postgresql/datap
   environment:
-    - "constraint:node==development-machine"
-# service:
-#   build: ./organization_service
-#   command: bundle exec rails s -p 3000
-#   net: "organization_net"
-#   volumes:
-#     - /var/run/docker.sock:/var/run/docker.sock
-#   ports:
-#     - "3000:3000"
+    - "constraint:node==$TARGET_NODE"
+service:
+  image: $REGISTRY/organization_service
+  command: bundle exec rails s -b 0.0.0.0
+  net: "backend_net"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  ports:
+    - "3000:3000"
+  environment:
+    - "constraint:node==$TARGET_NODE"
+    - POSTGRES_PASSWORD=masterarbeit
+    - POSTGRES_USER=organization_service
