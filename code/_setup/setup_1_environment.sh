@@ -33,21 +33,8 @@ docker-machine create -d virtualbox                  \
 
 registry_url=$(docker-machine ip development-machine):5000
 
-# #=========== Internal machine 1 ===========
-# # Create machine on which the support services will run
-# echo "\n\nCreate machine on which the support services will run...\n"
-# docker-machine create -d virtualbox                  \
-# 	--swarm                                          \
-# 	--swarm-discovery="$consul_machine_url"          \
-# 	--engine-opt="cluster-store=$consul_machine_url" \
-# 	--engine-opt="cluster-advertise=eth1:2376"       \
-# 	--engine-label edu.proto.machine_env="internal"  \
-# 	--engine-label edu.proto.ram="big-ram"           \
-#	--engine-insecure-registry $registry_url         \
-# 	support-machine
 
-
-#=========== Internal machine 2 ===========
+#=========== Internal machine ===========
 # Create machine on which the internal enactment will run
 echo "\n\nCreate machine on which the internal enactment will run...\n"
 docker-machine create -d virtualbox                  \
@@ -60,7 +47,7 @@ docker-machine create -d virtualbox                  \
 	enactment-machine-1
 
 
-#=========== External machine 1 ===========
+#=========== External machine ===========
 # Create machine on which the external enactment for wfs with space needs will run
 echo "\n\nCreate machine on which the external enactment for wfs with space needs will run...\n"
 docker-machine create -d virtualbox                  \
@@ -72,20 +59,6 @@ docker-machine create -d virtualbox                  \
 	--engine-label edu.proto.hdd="big-hdd"           \
 	--engine-insecure-registry $registry_url         \
 	cloud-machine-1
-
-
-# #=========== External machine 2 ===========
-# # Create machine on which the external enactment for wfs without space needs will run
-# echo "\n\nCreate machine on which the external enactment for wfs without space needs will run...\n"
-# docker-machine create -d virtualbox                  \
-# 	--swarm                                          \
-# 	--swarm-discovery="$consul_machine_url"          \
-# 	--engine-opt="cluster-store=$consul_machine_url" \
-# 	--engine-opt="cluster-advertise=eth1:2376"       \
-# 	--engine-label edu.proto.machine_env="external"  \
-# 	--engine-label edu.proto.hdd="regular-hdd"       \
-#	--engine-insecure-registry $registry_url         \
-# 	cloud-machine-2
 
 
 #=========== Show results ===========
