@@ -9,9 +9,7 @@
 echo "\n\nCreate machine on which the discovery service will run...\n"
 docker-machine create -d=virtualbox consul-machine
 eval $(docker-machine env consul-machine)
-cd ./consul
-docker-compose up -d
-cd ..
+docker-compose -f ./consul/docker-compose.yml up -d
 
 consul_machine_ip=$(docker-machine ip consul-machine)
 consul_machine_url="consul://$consul_machine_ip:8500"
@@ -30,8 +28,10 @@ docker-machine create -d virtualbox                  \
 	--engine-label edu.proto.machine_env="internal"  \
 	--engine-label edu.proto.ram="big-ram"           \
 	--engine-label edu.proto.cpu="big-cpu"           \
+	--engine-insecure-registry localhost:5000        \
 	development-machine
 
+registry_url=$(docker-machine ip development-machine):5000
 
 # #=========== Internal machine 1 ===========
 # # Create machine on which the support services will run
@@ -43,6 +43,7 @@ docker-machine create -d virtualbox                  \
 # 	--engine-opt="cluster-advertise=eth1:2376"       \
 # 	--engine-label edu.proto.machine_env="internal"  \
 # 	--engine-label edu.proto.ram="big-ram"           \
+#	--engine-insecure-registry $registry_url         \
 # 	support-machine
 
 
@@ -55,6 +56,7 @@ docker-machine create -d virtualbox                  \
 	--engine-opt="cluster-store=$consul_machine_url" \
 	--engine-opt="cluster-advertise=eth1:2376"       \
 	--engine-label edu.proto.machine_env="internal"  \
+	--engine-insecure-registry $registry_url         \
 	enactment-machine-1
 
 
@@ -68,6 +70,7 @@ docker-machine create -d virtualbox                  \
 	--engine-opt="cluster-advertise=eth1:2376"       \
 	--engine-label edu.proto.machine_env="external"  \
 	--engine-label edu.proto.hdd="big-hdd"           \
+	--engine-insecure-registry $registry_url         \
 	cloud-machine-1
 
 
@@ -81,6 +84,7 @@ docker-machine create -d virtualbox                  \
 # 	--engine-opt="cluster-advertise=eth1:2376"       \
 # 	--engine-label edu.proto.machine_env="external"  \
 # 	--engine-label edu.proto.hdd="regular-hdd"       \
+#	--engine-insecure-registry $registry_url         \
 # 	cloud-machine-2
 
 
