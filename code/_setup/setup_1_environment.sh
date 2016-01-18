@@ -58,33 +58,11 @@ docker-machine create -d virtualbox                  \
 	--engine-label edu.proto.machine_env="external"  \
 	--engine-label edu.proto.hdd="big-hdd"           \
 	--engine-insecure-registry $registry_url         \
-	cloud-machine-1
+	cloud-machine
 
-
-#=========== add service registrators ===========
-eval "$(docker-machine env --swarm development-machine)"
-# docker run -d \
-#     --net=host \
-#     -e "constraint:node==development-machine" \
-#     --volume=/var/run/docker.sock:/tmp/docker.sock \
-#     gliderlabs/registrator:latest \
-#     $consul_machine_url
-
-# docker run -d \
-#     --net=host \
-#     -e "constraint:node==internal-machine" \
-#     --volume=/var/run/docker.sock:/tmp/docker.sock \
-#     gliderlabs/registrator:latest \
-#     $consul_machine_url
-
-# docker run -d \
-#     --net=host \
-#     -e "constraint:node==cloud-machine" \
-#     --volume=/var/run/docker.sock:/tmp/docker.sock \
-#     gliderlabs/registrator:latest \
-#     $consul_machine_url
 
 #=========== Show results ===========
+eval "$(docker-machine env --swarm development-machine)"
 
 # create overlay networks
 echo "\n\n Create overlay networks..."
