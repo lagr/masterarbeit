@@ -61,8 +61,30 @@ docker-machine create -d virtualbox                  \
 	cloud-machine-1
 
 
-#=========== Show results ===========
+#=========== add service registrators ===========
 eval "$(docker-machine env --swarm development-machine)"
+# docker run -d \
+#     --net=host \
+#     -e "constraint:node==development-machine" \
+#     --volume=/var/run/docker.sock:/tmp/docker.sock \
+#     gliderlabs/registrator:latest \
+#     $consul_machine_url
+
+# docker run -d \
+#     --net=host \
+#     -e "constraint:node==internal-machine" \
+#     --volume=/var/run/docker.sock:/tmp/docker.sock \
+#     gliderlabs/registrator:latest \
+#     $consul_machine_url
+
+# docker run -d \
+#     --net=host \
+#     -e "constraint:node==cloud-machine" \
+#     --volume=/var/run/docker.sock:/tmp/docker.sock \
+#     gliderlabs/registrator:latest \
+#     $consul_machine_url
+
+#=========== Show results ===========
 
 # create overlay networks
 echo "\n\n Create overlay networks..."
