@@ -2,35 +2,83 @@
 
 # This script should setup the development and administration services
 # Precondition: Environment setup was successfully executed
+compose='docker-compose --x-networking'
 
-# create overlay networks
-eval "$(docker-machine env --swarm development-machine)"
-docker network create organization_net
-docker network create dev_net
-docker network create logging_net
-docker network create enactment_net
+registry_node='coordination-machine'
+development_node='development-machine'
+organization_node='internal-machine'
+logging_node='internal-machine'
 
-# launch services
+switch_to () {
+  eval "$(docker-machine env ${*})"
+}
+
+run_container () {
+  echo "---"
+  echo "$1"
+  echo "$2"
+  echo "$3"
+  echo "---"
+  REGISTRY=$(docker-machine ip coordination-machine):5000 \
+  TARGET_NODE=$1 \
+  $compose -p $2 -f ../_$3.yml up -d
+}
+
+
+# =========== pull base images ===========
+#switch_to development-machine
 eval "$(docker-machine env development-machine)"
-docker-compose --x-networking -p registry     -f ../_registry.yml     up -d
-docker-compose --x-networking -p organization -f ../_organization.yml up -d
-docker-compose --x-networking -p logging      -f ../_logging.yml      up -d
-docker-compose --x-networking -p development  -f ../_development.yml  up -d
-docker-compose --x-networking -p wf_engine    -f ../_wf_engine.yml    up -d
 
-# since compose does not support multiple networks yet, the other networks must be assigned manually
+docker pull cogniteev/echo
+docker pull alpine
+docker pull registry:2
+docker pull postgres
+docker pull ruby:2.2
+
+
+# =========== build service images ===========
+docker build -t "development_app" ../development_app
+
+docker build -t "organization_service" ../organization_service
+docker tag -f organization_service $(docker-machine ip $registry_node):5000/organization_service
+docker push $(docker-machine ip $registry_node):5000/organization_service
+
+# =========== launch services ===========
+echo "Build and launch development app..."
+#docker build -t "development_app" ../development_app
+$compose -p development -f ../_development.yml up -d
+
 eval "$(docker-machine env --swarm development-machine)"
-docker network connect organization_net development_app_1
-docker network connect organization_net wf_engine_service_1
+#switch_to --swarm development-machine
 
-docker network connect engine_net registry_registry_1
+echo "Build and launch organization service..."
+#docker build -t "organization_service" ../organization_service
 
-docker network connect logging_net wf_engine_service_1
-docker network connect logging_net development_app_1
+#docker tag organization_service $(docker-machine ip $registry_node):5000/organization_service
+#docker push $(docker-machine ip $registry_node):5000/organization_service
+#docker -H $(docker-machine ip $organization_node):2376 pull $(docker-machine ip $registry_node):5000/organization_service
 
-docker network connect enactment_net registry_registry_1
-docker network connect enactment_net development_app_1
-docker network connect enactment_net development_app_1
+# REGISTRY=$(docker-machine ip $registry_node):5000 \
+# TARGET_NODE=$organization_node \
+# $compose -p organization -f ../_organization.yml up -d
+run_container $organization_node organization organization
 
+sleep 5
+docker exec -it organization_service_1 rake db:migrate:reset db:seed
 
+# === Logging service
+# echo "\n\nBuild and launch logging service..."
+# docker build \
+#   --build-arg="constraint:node==$logging_node" \
+#   -t "localhost:5000/logging_service" \
+#   ../logging_service
 
+# docker push localhost:5000/logging_service
+# docker -H $(docker-machine ip $logging_node):2376 pull $(docker-machine ip $registry_node):5000/logging_service
+
+run_container $logging_node logging logging
+# REGISTRY=$(docker-machine ip $registry_node):5000 \
+# TARGET_NODE=$logging_node \
+# $compose -p logging -f ../_logging.yml up -d
+
+docker network connect backend_net logging_service_1

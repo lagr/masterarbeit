@@ -3,6 +3,3 @@ service:
   image: registry:2
   ports:
     - 5000:5000
-  environment:
-    - "constraint:node==$TARGET_NODE"
-  net: "backend_net"

@@ -11,10 +11,9 @@ db_data:
   volumes:
     - /var/lib/postgresql/data
 app:
-  build: ./development_app
-  command: bundle exec rails s
+  image: development_app
+  command: bundle exec rails s -b 0.0.0.0
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
   ports:
     - "3000:3000"
-  net: "dev_net"
