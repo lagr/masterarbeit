@@ -31,18 +31,18 @@
 \newblock \bibIN~ACM Transactions on Database Systems,
 \newblock 24 (1999)   3, \bibSs~405--451.
 \backrefprint\backrefparscantrue
-\backrefparscanfalse\bibitem[Docker({\natexlab{a}})]{Docker????Dockera}
+\backrefparscanfalse\bibitem[Docker({\natexlab{a}})]{Docker????Dockerb}
 \dinatlabel{Docker {\natexlab{a}}}  Docker, Inc.:
 \newblock Docker Documentation.
 \newblock \url{https://docs.docker.com/}.
 \backrefprint\backrefparscantrue
-\backrefparscanfalse\bibitem[Docker({\natexlab{b}})]{Docker????Dockerb}
+\backrefparscanfalse\bibitem[Docker({\natexlab{b}})]{Docker????Docker}
 \dinatlabel{Docker {\natexlab{b}}}  Docker, Inc.:
 \newblock Docker Orchestration Product Brief.
 \newblock
   \url{https://www.docker.com/sites/default/files/products/PB\_Orchestration\_03.06.2015.pdf}.
 \backrefprint\backrefparscantrue
-\backrefparscanfalse\bibitem[Docker({\natexlab{c}})]{Docker????Docker}
+\backrefparscanfalse\bibitem[Docker({\natexlab{c}})]{Docker????Dockera}
 \dinatlabel{Docker {\natexlab{c}}}  Docker, Inc.:
 \newblock The Docker user guide.
 \newblock \url{https://docs.docker.com/engine/userguide/}.
