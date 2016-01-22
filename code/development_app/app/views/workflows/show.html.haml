@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @workflow.name
+%p
+  %b User:
+  = @workflow.user_id
+
+= link_to 'Edit', edit_workflow_path(@workflow)
+\|
+= link_to 'Back', workflows_path

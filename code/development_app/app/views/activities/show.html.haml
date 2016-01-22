@@ -1,0 +1,30 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @activity.name
+%p
+  %b Type:
+  = @activity.type
+%p
+  %b Process definition:
+  = @activity.process_definition_id
+%p
+  %b Input schema:
+  = @activity.input_schema
+%p
+  %b Output schema:
+  = @activity.output_schema
+%p
+  %b Activity configuration:
+  = @activity.activity_configuration
+%p
+  %b X:
+  = @activity.x
+%p
+  %b Y:
+  = @activity.y
+
+= link_to 'Edit', edit_activity_path(@activity)
+\|
+= link_to 'Back', activities_path

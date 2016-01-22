@@ -16,3 +16,4 @@ WORKDIR /app
 ADD ["Gemfile", "Gemfile.lock", "/app/"]
 RUN bundle install
 ADD . /app
+RUN chmod +x /app/start

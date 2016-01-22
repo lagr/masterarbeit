@@ -1,0 +1,6 @@
+#!/bin/bash
+sleep 5
+rake wfms:create_db_if_non_existant
+
+SWARM_MANAGER_URL=tcp://$SWARM_MANAGER_IP:3376 \
+bundle exec rails s -b 0.0.0.0

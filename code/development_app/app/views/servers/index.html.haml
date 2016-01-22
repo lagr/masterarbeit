@@ -1,0 +1,40 @@
+%h1 Listing servers
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Ip
+      %th Containers
+      %th
+      %th
+      %th
+
+  %tbody
+    - @servers.each do |server|
+      %tr
+        %td= server.name
+        %td= server.ip
+        %td= link_to 'Show', server
+        %td= link_to 'Edit', edit_server_path(server)
+        %td= link_to 'Destroy', server, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Server', new_server_path
+
+%br
+
+%h1 Unmanaged servers
+
+%table
+  %thead
+    %tr
+      %th Ip
+      %th
+
+  %tbody
+    - @unmanaged_servers.each do |server|
+      %tr
+        %td= server.ip
+        %td= link_to 'Add', new_server_path(ip: server.ip)
