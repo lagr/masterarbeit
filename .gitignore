@@ -65,3 +65,6 @@ thesis/*.out
 thesis/*.synctex.gz
 
 .DS_store
+
+
+/code/_setup/images.tar
