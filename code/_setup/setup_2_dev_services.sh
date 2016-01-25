@@ -37,15 +37,15 @@ run_container () {
 # =========== pull base images ===========
 eval "$(docker-machine env development-machine)"
 
-docker pull cogniteev/echo
-docker pull alpine
-docker pull registry:2
-docker pull postgres
-docker pull ruby:2.2
+# docker pull cogniteev/echo
+# docker pull alpine
+# docker pull registry:2
+# docker pull postgres
+# docker pull ruby:2.2
 
 # =========== build service images ===========
 build_container "development_app" development_app
-build_and_push_container "organization_service" organization_service
+# build_and_push_container "organization_service" organization_service
 
 # =========== launch services ===========
 echo "Launch development app..."
@@ -56,13 +56,13 @@ eval "$(docker-machine env --swarm development-machine)"
 docker network connect backend_net development_app_1
 
 # === organization service
-echo "Launch organization service..."
-run_container $organization_node organization organization
-sleep 5 && docker exec -it organization_service_1 rake db:migrate:reset db:seed
+# echo "Launch organization service..."
+# run_container $organization_node organization organization
+# sleep 5 && docker exec -it organization_service_1 rake db:migrate:reset db:seed
 
 # === logging service
-echo "Launch logging service..."
-run_container $logging_node logging logging
-docker network connect backend_net logging_service_1
+# echo "Launch logging service..."
+# run_container $logging_node logging logging
+# docker network connect backend_net logging_service_1
 
 echo "\nFinished: $(date)\n"

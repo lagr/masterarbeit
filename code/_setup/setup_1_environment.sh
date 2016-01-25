@@ -12,10 +12,12 @@ run_registrator () {
 	    $consul_url
 }
 
+
 #=========== Discovery service machine ===========
 echo "\n\nCreate machine on which the discovery service and the registry will run...\n"
 docker-machine create -d=virtualbox --swarm coordination-machine
 eval $(docker-machine env coordination-machine)
+docker load -i images.tar # load images to coordination machine
 docker-compose -f ./consul/docker-compose.yml up -d
 docker-compose -p registry -f ../_registry.yml up -d
 
@@ -68,6 +70,9 @@ docker-machine create -d virtualbox                        \
 #docker run -d --name swarm-agent swarm join --advertise $coordination_machine_ip:2376 $consul_url
 #=========== Run service registrators ===========
 eval "$(docker-machine env --swarm development-machine)"
+
+docker load -i images.tar # load images to all machines
+
 run_registrator development-machine
 run_registrator internal-machine
 run_registrator cloud-machine
