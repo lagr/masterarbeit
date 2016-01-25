@@ -12,8 +12,16 @@ db_data:
     - /var/lib/postgresql/data
 app:
   image: development_app
-  command: bundle exec rails s -b 0.0.0.0
+  command: /app/start
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
+    - ~/.docker/machine/certs/:/root/.docker
   ports:
     - "3000:3000"
+  environment:
+    SERVICE_NAME: development_app
+    SWARM_MANAGER_IP: $SWARM_MANAGER_IP
+    SWARM_MANAGER_URL: tcp://$SWARM_MANAGER_IP:3376
+    SWARM_MANAGER_CERT_PATH: '/root/.docker'
+    POSTGRES_PASSWORD: masterarbeit
+    POSTGRES_USER: workflow_development_server

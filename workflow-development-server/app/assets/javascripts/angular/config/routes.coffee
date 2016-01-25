@@ -17,7 +17,7 @@ angular.module 'WFMS.WorkflowDevelopmentApplication'
           templateUrl: 'dashboard.html'
           controller: 'DashboardController'
           controllerAs: 'dbCtrl'
-  
+
   $stateProvider.state(stateName, state) for stateName, state of states
   $urlRouterProvider.otherwise('/dashboard')
 

@@ -45,6 +45,9 @@ eval "$(docker-machine env development-machine)"
 
 # =========== build service images ===========
 build_container "development_app" development_app
+
+echo "Build wf engine service ..."
+build_container "wf_engine_service" wf_engine_service
 # build_and_push_container "organization_service" organization_service
 
 # =========== launch services ===========
@@ -52,8 +55,12 @@ echo "Launch development app..."
 SWARM_MANAGER_IP=$(docker-machine ip development-machine) \
 $compose -p development -f ../_development.yml up -d
 
+SWARM_MANAGER_IP=$(docker-machine ip development-machine) \
+$compose -p wfengine -f ../_wf_engine.yml up -d
+
 eval "$(docker-machine env --swarm development-machine)"
 docker network connect backend_net development_app_1
+docker network connect backend_net wfengine_service_1
 
 # === organization service
 # echo "Launch organization service..."

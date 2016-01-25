@@ -11,6 +11,9 @@ class ServersController < ApplicationController
   # GET /servers/1
   # GET /servers/1.json
   def show
+    @required_images = [{ name: 'alpine', version: 'latest' }, { name: 'alpineee', version: 'latest' }] #@server.required_images
+    @installed_images = EnvironmentManager.index_images(@server)
+    merge_required_and_installed_images
   end
 
   # GET /servers/new
@@ -63,6 +66,32 @@ class ServersController < ApplicationController
   end
 
   private
+    def merge_required_and_installed_images
+      @images = @installed_images.map do |installed_image|
+        repo_tag = installed_image.info['RepoTags'].first.split("/").last.split(':')
+        {
+          name: repo_tag.first,
+          version: repo_tag.last,
+          installed: true
+        }
+      end
+
+      @required_images.each do |required_image|
+        required_image[:required] = true
+
+        installed_image = @images.find do |i|
+          required_image[:name] == i[:name] && required_image[:version] == i[:version]
+        end
+
+        if installed_image.nil?
+          @images << required_image
+          required_image[:installed] = false
+        end
+
+        installed_image = nil
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_server
       @server = Server.find(params[:id])

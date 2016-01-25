@@ -9,7 +9,7 @@
     = csrf_meta_tags
   %body
     = yield
-    
+
     / Preload the first visible templates for responsiveness
     %script{ type: 'text/ng-template', id: 'application.html' }
       = render partial: 'templates/application'

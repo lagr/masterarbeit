@@ -1,2 +1,3 @@
 #!/bin/bash
-bundle exec rails s -b 0.0.0.0 -p $EXECUTION_SERVER_PORT
+rake wfms:create_db_if_non_existant
+bundle exec rails s -b 0.0.0.0

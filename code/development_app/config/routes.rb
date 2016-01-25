@@ -1,9 +1,22 @@
 Rails.application.routes.draw do
   root to: 'application#index'
-  resources :roles
+
+  resources :roles do
+    resources :users
+  end
+
   resources :users
   resources :servers
-  resources :workflows
   resources :activities
-  resources :process_definitions, only: [:show, :update]
+
+  resources :workflows do
+    member do
+      get 'process_definition', to: 'process_definitions#edit'
+      put 'process_definition', to: 'process_definitions#update'
+    end
+  end
+
+  get '/dashboard/summary', to: 'dashboard#summary'
+
+  get 'templates/*template', to: 'templates#serve'
 end

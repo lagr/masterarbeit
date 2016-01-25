@@ -19,7 +19,6 @@
 #= require angular-aria
 #= require angular-animate
 #= require angular-material
-#= require angular-material-data-table
 #= require angular-formly
 #= require angular-uuid4
 #= require restangular

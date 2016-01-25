@@ -3,35 +3,119 @@ require 'fileutils'
 module ImageBuilder
   extend self
 
-  def build_images(build_configs)
-    built_images = { successful: {}, failed: [] }
+  ACTIVITY_CONTAINER_TEMPLATE_PATH = File.expand_path('lib/activity_container_files')
+  WORKFLOW_CONTAINER_TEMPLATE_FILES_PATH = File.expand_path('lib/workflow_container_files')
 
-    build_configs.each do |build_config|
+  def build_images(subjects)
+    built_images = { successful: [], failed: [] }
+
+    subjects.each do |subject|
       begin
-        image = build_image(build_config)
-        built_images[:successful][build_config[:name].to_sym] = image.id
+        image = build_image(subject)
+        built_images[:successful] << { image: image, subject: subject }
       rescue Exception => e
-        images[:failed] << { image: image, exception: e }
+        built_images[:failed] << { image: image, exception: e }
       end
     end
 
     built_images
   end
 
-  def build_image(build_config)
+  def build_image(subject)
+    case subject
+    when Workflow
+      build_image_from_config(workflow_build_config(subject))
+    when Activity
+      build_image_from_config(activity_build_config(subject))
+    end
+  end
+
+  def build_image_from_config(build_config)
+    type = build_config[:type]
+    base_name = DockerHelper.image_name(type: type)
     image = nil
+
+    build_base_image(type) unless Docker::Image.exist?(base_name)
+    base_image = Docker::Image.get(base_name)
+
     Dir.mktmpdir do |tmpdir|
       prepare_build_enviroment(tmpdir, build_config[:build_environment])
-      image = Docker::Image.build_from_dir(tmpdir)
-      image.tag build_config[:tag]
+      image = base_image.insert_local('localPath' => Dir.glob("#{tmpdir}/*"), 'outputPath' => "/#{build_config[:type]}/", 'rm' => true)
+      image.tag(repo: build_config[:name], tag: :latest, force: true)
     end
+
     image
   end
 
   private
 
+  def build_local(command)
+    Docker::Image.build(command, DockerHelper.local_docker_connection)
+  end
+
+  def build_base_image(type)
+    case type
+    when :workflow
+      build_workflow_base_image
+    when :activity
+      build_activity_base_image
+    end
+  end
+
+  def build_workflow_base_image
+    temp_image = build_local "FROM ruby:2.2\nRUN wget -qO- https://get.docker.com/ | sh"
+    temp_image = temp_image.insert_local('localPath' => Dir.glob("#{WORKFLOW_CONTAINER_TEMPLATE_FILES_PATH}/*.rb"), 'outputPath' => '/workflow/', 'rm' => true)
+    temp_image.tag repo: DockerHelper.image_name(type: :workflow), force: true
+  end
+
+  def build_activity_base_image
+    ruby_image = Docker::Image.get('ruby:2.2')
+    temp_image = ruby_image.insert_local('localPath' => Dir.glob("#{ACTIVITY_CONTAINER_TEMPLATE_PATH}/*.rb"), 'outputPath' => '/activity/', 'rm' => true)
+    temp_image.tag repo: DockerHelper.image_name(type: :activity), force: true
+  end
+
   def prepare_build_enviroment(tmpdir, config)
-    config[:files_to_write].each_pair do { |path, content| File.open("#{tmpdir}/#{path}", 'w') { |a| a.write(content) } }
-    config[:files_to_copy].each_pair do { |source, target| FileUtils.copy(source, "#{tmpdir}/#{target}") }
+    config[:files_to_write].each_pair { |path, content| File.open("#{tmpdir}/#{path}", 'w') { |a| a.write(content) } }
+    config[:files_to_copy].each_pair  { |source, target| FileUtils.copy(source, "#{tmpdir}/#{target}") }
+  end
+
+  def serialize_process_definition(workflow)
+    ActiveModel::SerializableResource.new(workflow.process_definition, serializer: ProcessDefinitionImageSerializer, include: '**').serializable_hash.to_json
+  end
+
+  def activity_build_config(activity)
+    image_name = DockerHelper.image_name(type: :activity, id: activity.id)
+    {
+      type: :activity,
+      name: image_name,
+      tag: { repo: image_name, tag: :latest, force: true },
+      build_environment: {
+        files_to_copy: {},
+        files_to_write: {
+          'input.schema.json' => {type: 'object', required: ['this'], properties: { this: {type: 'string'} } }.to_json,
+          #'input.schema' => activity.input_schema.to_json,
+          'input.mapping.json' => "{}",
+          'activity.info.json' => { image_name: image_name }.to_json
+        }
+      }
+    }
+  end
+
+  def workflow_build_config(workflow)
+    image_name = DockerHelper.image_name(type: :workflow, id: workflow.id)
+    {
+      type: :workflow,
+      name: image_name,
+      tag: { repo: image_name, tag: :latest, force: true },
+      build_environment: {
+        files_to_copy: {},
+        files_to_write: {
+          'process_definition.json' => serialize_process_definition(workflow),
+          'input.mapping.json' => '{}',
+          'input.schema.json' => { type: 'object', required: ['this'], properties: { this: { type: 'string' } } }.to_json,
+          'workflow.info.json' => { image_name: image_name }.to_json
+        }
+      }
+    }
   end
 end

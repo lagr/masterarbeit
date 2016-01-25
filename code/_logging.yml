@@ -5,3 +5,4 @@ service:
     - "constraint:node==$TARGET_NODE"
     - RABBITMQ_DEFAULT_USER=masterarbeit
     - RABBITMQ_DEFAULT_PASS=masterarbeit
+    - SERVICE_NAME=logging_service

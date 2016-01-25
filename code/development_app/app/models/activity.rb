@@ -6,7 +6,7 @@ class Activity < ActiveRecord::Base
   ELEMENTS_WITHOUT_PREDECESSOR  = [:start].freeze
 
   belongs_to :process_definition
-  belongs_to :subworkflow
+  belongs_to :subworkflow, class_name: 'Workflow', foreign_key: 'subworkflow_id'
   has_many :assignments
 
   store_accessor :input_schema
@@ -17,7 +17,7 @@ class Activity < ActiveRecord::Base
   has_many :incoming_control_flows, foreign_key: 'successor_id', class_name: 'ControlFlow', dependent: :destroy
   has_many :outgoing_control_flows, foreign_key: 'predecessor_id', class_name: 'ControlFlow', dependent: :destroy
 
-  validates :activity_type, inclusion: { in: ACTIVITY_TYPES }
+  validates :activity_type, inclusion: { in: ACTIVITY_TYPES.map(&:to_s) }
   validates_length_of :incoming_control_flows, maximum: 1, if: ->{ activity_type.in? Activity::ELEMENTS_WITH_ONE_PREDECESSOR }
   validates_length_of :outgoing_control_flows, maximum: 1, if: ->{ activity_type.in? Activity::ELEMENTS_WITH_ONE_SUCCESSOR   }
   validates_length_of :incoming_control_flows, is: 0,      if: ->{ activity_type.in? Activity::ELEMENTS_WITHOUT_PREDECESSOR  }

@@ -4,12 +4,17 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    if params[:role_id].present?
+      render json: @users = User.with_role(params[:role_id])
+    else
+      render json: @users = User.all
+    end
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    render json: @user
   end
 
   # GET /users/new

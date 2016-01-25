@@ -2,9 +2,9 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: 5
-  host: <%= ENV['WORKFLOW-DEVELOPMENT-SERVER_DATABASE'] || 'workflowdevelopmentserver_db_1' %>
-  user: workflow_development_server
-  password: masterarbeit
+  host: development_db_1
+  user: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 development:
   <<: *default

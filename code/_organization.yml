@@ -17,13 +17,14 @@ db_data:
     - "constraint:node==$TARGET_NODE"
 service:
   image: $REGISTRY/organization_service
-  command: bundle exec rails s -b 0.0.0.0
+  command: /app/start
   net: "backend_net"
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
   ports:
-    - "3000:3000"
+    - "3000"
   environment:
     - "constraint:node==$TARGET_NODE"
     - POSTGRES_PASSWORD=masterarbeit
     - POSTGRES_USER=organization_service
+    - SERVICE_NAME=organization_service

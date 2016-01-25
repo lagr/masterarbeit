@@ -2,6 +2,8 @@ class Server < ActiveRecord::Base
   validates_presence_of :ip
   has_and_belongs_to_many :workflows
 
+  store_accessor :server_configuration
+
   def required_images
     workflows.map(&:required_images).flatten.collect{ |i| { name: i } }
   end

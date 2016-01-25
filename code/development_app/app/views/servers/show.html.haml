@@ -10,3 +10,27 @@
 = link_to 'Edit', edit_server_path(@server)
 \|
 = link_to 'Back', servers_path
+
+
+
+%h1 Images
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Version
+      %th Required
+      %th Installed
+
+  %tbody
+    - @images.each do |image|
+      %tr
+        %td= image[:name]
+        %td= image[:version]
+        %td= image[:required] == true
+        %td
+          - if image[:installed] == true
+            ✓
+          - else #link_to install_image_path()
+            %button Install

@@ -1,0 +1,13 @@
+#content
+  = render partial: 'templates/shared/top_bar'
+
+  %md-content{ flex: true, md_scroll_y: true, layout: 'row' }
+
+    %md-card
+      %md-card-content
+        %md-list
+          %md-subheader.md-no-sticky
+            %md-list-item.md-2-line{ng_repeat: 'role in orgCtrl.roles'}
+              %md-button.md-list-item-text{ui_sref: 'organization.role({ role_id: role.id})'}
+                %h3 {{role.name}}
+

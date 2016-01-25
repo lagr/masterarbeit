@@ -1,10 +1,7 @@
 module EnvironmentManager
   extend self
-
-  DEFAULT_DOCKER_PORT = 2376
   DEFAULT_CONSUL_PORT = 8500
-  CONSUL_URL = "http://192.168.99.188:#{DEFAULT_CONSUL_PORT}"
-  CERT_PATH = "#{ENV['SWARM_MANAGER_CERT_PATH']}"
+  CONSUL_URL = "http://192.168.99.193:#{DEFAULT_CONSUL_PORT}"
 
   def unmanaged_servers(managed_servers)
     managed_servers_ips = managed_servers.map(&:ip)
@@ -17,26 +14,27 @@ module EnvironmentManager
 
   def available_servers
     servers = []
-    swarm_image.run(['list', 'consul://192.168.99.188:8500']).streaming_logs(stdout: true) do |stream, entry|
+    container = swarm_image.run(['list', 'consul://192.168.99.100:8500']).streaming_logs(stdout: true) do |stream, entry|
       entry_parts = entry.split(':')
       servers << Server.new(ip: entry_parts[0])
     end
+
+    container.delete
     servers
+  end
+
+  def index_containers(server, status = :all)
+    filters = status == :all? ? {} : { status: ["#{status}"] }
+    Docker::Container.all({all: true, filters: filters.to_json}, DockerHelper.docker_connection(server))
+  end
+
+  def index_images(server)
+    Docker::Image.all({all: true, filters: { dangling: [false] } }.to_json, DockerHelper.docker_connection(server))
   end
 
   private
 
   def swarm_image
     @swarm_image ||= Docker::Image.get('swarm')
-  end
-
-  def server_docker_connection(server)
-    docker_port = server.server_configuration['docker_port'] || DEFAULT_DOCKER_PORT
-    Docker::Connection.new "tcp://#{server.ip}:#{docker_port}", {
-      client_cert: File.join(CERT_PATH, 'cert.pem'),
-      client_key: File.join(CERT_PATH, 'key.pem'),
-      ssl_ca_file: File.join(CERT_PATH, 'ca.pem'),
-      scheme: 'https'
-    }))
   end
 end

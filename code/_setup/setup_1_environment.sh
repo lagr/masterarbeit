@@ -12,6 +12,8 @@ run_registrator () {
 	    $consul_url
 }
 
+## TODO start registry on swarm master node and add ip tables entry
+
 
 #=========== Discovery service machine ===========
 echo "\n\nCreate machine on which the discovery service and the registry will run...\n"
@@ -39,6 +41,7 @@ docker-machine create -d virtualbox                        \
 	--engine-label edu.proto.ram="big-ram"                 \
 	--engine-label edu.proto.cpu="big-cpu"                 \
 	--engine-insecure-registry $registry_url               \
+	--engine-insecure-registry registry_service_1:5000     \
 	development-machine
 
 

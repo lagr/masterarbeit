@@ -29,8 +29,8 @@ def create_activity(workflow, data)
   workflow.process_definition.activities.create!(activity_data)
 end
 
-def create_control_flow(from: source, to: target)
-  source.outgoing_control_flows.create! successor: target
+def create_control_flow(from:, to:)
+  from.outgoing_control_flows.create! successor: to
 end
 
 wf = Workflow.create(name: 'Sachbearbeitung', author: dev_user)
