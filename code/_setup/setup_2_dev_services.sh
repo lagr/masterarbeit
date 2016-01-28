@@ -60,7 +60,11 @@ $compose -p wfengine -f ../_wf_engine.yml up -d
 
 eval "$(docker-machine env --swarm development-machine)"
 docker network connect backend_net development_app_1
-docker network connect backend_net wfengine_service_1
+docker network connect enactment_net wfengine_service_1
+
+run_container internal-machine mom mom
+docker network connect backend_net mom_service_1
+docker network connect enactment_net mom_service_1
 
 # === organization service
 # echo "Launch organization service..."

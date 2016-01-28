@@ -2,6 +2,14 @@
 
 # This script should setup the docker machines for the example scenario
 # Precondition: Docker, Docker-Compose, Docker Machine and VirtualBox are installed
+run_consul_node () {
+	docker run -d \
+	--name $1-consul \
+	-h $1 \
+	-e "constraint:node==$1" \
+	-p 8300-8302:8300-8302/tcp -p 8300-8302:8300-8302/udp  -p 8500:8500 \
+	gliderlabs/consul-agent -server -join $(docker-machine ip coordination-machine)
+}
 
 run_registrator () {
 	docker run -d \
@@ -9,7 +17,7 @@ run_registrator () {
 	    -e "constraint:node==$1" \
 	    --volume=/var/run/docker.sock:/tmp/docker.sock \
 	    gliderlabs/registrator:latest \
-	    $consul_url
+	    consul://0.0.0.0:8500
 }
 
 ## TODO start registry on swarm master node and add ip tables entry
@@ -76,9 +84,13 @@ eval "$(docker-machine env --swarm development-machine)"
 
 docker load -i images.tar # load images to all machines
 
-run_registrator development-machine
-run_registrator internal-machine
-run_registrator cloud-machine
+# run_consul_node development-machine
+# run_consul_node internal-machine
+# run_consul_node cloud-machine
+
+# run_registrator development-machine
+# run_registrator internal-machine
+# run_registrator cloud-machine
 
 #=========== Show results ===========
 echo "\n\n Create overlay networks..."
@@ -88,10 +100,6 @@ echo "Create frontend network"
 docker network create frontend_net
 echo "Create enactment network"
 docker network create enactment_net
-
-sleep 1
-docker network connect backend_net registry_service_1
-docker network connect enactment_net registry_service_1
 
 # show created machines and info on swarm master
 docker info

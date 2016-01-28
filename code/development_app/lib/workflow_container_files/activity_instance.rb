@@ -5,20 +5,20 @@ module Workflow
   class ActivityInstance
     include AASM
 
-    attr_accessor :activity, :completed_predecessors, :state, :id
+    attr_accessor :activity, :completed_predecessors, :state, :id, :container
 
     def initialize(activity)
       @id = SecureRandom.uuid
-      @logger = Workflow::Logger.new
       @activity = activity
       @completed_predecessors = []
+      @container = nil
 
-      @logger.event({ id: @id, type: 'ActivityInstance' }, { info: "Activity #{activity.id} (#{activity.type}) is now #{aasm.current_state}." })
+      Workflow::FileHelper.create_activity_instance_workdir(self)
     end
 
-    def all_predecessors_completed?
+    def required_predecessors_completed?
       return true if @activity.predecessors.empty?
-      return true if @activity.type == "OrJoin" && @completed_predecessors.length > 0
+      return true if @activity.type == "orjoin" && @completed_predecessors.length > 0
       return true if @completed_predecessors.length > 0
       completed_predecessors_activity_ids = @completed_predecessors.map(&:activity).collect(&:id)
       (@activity.predecessors.collect(&:id) - completed_predecessors_activity_ids).empty?
@@ -50,7 +50,43 @@ module Workflow
     end
 
     def log_status_change
-      @logger.event({ id: @id, type: 'ActivityInstance' }, { info: "Activity #{activity.id} is now #{aasm.to_state}. Activity was #{aasm.from_state}" })
+    end
+
+    def start
+      @container.tap do |c|
+        c.start
+        c.exec ['ruby', '/activity/run.rb']
+        c.stop
+        #c.delete
+      end
+    end
+
+    def create_container
+      config = Workflow::Configuration
+
+      @container = Docker::Container.create({
+        'name' => "aci_#{@id}",
+        'Image' => "#{config.image_registry}/ac_#{@activity.id}",
+        'Cmd' => ['bash'],
+        'WorkingDir' => '/activity',
+        'Tty' => true,
+        'Env' => [
+          "MAIN_WORKFLOW_ID=#{config.main_workflow_id}",
+          "WORKDIR=#{Workflow::FileHelper.activity_instance_workdir(@id)}"
+        ],
+        'HostConfig' => {
+          'Binds' => ['/var/run/docker.sock:/var/run/docker.sock'],
+          'VolumesFrom' => [
+            config.workflow_relevant_data_container,
+            # todo add gem data
+            # config.gem_data_container
+          ],
+        }
+      })
+
+      @container.start
+      Docker::Network.get('enactment_net').connect(@container.id)
+      @container.stop
     end
   end
 end

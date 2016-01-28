@@ -1,4 +1,11 @@
-require 'resolv'
+Docker.url = "#{ENV['SWARM_MANAGER_URL']}"
+cert_path = "#{ENV['SWARM_MANAGER_CERT_PATH']}"
+Docker.options = {
+  client_cert: File.join(cert_path, 'cert.pem'),
+  client_key: File.join(cert_path, 'key.pem'),
+  ssl_ca_file: File.join(cert_path, 'ca.pem'),
+  scheme: 'https'
+}
 module WorkflowEngine
   module DockerHelper
     extend self
@@ -7,20 +14,8 @@ module WorkflowEngine
     CERT_PATH = "#{ENV['SWARM_MANAGER_CERT_PATH']}"
     SWARM_MANAGER_URL = "#{ENV['SWARM_MANAGER_URL']}"
 
-    def registry_ip
-      Resolv.getaddress 'registry_service_1'
-    end
-
     def image_name(type:, id: 'base')
       "#{SHORT_TYPES[type]}_#{id}"
-    end
-
-    def local_docker_connection
-      Docker::Connection.new('unix:///var/run/docker.sock', {})
-    end
-
-    def swarm_manager_connection
-      Docker::Connection.new(SWARM_MANAGER_URL, {})
     end
 
     def docker_connection(server)
@@ -34,3 +29,4 @@ module WorkflowEngine
     end
   end
 end
+

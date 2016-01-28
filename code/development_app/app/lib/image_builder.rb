@@ -64,13 +64,13 @@ module ImageBuilder
 
   def build_workflow_base_image
     temp_image = build_local "FROM ruby:2.2\nRUN wget -qO- https://get.docker.com/ | sh"
-    temp_image = temp_image.insert_local('localPath' => Dir.glob("#{WORKFLOW_CONTAINER_TEMPLATE_FILES_PATH}/*.rb"), 'outputPath' => '/workflow/', 'rm' => true)
+    temp_image = temp_image.insert_local('localPath' => Dir.glob("#{WORKFLOW_CONTAINER_TEMPLATE_FILES_PATH}/*"), 'outputPath' => '/workflow/', 'rm' => true)
     temp_image.tag repo: DockerHelper.image_name(type: :workflow), force: true
   end
 
   def build_activity_base_image
     ruby_image = Docker::Image.get('ruby:2.2')
-    temp_image = ruby_image.insert_local('localPath' => Dir.glob("#{ACTIVITY_CONTAINER_TEMPLATE_PATH}/*.rb"), 'outputPath' => '/activity/', 'rm' => true)
+    temp_image = ruby_image.insert_local('localPath' => Dir.glob("#{ACTIVITY_CONTAINER_TEMPLATE_PATH}/*"), 'outputPath' => '/activity/', 'rm' => true)
     temp_image.tag repo: DockerHelper.image_name(type: :activity), force: true
   end
 
