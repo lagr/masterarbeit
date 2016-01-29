@@ -20,12 +20,9 @@ run_registrator () {
 	    consul://0.0.0.0:8500
 }
 
-## TODO start registry on swarm master node and add ip tables entry
-
-
 #=========== Discovery service machine ===========
 echo "\n\nCreate machine on which the discovery service and the registry will run...\n"
-docker-machine create -d=virtualbox --swarm coordination-machine
+docker-machine create -d=virtualbox --swarm --virtualbox-memory "2048" coordination-machine
 eval $(docker-machine env coordination-machine)
 docker load -i images.tar # load images to coordination machine
 docker-compose -f ./consul/docker-compose.yml up -d
@@ -77,8 +74,6 @@ docker-machine create -d virtualbox                        \
 	--engine-insecure-registry $registry_url               \
 	cloud-machine
 
-#docker rm -f swarm-agent
-#docker run -d --name swarm-agent swarm join --advertise $coordination_machine_ip:2376 $consul_url
 #=========== Run service registrators ===========
 eval "$(docker-machine env --swarm development-machine)"
 

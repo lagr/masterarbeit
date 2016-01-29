@@ -1,83 +1,52 @@
-#!/usr/bin/env ruby
+require 'hutch'
+require 'docker-api'
 
-puts "Starting workflow engine..."
-
-require 'rubygems'
-require 'bunny'
-require 'docker'
-require 'json'
-require 'thread'
-
+require_relative 'sender'
 require_relative 'docker_helper'
-#require_relative 'messaging_service'
-require_relative 'deployment_manager'
+require_relative 'server_manager'
+require_relative 'workflow_scheduler'
 require_relative 'workflow_instance'
 
-puts "Binding messaging service..."
-#messaging_service = WorkflowEngine::MessagingService.new
-
-@deployment_manager = WorkflowEngine::DeploymentManager.new(nil)
-@wf_instances = []
-
 module WorkflowEngine
-  class WorfklowInstancesConsumer < Bunny::Consumer
-    def initialize(ch, q)
-      super
-      on_delivery do |info, meta, payload|
-        cnt = Docker::Container.create 'Cmd' => ["echo", "#{payload}"], 'Image' => 'alpine'
-        cnt.start
+  @sender = WorkflowEngine::Sender
+  @server_manager = WorkflowEngine::ServerManager.new(self)
+  @workflow_scheduler = WorkflowEngine::WorkflowScheduler.new(self)
+
+  class WorkflowConsumer
+    include Hutch::Consumer
+    consume 'wfms.workflow.#'
+
+    def process(message)
+      case message.routing_key.remove('wfms.workflow.')
+      when 'start'
+        @workflow_scheduler.instanciate(workflow: message[:id])
       end
     end
   end
 
-  class ServersConsumer < Bunny::Consumer
+  class WorkflowInstanceConsumer
+    include Hutch::Consumer
+    consume 'wfms.workflow_instance.#'
+
+    def process(message)
+      # case message.routing_key.remove('wfms.workflow_instance.')
+      # when 'ready'
+      #   @workflow_scheduler.start(workflow_instance: message[:id])
+      # end
+    end
   end
 
-  def self.run
-    begin
-      @bunny = Bunny.new(:host => "mom_service_1", :user => "masterarbeit", :password => "masterarbeit")
-      @bunny.start
-      at_exit {@bunny.close}
-    rescue
-      sleep 5
-      retry
-    end
+  class ServerConsumer
+    include Hutch::Consumer
+    consume 'wfms.server.#'
 
-    threads = []
-
-    2.times do
-      threads << Thread.new do
-        ch = @bunny.create_channel
-        exchange = ch.topic("wf_instances", :durable => true)
-        q = ch.queue('wf_instances.wfengine')
-        q.bind(exchange, routing_key: "wf_instances.#")
-        consumer = WorkflowEngine::WorfklowInstancesConsumer.new(ch, q)
-        q.subscribe_with(consumer, block: true)
-      end
-
-      threads << Thread.new do
-        ch = @bunny.create_channel
-        exchange = ch.topic("servers", :durable => true)
-        q = ch.queue('servers.wfengine')
-        q.bind(wf_instances_exchange, routing_key: "servers.#")
-        consumer = WorkflowEngine::ServersConsumer.new(ch, q)
-        q.subscribe_with(consumer, block: true)
+    def process(message)
+      case message.routing_key.remove('wfms.server.')
+      when 'add'
+        @server_manager.prepare(server: message[:id])
+      when 'update'
+        @server_manager.adapt(server: message[:server])
       end
     end
-
-    threads.map(&:join)
   end
 end
-
-WorkflowEngine.run
-
-
-    # wfinstances_thread = Thread.new do
-    #   channel ||= @bunny.create_channel
-    #   wf_instances_exchange ||= channel.topic("wf_instances", :durable => true)
-    #   wf_instances_exchange.publish("testmessage", routing_key: "wf_instances.test")
-
-    #   channel.queue("wfinstances.wfengine").bind(wf_instances_exchange, routing_key: "wf_instances.test").subscribe(block: true) do |a,b,c|
-    #     puts "message: #{c}"
-    #   end
-    # end

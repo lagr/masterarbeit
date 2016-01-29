@@ -1,11 +1,8 @@
 service:
-  image: rabbitmq:3
-  # restart: always
+  image: rabbitmq:3-management
   net: "backend_net"
   ports:
     - "8080:15672"
   environment:
     - "constraint:node==$TARGET_NODE"
-    - RABBITMQ_DEFAULT_USER=masterarbeit
-    - RABBITMQ_DEFAULT_PASS=masterarbeit
     - SERVICE_NAME=mom_service

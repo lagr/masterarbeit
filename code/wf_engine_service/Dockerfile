@@ -16,5 +16,4 @@ WORKDIR /app
 ADD ["Gemfile", "Gemfile.lock", "/app/"]
 RUN bundle install
 ADD . /app
-RUN chmod +x /app/wf_engine.rb
-CMD []
+ENTRYPOINT hutch --config config.yml

@@ -1,32 +1,5 @@
-# db:
-#   image: postgres
-#   volumes_from:
-#     - db_data
-#   environment:
-#     POSTGRES_PASSWORD: masterarbeit
-#     POSTGRES_USER: wf_engine
-# db_data:
-#   image: cogniteev/echo
-#   command: echo 'Data Container for PostgreSQL'
-#   volumes:
-#     - /var/lib/postgresql/data
-# service:
-#   image: wf_engine_service
-#   command: /app/start
-#   volumes:
-#     - /var/run/docker.sock:/var/run/docker.sock
-#     - ~/.docker/machine/certs/:/root/.docker
-#   environment:
-#     SERVICE_NAME: wf_engine
-#     SWARM_MANAGER_IP: $SWARM_MANAGER_IP
-#     SWARM_MANAGER_URL: tcp://$SWARM_MANAGER_IP:3376
-#     SWARM_MANAGER_CERT_PATH: '/root/.docker'
-#     POSTGRES_PASSWORD: masterarbeit
-#     POSTGRES_USER: wf_engine
-
 service:
   image: wf_engine_service
-  command: ./wf_engine.rb
   net: 'backend_net'
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock

@@ -1,0 +1,5 @@
+mq_api_host: mom_service_1
+mq_host: mom_service_1
+mq_exchange: wfms
+require_paths:
+  - /app/wf_engine.rb
