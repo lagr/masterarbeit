@@ -34,24 +34,28 @@ module Workflow
       ENV['DATA_CONTAINER'] || "data_#{workflow_instance_id}"
     end
 
+    def confdir
+      ENV['CONFDIR'] || '/workflow'
+    end
+
     def workdir
-      ENV['WORKDIR'] || '/workflow'
+      ENV['WORKDIR'] || "/workflow_relevant_data/#{workflow_instance_id}"
     end
 
     def input_schema
-      ENV['INPUT_SCHEMA'] || "#{workdir}/input.schema.json"
+      ENV['INPUT_SCHEMA'] || "#{confdir}/input.schema.json"
     end
 
     def output_schema
-      ENV['OUTPUT_SCHEMA'] || "#{workdir}/output.schema.json"
+      ENV['OUTPUT_SCHEMA'] || "#{confdir}/output.schema.json"
     end
 
     def input_data
-      ENV['INPUT_DATA'] || "#{workdir}/input.data.json"
+      ENV['INPUT_DATA'] || "#{confdir}/input.data.json"
     end
 
     def output_data
-      ENV['OUTPUT_DATA'] || "#{workdir}/output/output.data.json"
+      ENV['OUTPUT_DATA'] || "#{confdir}/output/output.data.json"
     end
   end
 end

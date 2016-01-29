@@ -28,7 +28,7 @@ module Workflow
     end
 
     def ensure_workflow_input_dir
-      FileUtils.mkdir(workflow_input_dir) unless Dir.exist?(workflow_input_dir)
+      FileUtils.mkdir_p(workflow_input_dir) unless Dir.exist?(workflow_input_dir)
     end
 
     def link_workflow_input_to_start_activity_instance_input(instance)
