@@ -53,7 +53,6 @@ module Workflow
     end
 
     def start_activity
-      #start_activity = @process_definition.activities.find { |a| a.id == @start_activity_id }
       start_activity = @process_definition.activities.find { |a| a.type == 'start' }
     end
 

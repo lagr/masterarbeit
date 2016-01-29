@@ -1,6 +1,7 @@
 module WorkflowEngine
   class WorkflowInstance
-    def initialize(workflow_id, target_node)
+    attr_accessor :instance_container, :data_container
+    def initialize(workflow_id, input_data, target_node )
       @workflow_id = workflow_id
       @target_node = target_node
 
@@ -12,6 +13,47 @@ module WorkflowEngine
 
       copy_input_data_to_container
       connect_instance_to_enactment_network
+    end
+
+    def run
+      @instance_container.tap do |c|
+        c.start
+        c.exec(['ruby', '/workflow/run.rb'], {tty: false, user: ''}) do |s, c| puts c end
+        result = c.copy "/workflow_relevant_data/#{@instance_id}/"
+        c.stop
+      end
+      result
+    end
+
+    def delete
+      @instance_container.delete(:force => true)
+    end
+
+    private
+
+    def create_data_container
+      data_container = Docker::Container.create({
+        'name' => "data_#{@instance_id}",
+        'Image' => 'cogniteev/echo',
+        'Cmd' => ['echo', "Data container for #{@instance_id}"],
+        'HostConfig' => {
+          'Binds' => ["/workflow_relevant_data/#{@instance_id}:/workflow_relevant_data"]
+        },
+        'Env' => [
+          "constraint:node==#{@target_node}"
+        ]
+      })
+
+      data_container.refresh!.tap(&:start)
+    end
+
+    def copy_input_data_to_container
+      @instance_container.start
+      Dir.mktmpdir do |tmpdir|
+        File.open("#{tmpdir}/input.data.json", "w"){ |i| i.write(@input_data.to_json) }
+        @instance_container.archive_in ["#{tmpdir}/input.data.json"], "/workflow"
+      end
+      @instance_container.stop
     end
 
     def create_instance_container
@@ -36,6 +78,12 @@ module WorkflowEngine
           "GEM_DATA_CONTAINER=gem_data_#{@target_node}",
         ]
       })
+    end
+
+    def connect_instance_to_enactment_network
+      @instance_container.start
+      Docker::Network.get('enactment_net').connect(@instance_container.id)
+      @instance_container.stop
     end
   end
 end

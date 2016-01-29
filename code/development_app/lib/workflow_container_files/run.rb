@@ -5,8 +5,7 @@ require 'json'
 require 'fileutils'
 require 'aasm'
 require 'excon'
-require 'docker'
-require 'bunny'
+require 'docker-api'
 
 require_relative 'configuration'
 require_relative 'file_helper'
@@ -16,15 +15,6 @@ require_relative 'mapper'
 require_relative 'process_definition'
 require_relative 'process_instance'
 require_relative 'activity_instance'
-require_relative 'docker'
-
-connection = Bunny.new
-connection.start
-at_exit { connection.stop }
-
-channel  = connection.create_channel
-# topic exchange name can be any string
-exchange = channel.topic("weathr", :auto_delete => true)
 
 module Workflow
   extend self

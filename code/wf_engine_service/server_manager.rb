@@ -2,7 +2,7 @@ module WorkflowEngine
   class ServerManager
     def initialize(engine)
       @engine = engine
-      @sender = engine.sender
+      #@sender = engine.sender
     end
 
     def prepare(server:)

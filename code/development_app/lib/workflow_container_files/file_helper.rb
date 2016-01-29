@@ -1,5 +1,6 @@
 module Workflow
-  class FileHelper
+  module FileHelper
+    extend self
 
     def workflow_input_dir
       "#{Workflow::Configuration.workdir}/input"
@@ -22,8 +23,8 @@ module Workflow
     end
 
     def create_activity_instance_workdir(instance)
-      FileUtils.mkdir activity_instance_workdir(instance.id)
-      FileUtils.mkdir activity_instance_output_dir(instance.id)
+      FileUtils.mkdir activity_instance_workdir(instance)
+      FileUtils.mkdir activity_instance_output_dir(instance)
     end
 
     def ensure_workflow_input_dir

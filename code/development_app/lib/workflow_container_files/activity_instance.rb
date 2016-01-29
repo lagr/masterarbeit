@@ -72,7 +72,7 @@ module Workflow
         'Tty' => true,
         'Env' => [
           "MAIN_WORKFLOW_ID=#{config.main_workflow_id}",
-          "WORKDIR=#{Workflow::FileHelper.activity_instance_workdir(@id)}"
+          "WORKDIR=#{Workflow::FileHelper.activity_instance_workdir(self)}"
         ],
         'HostConfig' => {
           'Binds' => ['/var/run/docker.sock:/var/run/docker.sock'],

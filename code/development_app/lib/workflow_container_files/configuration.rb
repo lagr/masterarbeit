@@ -11,15 +11,15 @@ module Workflow
     end
 
     def workflow_instance_id
-      ENV['WORKFLOW_INSTANCE_ID']
+      ENV['INSTANCE_ID']
     end
 
     def process_definition
       ENV['PROCESS_DEFINITION_PATH'] || '/workflow/process_definition.json'
     end
 
-    def image_repository
-      ENV['IMAGE_REPOSITORY'] || 'localhost:5000'
+    def image_registry
+      ENV['IMAGE_REGISTRY'] || '192.168.99.100:5000'
     end
 
     def network
