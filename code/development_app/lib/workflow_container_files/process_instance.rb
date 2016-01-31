@@ -66,6 +66,7 @@ module Workflow
       instance = @activity_instances[activity.id].find { |ai| !ai.completed? }
       if instance.nil?
         instance = Workflow::ActivityInstance.new(activity)
+        Workflow::FileHelper.create_activity_instance_workdir(instance)
         queue_activity_instance(instance)
       end
       instance

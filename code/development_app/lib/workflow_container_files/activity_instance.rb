@@ -12,8 +12,6 @@ module Workflow
       @activity = activity
       @completed_predecessors = []
       @container = nil
-
-      Workflow::FileHelper.create_activity_instance_workdir(self)
     end
 
     def required_predecessors_completed?
