@@ -13,14 +13,9 @@ module EnvironmentManager
   end
 
   def available_servers
-    servers = []
-    container = swarm_image.run(['list', 'consul://192.168.99.100:8500']).streaming_logs(stdout: true) do |stream, entry|
-      entry_parts = entry.split(':')
-      servers << Server.new(ip: entry_parts[0])
-    end
-
-    container.delete
-    servers
+    swarm_info = Docker.info(DockerHelper.swarm_manager_connection)
+    raw_servers = swarm_info['DriverStatus'].select { |pairs| ip?(pairs[1]) }
+    servers = raw_servers.collect { |raw| Server.new(ip: remove_port(raw[1]), name: raw[0]) }
   end
 
   def index_containers(server, status = :all)
@@ -36,5 +31,13 @@ module EnvironmentManager
 
   def swarm_image
     @swarm_image ||= Docker::Image.get('swarm')
+  end
+
+  def ip?(string)
+    remove_port(string) =~ Resolv::IPv4::Regex
+  end
+
+  def remove_port(ip)
+    ip.remove(/:\d+$/)
   end
 end

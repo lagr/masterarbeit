@@ -1,6 +1,7 @@
+require 'rubygems'
+`gem list -i bundler || gem install bundler`
 `bundle check || bundle install`
 
-require 'rubygems'
 require 'json'
 require 'fileutils'
 require 'aasm'
@@ -20,8 +21,16 @@ module Workflow
   extend self
 
   def start
-    process_instance = Workflow::ProcessInstance.new
-    process_instance.start
+    container = Workflow::Configuration.workflow_instance_container
+    instance_network = Docker::Network.create(Workflow::Configuration.network)
+    begin
+      process_instance = Workflow::ProcessInstance.new
+      instance_network.connect(container)
+      process_instance.start
+    ensure
+      instance_network.disconnect(container)
+      instance_network.remove
+    end
   end
 end
 

@@ -30,11 +30,13 @@
 %table
   %thead
     %tr
+      %th Name
       %th Ip
       %th
 
   %tbody
     - @unmanaged_servers.each do |server|
       %tr
+        %td= server.name
         %td= server.ip
-        %td= link_to 'Add', new_server_path(ip: server.ip)
+        %td= link_to 'Add', new_server_path(ip: server.ip, name: server.name)

@@ -14,6 +14,10 @@ module Workflow
       ENV['INSTANCE_ID']
     end
 
+    def workflow_instance_container
+      "wfi_#{workflow_instance_id}"
+    end
+
     def process_definition
       ENV['PROCESS_DEFINITION_PATH'] || '/workflow/process_definition.json'
     end
@@ -23,7 +27,7 @@ module Workflow
     end
 
     def network
-      ENV['NETWORK'] || "net_#{main_workflow_id}"
+      ENV['NETWORK'] || "net_#{workflow_instance_id}"
     end
 
     def gem_data_container
@@ -39,7 +43,7 @@ module Workflow
     end
 
     def workdir
-      ENV['WORKDIR'] || "/workflow_relevant_data/#{workflow_instance_id}"
+      ENV['WORKDIR'] || "/workflow_relevant_data"
     end
 
     def input_schema
@@ -56,6 +60,10 @@ module Workflow
 
     def output_data
       ENV['OUTPUT_DATA'] || "#{confdir}/output/output.data.json"
+    end
+
+    def keep_activity_containers?
+      ENV['KEEP_ACTIVITY_CONTAINERS'] || true
     end
   end
 end

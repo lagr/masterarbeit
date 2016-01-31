@@ -47,7 +47,7 @@ wf3 = Workflow.create(name: 'Papierkram', author: dev_user)
     activity_configuration: {
       image: 'alpine',
       image_version: 'latest',
-      start_parameters: ['ls']
+      cmd: ['cat', '/etc/hosts']
     }
   )
 

@@ -4,16 +4,16 @@ module Workflow
       @process_definition = Workflow::ProcessDefinition.new
       @queue = []
       @activity_instances = {}
-    end
 
-    def start
       Workflow::FileHelper.ensure_workflow_input_dir
 
       Workflow::Validator.new(
         schema: Workflow::Configuration.input_schema,
         data: Workflow::Configuration.input_data
       ).validate
+    end
 
+    def start
       start_activity_instance = find_or_create_activity_instance(start_activity)
       Workflow::FileHelper.link_workflow_input_to_start_activity_instance_input(start_activity_instance)
 

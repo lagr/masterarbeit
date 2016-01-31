@@ -18,17 +18,21 @@ module DockerHelper
     Docker::Connection.new('unix:///var/run/docker.sock', {})
   end
 
-  def swarm_manager_connection
-    Docker::Connection.new(SWARM_MANAGER_URL, {})
-  end
-
-  def docker_connection(server)
-    docker_port = server.server_configuration.try(:[], 'docker_port') || DEFAULT_DOCKER_PORT
-    Docker::Connection.new "tcp://#{server.ip}:#{docker_port}", {
+  def tls_options
+    {
       client_cert: File.join(CERT_PATH, 'cert.pem'),
       client_key: File.join(CERT_PATH, 'key.pem'),
       ssl_ca_file: File.join(CERT_PATH, 'ca.pem'),
       scheme: 'https'
     }
+  end
+
+  def swarm_manager_connection
+    Docker::Connection.new ENV['SWARM_MANAGER_URL'], tls_options
+  end
+
+  def docker_connection(server)
+    docker_port = server.server_configuration.try(:[], 'docker_port') || DEFAULT_DOCKER_PORT
+    Docker::Connection.new "tcp://#{server.ip}:#{docker_port}", tls_options
   end
 end

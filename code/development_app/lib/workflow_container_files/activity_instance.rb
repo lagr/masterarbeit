@@ -53,9 +53,9 @@ module Workflow
     def start
       @container.tap do |c|
         c.start
-        c.exec ['ruby', '/activity/run.rb']
+        c.exec(['ruby', '/activity/run.rb'], {tty: false})
         c.stop
-        #c.delete
+        c.delete unless Workflow::Configuration.keep_activity_containers?
       end
     end
 
@@ -66,25 +66,30 @@ module Workflow
         'name' => "aci_#{@id}",
         'Image' => "#{config.image_registry}/ac_#{@activity.id}",
         'Cmd' => ['bash'],
+        #'Cmd' => ['ruby', '/activity/run.rb'],
         'WorkingDir' => '/activity',
         'Tty' => true,
         'Env' => [
           "MAIN_WORKFLOW_ID=#{config.main_workflow_id}",
-          "WORKDIR=#{Workflow::FileHelper.activity_instance_workdir(self)}"
+          "WORKFLOW_ID=#{config.workflow_id}",
+          "WORKFLOW_INSTANCE_ID=#{config.workflow_instance_id}",
+          "WORKDIR=#{Workflow::FileHelper.activity_instance_workdir(self)}",
+          "ACTIVITY_ID=#{@activity.id}",
+          "ACTIVITY_INSTANCE_ID=#{@id}"
         ],
         'HostConfig' => {
           'Binds' => ['/var/run/docker.sock:/var/run/docker.sock'],
           'VolumesFrom' => [
             config.workflow_relevant_data_container,
-            # todo add gem data
-            # config.gem_data_container
+            config.gem_data_container
           ],
         }
       })
 
-      @container.start
-      Docker::Network.get('enactment_net').connect(@container.id)
-      @container.stop
+      # @container.start
+      # Docker::Network.get(Workflow::Configuration.network).connect(@container.id)
+      # Docker::Network.get('enactment_net').connect(@container.id)
+      # @container.stop
     end
   end
 end

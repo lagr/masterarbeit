@@ -18,7 +18,7 @@ class ServersController < ApplicationController
 
   # GET /servers/new
   def new
-    @server = Server.new ip: params[:ip]
+    @server = Server.new ip: params[:ip], name: params[:name]
   end
 
   # GET /servers/1/edit
@@ -32,6 +32,8 @@ class ServersController < ApplicationController
 
     respond_to do |format|
       if @server.save
+        MessageService.publish :server, :add, server: ActiveModel::SerializableResource.new(@server).serializable_hash
+
         format.html { redirect_to @server, notice: 'Server was successfully created.' }
         format.json { render :show, status: :created, location: @server }
       else
@@ -46,6 +48,7 @@ class ServersController < ApplicationController
   def update
     respond_to do |format|
       if @server.update(server_params)
+        MessageService.publish :server, :update, server_config: server_config
         format.html { redirect_to @server, notice: 'Server was successfully updated.' }
         format.json { render :show, status: :ok, location: @server }
       else
@@ -100,5 +103,9 @@ class ServersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def server_params
       params.require(:server).permit(:name, :ip)
+    end
+
+    def server_config
+      ActiveModel::SerializableResource.new(server, serializer: ServerConfigurationSerializer).serializable_hash
     end
 end

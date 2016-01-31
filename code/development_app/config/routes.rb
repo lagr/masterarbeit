@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   resources :workflows do
     member do
+      get 'export', to: 'workflows#export'
+      get 'start_instance', to: 'workflows#start_instance'
       get 'process_definition', to: 'process_definitions#edit'
       put 'process_definition', to: 'process_definitions#update'
     end

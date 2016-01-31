@@ -35,7 +35,7 @@ module ImageBuilder
     base_name = DockerHelper.image_name(type: type)
     image = nil
 
-    build_base_image(type) unless Docker::Image.exist?(base_name)
+    build_base_image(type) #unless Docker::Image.exist?(base_name)
     base_image = Docker::Image.get(base_name)
 
     Dir.mktmpdir do |tmpdir|
@@ -95,7 +95,10 @@ module ImageBuilder
           'input.schema.json' => {type: 'object', required: ['this'], properties: { this: {type: 'string'} } }.to_json,
           #'input.schema' => activity.input_schema.to_json,
           'input.mapping.json' => "{}",
-          'activity.info.json' => { image_name: image_name }.to_json
+          'activity.info.json' => {
+            image_name: image_name,
+            type: activity.activity_type,
+            configuration: activity.activity_configuration }.to_json
         }
       }
     }

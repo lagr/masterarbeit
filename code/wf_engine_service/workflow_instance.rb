@@ -1,6 +1,6 @@
 module WorkflowEngine
   class WorkflowInstance
-    attr_accessor :instance_container, :data_container
+    attr_accessor :instance_container, :data_container, :instance_id
     def initialize(workflow_id, input_data, target_node )
       @workflow_id = workflow_id
       @target_node = target_node
@@ -16,12 +16,17 @@ module WorkflowEngine
     end
 
     def run
-      @instance_container.tap do |c|
-        c.start
-        c.exec(['ruby', '/workflow/run.rb'], {tty: false, user: ''}) do |s, c| puts c end
-        result = c.copy "/workflow_relevant_data/#{@instance_id}/"
-        c.stop
+      @instance_container.start
+      #@instance_container.exec(['ruby', '/workflow/run.rb'], {tty: false, user: ''})# do |s, c| puts c end
+      begin
+        @instance_container.exec(['ruby', '/workflow/run.rb'])
+      rescue
+        # some SSL bug makes me always go here while closing the exec
       end
+
+      result = nil
+      @instance_container.archive_out("/workflow_relevant_data/output/input.data.json") { |output| result = extract_output(output) }
+      @instance_container.stop
       result
     end
 
@@ -36,12 +41,8 @@ module WorkflowEngine
         'name' => "data_#{@instance_id}",
         'Image' => 'cogniteev/echo',
         'Cmd' => ['echo', "Data container for #{@instance_id}"],
-        'HostConfig' => {
-          'Binds' => ["/workflow_relevant_data/#{@instance_id}:/workflow_relevant_data"]
-        },
-        'Env' => [
-          "constraint:node==#{@target_node}"
-        ]
+        'HostConfig' => {'Binds' => ["/workflow_relevant_data/#{@instance_id}:/workflow_relevant_data"]},
+        'Env' => ["constraint:node==#{@target_node}"]
       })
 
       data_container.refresh!.tap(&:start)
@@ -84,6 +85,12 @@ module WorkflowEngine
       @instance_container.start
       Docker::Network.get('enactment_net').connect(@instance_container.id)
       @instance_container.stop
+    end
+
+    def extract_output(archive)
+      pseudo_io = StringIO.new(archive)
+      data_file = Gem::Package::TarReader.new(pseudo_io).first
+      JSON.parse(data_file.read)
     end
   end
 end

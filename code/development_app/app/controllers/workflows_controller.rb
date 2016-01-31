@@ -1,5 +1,5 @@
 class WorkflowsController < ApplicationController
-  before_action :set_workflow, only: [:show, :edit, :update, :destroy]
+  before_action :set_workflow, only: [:show, :edit, :update, :destroy, :export, :start_instance]
 
   # GET /workflows
   # GET /workflows.json
@@ -59,6 +59,16 @@ class WorkflowsController < ApplicationController
       format.html { redirect_to workflows_url, notice: 'Workflow was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def export
+    ImageManager.export_workflow(@workflow)
+    redirect_to @workflow, notice: 'Exported'
+  end
+
+  def start_instance
+    MessageService.publish :workflow, :start, id: @workflow.id, input_data: {this: 'is a test string'}
+    redirect_to @workflow, notice: 'Started'
   end
 
   private

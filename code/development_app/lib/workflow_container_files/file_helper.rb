@@ -29,6 +29,9 @@ module Workflow
 
     def ensure_workflow_input_dir
       FileUtils.mkdir_p(workflow_input_dir) unless Dir.exist?(workflow_input_dir)
+      if File.exist? Workflow::Configuration.input_data
+        FileUtils.copy(Workflow::Configuration.input_data, workflow_input_dir)
+      end
     end
 
     def link_workflow_input_to_start_activity_instance_input(instance)
