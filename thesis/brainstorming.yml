@@ -1,0 +1,103 @@
+### WFMS + Docker
+---
+Goals:
+  - abstract infrastructure from wfmodel
+
+Architecture:
+  Preconsiderations:
+    - Dockered WFMS
+    - Regular WFMS using Docker for enactment
+  Structure:
+    - Monolith + Execution Machines
+      - Pros and Cons
+        - + less integration between components needed
+        - - hard to scale
+    - Large Components
+      - Borders
+        - Buildtime / Executiontime
+        - BT / ET
+    - Microservices
+      - User entry points
+        - several components have user interfaces
+        - API Gateway pattern
+        - Data
+          - DB per service
+          - common DB
+      - Pros and Cons
+        - + parts of application can be scaled up
+        - + each part may work on suitable tools/languages
+        - - must be integrated with each other
+  User Interfaces:
+    - Client/server with respective service
+    - MVC architecture
+  Communication:
+    - Style
+      - Message Queue
+        - implicit invocation / event driven
+      - API calls
+        - direct invocation
+        - protocols
+          - SOAP
+          - REST
+    - Service Discovery
+
+Reference Model:
+  - WFMC
+    - Workflow
+    - Activity
+
+Workflow:
+  Data:
+    - Process definition storage format
+      - XPDL
+      - BPEL
+      - arbitrary
+    - Data passing format
+      - JSON
+      - XML
+      - arbitrary / file based
+  Orchestration:
+    - Central WFEngine
+    - Multiple WFEngines
+    - Central WFEngine + 1 WFE per WF
+  Use of Docker Containers/Images:
+    - WF including AC as one container
+      - Pros and Cons
+        - + (widely stand-alone executable)
+        - + Pause/Resume as native docker commands
+        - + movable between servers
+        - - hard to update parts of WF
+        - - fewer reuse of activities
+    - WF + AC as containers
+      - Pros and Cons
+        - + (widely stand-alone executable)
+        - + Pause/Resume as native docker commands
+        - + movable between servers
+    - only AC in containers
+      - Pros and Cons
+  Execution Location:
+    - One node per WFI
+      - Data exchange via data volume
+        - Pros and Cons
+          - + pause/resume easier
+          - + persistence easier (data volumes)
+          - - disk IO rather slow for lots of accesses
+      - Data exchange via via MQ
+        - Pros and Cons
+          - - data must be serializable
+          - - large data takes time to transfer
+      - Data exchange via bridge network
+    - Spread accross nodes
+      - Pros and Cons
+        - + easier to balance load
+        - + suitable nodes per activity
+        - - harder to persist data
+        - - large data takes time to transfer
+      - considerations
+        - communication via MQ or overlay network
+
+Environment:
+  Services:
+    - unique service name
+    - per node / global / per activity / per workflow / shared vs exclusive
+
