@@ -1,62 +1,40 @@
-require 'aasm'
 require 'securerandom'
 
 module Workflow
   class ActivityInstance
-    include AASM
 
-    attr_accessor :activity, :completed_predecessors, :state, :id, :container
+    attr_accessor :activity, :completed_predecessors, :id
 
     def initialize(activity)
       @id = SecureRandom.uuid
       @activity = activity
       @completed_predecessors = []
       @container = nil
+      @completed = false
+    end
+
+    def completed?
+      @completed
     end
 
     def required_predecessors_completed?
-      return true if @activity.predecessors.empty?
+      return true if @activity.type == 'start'
       return true if @activity.type == "orjoin" && @completed_predecessors.length > 0
       return true if @completed_predecessors.length > 0
+
       completed_predecessors_activity_ids = @completed_predecessors.map(&:activity).collect(&:id)
       (@activity.predecessors.collect(&:id) - completed_predecessors_activity_ids).empty?
     end
 
-    aasm do
-      after_all_transitions :log_status_change
-
-      state :inactive
-      state :active
-      state :suspended
-      state :completed
-
-      event :suspend do
-        transitions from: [:active, :inactive], to: :suspended
-      end
-
-      event :resume do
-        transitions from: :suspended, to: :inactive
-      end
-
-      event :activate do
-        transitions from: :inactive, to: :active
-      end
-
-      event :complete do
-        transitions from: :active, to: :completed
-      end
-    end
-
-    def log_status_change
-    end
-
-    def start
+    def run
+      create_container
       @container.tap do |c|
         c.start
         c.exec(['ruby', '/activity/run.rb'], {tty: false})
         c.stop
         c.delete unless Workflow::Configuration.keep_activity_containers?
       end
+      @completed = true
     end
 
     def create_container

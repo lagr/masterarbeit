@@ -27,11 +27,7 @@ module Workflow
       uncompleted_instances.each do |instance|
         next unless instance.required_predecessors_completed?
 
-        instance.create_container
-        instance.activate do
-          instance.start
-        end
-        instance.complete
+        instance.run
 
         instance.activity.successors.each do |successor|
           successor_instance = find_or_create_activity_instance(successor)
@@ -71,6 +67,5 @@ module Workflow
       end
       instance
     end
-
   end
 end
