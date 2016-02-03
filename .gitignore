@@ -67,4 +67,5 @@ thesis/*.synctex.gz
 .DS_store
 
 
-/code/_setup/images.tar
+/code/_setup/images/*
+/code/_setup/**/*.tar
