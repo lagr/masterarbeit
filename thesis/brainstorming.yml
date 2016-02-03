@@ -101,3 +101,6 @@ Environment:
     - unique service name
     - per node / global / per activity / per workflow / shared vs exclusive
 
+
+####### Unsortiert
+## größerer nutzen wenn man nicht auf das container-modell mappt?

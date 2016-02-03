@@ -1,18 +1,12 @@
 require 'rubygems'
-`gem list -i bundler || gem install bundler`
-`bundle check || bundle install`
-
 require 'json'
+require 'resolv'
 require 'fileutils'
-require 'aasm'
-require 'excon'
 require 'docker-api'
 
 require_relative 'configuration'
 require_relative 'file_helper'
-require_relative 'logger'
 require_relative 'validator'
-require_relative 'mapper'
 require_relative 'process_definition'
 require_relative 'process_instance'
 require_relative 'activity_instance'
@@ -27,12 +21,24 @@ module Workflow
       process_instance = Workflow::ProcessInstance.new
       instance_network.connect(container)
       process_instance.start
-    ensure
       instance_network.disconnect(container)
+    ensure
       instance_network.remove
     end
   end
 end
 
-Workflow.start
+
+#ensure the container is connected to the networks before starting processing
+retries = 20
+begin
+  Resolv.getaddress("wfengine_service_1.enactment_net")
+rescue
+  sleep 0.1
+  retries -= 1
+  retry if retries > 0
+else
+  Workflow.start
+end
+
 exit

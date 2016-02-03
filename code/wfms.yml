@@ -1,0 +1,96 @@
+version: 2
+
+networks:
+  frontend:
+    driver: overlay
+  backend:
+    driver: overlay
+  enactment:
+    driver: overlay
+  development:
+    driver: overlay
+
+services:
+  registry:
+    image: registry:2
+    restart: always
+    ports:
+      - 5000:5000
+    networks:
+      - backend
+      - enactment
+    environment:
+      - "constraint:node==coordination-machine"
+
+  message_broker:
+    image: rabbitmq:3-management
+    restart: always
+    networks:
+      - backend
+      - enactment
+      - frontend
+    ports:
+      - "8080:15672"
+    environment:
+      - "constraint:node==internal-machine"
+
+  dev_db:
+    image: postgres
+    depends_on:
+      - dev_db_data
+    volumes_from:
+      - dev_db_data
+    networks:
+      - development
+    environment:
+      POSTGRES_PASSWORD: masterarbeit
+      POSTGRES_USER: workflow_development_server
+
+  dev_db_data:
+    image: cogniteev/echo
+    networks:
+      - development
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - "constraint:node==development-machine"
+
+  development_app:
+    image: development_app
+    build:
+      context: ./development_app
+    depends_on:
+      - dev_db
+      - message_broker
+      - registry
+      - engine
+    volumes_from:
+      - dev_db_data
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+      - development
+    environment:
+      SWARM_MANAGER_URL: tcp://$SWARM_MANAGER_IP:3376
+      SWARM_MANAGER_CERT_PATH: '/root/.docker'
+      POSTGRES_PASSWORD: masterarbeit
+      POSTGRES_USER: workflow_development_server
+
+  engine:
+    image: wf_engine
+    build:
+      context: ./engine
+    depends_on:
+      - message_broker
+    networks:
+      - backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    environment:
+      SWARM_MANAGER_URL: tcp://$SWARM_MANAGER_IP:3376
+      SWARM_MANAGER_CERT_PATH: /root/.docker

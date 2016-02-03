@@ -7,7 +7,10 @@ module Workflow
     def initialize
       file = File.read(Workflow::Configuration.process_definition)
       @definition = JSON.parse(file)
-      @activities = @definition['activities'].map { |a| Activity.new(a['id'], a['type'], a['successors'], a['predecessors']) }
+
+      @activities = @definition['activities'].map do |a|
+        Activity.new(a['id'], a['type'], a['successors'], a['predecessors'])
+      end
 
       # replace list of ids with references to objects
       @activities.each do |activity|

@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'json'
+require 'resolv'
 
 require_relative 'configuration'
 require_relative 'file_helper'
@@ -31,7 +32,7 @@ module Activity
     })
 
     container.start
-    container.stop
+    container.wait(60 * 60)
     input[Activity::Configuration.activity_instance_id] = { container_logs: container.logs(stdout: true) }
   end
 
@@ -58,5 +59,14 @@ module Activity
   end
 end
 
-Activity.start
+
+# ensure the container is connected to the networks before starting processing
+begin
+  Resolv.getaddress "aci_#{Activity::Configuration.activity_instance_id}.enactment_net"
+rescue
+  sleep 0.1
+  retry
+else
+  Activity.start
+end
 exit

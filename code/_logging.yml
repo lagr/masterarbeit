@@ -1,8 +1,0 @@
-service:
-  image: rabbitmq:3
-  net: "enactment_net"
-  environment:
-    - "constraint:node==$TARGET_NODE"
-    - RABBITMQ_DEFAULT_USER=masterarbeit
-    - RABBITMQ_DEFAULT_PASS=masterarbeit
-    - SERVICE_NAME=logging_service

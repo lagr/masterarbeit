@@ -2,38 +2,25 @@
 
 # This script should setup the docker machines for the example scenario
 # Precondition: Docker, Docker-Compose, Docker Machine and VirtualBox are installed
-run_consul_node () {
-	docker run -d \
-	--name $1-consul \
-	-h $1 \
-	-e "constraint:node==$1" \
-	-p 8300-8302:8300-8302/tcp -p 8300-8302:8300-8302/udp  -p 8500:8500 \
-	gliderlabs/consul-agent -server -join $(docker-machine ip coordination-machine)
-}
-
-run_registrator () {
-	docker run -d \
-	    --net=host \
-	    -e "constraint:node==$1" \
-	    --volume=/var/run/docker.sock:/tmp/docker.sock \
-	    gliderlabs/registrator:latest \
-	    consul://0.0.0.0:8500
-}
 
 #=========== Discovery service machine ===========
 echo "\n\nCreate machine on which the discovery service and the registry will run...\n"
-docker-machine create -d=virtualbox --swarm --virtualbox-memory "2048" coordination-machine
-eval $(docker-machine env coordination-machine)
-docker load -i images.tar # load images to coordination machine
-docker-compose -f ./consul/docker-compose.yml up -d
-docker-compose -p registry -f ../_registry.yml up -d
+docker-machine create -d=virtualbox 					  	\
+	--swarm 												\
+	--swarm-discovery="consul://127.0.0.1:8500"	  			\
+    --engine-opt="cluster-store=consul://127.0.0.1:8500"  	\
+    --engine-opt="cluster-advertise=eth1:2376"            	\
+    --virtualbox-memory "2048" 								\
+    --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
+    coordination-machine
+
+eval "$(docker-machine env coordination-machine)"
+docker load -i ./images/base_images.tar # load images to coordination machine
+docker-compose -p consul -f ../_consul.yml up -d
 
 coordination_machine_ip=$(docker-machine ip coordination-machine)
 consul_url="consul://$coordination_machine_ip:8500"
 registry_url=$(docker-machine ip coordination-machine):5000
-
-docker rm -f swarm-agent
-docker run -d --name swarm-agent swarm join --advertise $coordination_machine_ip:2376 $consul_url
 
 #=========== Development machine ===========
 echo "\n\nCreate machine on which the swarm master and the development services will run..."
@@ -47,8 +34,8 @@ docker-machine create -d virtualbox                        \
 	--engine-label edu.proto.cpu="big-cpu"                 \
 	--engine-insecure-registry $registry_url               \
 	--engine-insecure-registry registry_service_1:5000     \
+    --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	development-machine
-
 
 #=========== Internal machine ===========
 echo "\n\nCreate machine on which the internal enactment will run..."
@@ -59,6 +46,7 @@ docker-machine create -d virtualbox                        \
 	--engine-opt="cluster-advertise=eth1:2376"             \
 	--engine-label edu.proto.machine_env="internal"        \
 	--engine-insecure-registry $registry_url               \
+    --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	internal-machine
 
 
@@ -72,20 +60,13 @@ docker-machine create -d virtualbox                        \
 	--engine-label edu.proto.machine_env="external"        \
 	--engine-label edu.proto.hdd="big-hdd"                 \
 	--engine-insecure-registry $registry_url               \
+    --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	cloud-machine
 
 #=========== Run service registrators ===========
 eval "$(docker-machine env --swarm development-machine)"
-
-docker load -i images.tar # load images to all machines
-
-# run_consul_node development-machine
-# run_consul_node internal-machine
-# run_consul_node cloud-machine
-
-# run_registrator development-machine
-# run_registrator internal-machine
-# run_registrator cloud-machine
+echo "\n\nLoad images required by all servers from file..."
+docker load -i ./images/base_images.tar
 
 #=========== Show results ===========
 echo "\n\n Create overlay networks..."

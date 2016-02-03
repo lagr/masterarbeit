@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+
+gem 'bunny'
+gem 'hutch'
+gem 'docker-api'
+gem 'json'
+gem 'pry'
+gem 'activeresource'

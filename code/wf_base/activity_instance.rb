@@ -2,14 +2,12 @@ require 'securerandom'
 
 module Workflow
   class ActivityInstance
-
     attr_accessor :activity, :completed_predecessors, :id
 
     def initialize(activity)
       @id = SecureRandom.uuid
       @activity = activity
       @completed_predecessors = []
-      @container = nil
       @completed = false
     end
 
@@ -27,24 +25,27 @@ module Workflow
     end
 
     def run
-      create_container
-      @container.tap do |c|
+      container.tap do |c|
         c.start
-        c.exec(['ruby', '/activity/run.rb'], {tty: false})
-        c.stop
+
+        c.pause
+        Docker::Network.get(Workflow::Configuration.network).connect(c.id)
+        Docker::Network.get('enactment_net').connect(c.id)
+        c.unpause
+
+        c.wait(60 * 60)
         c.delete unless Workflow::Configuration.keep_activity_containers?
       end
       @completed = true
     end
 
-    def create_container
+    def container
       config = Workflow::Configuration
 
-      @container = Docker::Container.create({
+      Docker::Container.create({
         'name' => "aci_#{@id}",
         'Image' => "#{config.image_registry}/ac_#{@activity.id}",
-        'Cmd' => ['bash'],
-        #'Cmd' => ['ruby', '/activity/run.rb'],
+        'Cmd' => [''],
         'WorkingDir' => '/activity',
         'Tty' => true,
         'Env' => [
@@ -59,15 +60,10 @@ module Workflow
           'Binds' => ['/var/run/docker.sock:/var/run/docker.sock'],
           'VolumesFrom' => [
             config.workflow_relevant_data_container,
-            config.gem_data_container
+            #config.gem_data_container
           ],
         }
       })
-
-      # @container.start
-      # Docker::Network.get(Workflow::Configuration.network).connect(@container.id)
-      # Docker::Network.get('enactment_net').connect(@container.id)
-      # @container.stop
     end
   end
 end
