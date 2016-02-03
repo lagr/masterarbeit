@@ -2,9 +2,11 @@
 
 # This script should setup the docker machines for the example scenario
 # Precondition: Docker, Docker-Compose, Docker Machine and VirtualBox are installed
+step(){
+	echo "\n\n$@"
+}
 
-#=========== Discovery service machine ===========
-echo "\n\nCreate machine on which the discovery service and the registry will run...\n"
+step "Create machine on which the discovery service and the registry will run..."
 docker-machine create -d=virtualbox 					  	\
 	--swarm 												\
 	--swarm-discovery="consul://127.0.0.1:8500"	  			\
@@ -14,16 +16,16 @@ docker-machine create -d=virtualbox 					  	\
     --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
     coordination-machine
 
-eval "$(docker-machine env coordination-machine)"
-docker load -i ./images/base_images.tar # load images to coordination machine
-docker-compose -p consul -f ../consul.yml up -d
-
 coordination_machine_ip=$(docker-machine ip coordination-machine)
 consul_url="consul://$coordination_machine_ip:8500"
 registry_url=$(docker-machine ip coordination-machine):5000
 
-#=========== Development machine ===========
-echo "\n\nCreate machine on which the swarm master and the development services will run..."
+step "Load consul image from file and start..."
+eval "$(docker-machine env coordination-machine)"
+docker load -i ./images/consul.tar
+docker-compose -p consul -f ../consul.yml up -d
+
+step "Create machine on which the swarm master and the development services will run..."
 docker-machine create -d virtualbox                        \
 	--swarm --swarm-master                                 \
 	--swarm-discovery="$consul_url"                        \
@@ -37,8 +39,7 @@ docker-machine create -d virtualbox                        \
     --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	development-machine
 
-#=========== Internal machine ===========
-echo "\n\nCreate machine on which the internal enactment will run..."
+step "Create machine on which the internal enactment will run..."
 docker-machine create -d virtualbox                        \
 	--swarm                                                \
 	--swarm-discovery="$consul_url"                        \
@@ -49,8 +50,7 @@ docker-machine create -d virtualbox                        \
     --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	internal-machine
 
-#=========== External machine ===========
-echo "\n\nCreate machine on which the external enactment for wfs with space needs will run..."
+step "Create machine on which the external enactment for wfs with space needs will run..."
 docker-machine create -d virtualbox                        \
 	--swarm                                                \
 	--swarm-discovery="$consul_url"                        \
@@ -62,12 +62,20 @@ docker-machine create -d virtualbox                        \
     --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	cloud-machine
 
-#=========== Run service registrators ===========
+step "Preload required images..."
+eval "$(docker-machine env coordination-machine)"
+step "Load registry image from file..."
+docker load -i ./images/registry.tar
+
+step "Load registry image from file..."
+eval "$(docker-machine env internal-machine)"
+docker load -i ./images/rabbitmq.tar
+
+step "Load images required by all servers from file..."
 eval "$(docker-machine env --swarm development-machine)"
-echo "\n\nLoad images required by all servers from file..."
 docker load -i ./images/base_images.tar
 
-# show created machines and info on swarm master
+step "Swarm master info:"
 docker info
-echo "\n\n Created machines with the following IPs:"
+step "Created machines with the following IPs:"
 docker run --rm swarm list $consul_url
