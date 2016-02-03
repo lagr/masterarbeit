@@ -75,10 +75,11 @@ services:
       - backend
       - development
     environment:
-      SWARM_MANAGER_URL: tcp://$SWARM_MANAGER_IP:3376
-      SWARM_MANAGER_CERT_PATH: '/root/.docker'
-      POSTGRES_PASSWORD: masterarbeit
-      POSTGRES_USER: workflow_development_server
+      - "constraint:node==development-machine"
+      - "SWARM_MANAGER_URL=tcp://$SWARM_MANAGER_IP:3376"
+      - "SWARM_MANAGER_CERT_PATH='/root/.docker'"
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=workflow_development_server"
 
   engine:
     image: wf_engine

@@ -4,7 +4,6 @@ module WorkflowEngine
     def initialize(workflow_id, input_data, target_node )
       @workflow_id = workflow_id
       @target_node = target_node
-
       @input_data  = input_data
       @instance_id = SecureRandom.uuid
 
@@ -54,6 +53,7 @@ module WorkflowEngine
     def create_instance_container
       instance_container = Docker::Container.create({
         'name' => "wfi_#{@instance_id}",
+        'Labels' => {"wfi_#{@instance_id}" => ""},
         'Image' => "192.168.99.100:5000/#{DockerHelper.image_name(type: :workflow, id: @workflow_id)}",
         'Cmd' => ['bash'],
         'WorkingDir' => '/workflow',

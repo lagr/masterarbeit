@@ -9,20 +9,18 @@ require_relative 'docker_helper'
 require_relative 'workflow_instance'
 
 module WorkflowEngine
-
-  class WFMSConsumer
-    def action_of(message)
-      message.routing_key.gsub(/wfms\.\w+\./, '')
-    end
+  def self.match_message(message)
+    /wfms\.(\w+)\.(\w+)\.([\w-]+)/.match(message.routing_key).captures.map(&:to_sym)
   end
 
-  class WorkflowConsumer < WFMSConsumer
+  class WorkflowConsumer
     include Hutch::Consumer
     consume 'wfms.workflow.#'
 
     def process(message)
-      case action_of(message)
-      when 'start'
+      subject, action, subject_id = WorkflowEngine.match_message(message)
+      case action
+      when :start
         begin
           wfi = WorkflowEngine::WorkflowInstance.new(message[:id], message[:input_data], 'cloud-machine')
           result = wfi.run
@@ -34,11 +32,12 @@ module WorkflowEngine
     end
   end
 
-  class WorkflowInstanceConsumer < WFMSConsumer
+  class WorkflowInstanceConsumer
     include Hutch::Consumer
     consume 'wfms.workflow_instance.#'
 
     def process(message)
+      subject, action, subject_id = WorkflowEngine.match_message(message)
     end
   end
 

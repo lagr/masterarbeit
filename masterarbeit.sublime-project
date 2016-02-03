@@ -1,18 +1,6 @@
 {
 	"folders":
 	[
-    // {
-    //   "path": "workflow-development-server",
-    //   "folder_exclude_patterns": ["bin", "test", "public", "vendor"]
-    // },
-    // {
-    //   "path": "workflow-execution-server",
-    //   "folder_exclude_patterns": ["tmp", "bin", "test", "public", "vendor"]
-    // },
-    // {
-    //   "path": "server-configurations",
-    //   "folder_exclude_patterns": ["*_bak", "*_base", "*_dind"]
-    // },
     {
       "path": "code"
     },

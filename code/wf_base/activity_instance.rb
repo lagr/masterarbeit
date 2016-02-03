@@ -44,6 +44,10 @@ module Workflow
 
       Docker::Container.create({
         'name' => "aci_#{@id}",
+        'Labels' => {
+          "wfi_#{@instance_id}" => "",
+          "aci_#{@id}" => ""
+        },
         'Image' => "#{config.image_registry}/ac_#{@activity.id}",
         'Cmd' => [''],
         'WorkingDir' => '/activity',

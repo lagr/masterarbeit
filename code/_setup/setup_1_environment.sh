@@ -16,7 +16,7 @@ docker-machine create -d=virtualbox 					  	\
 
 eval "$(docker-machine env coordination-machine)"
 docker load -i ./images/base_images.tar # load images to coordination machine
-docker-compose -p consul -f ../_consul.yml up -d
+docker-compose -p consul -f ../consul.yml up -d
 
 coordination_machine_ip=$(docker-machine ip coordination-machine)
 consul_url="consul://$coordination_machine_ip:8500"
@@ -49,7 +49,6 @@ docker-machine create -d virtualbox                        \
     --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	internal-machine
 
-
 #=========== External machine ===========
 echo "\n\nCreate machine on which the external enactment for wfs with space needs will run..."
 docker-machine create -d virtualbox                        \
@@ -67,15 +66,6 @@ docker-machine create -d virtualbox                        \
 eval "$(docker-machine env --swarm development-machine)"
 echo "\n\nLoad images required by all servers from file..."
 docker load -i ./images/base_images.tar
-
-#=========== Show results ===========
-echo "\n\n Create overlay networks..."
-echo "Create backend network"
-docker network create backend_net
-echo "Create frontend network"
-docker network create frontend_net
-echo "Create enactment network"
-docker network create enactment_net
 
 # show created machines and info on swarm master
 docker info
