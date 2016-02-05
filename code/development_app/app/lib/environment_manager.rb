@@ -29,10 +29,6 @@ module EnvironmentManager
 
   private
 
-  def swarm_image
-    @swarm_image ||= Docker::Image.get('swarm')
-  end
-
   def ip?(string)
     remove_port(string) =~ Resolv::IPv4::Regex
   end

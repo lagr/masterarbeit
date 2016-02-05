@@ -9,5 +9,4 @@ WORKDIR /app
 ADD ["Gemfile", "Gemfile.lock", "/app/"]
 RUN bundle install
 ADD . /app
-RUN chmod +x /app/start
-CMD /app/start
+ENTRYPOINT hutch --config config.yml --require /app/provisioner.rb

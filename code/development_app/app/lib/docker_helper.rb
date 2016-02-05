@@ -4,10 +4,11 @@ module DockerHelper
   SHORT_TYPES = { activity: 'ac', workflow: 'wf' }.freeze
   DEFAULT_DOCKER_PORT = 2376
   CERT_PATH = "#{ENV['SWARM_MANAGER_CERT_PATH']}"
-  SWARM_MANAGER_URL = "#{ENV['SWARM_MANAGER_URL']}"
 
-  def registry_ip
-    Resolv.getaddress 'registry_service_1'
+  def registry_address
+    cluster_store = URI.parse(Docker.info['ClusterStore'])
+    cluster_store.port = 5000
+    cluster_store.select(:host,:port).join(':')
   end
 
   def image_name(type:, id: 'base')
@@ -28,7 +29,9 @@ module DockerHelper
   end
 
   def swarm_manager_connection
-    Docker::Connection.new ENV['SWARM_MANAGER_URL'], tls_options
+    swarm_manager_url = URI.parse('tcp://' + Docker.info['ClusterAdvertise'])
+    swarm_manager_url.port = 3376
+    Docker::Connection.new swarm_manager_url.to_s, tls_options
   end
 
   def docker_connection(server)

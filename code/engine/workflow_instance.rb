@@ -1,3 +1,4 @@
+require 'pry'
 module WorkflowEngine
   class WorkflowInstance
     attr_accessor :instance_container, :data_container, :instance_id
@@ -12,9 +13,11 @@ module WorkflowEngine
     end
 
     def run
-      Docker::Network.get('enactment_net').connect(@instance_container.id)
-      copy_input_data_to_container
+      Docker::Network.get('wfms_enactment').connect(@instance_container.id)
       @instance_container.start
+      @instance_container.pause
+      copy_input_data_to_container
+      @instance_container.unpause
       @instance_container.wait
       copy_output_data_from_container
       #@instance_container.delete(:force => true)

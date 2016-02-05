@@ -37,6 +37,19 @@ module Activity
   end
 
   def start_user_input
+    # config = activity_info['configuration']
+    # unser_input_container = config['user_input_container']
+    # unless Docker::Container.exist?('user-interface')
+    # end
+
+    # ui ||= Docker::Container.get('user-interface')
+    # request_input_form
+    # loop do
+    #   query_form_data_present?
+    #   get_form_data
+    # end
+    # request_form_deletion
+    input[Activity::Configuration.activity_instance_id] = { activity: Activity::Configuration.activity_id, manual_form_data: {name: "Peter Müllerd"} }
   end
 
   def start_subworkflow
@@ -62,7 +75,7 @@ end
 
 # ensure the container is connected to the networks before starting processing
 begin
-  Resolv.getaddress "aci_#{Activity::Configuration.activity_instance_id}.enactment_net"
+  Resolv.getaddress "aci_#{Activity::Configuration.activity_instance_id}.wfms_enactment"
 rescue
   sleep 0.1
   retry

@@ -32,7 +32,7 @@ end
 #ensure the container is connected to the networks before starting processing
 retries = 20
 begin
-  Resolv.getaddress("wfengine_service_1.enactment_net")
+  Resolv.getaddress("wfms_engine_1.wfms_enactment")
 rescue
   sleep 0.1
   retries -= 1

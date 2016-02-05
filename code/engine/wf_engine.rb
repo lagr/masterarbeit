@@ -10,7 +10,7 @@ require_relative 'workflow_instance'
 
 module WorkflowEngine
   def self.match_message(message)
-    /wfms\.(\w+)\.(\w+)\.([\w-]+)/.match(message.routing_key).captures.map(&:to_sym)
+    /wfms\.(\w+)\.(\w+)(?:\.([\w-]+))?/.match(message.routing_key).captures.to_a.compact.map(&:to_sym)
   end
 
   class WorkflowConsumer
@@ -41,19 +41,31 @@ module WorkflowEngine
     end
   end
 
-  # class ServerConsumer < WFMSConsumer
-  #   include Hutch::Consumer
-  #   consume 'wfms.server.#'
+  class ServerConsumer
+    include Hutch::Consumer
+    consume 'wfms.server.#'
 
-  #   def process(message)
-  #     server_manager = WorkflowEngine::ServerManager
+    def process(message)
+      subject, action, subject_id = WorkflowEngine.match_message(message)
+      server = message[:server]
 
-  #     case action_of(message)
-  #     when 'add'
-  #       #server_manager.prepare(server: message[:server])
-  #     when 'update'
-  #       #server_manager.adapt(server: message[:server])
-  #     end
-  #   end
-  # end
+      case action
+      when :add
+          provisioner = Docker::Container.create({
+            'name' => "provisioner-#{server[:name]}",
+            'Image' => "provisioner",
+            'Cmd' => [''],
+            'HostConfig' => {'Binds' => ['/var/run/docker.sock:/var/run/docker.sock']},
+            'Env' => ["constraint:node==#{server[:name]}"],
+            'AttachStdin' => false, 'AttachStdout' => false, 'AttachStderr' => false,
+            'Tty' => true
+          })
+
+          Docker::Network.get('wfms_enactment').connect("provisioner-#{server[:name]}")
+          provisioner.start
+      when 'update'
+        #server_manager.adapt(server: message[:server])
+      end
+    end
+  end
 end

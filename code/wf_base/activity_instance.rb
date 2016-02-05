@@ -26,14 +26,12 @@ module Workflow
 
     def run
       container.tap do |c|
-        c.start
-
-        c.pause
         Docker::Network.get(Workflow::Configuration.network).connect(c.id)
-        Docker::Network.get('enactment_net').connect(c.id)
-        c.unpause
-
+        Docker::Network.get('wfms_enactment').connect(c.id)
+        c.start
         c.wait(60 * 60)
+        Docker::Network.get(Workflow::Configuration.network).disconnect(c.id)
+        Docker::Network.get('wfms_enactment').disconnect(c.id)
         c.delete unless Workflow::Configuration.keep_activity_containers?
       end
       @completed = true

@@ -1,0 +1,18 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    amq-protocol (2.0.1)
+    backticks (0.3.0)
+    bunny (2.2.2)
+      amq-protocol (>= 2.0.1)
+    docker (0.3.1)
+      backticks (~> 0.3)
+    json (1.8.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bunny
+  docker
+  json

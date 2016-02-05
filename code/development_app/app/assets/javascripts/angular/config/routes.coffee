@@ -17,6 +17,43 @@ angular.module 'WFMS.WorkflowDevelopmentApplication'
       resolve:
         dashboardData: (Dashboard) -> Dashboard.getSummary()
 
+    ## Workflows
+
+    'workflow_management':
+      url: '/workflow_management'
+      abstract: true
+      template: '<ui-view/>'
+      controller: 'WorkflowManagementController'
+      controllerAs: 'wfmCtrl'
+      resolve:
+        users: (User) -> User.index()
+        roles: (Role) -> Role.index()
+        workflows: (Workflow) -> Workflow.index()
+
+    'workflow_management.workflows':
+      url: '/workflows'
+      templateUrl: 'templates/workflow_management/workflows.html'
+
+    'workflow_management.workflow':
+      url: '/workflow/:workflow_id'
+      templateUrl: 'templates/workflow_management/workflow.html'
+      controller: 'WorkflowController'
+      controllerAs: 'wfCtrl'
+      resolve:
+        workflow: (workflows, $stateParams) -> _.find(workflows, id: $stateParams.workflow_id)
+        users: (users) -> users
+        roles: (roles) -> roles
+
+    'workflow_management.workflow_model':
+      url: '/workflow/workflow_id'
+      templateUrl: 'templates/workflow_management/workflow_model.html'
+      controller: 'WorkflowController'
+      controllerAs: 'wfCtrl'
+      resolve:
+        workflow: (workflows, $stateParams) -> _.find(workflows, id: $stateParams.workflow_id)
+        users: (users) -> users
+        roles: (roles) -> roles
+
     ## Organization
 
     'organization':
