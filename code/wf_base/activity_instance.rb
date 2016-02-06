@@ -46,7 +46,7 @@ module Workflow
           "wfi_#{@instance_id}" => "",
           "aci_#{@id}" => ""
         },
-        'Image' => "#{config.image_registry}/ac_#{@activity.id}",
+        'Image' => "#{config.image_registry}/activity:ac_#{@activity.id}",
         'Cmd' => [''],
         'WorkingDir' => '/activity',
         'Tty' => true,

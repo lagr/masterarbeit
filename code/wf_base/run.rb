@@ -37,6 +37,7 @@ rescue
   sleep 0.1
   retries -= 1
   retry if retries > 0
+  abort "no connection"
 else
   Workflow.start
 end

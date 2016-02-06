@@ -10,11 +10,12 @@ module ImageManager
   private
 
   def publish_image(subject, image)
-    image_name = DockerHelper.image_name(type: subject.class.name.underscore.to_sym, id: subject.id)
-    repo_tag = "192.168.99.100:5000/#{image_name}"
-    image.tag(repo: repo_tag, tag: :latest, force: true)
-    image.push(nil, repo_tag: "#{repo_tag}:latest") {|status| puts status }
+    type = subject.class.name.underscore.to_sym
+    image_name = DockerHelper.image_name(type: type, id: subject.id)
+    repo_tag = "192.168.99.100:5000/#{type}"
+    image.tag(repo: repo_tag, tag: image_name, force: true)
+    image.push(nil, repo_tag: "#{repo_tag}:#{image_name}") {|status| puts status }
 
-    MessageService.publish :image, :add, image: repo_tag
+    MessageService.publish :image, :add, image: "#{repo_tag}:#{image_name}"
   end
 end

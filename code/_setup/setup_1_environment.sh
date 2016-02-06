@@ -13,7 +13,6 @@ docker-machine create -d=virtualbox 					  	\
     --engine-opt="cluster-store=consul://127.0.0.1:8500"  	\
     --engine-opt="cluster-advertise=eth1:2376"            	\
     --virtualbox-memory "2048" 								\
-    --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
     coordination-machine
 
 coordination_machine_ip=$(docker-machine ip coordination-machine)
@@ -36,7 +35,6 @@ docker-machine create -d virtualbox                        \
 	--engine-label edu.proto.cpu="big-cpu"                 \
 	--engine-insecure-registry $registry_url               \
 	--engine-insecure-registry registry_service_1:5000     \
-    --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	development-machine
 
 step "Create machine on which the internal enactment will run..."
@@ -47,7 +45,6 @@ docker-machine create -d virtualbox                        \
 	--engine-opt="cluster-advertise=eth1:2376"             \
 	--engine-label edu.proto.machine_env="internal"        \
 	--engine-insecure-registry $registry_url               \
-    --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	internal-machine
 
 step "Create machine on which the external enactment for wfs with space needs will run..."
@@ -59,7 +56,6 @@ docker-machine create -d virtualbox                        \
 	--engine-label edu.proto.machine_env="external"        \
 	--engine-label edu.proto.hdd="big-hdd"                 \
 	--engine-insecure-registry $registry_url               \
-    --virtualbox-boot2docker-url=https://github.com/boot2docker/boot2docker/releases/download/v1.10.0-rc2-b/boot2docker.iso \
 	cloud-machine
 
 step "Preload required images..."

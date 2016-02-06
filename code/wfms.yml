@@ -1,4 +1,4 @@
-version: 2
+version: "2"
 
 networks:
   frontend:
@@ -12,7 +12,7 @@ networks:
 
 services:
   registry:
-    image: registry:2
+    image: registry:2.3
     restart: always
     ports:
       - 5000:5000
@@ -22,7 +22,7 @@ services:
     environment:
       - "constraint:node==coordination-machine"
 
-  message_broker:
+  mom:
     image: rabbitmq:3-management
     restart: always
     networks:
@@ -63,7 +63,7 @@ services:
         - "constraint:node==development-machine"
     depends_on:
       - dev_db
-      - message_broker
+      - mom
       - registry
       - engine
     volumes:
@@ -88,9 +88,10 @@ services:
       args:
         - "constraint:node==development-machine"
     depends_on:
-      - message_broker
+      - mom
     networks:
       - backend
+      - enactment
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ~/.docker/machine/certs/:/root/.docker
