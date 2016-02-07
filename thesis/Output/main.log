@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  7 FEB 2016 15:22
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  7 FEB 2016 19:26
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2142,11 +2142,16 @@ Underfull \hbox (badness 10000) detected at line 16
 
 
 Underfull \hbox (badness 10000) detected at line 18
-[][]\EU1/CrimsonText(0)/bx/n/12 WFMC[]
+[][]\EU1/CrimsonText(0)/bx/n/12 WSDL[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 19
+[][]\EU1/CrimsonText(0)/bx/n/12 WFMC[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 20
 [][]\EU1/CrimsonText(0)/bx/n/12 WfMS[]
  []
 
@@ -2242,31 +2247,35 @@ although it is yet undefined on input line 10.
 [14]
 Package acronym Info: Label `acro:OASIS' newly defined as it shall be overridde
 n
-although it is yet undefined on input line 29.
+although it is yet undefined on input line 27.
+Package acronym Info: Label `acro:WSDL' newly defined as it shall be overridden
+
+although it is yet undefined on input line 27.
+[15]
 Package acronym Info: Label `acro:MSA' newly defined as it shall be overridden
-although it is yet undefined on input line 34.
-[15])
-Overfull \hbox (8.88463pt too wide) in paragraph at lines 86--107
+although it is yet undefined on input line 44.
+[16])
+Overfull \hbox (8.88463pt too wide) in paragraph at lines 89--107
 []\EU1/CrimsonText(0)/m/n/12 - docker for workflow execution - base images - co
 ntainer as instance w/ writable layer - autonom-
  []
 
-[16]
+[17]
 Chapter 5.
-(./content/text/implementation.tex) [17
+(./content/text/implementation.tex) [18
 
 ]
 Chapter 6.
-(./content/text/evaluation_discussion.tex) [18
+(./content/text/evaluation_discussion.tex) [19
 
 ]
 Chapter 7.
 (./content/text/conclusion.tex) (/Users/larsgreiving/eigene/masterarbeit/thesis
-/Output/main.bbl [19
+/Output/main.bbl [20
 
-]) [20
+] [21
 
-] [21]
+]) [22]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 128.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 128.
 (/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux)
@@ -2278,13 +2287,13 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 128.
  ) 
 Here is how much of TeX's memory you used:
- 47387 strings out of 493706
- 921999 string characters out of 6145770
- 1149379 words of memory out of 5000000
- 49855 multiletter control sequences out of 15000+600000
+ 47406 strings out of 493706
+ 922454 string characters out of 6145770
+ 1149619 words of memory out of 5000000
+ 49874 multiletter control sequences out of 15000+600000
  25139 words of font info for 101 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 73i,13n,88p,10415b,639s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 73i,13n,88p,10415b,695s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on /Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.pd
-f (28 pages).
+f (29 pages).

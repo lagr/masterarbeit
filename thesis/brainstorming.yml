@@ -189,7 +189,7 @@ MOM:
 ## - http://blog.circleci.com/checkpoint-and-restore-docker-container-with-criu/
 ## - tag images with string array
 ## - document images in/out with nested json (feasible?)
-## - articles state that "suitableb boundaries have to be found prior to micro services creation" -> wfmc gives quite good boundaries
+## - articles state that "suitableb boundaries have to be found prior to Micro-services creation" -> wfmc gives quite good boundaries
 ## - configuration of activities
 # - benefit is twofold: a) implementation of the wfms itself b) execution of workflows
 ## -- evaluate supported patterns?  http://www.workflowpatterns.com/documentation/documents/BPM-06-22.pdf

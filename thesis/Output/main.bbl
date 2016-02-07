@@ -18,6 +18,12 @@ Fabio Casati, Stefano Ceri, Stefano Paraboschi, and Guiseppe Pozzi.
   systems.
 \newblock {\em ACM Transactions on Database Systems}, 24(3):405--451, 1999.
 
+\bibitem{Choi2010Implementing}
+Jae Choi, Derek~L. Nazareth, and Hemant~K. Jain.
+\newblock Implementing service-oriented architecture in organizations.
+\newblock {\em Journal of Management Information Systems}, 26(4):253--286,
+  2010.
+
 \bibitem{Docker????Dockerb}
 Inc. Docker.
 \newblock Docker orchestration product brief.
@@ -66,10 +72,21 @@ Peter Lawrence, editor.
 \newblock {\em Workflow Handbook 1997}.
 \newblock John Wiley \& Sons, Inc., New York, NY, USA, 1997.
 
+\bibitem{Newman2015Building}
+Sam Newman.
+\newblock {\em Building microservices: [designing fine-grained systems]}.
+\newblock O'Reilly, Beijing, 1. ed edition, 2015.
+
 \bibitem{Pahl2015Containerization}
 Claus Pahl.
 \newblock Containerization and the paas cloud.
 \newblock {\em IEEE Cloud Computing}, 2(3):24--31, 2015.
+
+\bibitem{Papazoglou2007Service}
+Mike~P. Papazoglou and Willem-Jan van~den Heuvel.
+\newblock Service oriented architectures: approaches, technologies and research
+  issues.
+\newblock {\em The VLDB Journal}, 16(3):389--415, 2007.
 
 \bibitem{Ruiz2015Performance}
 C.~Ruiz, E.~Jeanvoine, and L.~Nussbaum.
@@ -88,6 +105,11 @@ Catalin Strimbei, Octavian Dospinescu, Roxana-Marina Strainu, and Alexandra
 Joe Stubbs, Walter Moreira, and Rion Dooley.
 \newblock Distributed systems of microservices using docker and serfnode.
 \newblock pages 34--39. IEEE, 2015.
+
+\bibitem{Thones2015Microservices}
+Johannes Thones.
+\newblock Microservices.
+\newblock {\em IEEE Software}, 32(1):116--116, 2015.
 
 \bibitem{Wutke2008Model}
 Daniel Wutke, Daniel Martin, and Frank Leymann.

@@ -42,9 +42,10 @@
 \newacro{PID}[\AC@hyperlink{PID}{PID}]{process identifier}
 \newacro{REST}[\AC@hyperlink{REST}{REST}]{Representational State Transfer}
 \newacro{OASIS}[\AC@hyperlink{OASIS}{OASIS}]{Organization for the Advancement of Structured Information Standards}
-\newacro{MSA}[\AC@hyperlink{MSA}{MSA}]{Micro Services Architecture}
+\newacro{MSA}[\AC@hyperlink{MSA}{MSA}]{Micro-services Architecture}
 \newacro{SOA}[\AC@hyperlink{SOA}{SOA}]{Service-oriented Architecture}
 \newacro{UI}[\AC@hyperlink{UI}{UI}]{user interface}
+\newacro{WSDL}[\AC@hyperlink{WSDL}{WSDL}]{Web Services Description Language}
 \newacro{WFMC}[\AC@hyperlink{WFMC}{WFMC}]{Workflow Management Coalition}
 \newacro{WfMS}[\AC@hyperlink{WfMS}{WfMS}]{Workflow Management System}
 \newacro{WFM}[\AC@hyperlink{WFM}{WFM}]{Workflow Management}
@@ -279,7 +280,7 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Architecture}{14}{section.4.2}}
 \newlabel{sec:architecture}{{4.2}{14}{Architecture}{section.4.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Application Structure}{14}{subsection.4.2.1}}
-\newlabel{sub:application_architecture}{{4.2.1}{14}{Application Structure}{subsection.4.2.1}{}}
+\newlabel{sub:application_structure}{{4.2.1}{14}{Application Structure}{subsection.4.2.1}{}}
 \AC@undonewlabel{acro:SOA}
 \newlabel{acro:SOA}{{4.2.1}{14}{Application Structure}{section*.15}{}}
 \acronymused{SOA}
@@ -288,14 +289,16 @@
 \citation{Strimbei2015Software}
 \citation{Stubbs2015Distributed}
 \citation{Stubbs2015Distributed}
-\citation{Stubbs2015Distributed}
-\citation{Stubbs2015Distributed}
+\citation{Newman2015Building}
 \citation{Hohpe2004Enterprise}
+\citation{Papazoglou2007Service}
 \citation{Standards2006Reference}
+\citation{Papazoglou2007Service}
 \citation{Strimbei2015Software}
-\citation{Stubbs2015Distributed}
-\citation{Strimbei2015Software}
-\citation{Stubbs2015Distributed}
+\citation{Papazoglou2007Service}
+\citation{Papazoglou2007Service}
+\citation{Papazoglou2007Service}
+\citation{Choi2010Implementing}
 \@writefile{toc}{\contentsline {paragraph}{Monolithic Architecture}{15}{subsection.4.2.1}}
 \newlabel{par:monolithic_architecture}{{4.2.1}{15}{Monolithic Architecture}{subsection.4.2.1}{}}
 \@writefile{toc}{\contentsline {paragraph}{Service-oriented Architecture}{15}{subsection.4.2.1}}
@@ -305,77 +308,92 @@
 \newlabel{acro:OASIS}{{4.2.1}{15}{Service-oriented Architecture}{section*.16}{}}
 \acronymused{OASIS}
 \acronymused{SOA}
-\@writefile{toc}{\contentsline {paragraph}{Micro Services Architecture}{15}{subsection.4.2.1}}
-\newlabel{par:micro_services_architecture}{{4.2.1}{15}{Micro Services Architecture}{subsection.4.2.1}{}}
+\AC@undonewlabel{acro:WSDL}
+\newlabel{acro:WSDL}{{4.2.1}{15}{Service-oriented Architecture}{section*.17}{}}
+\acronymused{WSDL}
+\acronymused{SOA}
+\citation{Papazoglou2007Service}
+\citation{Papazoglou2007Service}
+\citation{Papazoglou2007Service}
+\citation{Stubbs2015Distributed}
+\citation{Strimbei2015Software}
+\citation{Stubbs2015Distributed}
+\citation{Stubbs2015Distributed}
+\citation{Newman2015Building}
+\citation{Thones2015Microservices}
+\citation{Stubbs2015Distributed}
+\citation{Newman2015Building}
+\citation{Thones2015Microservices}
+\acronymused{SOA}
+\acronymused{SOA}
+\acronymused{SOA}
+\@writefile{toc}{\contentsline {paragraph}{Micro-services Architecture}{16}{subsection.4.2.1}}
+\newlabel{par:micro_services_architecture}{{4.2.1}{16}{Micro-services Architecture}{subsection.4.2.1}{}}
 \AC@undonewlabel{acro:MSA}
-\newlabel{acro:MSA}{{4.2.1}{15}{Micro Services Architecture}{section*.17}{}}
+\newlabel{acro:MSA}{{4.2.1}{16}{Micro-services Architecture}{section*.18}{}}
 \acronymused{MSA}
 \acronymused{SOA}
 \acronymused{MSA}
 \acronymused{SOA}
 \acronymused{MSA}
-\citation{Stubbs2015Distributed}
-\citation{Stubbs2015Distributed}
-\citation{Strimbei2015Software}
-\citation{Strimbei2015Software}
-\citation{Stubbs2015Distributed}
-\citation{Stubbs2015Distributed}
-\citation{Stubbs2015Distributed}
-\citation{Stubbs2015Distributed}
-\citation{Stubbs2015Distributed}
-\citation{Stubbs2015Distributed}
-\citation{Stubbs2015Distributed}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Components}{16}{subsection.4.2.2}}
-\newlabel{sub:components}{{4.2.2}{16}{Components}{subsection.4.2.2}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Prototypical Implementation}{17}{chapter.5}}
+\acronymused{MSA}
+\@writefile{toc}{\contentsline {paragraph}{Choice of an achitecture model}{17}{subsection.4.2.1}}
+\newlabel{par:choice_of_an_achitecture_model}{{4.2.1}{17}{Choice of an achitecture model}{subsection.4.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Components}{17}{subsection.4.2.2}}
+\newlabel{sub:components}{{4.2.2}{17}{Components}{subsection.4.2.2}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Prototypical Implementation}{18}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
-\newlabel{cha:implementation}{{5}{17}{Prototypical Implementation}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Toolchain}{17}{section.5.1}}
-\newlabel{sec:toolchain}{{5.1}{17}{Toolchain}{section.5.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Realization of the Architecture}{17}{section.5.2}}
-\newlabel{sec:realization_of_the_architecture}{{5.2}{17}{Realization of the Architecture}{section.5.2}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{18}{chapter.6}}
+\newlabel{cha:implementation}{{5}{18}{Prototypical Implementation}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Toolchain}{18}{section.5.1}}
+\newlabel{sec:toolchain}{{5.1}{18}{Toolchain}{section.5.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Realization of the Architecture}{18}{section.5.2}}
+\newlabel{sec:realization_of_the_architecture}{{5.2}{18}{Realization of the Architecture}{section.5.2}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{19}{chapter.6}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
-\newlabel{cha:evaluation}{{6}{18}{Evaluation and Discussion}{chapter.6}{}}
+\newlabel{cha:evaluation}{{6}{19}{Evaluation and Discussion}{chapter.6}{}}
 \bibstyle{plain}
 \bibstyle{iswiwwu}
 \bibdata{Remote}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{19}{chapter.7}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{20}{chapter.7}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
 \@writefile{lol}{\addvspace {10\p@ }}
-\newlabel{cha:conclusion}{{7}{19}{Conclusion}{chapter.7}{}}
+\newlabel{cha:conclusion}{{7}{20}{Conclusion}{chapter.7}{}}
 \bibcite{Alonso1997Functionality}{{1}{}{{}}{{}}}
 \bibcite{Becker1999Identifying}{{2}{}{{}}{{}}}
 \bibcite{Casati1999Specification}{{3}{}{{}}{{}}}
-\bibcite{Docker????Dockerb}{{4}{}{{}}{{}}}
-\bibcite{Docker????Dockera}{{5}{}{{}}{{}}}
-\bibcite{Docker????Docker}{{6}{}{{}}{{}}}
-\bibcite{Docker????DockerCom}{{7}{}{{}}{{}}}
-\bibcite{Felter2014Updated}{{8}{}{{}}{{}}}
-\bibcite{Standards2006Reference}{{9}{}{{}}{{}}}
-\bibcite{Hohpe2004Enterprise}{{10}{}{{}}{{}}}
-\bibcite{Hollingsworth1995Wfmc}{{11}{}{{}}{{}}}
-\bibcite{Initiative????Open}{{12}{}{{}}{{}}}
-\bibcite{Lawrence1997Workflow}{{13}{}{{}}{{}}}
-\bibcite{Pahl2015Containerization}{{14}{}{{}}{{}}}
-\bibcite{Ruiz2015Performance}{{15}{}{{}}{{}}}
-\bibcite{Strimbei2015Software}{{16}{}{{}}{{}}}
-\bibcite{Stubbs2015Distributed}{{17}{}{{}}{{}}}
-\bibcite{Wutke2008Model}{{18}{}{{}}{{}}}
+\bibcite{Choi2010Implementing}{{4}{}{{}}{{}}}
+\bibcite{Docker????Dockerb}{{5}{}{{}}{{}}}
+\bibcite{Docker????Dockera}{{6}{}{{}}{{}}}
+\bibcite{Docker????Docker}{{7}{}{{}}{{}}}
+\bibcite{Docker????DockerCom}{{8}{}{{}}{{}}}
+\bibcite{Felter2014Updated}{{9}{}{{}}{{}}}
+\bibcite{Standards2006Reference}{{10}{}{{}}{{}}}
+\bibcite{Hohpe2004Enterprise}{{11}{}{{}}{{}}}
+\bibcite{Hollingsworth1995Wfmc}{{12}{}{{}}{{}}}
+\bibcite{Initiative????Open}{{13}{}{{}}{{}}}
+\bibcite{Lawrence1997Workflow}{{14}{}{{}}{{}}}
+\bibcite{Newman2015Building}{{15}{}{{}}{{}}}
+\bibcite{Pahl2015Containerization}{{16}{}{{}}{{}}}
+\bibcite{Papazoglou2007Service}{{17}{}{{}}{{}}}
+\bibcite{Ruiz2015Performance}{{18}{}{{}}{{}}}
+\bibcite{Strimbei2015Software}{{19}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {chapter}{\nonumberline Bibliography}{21}{chapter*.19}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
+\@writefile{lol}{\addvspace {10\p@ }}
+\bibcite{Stubbs2015Distributed}{{20}{}{{}}{{}}}
+\bibcite{Thones2015Microservices}{{21}{}{{}}{{}}}
+\bibcite{Wutke2008Model}{{22}{}{{}}{{}}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
 \gdef\minted@oldcachelist{,
   default.pygstyle,
   tango.pygstyle}
-\@writefile{toc}{\contentsline {chapter}{\nonumberline Bibliography}{20}{chapter*.18}}
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{lol}{\addvspace {10\p@ }}
-\@writefile{lol}{\addvspace {10\p@ }}

@@ -51,11 +51,12 @@
 \contentsline {subsection}{\numberline {4.2.1}Application Structure}{14}{subsection.4.2.1}
 \contentsline {paragraph}{Monolithic Architecture}{15}{subsection.4.2.1}
 \contentsline {paragraph}{Service-oriented Architecture}{15}{subsection.4.2.1}
-\contentsline {paragraph}{Micro Services Architecture}{15}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}Components}{16}{subsection.4.2.2}
-\contentsline {chapter}{\numberline {5}Prototypical Implementation}{17}{chapter.5}
-\contentsline {section}{\numberline {5.1}Toolchain}{17}{section.5.1}
-\contentsline {section}{\numberline {5.2}Realization of the Architecture}{17}{section.5.2}
-\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{18}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{19}{chapter.7}
-\contentsline {chapter}{\nonumberline Bibliography}{20}{chapter*.18}
+\contentsline {paragraph}{Micro-services Architecture}{16}{subsection.4.2.1}
+\contentsline {paragraph}{Choice of an achitecture model}{17}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Components}{17}{subsection.4.2.2}
+\contentsline {chapter}{\numberline {5}Prototypical Implementation}{18}{chapter.5}
+\contentsline {section}{\numberline {5.1}Toolchain}{18}{section.5.1}
+\contentsline {section}{\numberline {5.2}Realization of the Architecture}{18}{section.5.2}
+\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{19}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{20}{chapter.7}
+\contentsline {chapter}{\nonumberline Bibliography}{21}{chapter*.19}
