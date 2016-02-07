@@ -3,15 +3,25 @@
 \subsection{Functional Requirements} % (fold)
   \label{sub:functional_requirements}
 
+  In the following, expectations towards the functionality of the resulting \ac{WfMS} are presented in a structured manner. These functionalities are grouped by the aspects and tasks of an WFMS, which are described in \ref{sub:functional_areas} and \ref{sub:system_components}.
+
   \subsubsection{Infrastructure and Infrastructure Management} % (fold)
     \label{ssub:infrastructure_management}
+      The workflow management system should be structured in a way that allows to change of parts of it during execution time.
 
-        - execution environment: present containers which always run
+      It should be possible to add machines on the fly.
+
+      - execution environment: containers which always run
+
 
     % subsubsection infrastructure_management (end)
 
   \subsubsection{Workflow Modeling} % (fold)
     \label{ssub:workflow_modeling}
+
+      The \ac{WfMS} should thus enable modeling developers to incorporate the invocation of third party images into their workflows.
+
+      The modeler should thus be able to pass along information which allow the validation of input and output data with both activities and workflows.
 
         - drop in 3rd party containers
           - specify container params
@@ -22,25 +32,28 @@
 
   \subsubsection{Workflow Distribution} % (fold)
     \label{ssub:workflow_distribution}
+      In order to reduce administrational work, workflows and their activities should be distributed to the servers that they will be run on in an automated way.
+  - produced workflows should be as portable/environment independent as possible
+
     % subsubsection workflow_distribution (end)
 
   \subsubsection{Workflow Execution} % (fold)
     \label{ssub:workflow_execution}
 
         - should provide form renderer
-        - should happen on one machine (?)
-        - should be stoppable and movable to other node
     % subsubsection workflow_execution (end)
-
-  \subsubsection{Integration of Third Party Containers} % (fold)
-    \label{ssub:integration_of_third_party_containers}
-    % subsubsection integration_of_third_party_containers (end)
 % subsection functional_requirements (end)
 
 \subsection{Intangible Requirements} % (fold)
   \label{sub:intangible_requirements}
+
+  Besides the rigid functional requirements there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the usefulnes of the produced artifacts.
+
+    - modeling workflows (with 3rd p images) should be intuitive
+
   % subsection intangible_requirements (end)
 
 \subsection{Derived Objectives} % (fold)
   \label{sub:derived_objectives}
+
   % subsection derived_objectives (end)

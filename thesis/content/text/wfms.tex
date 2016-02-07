@@ -1,39 +1,5 @@
 % -*- root: ../../main.tex -*- %
 
-In this chapter, the concepts of workflows and workflow management systems will be briefly introduced and related to each other.
-There is a plethora of term definitions and deviating understandings of workflows and the concepts related to them \cite{Casati1999Specification}.
-In large parts, the concepts presented here thus rely on specifications published by the \ac{WFMC}, a consortium of workflow management software vendors, researchers in the field of workflow management and \ac{WfMS} users, as they represent some form of consensus.
-
-The identified use cases and properties will be used in \ref{sec:determination_of_objectives} to identify objectives for the architecture. Also, they will be the reference to which the final architecture developed in this thesis is compared against.
-
-% concepts
-%   - X workflow
-%     - X process instances
-%     - activities
-%       - X activity instances
-%       - X types
-%         - automated
-%         - manual
-%         - application
-%     - X participants
-%       - X users
-%       - X roles
-%   - X process definition
-%   - X workflow data
-%     - X wf relevant data
-%     - X application data
-%     - X system and environmental data
-
-%   - workflow management system
-%     - X functional areas
-%     - components
-%       - Process Definition Tool
-%       - Administration \& Monitoring Tools
-%       - Workflow Client Applications
-%       - Invoked Applications
-%       - Workflow Enactment Service
-%         - Workflow Engines
-
 \section{Concepts} % (fold)
 \label{sec:concepts}
 
@@ -67,7 +33,7 @@ The identified use cases and properties will be used in \ref{sec:determination_o
 
   \subsection{Activity Instance} % (fold)
   \label{sub:activity_instance}
-    Just like processes, activities are instanciated during workflow execution and have a set states that they may be in.
+    Just like processes, activities are instanciated during workflow execution and have a set of states that they may be in.
 
     When an activity instance is created, it is in the \emph{inactive} state. From this state, it may enter the \emph{suspended} state, in which it will neither be activated nor assigned a worklist item. If the activity instance is not suspended, it is activated once its entry conditions are fulfilled. It then is in the \emph{active} state. When the execution of the activity has finished, it finally enters the \emph{completed} state \cite{Hollingsworth1995Wfmc}.
 

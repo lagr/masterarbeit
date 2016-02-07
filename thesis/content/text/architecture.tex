@@ -1,0 +1,89 @@
+% -*- root: ../../main.tex -*- %
+
+
+\subsection{Application Structure} % (fold)
+  \label{sub:application_architecture}
+  Micro services, service discovery \cite{Stubbs2015Distributed}
+
+  Use Docker only for execution vs docker all the things
+
+  Developers of software systems have to cope with factors which impose challenges on them, such as high complexity within their systems, an increased need for integration of internal and external functionality and evolving technologies. Several architectural approaches emerged from the attempt to overcome these challenges. Strîmbei et al consider \emph{monolithic architecture}, \emph{\ac{SOA}} and \emph{micro services} to be the most relevant \cite[p.~13]{Strimbei2015Software}.
+
+  \paragraph{Monolithic Architecture} % (fold)
+  \label{par:monolithic_architecture}
+    Monolithic software systems are characterized by their cohesive structure. Usually, components in a monolith are organized within one programm, often running in one process \cite[p.~35]{Stubbs2015Distributed}. They communicate through shared memory and direct function calls. Monolithic applications are typically written using one programming language \cite[p.~14]{Strimbei2015Software}. In order to cope with increasing workload on a monolithic system, multiple instances of it are run behind a load balancer \cite[p.~35]{Stubbs2015Distributed}.
+
+    The strengths of monolithic architecture lie in its comparably simple demands towards the infrastructure. As the application is run as one entity, deployment and networking are rather simple \cite[p.~35]{Stubbs2015Distributed}. Since data can be shared via memory or disk, monolithic applications can access it faster than it would be the case with networked components \cite[p.~14]{Strimbei2015Software}.
+
+      - lower complexity of interaction between parts when multiple com- ponents or modules can be gathered into a sin- gle unit \cite[p.~14]{Strimbei2015Software}
+    con:
+      - Changes to one component can impact seemingly unrelated areas of the application increasing the risk of new development  \cite{Stubbs2015Distributed}
+      - Individual components cannot be deployed, making wide reuse across the enterprise more difficult  \cite{Stubbs2015Distributed}
+      - Components designed for reuse gravitate towards verbosity and readability over performance due to  conflicting needs and levels of experience in the development team  \cite{Stubbs2015Distributed}
+      - At the same time, scaling of individual components is not possible, and together these leads to obvious inefficiencies \cite{Stubbs2015Distributed}
+  % paragraph monolithic_architecture (end)
+
+  \paragraph{Service-oriented Architecture} % (fold)
+  \label{par:service_oriented_architecture}
+    \ac{SOA} is based on the idea that code which provides related business functions can be bundled into one component and offer said functionality to other systems \emph{as a service}, thus avoiding duplicated implementation of the functionalities among these systems \cite[p.8]{Hohpe2004Enterprise}.
+    The \ac{OASIS} describes \ac{SOA} as an architectural paradigm that supports the organization and usage of these services \cite{Standards2006Reference}. Each service provider exposes its offered services, which can then be utilized by service consumers \cite{Strimbei2015Software}.
+  % paragraph service_oriented_architecture (end)
+
+  \paragraph{Micro Services Architecture} % (fold)
+  \label{par:micro_services_architecture}
+    The concept of \ac{MSA} is closely related to that of \ac{SOA}, as it also promotes the encapsulation of functionality in standalone services which can be used by other parts of a system. There is disabiguity whether \ac{MSA} is actually a concept on its own -- or rather a specialized application of \ac{SOA} \cite[p.~35]{Stubbs2015Distributed}, \cite[p.~17]{Strimbei2015Software}.
+    Stubbs et al describe \ac{MSA} as a distributed system that consists of independent services which are   narrowly focused and thus considered ``lightweight'' \cite[p.~35]{Stubbs2015Distributed}.
+    * some more here*
+  % paragraph micro_services_architecture (end)
+
+  <<Possible instances of the wfms components in monolith, soa and msa>>
+
+  Reasoning:
+    monolith:
+      pro:
+        - deployment and networking are trivial \cite{Stubbs2015Distributed}
+        - scaling the system is accomplished by running multiple instances of the monolith behind a load balancer \cite{Stubbs2015Distributed}
+        - lower complexity of interaction between parts when multiple com- ponents or modules can be gathered into a sin- gle unit \cite[p.~14]{Strimbei2015Software}
+        - highly optimized considering that: (1) data is read di- rectly from disk through the file system and (2) the user has also the possibility to cache and pre-fetch built-in data  \cite[p.~14]{Strimbei2015Software}
+      con:
+        - Changes to one component can impact seemingly unrelated areas of the application increasing the risk of new development  \cite{Stubbs2015Distributed}
+        - Individual components cannot be deployed, making wide reuse across the enterprise more difficult  \cite{Stubbs2015Distributed}
+        - Components designed for reuse gravitate towards verbosity and readability over performance due to  conflicting needs and levels of experience in the development team  \cite{Stubbs2015Distributed}
+        - At the same time, scaling of individual components is not possible, and together these leads to obvious inefficiencies \cite{Stubbs2015Distributed}
+    soa:
+      pro:
+      con:
+    microservices:
+      pro:
+        - can be developed in disparate languages and tools  \cite{Stubbs2015Distributed}
+        - They can be deployed, upgraded and scaled individually  \cite{Stubbs2015Distributed}
+        - in theory leads to greater code reuse \cite{Stubbs2015Distributed}
+      con:
+
+  Choice:
+    - Docker removes some of the downsides of microservices
+    - microservices it is then
+
+
+  % subsection application_architecture (end)
+
+\subsection{Components} % (fold)
+\label{sub:components}
+  - identified services
+  - components per service
+% subsection components (end)
+
+- inter-component communication
+  - RabbitMQ was introduced to the project, which implements the Advanced Message Queuing Protocol (AMQP)
+  - AMQP consists of three structural parts [Ze15]:
+    - Exchanges
+      -  are the contact point for incoming messages, where the publishers deliver their messages [Ze15].
+    - Queues
+      - are used to deliver messages. This is were consumers subscribe, in order to receive all messages which get delivered to a certain queue. If no consumer is registered on the queue, the messages are stored [Ze15]
+    - Routes
+      -  describe the mapping between exchanges and routes. They define which requirements a message needs to meet, in order to be placed inside a certain queue [Ze15].
+
+- docker for workflow execution
+  - base images
+  - container as instance w/ writable layer
+  - autonomous vs centrally managed

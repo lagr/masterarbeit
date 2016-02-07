@@ -1,21 +1,27 @@
 ### WFMS + Docker
 ---
+Artifacts:
+  - architecture description
+
 Goals:
   - abstract infrastructure from wfmodel
+  - treat activities as the nasty block-box pieces of work that they are
 
 Architecture:
   Preconsiderations:
     - Dockered WFMS
     - Regular WFMS using Docker for enactment
+    - contemporary infrastructures?
   Structure:
     - Monolith + Execution Machines
       - Pros and Cons
-        - + less integration between components needed
-        - - hard to scale
+        - + less (communication) integration between components needed
+        - - hard to scale wfms itself
     - Large Components
       - Borders
         - Buildtime / Executiontime
-        - BT / ET
+      - Pros and Cons
+        - -
     - Microservices
       - User entry points
         - several components have user interfaces
@@ -26,36 +32,75 @@ Architecture:
       - Pros and Cons
         - + parts of application can be scaled up
         - + each part may work on suitable tools/languages
+        - + easier to substitute parts (eg user management) to existing infrastructure
         - - must be integrated with each other
   User Interfaces:
     - Client/server with respective service
     - MVC architecture
-  Communication:
+  Inter-Compoment Communication:
     - Style
       - Message Queue
         - implicit invocation / event driven
+          - Pros and Cons
+            - + scales well for many components
+            - - higher chance of race conditions / deadlocks
       - API calls
         - direct invocation
         - protocols
           - SOAP
           - REST
     - Service Discovery
+    - global identifiers (UUID)
+    - docker control
+      - via remote API
+      - via dedicated service (mediator) per server
+  Components:
+    - core
+      - engine
+        - per wf?
+        - multiple?
+      - ac/wf base containers
+      - worklist service
+      - user interface
+      - development tool
+        - environment management
+        - organization management
+        - process definition tools
+    - support
+      - provisioner
+      - message oriented middleware
 
 Reference Model:
   - WFMC
     - Workflow
+    - process definition
     - Activity
+    - workflow instance
+    - process instance
+    - activity instance
+    - worklist
 
-Workflow:
+Workflow Execution:
   Data:
+    - generally: exchangeable for this paper's scope, JSON better human readable
+    - compatibitlity with bpel?
     - Process definition storage format
       - XPDL
+        - Pros and Cons
+          - - XML is more verbose
       - BPEL
+        - Pros and Cons
+          - - XML is more verbose
       - arbitrary
+        - Pros and Cons
     - Data passing format
       - JSON
+        - Pros and Cons
       - XML
+        - Pros and Cons
+          - - XML is more verbose
       - arbitrary / file based
+        - Pros and Cons
   Orchestration:
     - Central WFEngine
     - Multiple WFEngines
@@ -73,34 +118,81 @@ Workflow:
         - + (widely stand-alone executable)
         - + Pause/Resume as native docker commands
         - + movable between servers
+        - - harder to establish connection for external triggers
     - only AC in containers
       - Pros and Cons
+    - misc:
+      - control flow / validation happens in containers, too
+        - + less load for wf engine
   Execution Location:
-    - One node per WFI
-      - Data exchange via data volume
+    - Assignment
+      - manual to node (all)
+      - manual to node(-characteristic) (per activity)
+      - automatic (all)
+      - automatic (per activity)
+    - splitting
+      - One node per WFI
+        - WORKFLOW DATA PATTERNS:
+          - Data visibility
+          - Data interaction
+          - Data transfer
+          - Data-based routing
+        - Data exchange via data volume
+          - Pros and Cons
+            - + pause/resume easier
+            - + persistence easier (data volumes)
+            - + no assumptions on environment
+            - + access management via user/groups?
+            - - disk IO rather slow for lots of accesses
+        - Data exchange via via MQ
+          - Pros and Cons
+            - + no data volume needed
+            - + fast data exchange
+            - + event driven execution (-order) easier
+            - - data must be serializable
+            - - large data takes time to transfer
+            - - assumptions on environment
+        - Data exchange via bridge network
+      - WF/AC Spread accross nodes
         - Pros and Cons
-          - + pause/resume easier
-          - + persistence easier (data volumes)
-          - - disk IO rather slow for lots of accesses
-      - Data exchange via via MQ
-        - Pros and Cons
-          - - data must be serializable
+          - + easier to balance load
+          - + suitable nodes per activity
+          - - harder to persist data
           - - large data takes time to transfer
-      - Data exchange via bridge network
-    - Spread accross nodes
-      - Pros and Cons
-        - + easier to balance load
-        - + suitable nodes per activity
-        - - harder to persist data
-        - - large data takes time to transfer
-      - considerations
-        - communication via MQ or overlay network
+        - considerations
+          - communication via MQ or overlay network
 
 Environment:
   Services:
     - unique service name
     - per node / global / per activity / per workflow / shared vs exclusive
 
+MOM:
+  - actual
+    routing keys:
+      - jeweils add/update/remove
+      - wfms
+        - server
+        - user
+        - role
+        - image
+        - workflow
+        - workflow instance
+        - worklist item
+  - optional
+    - wfi_XXX
+    - aci_XXX
+
 
 ####### Unsortiert
-## größerer nutzen wenn man nicht auf das container-modell mappt?
+## - größerer nutzen wenn man nicht auf das container-modell mappt?
+## - http://blog.circleci.com/checkpoint-and-restore-docker-container-with-criu/
+## - tag images with string array
+## - document images in/out with nested json (feasible?)
+## - articles state that "suitableb boundaries have to be found prior to micro services creation" -> wfmc gives quite good boundaries
+## - configuration of activities
+# - benefit is twofold: a) implementation of the wfms itself b) execution of workflows
+## -- evaluate supported patterns?  http://www.workflowpatterns.com/documentation/documents/BPM-06-22.pdf
+
+  # The definition of an architecture used in ANSI/IEEE Std 1471-2000 is:
+  #   "The fundamental organization of a system, embodied in its components, their relationships to each other and the environment, and the principles governing its design and evolution."

@@ -9,6 +9,8 @@
 \usepackage{etoolbox}
 \usepackage{blindtext}
 \usepackage{minted}
+\usepackage{tikz-uml}
+
 \usemintedstyle{tango}
 \robustify\textellipsis
 % \addtokomafont{section}{\clearpage}
@@ -62,77 +64,65 @@
 
   \chapter{Workflow Management Systems} % (fold)
     \label{cha:workflow_management_systems}
+
+    In this chapter, the concepts of workflows and workflow management systems will be briefly introduced and related to each other.
+    There is a plethora of term definitions and deviating understandings of workflows and the concepts related to them \cite{Casati1999Specification}.
+    In large parts, the concepts presented here thus rely on specifications published by the \ac{WFMC}, a consortium of workflow management software vendors, researchers in the field of workflow management and \ac{WfMS} users, as they represent some form of consensus.
+
+    The identified use cases and properties will be used in \ref{sec:determination_of_objectives} to identify objectives for the architecture. Also, they will be the reference to which the final architecture developed in this thesis is compared against.
+
     \input{content/text/wfms}
     % chapter workflow_management_systems (end)
 
   \chapter{Docker} % (fold)
     \label{cha:docker}
-      \input{content/text/docker}
+
+    When multiple applications or application instances are intended to run on one physical machine without interfering with each other, they are usually isolated in terms of execution environments and provided with a controllable share of system resources \cite{Felter2014Updated}. These goals can be fulfilled by both virtual machines and software containers \cite{Ruiz2015Performance}. The difference between these two options and the basic principles of software containers are shown in \ref{sec:docker_concepts}.
+
+    Docker is a tool, that aims at simplifying software container creation and management. In Section \ref{sec:docker_concepts} its underlying concepts will be presented. Based on that, the functionality that Docker provides will be explained in Section \ref{sec:functionality}. Finally, the Docker ecosystem, \ie the set of tools that enhance the core docker tool, is introduced in Section \ref{sec:docker_ecosystem}.
+
+    \input{content/text/docker}
     % chapter docker (end)
 
   \chapter{Application Design} % (fold)
     \label{cha:solution_design}
 
+    In order to make substanciated decisions in the design process, the intended outcome has to be outlined first. Bearing in mind the concepts presented in Chapter \ref{cha:workflow_management_systems} and \ref{cha:docker}, objectives that together form the intended outcome are thus compiled in Section \ref{sec:determination_of_objectives}. Based on these objectives, the concept of a Docker-based \ac{WfMS} is then shaped in Section \ref{sec:architecture}.
+
     \section{Determination of Objectives} % (fold)
       \label{sec:determination_of_objectives}
+
+      In this section, the overall objectives are inferred from both requirements imposed on the functionalities of Docker based \ac{WfMS} as well as intangible ones.
+
       \input{content/text/objectives}
       % section determination_of_objectives (end)
 
     \section{Architecture} % (fold)
-    \label{sec:architecture}
-      \subsection{Application Architecture} % (fold)
-      \label{sub:application_architecture}
+      \label{sec:architecture}
 
-        Micro services, service discovery \cite{Stubbs2015Distributed}
+      After the determination of objectives in Section \ref{sec:determination_of_objectives}, the solution can be developed in this section. Since it has considerable impact on the other aspects, the higher level architecture is chosen first in \ref{sub:application_architecture}. With increasing level of detail, the other aspects are then fleshed out gradually. (~Sections go here~)
 
-      % subsection application_architecture (end)
-      \subsection{Workflow Execution Environment} % (fold)
-      \label{sub:workflow_execution_environment}
-
-      % subsection workflow_enactment_environment (end)
-      \subsection{Workflow Management Environment} % (fold)
-      \label{sub:workflow_management}
-
-      % subsection workflow_management (end)
-      \subsection{Developer Client} % (fold)
-      \label{sub:developer_client}
-
-      % subsection developer_client (end)
-
-      \subsection{User Client} % (fold)
-      \label{sub:user_client}
-
-      % subsection user_client (end)
-
-    % section architecture (end)
+      \input{content/text/architecture}
+      % section architecture (end)
 
   % chapter solution_design (end)
 
   \chapter{Prototypical Implementation} % (fold)
-  \label{cha:implementation}
+    \label{cha:implementation}
 
-    \section{Toolchain} % (fold)
-    \label{sec:toolchain}
-
-    % section toolchain (end)
-
-    \section{Realization of the Architecture} % (fold)
-    \label{sec:realization_of_the_architecture}
-    Any Compromises here?
-    % section realization_of_the_architecture (end)
-
-  % chapter implementation (end)
+    \input{content/text/implementation}
+    % chapter implementation (end)
 
   \chapter{Evaluation and Discussion} % (fold)
-  \label{cha:evaluation}
-
-  % chapter evaluation (end)
+    \label{cha:evaluation}
+    \input{content/text/evaluation_discussion}
+    % chapter evaluation (end)
 
   \chapter{Conclusion} % (fold)
-  \label{cha:conclusion}
+    \label{cha:conclusion}
+    \input{content/text/conclusion}
+    % chapter conclusion (end)
 
-  % chapter conclusion (end)
-
-  \bibliography{Remote.bib}
   \bibliographystyle{plain}
+  \bibliography{Remote}
 \end{document}
