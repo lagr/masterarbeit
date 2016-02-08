@@ -10,7 +10,28 @@ require_relative 'workflow_instance'
 
 module WorkflowEngine
   def self.match_message(message)
-    /wfms\.(\w+)\.(\w+)(?:\.([\w-]+))?/.match(message.routing_key).captures.to_a.compact.map(&:to_sym)
+    /wfms\.(\w+)\.(\w+)(?:\.([\w-]+))?(?:\.([\w-]+))?/.match(message.routing_key).captures.to_a.compact.map(&:to_sym)
+  end
+
+  def EngineConsumer
+    include Hutch::Consumer
+    consume 'wfms.*.output.*',
+            'wfms.*.input.*',
+            'wfms.*.failed',
+            'wfms.workflow.#'
+
+    def process(message)
+      subject, action, status = WorkflowEngine.match_message(message)
+
+      case subject
+      when :workflow
+        if action == :start
+          Hutch.publish
+        end
+      when :workflow_instance
+      when :activity_instance
+      end
+    end
   end
 
   class WorkflowConsumer
