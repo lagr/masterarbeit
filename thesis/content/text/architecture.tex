@@ -26,13 +26,11 @@
     An application may then use several services in order to fulfill its own business function \cite[p.~390]{Papazoglou2007Service}.
     The \ac{OASIS} describes \ac{SOA} as an architectural paradigm that supports the organization and usage of these services \cite{Standards2006Reference}. Each service provider exposes its offered services in a standardized way, \eg using \ac{WSDL}, which can then be utilized by \emph{service consumers} \cite[p.~390]{Papazoglou2007Service}, \cite[p.~17]{Strimbei2015Software}.
 
-    uses an ESB, ``smart network''
+    Messages between services in \ac{SOA} are either of direct nature, which is called point-to-point connection, or backed by a message bus, the \ac{ESB} which incorporates the integration logic, \eg on transport and transformation of messages, between services and supports asynchronous messages \cite[p.~393]{Papazoglou2007Service}. While the former leads to tight coupling between the components, which becomes impractical with increasing numbers of endpoints, the latter manages this scenario better \cite[p.~393]{Papazoglou2007Service}.
 
     On the one hand, \ac{SOA} has some advantages in comparison to monolithic architecture.
-    Service consumers do not have to make assumptions - or know - how services work, they only have to rely on the invokation of a service and its result to be formed as expected \cite[p.~390]{Papazoglou2007Service}. As long as the interface and the output of existing services do not change, a service provider may thus be altered or its capabilities be extended without affecting its services' consumers \cite[p.~390]{Papazoglou2007Service}. \ac{SOA} thus enhances an organization’s ability to respond quickly to changes \cite[p.~390]{Papazoglou2007Service}, \cite[p.~254]{Choi2010Implementing}.
-
-    pro
-      ...SOA can serve as an enabler of just-in-time integration and interoperability of legacy applications \cite[p.~390]{Papazoglou2007Service}
+    Service consumers do not have to make assumptions - or know - how services work, they only have to rely on the invokation of a service and its result to be formed as expected \cite[p.~390]{Papazoglou2007Service}. As long as the interface and the output of existing services do not change, a service provider may thus be altered or its capabilities be extended without affecting its services' consumers \cite[p.~390]{Papazoglou2007Service}. \ac{SOA} thus enhances an organization’s ability to respond quickly to changes \cite[p.~390]{Papazoglou2007Service}, \cite[p.~254]{Choi2010Implementing}. \\
+    Since legacy applications can be provided with appropriate interfaces, SOA can help to integrate and extend them \cite[p.~390]{Papazoglou2007Service}.
 
     On the other hand, \ac{SOA} has some drawbacks, too.
     For example, the failure of a single service provider may bring down multiple applications that consume its services, if no fallback measures are in place \cite[p.~408f]{Papazoglou2007Service}.
@@ -43,6 +41,7 @@
     \label{par:micro_services_architecture}
     The concept of \ac{MSA} is closely related to that of \ac{SOA}, as it also promotes the encapsulation of functionality in standalone services which can be used by other parts of a system. There is disabiguity whether \ac{MSA} is actually a concept on its own -- or rather a specialized application of \ac{SOA} \cite[p.~35]{Stubbs2015Distributed}, \cite[p.~17]{Strimbei2015Software}.
     Stubbs et al describe \ac{MSA} as a distributed system that consists of independent services which are   narrowly focused and thus considered ``lightweight'' \cite[p.~35]{Stubbs2015Distributed}.
+    That exact principle has been described as a version of \ac{SOA} before \cite[p.~395]{Papazoglou2007Service}.
 
     http resource API (-> REST)
     or message queues
@@ -52,7 +51,7 @@
 
     * some more here*
 
-    One benefit of \ac{MSA} is that each service can be developed in a language and with a toolset that suits its specific needs, \eg a lower-level language for time-critical but simple tasks or a high-level language with some framework for complex ones, instead of having to find a compromise that suits most of the application  \cite[p.~35]{Stubbs2015Distributed}, \cite[p.~4]{Newman2015Building}, \cite[p.~113]{Thones2015Microservices}. \\
+    One benefit of \ac{MSA}, which it shares with \ac{SOA} is that each service can be developed in a language and with a toolset that suits its specific needs, \eg a lower-level language for time-critical but simple tasks or a high-level language with some framework for complex ones, instead of having to find a compromise that suits most of the application  \cite[p.~35]{Stubbs2015Distributed}, \cite[p.~4]{Newman2015Building}, \cite[p.~113]{Thones2015Microservices}. \\
     The narrow focus of each service makes it less specialized to certain uses, which should theoretically enable better reuse of code \cite[p.~35]{Stubbs2015Distributed}. \\
     Another positive aspect is the \emph{resilience} of microservices when it comes to service failures, that is, a single failing service does not render the whole system incapable of working \cite[p.~5]{Newman2015Building}.
 

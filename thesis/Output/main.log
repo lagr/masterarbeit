@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  7 FEB 2016 19:26
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  8 FEB 2016 10:17
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2111,47 +2111,52 @@ Underfull \hbox (badness 10000) detected at line 7
  []
 
 
-Underfull \hbox (badness 10000) detected at line 11
-[][]\EU1/CrimsonText(0)/bx/n/12 OS[]
+Underfull \hbox (badness 10000) detected at line 9
+[][]\EU1/CrimsonText(0)/bx/n/12 ESB[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 12
-[][]\EU1/CrimsonText(0)/bx/n/12 PID[]
+[][]\EU1/CrimsonText(0)/bx/n/12 OS[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 13
-[][]\EU1/CrimsonText(0)/bx/n/12 REST[]
+[][]\EU1/CrimsonText(0)/bx/n/12 PID[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 14
-[][]\EU1/CrimsonText(0)/bx/n/12 OASIS[]
+[][]\EU1/CrimsonText(0)/bx/n/12 REST[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 15
-[][]\EU1/CrimsonText(0)/bx/n/12 MSA[]
+[][]\EU1/CrimsonText(0)/bx/n/12 OASIS[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 16
+[][]\EU1/CrimsonText(0)/bx/n/12 MSA[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 17
 [][]\EU1/CrimsonText(0)/bx/n/12 SOA[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 18
+Underfull \hbox (badness 10000) detected at line 19
 [][]\EU1/CrimsonText(0)/bx/n/12 WSDL[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 19
+Underfull \hbox (badness 10000) detected at line 20
 [][]\EU1/CrimsonText(0)/bx/n/12 WFMC[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 20
+Underfull \hbox (badness 10000) detected at line 21
 [][]\EU1/CrimsonText(0)/bx/n/12 WfMS[]
  []
 
@@ -2251,11 +2256,13 @@ although it is yet undefined on input line 27.
 Package acronym Info: Label `acro:WSDL' newly defined as it shall be overridden
 
 although it is yet undefined on input line 27.
+Package acronym Info: Label `acro:ESB' newly defined as it shall be overridden
+although it is yet undefined on input line 29.
 [15]
 Package acronym Info: Label `acro:MSA' newly defined as it shall be overridden
-although it is yet undefined on input line 44.
+although it is yet undefined on input line 42.
 [16])
-Overfull \hbox (8.88463pt too wide) in paragraph at lines 89--107
+Overfull \hbox (8.88463pt too wide) in paragraph at lines 88--107
 []\EU1/CrimsonText(0)/m/n/12 - docker for workflow execution - base images - co
 ntainer as instance w/ writable layer - autonom-
  []
@@ -2287,10 +2294,10 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 128.
  ) 
 Here is how much of TeX's memory you used:
- 47406 strings out of 493706
- 922454 string characters out of 6145770
- 1149619 words of memory out of 5000000
- 49874 multiletter control sequences out of 15000+600000
+ 47411 strings out of 493706
+ 922496 string characters out of 6145770
+ 1149717 words of memory out of 5000000
+ 49879 multiletter control sequences out of 15000+600000
  25139 words of font info for 101 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
  73i,13n,88p,10415b,695s stack positions out of 5000i,500n,10000p,200000b,80000s
