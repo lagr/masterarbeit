@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  8 FEB 2016 10:17
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  10 FEB 2016 12:36
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2101,62 +2101,62 @@ Underfull \hbox (badness 10000) detected at line 4
  []
 
 
-Underfull \hbox (badness 10000) detected at line 5
+Underfull \hbox (badness 10000) detected at line 6
 [][]\EU1/CrimsonText(0)/bx/n/12 cgroups[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 7
+Underfull \hbox (badness 10000) detected at line 8
 [][]\EU1/CrimsonText(0)/bx/n/12 CoW[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 9
+Underfull \hbox (badness 10000) detected at line 10
 [][]\EU1/CrimsonText(0)/bx/n/12 ESB[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 12
+Underfull \hbox (badness 10000) detected at line 13
 [][]\EU1/CrimsonText(0)/bx/n/12 OS[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 13
+Underfull \hbox (badness 10000) detected at line 14
 [][]\EU1/CrimsonText(0)/bx/n/12 PID[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 14
+Underfull \hbox (badness 10000) detected at line 15
 [][]\EU1/CrimsonText(0)/bx/n/12 REST[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 15
+Underfull \hbox (badness 10000) detected at line 16
 [][]\EU1/CrimsonText(0)/bx/n/12 OASIS[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 16
+Underfull \hbox (badness 10000) detected at line 17
 [][]\EU1/CrimsonText(0)/bx/n/12 MSA[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 17
+Underfull \hbox (badness 10000) detected at line 18
 [][]\EU1/CrimsonText(0)/bx/n/12 SOA[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 19
+Underfull \hbox (badness 10000) detected at line 20
 [][]\EU1/CrimsonText(0)/bx/n/12 WSDL[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 20
+Underfull \hbox (badness 10000) detected at line 21
 [][]\EU1/CrimsonText(0)/bx/n/12 WFMC[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 21
+Underfull \hbox (badness 10000) detected at line 22
 [][]\EU1/CrimsonText(0)/bx/n/12 WfMS[]
  []
 
@@ -2208,14 +2208,14 @@ LaTeX Warning: Reference `key' on page 3 undefined on input line 30.
 
 LaTeX Warning: Reference `key' on page 3 undefined on input line 40.
 
-[3] [4] [5]
+[3] [4] [5] [6] [7]
 
-LaTeX Warning: Reference `key' on page 6 undefined on input line 113.
+LaTeX Warning: Reference `key' on page 8 undefined on input line 147.
 
-) [6]
+) [8]
 Chapter 3.
 
-LaTeX Warning: Reference `sec:functionality' on page 7 undefined on input line 
+LaTeX Warning: Reference `sec:functionality' on page 9 undefined on input line 
 82.
 
 (./content/text/docker.tex
@@ -2226,7 +2226,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--22
 
  []
 
-[7
+[9
 
 ]
 Package acronym Info: Label `acro:cgroups' newly defined as it shall be overrid
@@ -2236,20 +2236,20 @@ Package acronym Info: Label `acro:PID' newly defined as it shall be overridden
 although it is yet undefined on input line 23.
 Package acronym Info: Label `acro:CoW' newly defined as it shall be overridden
 although it is yet undefined on input line 26.
-[8] [9]
+[10] [11]
 Package acronym Info: Label `acro:REST' newly defined as it shall be overridden
 
 although it is yet undefined on input line 96.
 Package acronym Info: Label `acro:API' newly defined as it shall be overridden
 although it is yet undefined on input line 96.
-[10] [11]) [12]
+[12] [13]) [14]
 Chapter 4.
-(./content/text/objectives.tex [13
+(./content/text/objectives.tex [15
 
-]) (./content/text/architecture.tex
+] [16]) (./content/text/architecture.tex
 Package acronym Info: Label `acro:SOA' newly defined as it shall be overridden
 although it is yet undefined on input line 10.
-[14]
+[17]
 Package acronym Info: Label `acro:OASIS' newly defined as it shall be overridde
 n
 although it is yet undefined on input line 27.
@@ -2258,31 +2258,31 @@ Package acronym Info: Label `acro:WSDL' newly defined as it shall be overridden
 although it is yet undefined on input line 27.
 Package acronym Info: Label `acro:ESB' newly defined as it shall be overridden
 although it is yet undefined on input line 29.
-[15]
+[18]
 Package acronym Info: Label `acro:MSA' newly defined as it shall be overridden
 although it is yet undefined on input line 42.
-[16])
-Overfull \hbox (8.88463pt too wide) in paragraph at lines 88--107
+[19]
+Overfull \hbox (8.88463pt too wide) in paragraph at lines 88--92
 []\EU1/CrimsonText(0)/m/n/12 - docker for workflow execution - base images - co
 ntainer as instance w/ writable layer - autonom-
  []
 
-[17]
+) [20]
 Chapter 5.
-(./content/text/implementation.tex) [18
+(./content/text/implementation.tex) [21
 
 ]
 Chapter 6.
-(./content/text/evaluation_discussion.tex) [19
+(./content/text/evaluation_discussion.tex) [22
 
 ]
 Chapter 7.
 (./content/text/conclusion.tex) (/Users/larsgreiving/eigene/masterarbeit/thesis
-/Output/main.bbl [20
+/Output/main.bbl [23
 
-] [21
+] [24
 
-]) [22]
+]) [25]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 128.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 128.
 (/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux)
@@ -2294,13 +2294,13 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 128.
  ) 
 Here is how much of TeX's memory you used:
- 47411 strings out of 493706
- 922496 string characters out of 6145770
- 1149717 words of memory out of 5000000
- 49879 multiletter control sequences out of 15000+600000
+ 47424 strings out of 493706
+ 922819 string characters out of 6145770
+ 1150955 words of memory out of 5000000
+ 49892 multiletter control sequences out of 15000+600000
  25139 words of font info for 101 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 73i,13n,88p,10415b,695s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 73i,13n,88p,10415b,699s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on /Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.pd
-f (29 pages).
+f (32 pages).

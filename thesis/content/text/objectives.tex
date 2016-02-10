@@ -7,47 +7,58 @@
 
   \subsubsection{Infrastructure and Infrastructure Management} % (fold)
     \label{ssub:infrastructure_management}
-      The workflow management system should be structured in a way that allows to change of parts of it during execution time.
 
-      It should be possible to add machines on the fly.
+      As the IT environment of an organization changes over time, %claim?
+      the \ac{WfMS} should be structured in a way that allows the adaption to such changes with the least possible system downtime. \\
+      Further, it should be possible to add machines to the system during execution time, which then should be usable with the least possible configuration.
 
-      - execution environment: containers which always run
+      If an organization is unable to perform its business processes, it is likely to suffer from financial losses. The failure of a \ac{WfMS} which enables those business processes can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be able to be resilient towards failures, \ie provide as much functionality as possible if a part of it fails when and try to recover autonomously.
 
+      To enable workflows to be run in a specified environment of services, the execution environment of the \ac{WfMS} should have a mechanism that allows the specification of such services in form of containers which are made available to workflow components when they are being executed. It also should be able to ensure that these containers are restarted in case of a failure to ensure their presence in the execution environment.
 
     % subsubsection infrastructure_management (end)
 
   \subsubsection{Workflow Modeling} % (fold)
     \label{ssub:workflow_modeling}
 
-      The \ac{WfMS} should thus enable modeling developers to incorporate the invocation of third party images into their workflows.
+      One benefit of Docker containers is, that full application stacks can be bundled with all their dependencies and pre-configured regarding their invocation \cite[p.~82]{Bernstein2014Containers}. The result can be considered as a black box, which provides some specific functionality that could be used without further configuration. In combination with the facilitated sharing of images through repositories, this provides a good foundation for modular reuse and combination \cite[p.~6]{Boettiger2015Introduction}.
+      In order to reap this advantage, \ac{WfMS} should thus enable modeling developers to incorporate the invocation of third party images from within their workflows. This includes the specification of parameters, with which the image should be run.
 
-      The modeler should thus be able to pass along information which allow the validation of input and output data with both activities and workflows.
+      To ensure the correctness of data along the execution, the modeler should be able to pass along information with both activities and workflows that makes the validation of their input and output data possible. The \ac{WfMS} should provide a mechanism which performs this validation in the course of the workflow enactment.
 
-        - drop in 3rd party containers
-          - specify container params
-        - pass in validation schema for
-          - activity
-          - wf
+      % to: architecture --> Docker permits to pass restrictions to containers before running them.
+      In case that an execution node is working to full capacity, a means should be provided to support the swift finalization of time-critical tasks before those that are not, \eg the temperature analysis of a cold storage with sensitive goods which is prioritized over the automated reorder of tacks for the office. The modeling environment should thus enable the user to put restrictions on the resource usage of specific activities in order to prioritize or demote them.
+
     % subsubsection workflow_modeling (end)
 
   \subsubsection{Workflow Distribution} % (fold)
     \label{ssub:workflow_distribution}
-      In order to reduce administrational work, workflows and their activities should be distributed to the servers that they will be run on in an automated way.
-  - produced workflows should be as portable/environment independent as possible
+
+      In the course of an \ac{WfMS}'s life cycle, many workflows are modeled and many activities are created, and both are likely to be updated once in a while. In order to reduce administrative work, workflows and their activities should be distributed to their correct execution servers after these events in an automated way.
+
+
+  % - produced workflows should be as portable/environment independent as possible
 
     % subsubsection workflow_distribution (end)
 
   \subsubsection{Workflow Execution} % (fold)
     \label{ssub:workflow_execution}
 
+        All containers that are related to the execution of workflows should be started by the \ac{WfMS} without user interaction.
+
+        The IT infrastructure in an organization may be heterogeneous in terms of machine capabilities and environment, \eg (among many others) the amount of memory that is available or the geographic location of the machine. These factors may be of interest when it comes to performance requirements or legal regulations. The scheduling of workflows or activities to nodes for execution should thus be possible based on a structured description of said properties.
+
         - should provide form renderer
+
+        In \ref{sub:workflow_data}, various forms of data visibility and interaction were presented. Russel et al examined the capabilities of various workflow engines with regards to these characteristics \cite{Russell2005Workflow}. In order to obtain a \ac{WfMS} with useful functionality, it should support at least those forms of data visibility and interaction that are common among existing solutions. As a rough estimation for this, each capability shall be deemed as required if a majority of solutions examined in that study supports it.
+
     % subsubsection workflow_execution (end)
 % subsection functional_requirements (end)
 
 \subsection{Intangible Requirements} % (fold)
   \label{sub:intangible_requirements}
 
-  Besides the rigid functional requirements there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the usefulnes of the produced artifacts.
+  Besides the rigid functional requirements there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the usefulness of the produced artifacts.
 
     - modeling workflows (with 3rd p images) should be intuitive
 
