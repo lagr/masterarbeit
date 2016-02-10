@@ -3,14 +3,14 @@
 \subsection{Functional Requirements} % (fold)
   \label{sub:functional_requirements}
 
-  In the following, expectations towards the functionality of the resulting \ac{WfMS} are presented in a structured manner. These functionalities are grouped by the aspects and tasks of an WFMS, which are described in \ref{sub:functional_areas} and \ref{sub:system_components}.
+  In the following, expectations towards the functionality of the resulting \ac{WfMS} are motivated in a structured manner. These functionalities are grouped by the aspects and tasks of an WFMS, which are described in \ref{sub:functional_areas} and \ref{sub:system_components}.
 
   \subsubsection{Infrastructure and Infrastructure Management} % (fold)
     \label{ssub:infrastructure_management}
 
       As the IT environment of an organization changes over time, %claim?
       the \ac{WfMS} should be structured in a way that allows the adaption to such changes with the least possible system downtime. \\
-      Further, it should be possible to add machines to the system during execution time, which then should be usable with the least possible configuration.
+      Further, it should be possible to add machines to the system during execution time, which then should be usable with a minimum of manual configuration.
 
       If an organization is unable to perform its business processes, it is likely to suffer from financial losses. The failure of a \ac{WfMS} which enables those business processes can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be able to be resilient towards failures, \ie provide as much functionality as possible if a part of it fails when and try to recover autonomously.
 
@@ -43,28 +43,40 @@
 
   \subsubsection{Workflow Execution} % (fold)
     \label{ssub:workflow_execution}
-
         All containers that are related to the execution of workflows should be started by the \ac{WfMS} without user interaction.
 
         The IT infrastructure in an organization may be heterogeneous in terms of machine capabilities and environment, \eg (among many others) the amount of memory that is available or the geographic location of the machine. These factors may be of interest when it comes to performance requirements or legal regulations. The scheduling of workflows or activities to nodes for execution should thus be possible based on a structured description of said properties.
-
-        - should provide form renderer
 
         In \ref{sub:workflow_data}, various forms of data visibility and interaction were presented. Russel et al examined the capabilities of various workflow engines with regards to these characteristics \cite{Russell2005Workflow}. In order to obtain a \ac{WfMS} with useful functionality, it should support at least those forms of data visibility and interaction that are common among existing solutions. As a rough estimation for this, each capability shall be deemed as required if a majority of solutions examined in that study supports it.
 
     % subsubsection workflow_execution (end)
 % subsection functional_requirements (end)
 
-\subsection{Intangible Requirements} % (fold)
+\subsection{Intangible Objectives} % (fold)
   \label{sub:intangible_requirements}
 
-  Besides the rigid functional requirements there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the usefulness of the produced artifacts.
+  Besides the rigid functional requirements there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the value of the produced artifacts. The functionalities that were fleshed out in \ref{sub:functional_requirements} lose value if using them is cumbersome.
 
-    - modeling workflows (with 3rd p images) should be intuitive
+  While some complications may be tolerable during the setup of the solution, as it (hopefully) is a one-time procedure for an organization, recurring interactions should be facilitated by an appropriate graphical user interface.
+
+  - browsing docker hub images
+  - modeling workflows
+  - adding servers
+  - accessing audit data
 
   % subsection intangible_requirements (end)
 
-\subsection{Derived Objectives} % (fold)
-  \label{sub:derived_objectives}
+% \subsection{Derived Objectives} % (fold)
+%   \label{sub:derived_objectives}
+%   The requirements developed in \ref{sub:functional_requirements} can be concretized into objectives for the creation of the prototypical \ac{WfMS}.
 
-  % subsection derived_objectives (end)
+%   \begin{description}
+%     \item[Add enactment machines at runtime]
+%     \item[Automatically configure added enactment machines]
+%     \item[List enactment machines]
+%     \item[Provide functionality under failure]
+%     \item[Restart failing components]
+%     \item[Define services required by workflows]
+%   \end{description}
+
+%   % subsection derived_objectives (end)

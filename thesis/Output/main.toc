@@ -46,8 +46,7 @@
 \contentsline {subsubsection}{Workflow Modeling}{16}{subsection.4.1.1}
 \contentsline {subsubsection}{Workflow Distribution}{16}{subsection.4.1.1}
 \contentsline {subsubsection}{Workflow Execution}{16}{subsection.4.1.1}
-\contentsline {subsection}{\numberline {4.1.2}Intangible Requirements}{17}{subsection.4.1.2}
-\contentsline {subsection}{\numberline {4.1.3}Derived Objectives}{17}{subsection.4.1.3}
+\contentsline {subsection}{\numberline {4.1.2}Intangible Objectives}{17}{subsection.4.1.2}
 \contentsline {section}{\numberline {4.2}Architecture}{17}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1}Application Structure}{17}{subsection.4.2.1}
 \contentsline {paragraph}{Monolithic Architecture}{18}{subsection.4.2.1}
