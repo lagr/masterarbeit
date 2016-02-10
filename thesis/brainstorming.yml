@@ -177,6 +177,7 @@ MOM:
         - role
         - image
         - workflow
+        - assignment
         - workflow instance
         - worklist item
   - optional

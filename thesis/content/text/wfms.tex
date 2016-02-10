@@ -47,6 +47,40 @@
     \ac{WfMS}s use \emph{workflow relevant data} to determine a process instance's status and the next activity to be executed. It is normally available to the \ac{WfMS} and both process- and activity instances \cite{Hollingsworth1995Wfmc}. \\
     Applications that are part of an workflow may work on domain specific data, which is called \emph{workflow application data}. In most cases, the \ac{WfMS} does not interact with this data other that providing it to the respective applications and limit access to it according to some authorization rules \cite{Hollingsworth1995Wfmc,Casati1999Specification}. \\
     Data that is internally managed by a \ac{WfMS} is refered to as \emph{workflow control data}. This data usually comprises the states of process- and activity instances and other internal statuses and is per se not interchanged in its default form \cite{Hollingsworth1995Wfmc,Casati1999Specification}.
+
+    Russel et al differentiate seven commonly used forms of data visibility in workflow management systems \cite[p.~6-15]{Russell2005Workflow}:
+    \begin{itemize}
+      \item \textbf{Activity Data} \hfill \\
+        Data which is defined within an activity and which is accessible within the instance of this activity.
+      \item \textbf{Sub-workflow Data} \hfill \\
+        Data which is defined within a sub-workflow activity and is accessible from everywhere within this sub-workflow.
+      \item \textbf{Scope Data} \hfill \\
+        Data which is accessible within a subset of activities in a worfklow instance.
+      \item \textbf{Multiple Instance Data} \hfill \\
+        Data which is defined within an activity that can be instanciated multiple times. Each instance can access its own version of that data.
+      \item \textbf{Workflow Instance Data} \hfill \\
+        Data which is specific to a process instance of a workflow and which can be accessed by all components of that workflow during its execution.
+      \item \textbf{Workflow Data} \hfill \\
+        Data elements which are accessible to all components all instances of a workflow and are controlled by the \ac{WfMS}.
+      \item \textbf{Environment Data} \hfill \\
+        Data which exists in the operating environment and which can be accessed by components of any workflow during execution.
+    \end{itemize}
+
+    They further identified six types of data interaction between the various hierarchy levels in workflows \cite[p.~16-24]{Russell2005Workflow}:
+    \begin{itemize}
+      \item \textbf{Activity -- Activity} \hfill \\
+        Data is passed between one activity instance and another within the same workflow instance.
+      \item \textbf{Sub-workflow Activity -- Sub-workflow Components} \hfill \\
+        Data is passed from a sub-workflow activity instance to the corresponding sub-workflow.
+      \item \textbf{Sub-workflow Components -- Sub-workflow Activity} \hfill \\
+        Data is passed back from a sub-workflow instance to the corresponding sub-workflow activity instance.
+      \item \textbf{Activity -- Multiple Instance Activity} \hfill \\
+        Data is passed from an activity instance to a successor activity which may be instanciated multiple times. It may be passed to all instances of the multiple instance activity or distributed among them according to specific rules.
+      \item \textbf{Multiple Instance Activity -- Activity} \hfill \\
+        Data is passed from an activity which may be instanciated multiple times to a successor activity instance.
+      \item \textbf{Workflow Instance -- Workflow Instance} \hfill \\
+        Data is passed from one instance of a workflow during its execution to another workflow instance that is being executed in parallel.
+    \end{itemize}
   % subsection workflow_data (end)
 
   \subsection{Workflow Participant and Worklist} % (fold)
