@@ -9,7 +9,9 @@ starsky.set({
   'mq exchange': 'wfms'
 });
 
-function logError (err) { if (err) console.error(err.message); }
+function logError (err) {
+  if (err) console.error(err.message);
+}
 
 starsky.once('connect', function () {
   consumer.subscribe('wfms.*.input.#');
@@ -20,14 +22,14 @@ starsky.once('connect', function () {
 	  	var schema = msg.body['schema'];
 	  	var data = msg.body['data'];
 
-		var validate = ajv.compile(schema);
-		var valid = validate(data);
+  		var validate = ajv.compile(schema);
+  		var valid = validate(data);
 
-		response = msg.body;
-		response.valid = valid;
-		if (!valid) response.errors = validate.errors;
+  		response = msg.body;
+  		response.valid = valid;
+  		if (!valid) response.errors = validate.errors;
 
-		starsky.publish(msg.topic + '.' + valid.toString(), response, logError);
+  		starsky.publish(msg.topic + '.' + valid.toString(), response, logError);
 
   	} catch (e) { console.error(e); }
     done();

@@ -1,5 +1,5 @@
 require 'pry'
-module WorkflowEngine
+module WFMS
   class WorkflowInstance
     attr_accessor :instance_container, :data_container, :instance_id
     def initialize(workflow_id, input_data, target_node )
@@ -7,9 +7,6 @@ module WorkflowEngine
       @target_node = target_node
       @input_data  = input_data
       @instance_id = SecureRandom.uuid
-
-      @data_container = create_data_container
-      @instance_container = create_instance_container.refresh!
     end
 
     def run
@@ -24,27 +21,6 @@ module WorkflowEngine
     end
 
     private
-
-    def create_data_container
-      data_container = Docker::Container.create({
-        'name' => "data_#{@instance_id}",
-        'Image' => 'cogniteev/echo',
-        'Cmd' => ['echo', "Data container for #{@instance_id}"],
-        'HostConfig' => {'Binds' => ["/workflow_relevant_data/#{@instance_id}:/workflow_relevant_data"]},
-        'Env' => ["constraint:node==#{@target_node}"]
-      })
-
-      data_container.refresh!.tap(&:start)
-    end
-
-    def copy_output_data_from_container
-      result = @instance_container.archive_out("/workflow_relevant_data/output/input.data.json") do |archive|
-        pseudo_io = StringIO.new(archive)
-        data_file = Gem::Package::TarReader.new(pseudo_io).first
-        JSON.parse(data_file.read)
-      end
-      result ||= nil
-    end
 
     def copy_input_data_to_container
       Dir.mktmpdir do |tmpdir|
