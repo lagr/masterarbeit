@@ -41,22 +41,31 @@
 \contentsline {subsection}{\numberline {3.3.4}Docker Hub}{14}{subsection.3.3.4}
 \contentsline {chapter}{\numberline {4}Application Design}{15}{chapter.4}
 \contentsline {section}{\numberline {4.1}Determination of Objectives}{15}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}Functional Requirements}{15}{subsection.4.1.1}
-\contentsline {subsubsection}{Infrastructure and Infrastructure Management}{15}{subsection.4.1.1}
-\contentsline {subsubsection}{Workflow Modeling}{16}{subsection.4.1.1}
-\contentsline {subsubsection}{Workflow Distribution}{16}{subsection.4.1.1}
-\contentsline {subsubsection}{Workflow Execution}{16}{subsection.4.1.1}
-\contentsline {subsection}{\numberline {4.1.2}Intangible Objectives}{17}{subsection.4.1.2}
-\contentsline {section}{\numberline {4.2}Architecture}{17}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}Application Structure}{17}{subsection.4.2.1}
-\contentsline {paragraph}{Monolithic Architecture}{18}{subsection.4.2.1}
-\contentsline {paragraph}{Service-oriented Architecture}{18}{subsection.4.2.1}
-\contentsline {paragraph}{Micro-services Architecture}{19}{subsection.4.2.1}
-\contentsline {paragraph}{Choice of an achitecture model}{20}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}Components}{20}{subsection.4.2.2}
-\contentsline {chapter}{\numberline {5}Prototypical Implementation}{21}{chapter.5}
-\contentsline {section}{\numberline {5.1}Toolchain}{21}{section.5.1}
-\contentsline {section}{\numberline {5.2}Realization of the Architecture}{21}{section.5.2}
-\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{22}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{23}{chapter.7}
-\contentsline {chapter}{\nonumberline Bibliography}{24}{chapter*.20}
+\contentsline {subsection}{\numberline {4.1.1}Functional Objectives}{15}{subsection.4.1.1}
+\contentsline {subsubsection}{Infrastructure and Infrastructure Management}{15}{table.caption.17}
+\contentsline {subsubsection}{Workflow Modeling}{17}{table.caption.17}
+\contentsline {subsubsection}{Workflow Distribution}{17}{table.caption.17}
+\contentsline {subsubsection}{Workflow Execution}{17}{table.caption.17}
+\contentsline {subsection}{\numberline {4.1.2}Intangible Objectives}{18}{subsection.4.1.2}
+\contentsline {section}{\numberline {4.2}Architecture}{18}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Application Structure}{18}{subsection.4.2.1}
+\contentsline {paragraph}{Monolithic Architecture}{19}{subsection.4.2.1}
+\contentsline {paragraph}{Service-oriented Architecture}{19}{subsection.4.2.1}
+\contentsline {paragraph}{Micro-services Architecture}{20}{subsection.4.2.1}
+\contentsline {paragraph}{Choice of an architecture model}{21}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Components}{22}{subsection.4.2.2}
+\contentsline {subsubsection}{Workflow Modeling Service}{23}{subsection.4.2.2}
+\contentsline {subsubsection}{Environment Management Service}{23}{subsection.4.2.2}
+\contentsline {subsubsection}{Organization Management Service}{23}{subsection.4.2.2}
+\contentsline {subsubsection}{Worklist Service}{23}{subsection.4.2.2}
+\contentsline {subsubsection}{Workflow Engine Service}{23}{subsection.4.2.2}
+\contentsline {subsubsection}{Developer Interface}{23}{subsection.4.2.2}
+\contentsline {subsubsection}{User Interface}{23}{subsection.4.2.2}
+\contentsline {subsubsection}{Provisioning Service}{23}{subsection.4.2.2}
+\contentsline {subsubsection}{Validation Service}{23}{subsection.4.2.2}
+\contentsline {chapter}{\numberline {5}Prototypical Implementation}{25}{chapter.5}
+\contentsline {section}{\numberline {5.1}Toolchain}{25}{section.5.1}
+\contentsline {section}{\numberline {5.2}Realization of the Architecture}{25}{section.5.2}
+\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{26}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{27}{chapter.7}
+\contentsline {chapter}{\nonumberline Bibliography}{28}{chapter*.24}

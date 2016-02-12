@@ -424,6 +424,10 @@ INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libr
 INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.code.tex
 INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.markings.code.tex
 INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.markings.code.tex
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/booktabs/booktabs.sty
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/booktabs/booktabs.sty
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/enumitem/enumitem.sty
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/enumitem/enumitem.sty
 INPUT _minted-main/tango.pygstyle
 INPUT _minted-main/tango.pygstyle
 INPUT _minted-main/tango.pygstyle

@@ -2,12 +2,13 @@
 	"folders":
 	[
     {
-      "path": "code"
+      "path": "code",
+      "file_exclude_patterns": ["*.tar", "*.log"],
     },
     {
       "path": "thesis",
       "folder_exclude_patterns": ["style", "_minted-main", "Output"],
-      "file_exclude_patterns": ["*.aux", "*.synctex.gz"],
+      "file_exclude_patterns": ["*.aux", "*.synctex.gz", "*.log"],
       "root": "thesis/main.tex",
       "pdf": "Master Thesis - Lars Greiving",
       "program": "xelatex"

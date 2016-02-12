@@ -1,18 +1,116 @@
 % -*- root: ../../main.tex -*- %
 
-\subsection{Functional Requirements} % (fold)
-  \label{sub:functional_requirements}
+\subsection{Functional Objectives} % (fold)
+  \label{sub:functional_objectives}
 
-  In the following, expectations towards the functionality of the resulting \ac{WfMS} are motivated in a structured manner. These functionalities are grouped by the aspects and tasks of an WFMS, which are described in \ref{sub:functional_areas} and \ref{sub:system_components}.
+  In the following, expectations towards the functionality of the resulting \ac{WfMS} are motivated in a structured manner. These functionalities are grouped by the aspects and tasks of a \ac{WfMS}, which are described in \ref{sub:functional_areas} and \ref{sub:system_components}. The resulting objectives and the requirements that need to be met in order to fulfill them are summarized in Table~\ref{tab:objectives_and_requirements}.
+
+  \begin{table}[p!]
+    \centering
+    \renewcommand{\arraystretch}{1.75}
+    \begin{tabular}[t]{>{\raggedleft}p{0.3\customtabwidth} p{0.7\customtabwidth}}
+      \toprule
+      \textbf{Objective} & \textbf{~~~~Requirements} \\
+      \midrule
+
+      \textbf{Resilience in case of failures}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item Non-failed components continue to provide their functionality
+            \item Failed components are restarted
+          \end{tabitemize} \end{minipage} \\
+
+      \textbf{Dynamic addition of enactment servers}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item Suitable servers are discovered
+            \item User can add servers during execution time
+          \end{tabitemize} \end{minipage} \\
+
+      \textbf{Environment of arbitrary services}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item Required services for a workflow can be selected
+            \item Required services are started on respective nodes
+            \item Workflows are connected to their required services
+            \item Services are restarted if necessary
+          \end{tabitemize} \end{minipage} \\
+
+      \textbf{Third-party containers as workflow components}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item \ac{GUI} for browsing Docker Hub images exists
+            \item Modeling \ac{GUI} has a ``Container'' element
+            \item User can specify start parameters and commands
+          \end{tabitemize} \end{minipage} \\
+
+      \textbf{Input and output validation}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item User can specify validation schemata
+            \item \ac{WfMS} performs validity checks
+          \end{tabitemize} \end{minipage} \\
+
+      \textbf{Resource usage management}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item User can prioritize/demote activities and workflows
+            \item \ac{WfMS} enforces respective resource usage
+          \end{tabitemize} \end{minipage} \\
+
+      \textbf{Property-based scheduling of containers}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item Properties of servers can be described
+            \item Workflows and activities can require server properties
+            \item Containers are run on suitable servers
+          \end{tabitemize} \end{minipage} \\
+
+      \textbf{Reduction of administrative work}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item Added servers are configured automatically
+            \item All execution related containers are started automatically
+            \item Saved/updated workflows and activities are deployed automatically
+          \end{tabitemize} \end{minipage} \\
+      \bottomrule
+    \end{tabular}
+    \caption{Objectives and their respective requirements}
+    \label{tab:data_objectives_and_requirements}
+  \end{table}
+
+  \begin{table}[p!]
+    \centering
+    \renewcommand{\arraystretch}{1.75}
+    \begin{tabular}[t]{>{\raggedleft}p{0.3\customtabwidth} p{0.7\customtabwidth}}
+      \toprule
+      \textbf{Objective} & \textbf{~~~~Requirements} \\
+      \midrule
+
+      \textbf{Support of data visibility}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item Activity Data
+            \item Sub-workflow Activity Data
+            \item Multiple Instance Activity Data
+            \item Workflow Instance Data
+            \item Workflow Data
+            \item Environment Data
+          \end{tabitemize} \end{minipage} \\
+
+      \textbf{Support of data interactions}
+        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+            \item Activity $\rightarrow$ activity
+            \item Sub-workflow activity $\rightarrow$ sub-workflow
+            \item Sub-workflow $\rightarrow$ sub-workflow activity
+            \item Workflow instance $\rightarrow$ workflow instance
+          \end{tabitemize} \end{minipage} \\
+
+      \bottomrule
+    \end{tabular}
+    \caption{Objectives and their respective requirements}
+    \label{tab:objectives_and_requirements}
+  \end{table}
 
   \subsubsection{Infrastructure and Infrastructure Management} % (fold)
     \label{ssub:infrastructure_management}
 
       As the IT environment of an organization changes over time, %claim?
       the \ac{WfMS} should be structured in a way that allows the adaption to such changes with the least possible system downtime. \\
-      Further, it should be possible to add machines to the system during execution time, which then should be usable with a minimum of manual configuration.
+      Further, it should be possible to add servers to the system during execution time, which then should be usable with a minimum of manual configuration.
 
-      If an organization is unable to perform its business processes, it is likely to suffer from financial losses. The failure of a \ac{WfMS} which enables those business processes can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be able to be resilient towards failures, \ie provide as much functionality as possible if a part of it fails when and try to recover autonomously.
+      If an organization is unable to perform its business processes, it is likely to suffer from financial losses. The failure of a \ac{WfMS} which enables those business processes can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be able to be resilient towards failures, \ie provide as much functionality as possible if a part of it fails when and try to recover autonomously. This requires well separated modules.
 
       To enable workflows to be run in a specified environment of services, the execution environment of the \ac{WfMS} should have a mechanism that allows the specification of such services in form of containers which are made available to workflow components when they are being executed. It also should be able to ensure that these containers are restarted in case of a failure to ensure their presence in the execution environment.
 
@@ -33,10 +131,7 @@
 
   \subsubsection{Workflow Distribution} % (fold)
     \label{ssub:workflow_distribution}
-
       In the course of an \ac{WfMS}'s life cycle, many workflows are modeled and many activities are created, and both are likely to be updated once in a while. In order to reduce administrative work, workflows and their activities should be distributed to their correct execution servers after these events in an automated way.
-
-
   % - produced workflows should be as portable/environment independent as possible
 
     % subsubsection workflow_distribution (end)
@@ -45,17 +140,17 @@
     \label{ssub:workflow_execution}
         All containers that are related to the execution of workflows should be started by the \ac{WfMS} without user interaction.
 
-        The IT infrastructure in an organization may be heterogeneous in terms of machine capabilities and environment, \eg (among many others) the amount of memory that is available or the geographic location of the machine. These factors may be of interest when it comes to performance requirements or legal regulations. The scheduling of workflows or activities to nodes for execution should thus be possible based on a structured description of said properties.
+        The IT infrastructure in an organization may be heterogeneous in terms of machine capabilities and environment, \eg (among many others) the amount of memory that is available or the geographic location of the machine. These factors may be of interest when it comes to performance objectives or legal regulations. The scheduling of workflows or activities to nodes for execution should thus be possible based on a structured description of said properties.
 
         In \ref{sub:workflow_data}, various forms of data visibility and interaction were presented. Russel et al examined the capabilities of various workflow engines with regards to these characteristics \cite{Russell2005Workflow}. In order to obtain a \ac{WfMS} with useful functionality, it should support at least those forms of data visibility and interaction that are common among existing solutions. As a rough estimation for this, each capability shall be deemed as required if a majority of solutions examined in that study supports it.
 
     % subsubsection workflow_execution (end)
-% subsection functional_requirements (end)
+% subsection functional_objectives (end)
 
 \subsection{Intangible Objectives} % (fold)
-  \label{sub:intangible_requirements}
+  \label{sub:intangible_objectives}
 
-  Besides the rigid functional requirements there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the value of the produced artifacts. The functionalities that were fleshed out in \ref{sub:functional_requirements} lose value if using them is cumbersome.
+  Besides the rigid functional objectives there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the value of the produced artifacts. The functionalities that were fleshed out in \ref{sub:functional_objectives} lose value if using them is cumbersome.
 
   While some complications may be tolerable during the setup of the solution, as it (hopefully) is a one-time procedure for an organization, recurring interactions should be facilitated by an appropriate graphical user interface.
 
@@ -64,19 +159,4 @@
   - adding servers
   - accessing audit data
 
-  % subsection intangible_requirements (end)
-
-% \subsection{Derived Objectives} % (fold)
-%   \label{sub:derived_objectives}
-%   The requirements developed in \ref{sub:functional_requirements} can be concretized into objectives for the creation of the prototypical \ac{WfMS}.
-
-%   \begin{description}
-%     \item[Add enactment machines at runtime]
-%     \item[Automatically configure added enactment machines]
-%     \item[List enactment machines]
-%     \item[Provide functionality under failure]
-%     \item[Restart failing components]
-%     \item[Define services required by workflows]
-%   \end{description}
-
-%   % subsection derived_objectives (end)
+  % subsection intangible_objectives (end)

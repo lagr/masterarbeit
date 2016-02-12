@@ -10,6 +10,11 @@
 \usepackage{blindtext}
 \usepackage{minted}
 \usepackage{tikz-uml}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+\newlist{tabitemize}{itemize}{1}
+\setlist[tabitemize]{label=\textbullet,nosep,after=\strut,leftmargin=*}
 
 \usemintedstyle{tango}
 \robustify\textellipsis
@@ -24,6 +29,8 @@
   ]{Crimson Text}
 \setmonofont{Source Code Pro}
 \setsansfont{Lato}
+
+\newcommand{\tabitem}{~~\llap{--}~~}
 
   \setThema{Prototypical Development of a\\Docker-based Workflow Management System}
   \setTyp{Masterthesis}
@@ -40,6 +47,9 @@
   \setAbgabetermin{2016-02-24}
 
 \begin{document}
+  \newlength{\customtabwidth}
+  \setlength{\customtabwidth}{\textwidth}
+  \addtolength{\customtabwidth}{-\tabcolsep}
 
   \EinfTitelseite
 
