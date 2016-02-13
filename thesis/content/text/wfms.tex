@@ -44,7 +44,7 @@
   \label{sub:workflow_data}
     In a \ac{WfMS}, several forms of data may occur at diverse occasions. The \ac{WFMC} differentiates between three types of data: workflow relevant data, workflow application data, and workflow control data \cite{Hollingsworth1995Wfmc}.
 
-    \ac{WfMS}s use \emph{workflow relevant data} to determine a process instance's status and the next activity to be executed. It is normally available to the \ac{WfMS} and both process- and activity instances \cite{Hollingsworth1995Wfmc}. \\
+    \acp{WfMS} use \emph{workflow relevant data} to determine a process instance's status and the next activity to be executed. It is normally available to the \ac{WfMS} and both process- and activity instances \cite{Hollingsworth1995Wfmc}. \\
     Applications that are part of an workflow may work on domain specific data, which is called \emph{workflow application data}. In most cases, the \ac{WfMS} does not interact with this data other that providing it to the respective applications and limit access to it according to some authorization rules \cite{Hollingsworth1995Wfmc,Casati1999Specification}. \\
     Data that is internally managed by a \ac{WfMS} is refered to as \emph{workflow control data}. This data usually comprises the states of process- and activity instances and other internal statuses and is per se not interchanged in its default form \cite{Hollingsworth1995Wfmc,Casati1999Specification}.
 
@@ -96,7 +96,7 @@
 \label{sec:typical_architecture}
   With a growing number of workflows in an organization, the need arises to manage their creation, distribution and execution in a structured manner. An information system is called \ac{WfMS}, if it is able to define, create and manage the execution of workflows by using software that runs on one or more workflow engines, is able to interpret process definitions, can interact with involved participants, and may invoke external applications \cite{Lawrence1997Workflow}. According to the \ac{WFMC}, a workflow management system is ``a system that defines, manages and executes workflows through the execution of software whose order of execution is driven by a computer representation of the workflow logic'' \cite{Hollingsworth1995Wfmc}.
 
-  In the following, the typical foundations of \ac{WfMS}s architectures identified by the \ac{WFMC} are presented and related to the concepts introduced in Section \ref{sec:concepts}.
+  In the following, the typical foundations of \acp{WfMS} architectures identified by the \ac{WFMC} are presented and related to the concepts introduced in Section \ref{sec:concepts}.
 
   \subsection{Functional Areas} % (fold)
   \label{sub:functional_areas}
@@ -109,37 +109,37 @@
 
   \subsection{System Components} % (fold)
   \label{sub:system_components}
-    The \ac{WFMC} identified four software components that most \ac{WfMS}s have in common: \emph{Process Definition Tools}, \emph{Administration and Monitoring Tools}, \emph{Workflow Client Applications}, and \emph{Workflow Enactment Service} \cite{Hollingsworth1995Wfmc}.
+    The \ac{WFMC} identified four software components that most \acp{WfMS} have in common: \emph{Process Definition Tools}, \emph{Administration and Monitoring Tools}, \emph{Workflow Client Applications}, and \emph{Workflow Enactment Service} \cite{Hollingsworth1995Wfmc}.
 
-    \subsubsection{Process Definition Tool} % (fold)
-    \label{ssub:process_definition_tool}
+    \paragraph{Process Definition Tool} % (fold)
+    \label{par:process_definition_tool}
       Process definition tools are responsible for analysis, modelling, description and documentation of business proceses. The output of process definition tools -- process definitions -- can be interpreted by workflow engines in order to enact the respective workflow.
 
       The \ac{WFMC} notes, that process definition tools do not necessarily have to be part of a \ac{WfMS}, since the definition may take place in another tool as long as it is passed along in a standardized format \cite{Hollingsworth1995Wfmc}.
-    % subsubsection process_definition_tool (end)
+    % paragraph process_definition_tool (end)
 
-    \subsubsection{Administration \& Monitoring Tools} % (fold)
-    \label{ssub:administration_&_monitoring_tools}
+    \paragraph{Administration \& Monitoring Tools} % (fold)
+    \label{par:administration_&_monitoring_tools}
 
       The administration and monitoring tools are responsible for high level monitoring and control of the system. Their functionalities may include user management, role management, logging, performance auditing, resource control, and supervision over running processes.
-    % subsubsection administration_&_monitoring_tools (end)
+    % paragraph administration_&_monitoring_tools (end)
 
-    \subsubsection{Workflow Client Applications} % (fold)
-    \label{ssub:workflow_client_applications}
+    \paragraph{Workflow Client Applications} % (fold)
+    \label{par:workflow_client_applications}
       The core function of the workflow client applications is to let the user retrieve worklist items that were assigned to him/her. In the \ac{WFMC} reference model they are thus sometimes referred to as \emph{worklist handlers} \cite{Hollingsworth1995Wfmc}. \\
       Yet, the \ac{WFMC} stresses that their functionality may be much broader, \eg letting him/her enter data that is associated to one worklist item, allow him/her to alter the worklist, signing in or off, or control the processes' statuses. The \ac{WFMC} thus advocates for the term \emph{workflow client applications} \cite{Hollingsworth1995Wfmc}.
       The user interface may be part of the workflow client applications or exist as a separate software component.
-    % subsubsection workflow_client_applications (end)
+    % paragraph workflow_client_applications (end)
 
-    \subsubsection{Workflow Engine} % (fold)
-    \label{ssub:workflow_engine}
+    \paragraph{Workflow Engine} % (fold)
+    \label{par:workflow_engine}
       Workflow engines provide the runtime control environment for the execution of workflow instances, that is, they interpret the process definition, manage the instances' status, update worklists, determine participants, and invoke external applications. They further manage the storage and flow of workflow control data and workflow relevant data \cite{Hollingsworth1995Wfmc}.
-    % subsubsection workflow_engine (end)
+    % paragraph workflow_engine (end)
 
-    \subsubsection{Workflow Enactment Service} % (fold)
-    \label{ssub:workflow_enactment_service}
+    \paragraph{Workflow Enactment Service} % (fold)
+    \label{par:workflow_enactment_service}
       The Workflow Enactment Service groups one or more workflow engines into one logical component that exposes a single coherent external interface to other software \cite{Hollingsworth1995Wfmc}.
-    % subsubsection workflow_enactment_service (end)
+    % paragraph workflow_enactment_service (end)
   % subsection system_components (end)
 
   \subsection{WFMS Implementation Structure} % (fold)

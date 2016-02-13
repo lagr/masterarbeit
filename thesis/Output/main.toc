@@ -17,11 +17,11 @@
 \contentsline {section}{\numberline {2.2}Typical Architecture}{6}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}Functional Areas}{6}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}System Components}{7}{subsection.2.2.2}
-\contentsline {subsubsection}{Process Definition Tool}{7}{subsection.2.2.2}
-\contentsline {subsubsection}{Administration \& Monitoring Tools}{7}{subsection.2.2.2}
-\contentsline {subsubsection}{Workflow Client Applications}{7}{subsection.2.2.2}
-\contentsline {subsubsection}{Workflow Engine}{7}{subsection.2.2.2}
-\contentsline {subsubsection}{Workflow Enactment Service}{8}{subsection.2.2.2}
+\contentsline {paragraph}{Process Definition Tool}{7}{subsection.2.2.2}
+\contentsline {paragraph}{Administration \& Monitoring Tools}{7}{subsection.2.2.2}
+\contentsline {paragraph}{Workflow Client Applications}{7}{subsection.2.2.2}
+\contentsline {paragraph}{Workflow Engine}{7}{subsection.2.2.2}
+\contentsline {paragraph}{Workflow Enactment Service}{8}{subsection.2.2.2}
 \contentsline {subsection}{\numberline {2.2.3}WFMS Implementation Structure}{8}{subsection.2.2.3}
 \contentsline {chapter}{\numberline {3}Docker}{9}{chapter.3}
 \contentsline {section}{\numberline {3.1}Concepts}{9}{section.3.1}
@@ -45,27 +45,39 @@
 \contentsline {subsubsection}{Infrastructure and Infrastructure Management}{15}{table.caption.17}
 \contentsline {subsubsection}{Workflow Modeling}{17}{table.caption.17}
 \contentsline {subsubsection}{Workflow Distribution}{17}{table.caption.17}
-\contentsline {subsubsection}{Workflow Execution}{17}{table.caption.17}
+\contentsline {subsubsection}{Workflow Execution}{18}{table.caption.17}
 \contentsline {subsection}{\numberline {4.1.2}Intangible Objectives}{18}{subsection.4.1.2}
-\contentsline {section}{\numberline {4.2}Architecture}{18}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}Application Structure}{18}{subsection.4.2.1}
-\contentsline {paragraph}{Monolithic Architecture}{19}{subsection.4.2.1}
-\contentsline {paragraph}{Service-oriented Architecture}{19}{subsection.4.2.1}
-\contentsline {paragraph}{Micro-services Architecture}{20}{subsection.4.2.1}
-\contentsline {paragraph}{Choice of an architecture model}{21}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}Components}{22}{subsection.4.2.2}
-\contentsline {subsubsection}{Workflow Modeling Service}{23}{subsection.4.2.2}
-\contentsline {subsubsection}{Environment Management Service}{23}{subsection.4.2.2}
-\contentsline {subsubsection}{Organization Management Service}{23}{subsection.4.2.2}
-\contentsline {subsubsection}{Worklist Service}{23}{subsection.4.2.2}
-\contentsline {subsubsection}{Workflow Engine Service}{23}{subsection.4.2.2}
-\contentsline {subsubsection}{Developer Interface}{23}{subsection.4.2.2}
-\contentsline {subsubsection}{User Interface}{23}{subsection.4.2.2}
-\contentsline {subsubsection}{Provisioning Service}{23}{subsection.4.2.2}
-\contentsline {subsubsection}{Validation Service}{23}{subsection.4.2.2}
-\contentsline {chapter}{\numberline {5}Prototypical Implementation}{25}{chapter.5}
-\contentsline {section}{\numberline {5.1}Toolchain}{25}{section.5.1}
-\contentsline {section}{\numberline {5.2}Realization of the Architecture}{25}{section.5.2}
-\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{26}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{27}{chapter.7}
-\contentsline {chapter}{\nonumberline Bibliography}{28}{chapter*.24}
+\contentsline {section}{\numberline {4.2}Potential Scenarios for Docker in Workflow Execution}{18}{section.4.2}
+\contentsline {section}{\numberline {4.3}Architecture}{19}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Application Structure}{19}{subsection.4.3.1}
+\contentsline {paragraph}{Monolithic Architecture}{20}{subsection.4.3.1}
+\contentsline {paragraph}{Service-oriented Architecture}{20}{subsection.4.3.1}
+\contentsline {paragraph}{Micro-services Architecture}{21}{subsection.4.3.1}
+\contentsline {paragraph}{Choice of an architecture model}{23}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Components}{24}{subsection.4.3.2}
+\contentsline {subsubsection}{Derived Services and Databases}{24}{subsection.4.3.2}
+\contentsline {paragraph}{Workflow Modeling Service}{24}{subsection.4.3.2}
+\contentsline {paragraph}{Organization Management Service}{24}{subsection.4.3.2}
+\contentsline {paragraph}{Worklist Service}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Workflow Engine Service}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Developer Gateway}{25}{subsection.4.3.2}
+\contentsline {paragraph}{User Gateway}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Developer Interface}{25}{subsection.4.3.2}
+\contentsline {paragraph}{User Interface}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Organization Data}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Process Definitions Data}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Workflow Control Data}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Workflow Relevant Data}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Worklists}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Validation Service}{25}{subsection.4.3.2}
+\contentsline {subsubsection}{Support Services}{25}{subsection.4.3.2}
+\contentsline {paragraph}{Message Oriented Middleware}{26}{subsection.4.3.2}
+\contentsline {paragraph}{Environment Management Service}{26}{subsection.4.3.2}
+\contentsline {paragraph}{Provisioning Service}{26}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Inter-component communication}{26}{subsection.4.3.3}
+\contentsline {chapter}{\numberline {5}Prototypical Implementation}{28}{chapter.5}
+\contentsline {section}{\numberline {5.1}Toolchain}{28}{section.5.1}
+\contentsline {section}{\numberline {5.2}Realization of the Architecture}{28}{section.5.2}
+\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{29}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{30}{chapter.7}
+\contentsline {chapter}{\nonumberline Bibliography}{31}{chapter*.24}

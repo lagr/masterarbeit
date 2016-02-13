@@ -1,0 +1,78 @@
+% -*- root: ../../main.tex -*- %
+
+There are several aspects on the use of Docker for the execution of workflows. First, to which extend workflow components are wrapped in separate containers. Second, the mechanism that decides which containers are run on which machines, \ie the scheduling. And third, whether to spread containers of one workflow instance across various machines or to run them on the same node. Each variant (and combination of variants) has its own advantages and disadvantages which are elaborated in this chapter.
+
+Containerization of workflows and activities:
+\begin{enumerate}[nosep]
+  \item Specific images per entity type
+  \item Specific images per entity
+    \begin{enumerate}[nosep]
+      \item WF including AC as one container
+        % \begin{itemize}[nosep]
+        %   \item + (widely stand-alone executable)
+        %   \item + Pause/Resume as native docker commands
+        %   \item + movable between servers
+        %   \item - hard to update parts of WF
+        %   \item - fewer reuse of activities
+        % \end{itemize}
+      \item Workflows and activities in containers
+        % \begin{itemize}[nosep]
+        %   \item + (widely stand-alone executable)
+        %   \item + Pause/Resume as native docker commands
+        %   \item + movable between servers
+        %   \item - harder to establish connection for external triggers
+        % \end{itemize}
+      \item Activities in containers
+        % \begin{itemize}[nosep]
+        %   \item + activities movable between servers
+        %   \item + Pause/Resume as native docker commands for single activities
+        % \end{itemize}
+    \end{enumerate}
+\end{enumerate}
+
+Scheduling containers for execution
+\begin{enumerate}[nosep]
+  \item manual
+    \begin{enumerate}[nosep]
+      \item manual to node (all)
+      \item manual to node(-characteristic) (per activity)
+    \end{enumerate}
+  \item automatic
+    \begin{enumerate}[nosep]
+      \item automatic (all)
+      \item automatic (per activity)
+    \end{enumerate}
+\end{enumerate}
+
+Grouping containers for execution
+\begin{enumerate}[nosep]
+  \item WFI +contents on one node
+    \begin{enumerate}[nosep]
+      \item Data exchange via data volume
+        % \begin{itemize}[nosep]
+        % \item + pause/resume easier
+        % \item + persistence easier (data volumes)
+        % \item + no assumptions on environment
+        % \item + access management via user/groups?
+        % \item - disk IO rather slow for lots of accesses
+        % \end{itemize}
+      \item Data exchange via via MQ
+        % \begin{itemize}[nosep]
+        %   \item + no data volume needed
+        %   \item + fast data exchange
+        %   \item + event driven execution (-order) easier
+        %   \item - data must be serializable
+        %   \item - large data takes time to transfer
+        %   \item - assumptions on environment
+        % \end{itemize}
+      \item Data exchange via bridge network
+    \end{enumerate}
+  \item WFI + ACI spread across nodes
+    % \begin{itemize}[nosep]
+    %   \item -> communication via MQ or overlay network
+    %   \item + easier to balance load
+    %   \item + suitable nodes per activity
+    %   \item - harder to persist data
+    %   \item - large data takes time to transfer
+    % \end{itemize}
+\end{enumerate}

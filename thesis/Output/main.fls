@@ -428,6 +428,12 @@ INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/booktabs/booktabs.sty
 INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/booktabs/booktabs.sty
 INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/enumitem/enumitem.sty
 INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/enumitem/enumitem.sty
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/pdfpages/pdfpages.sty
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/pdfpages/ppxetex.def
+INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/pdfpages/ppxetex.def
 INPUT _minted-main/tango.pygstyle
 INPUT _minted-main/tango.pygstyle
 INPUT _minted-main/tango.pygstyle
@@ -572,6 +578,8 @@ INPUT content/text/docker.tex
 INPUT content/text/docker.tex
 INPUT content/text/objectives.tex
 INPUT content/text/objectives.tex
+INPUT content/text/docker_for_wf_execution.tex
+INPUT content/text/docker_for_wf_execution.tex
 INPUT content/text/architecture.tex
 INPUT content/text/architecture.tex
 INPUT content/text/implementation.tex

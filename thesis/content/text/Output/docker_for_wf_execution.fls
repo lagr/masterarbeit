@@ -1,0 +1,6 @@
+PWD /Users/larsgreiving/eigene/masterarbeit/thesis/content/text
+INPUT /usr/local/texlive/2015/texmf.cnf
+INPUT /usr/local/texlive/2015/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT /Users/larsgreiving/eigene/masterarbeit/thesis/content/text/docker_for_wf_execution.tex
+OUTPUT /Users/larsgreiving/eigene/masterarbeit/thesis/content/text/Output/docker_for_wf_execution.log

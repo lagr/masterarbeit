@@ -12,6 +12,7 @@
 \usepackage{tikz-uml}
 \usepackage{booktabs}
 \usepackage{enumitem}
+\usepackage{pdfpages}
 
 \newlist{tabitemize}{itemize}{1}
 \setlist[tabitemize]{label=\textbullet,nosep,after=\strut,leftmargin=*}
@@ -99,6 +100,10 @@
 
     In order to make substanciated decisions in the design process, the intended outcome has to be outlined first. Bearing in mind the concepts presented in Chapter \ref{cha:workflow_management_systems} and \ref{cha:docker}, objectives that together form the intended outcome are thus compiled in Section \ref{sec:determination_of_objectives}. Based on these objectives, the concept of a Docker-based \ac{WfMS} is then shaped in Section \ref{sec:architecture}.
 
+    The benefit \acp{WfMS} could obtain from using the Docker ecosystem is twofold.
+    On the one hand, the distribution and execution of workflows could be improved.
+    On the other hand, the infrastructure of the system itself might be improved by the use of Docker.
+
     \section{Determination of Objectives} % (fold)
       \label{sec:determination_of_objectives}
 
@@ -106,6 +111,11 @@
 
       \input{content/text/objectives}
       % section determination_of_objectives (end)
+
+    \section{Potential Scenarios for Docker in Workflow Execution} % (fold)
+      \label{sec:docker_for_wf_execution}
+      \input{content/text/docker_for_wf_execution}
+      % section docker_for_wf_execution (end)
 
     \section{Architecture} % (fold)
       \label{sec:architecture}

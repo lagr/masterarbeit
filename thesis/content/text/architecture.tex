@@ -1,6 +1,5 @@
 % -*- root: ../../main.tex -*- %
 
-
 \subsection{Application Structure} % (fold)
   \label{sub:application_structure}
   Micro-services, service discovery \cite{Stubbs2015Distributed}
@@ -89,61 +88,121 @@
 
 \subsection{Components} % (fold)
 \label{sub:components}
-  As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is, that suitable service boundaries have to be determined. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted. In case of a \ac{WfMS}, the identification of system components by the \ac{WFMC} can be interpreted as such an analysis. Based on those components, further subordinate micro-services are then identified.
+  As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that suitable service boundaries have to be determined. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted. In case of a \ac{WfMS}, the identification of system components by the \ac{WFMC} can be interpreted as such an analysis. Based on those components, described in \ref{sub:system_components}, further subordinate micro-services are then identified.
 
-  - wfmc
-    - developer gateway
-    - user gateway
-    - workflow modeling service
-    - environment management service
-    - organization management service
-    - worklist service
-    - workflow engine service
-    - workflow engine service
+  As described in \ref{sub:system_components}, the \ac{WFMC} identified:
+    \begin{itemize}[nosep]
+      \item Software Components
+        \begin{itemize}[nosep]
+          \item Definition Tool
+          \item Organization Modeling Tool
+          \item User Interface
+          \item Workflow Engine(s)
+          \item Worklists Handler
+        \end{itemize}
+      \item Data Components
+        \begin{itemize}[nosep]
+          \item Organization Data
+          \item Process Definitions Data
+          \item Workflow Control Data
+          \item Workflow Relevant Data
+          \item Worklists
+        \end{itemize}
+    \end{itemize}
 
-  - extra
-    - provisioning service
-    - validation service
+  \subsubsection{Derived Services and Databases} % (fold)
+  \label{ssub:derived_services}
 
-  \subsubsection{Workflow Modeling Service} % (fold)
-    \label{ssub:workflow_modeling_service}
-    % subsubsection workflow_modeling_service (end)
+    \paragraph{Workflow Modeling Service} % (fold)
+      \label{par:workflow_modeling_service}
+      - manage workflows, activities, assignments
+      % paragraph workflow_modeling_service (end)
 
-  \subsubsection{Environment Management Service} % (fold)
-    \label{ssub:environment_management_service}
-    % subsubsection environment_management_service (end)
+    \paragraph{Organization Management Service} % (fold)
+      \label{par:organization_management_service}
+      - manage users and roles
+      - authenticate users
+      - sample user from specified role
+      % paragraph organization_management_service (end)
 
-  \subsubsection{Organization Management Service} % (fold)
-    \label{ssub:organization_management_service}
-    % subsubsection organization_management_service (end)
+    \paragraph{Worklist Service} % (fold)
+      \label{par:worklist_service}
+      The sole responsibility of this service is the management of users' worklists. It should create and delete worklist items on demand and publish the data users submitted to it. If a user is deleted, it should reschedule the worklist item to a new provided user.
+      % paragraph worklist_service (end)
 
-  \subsubsection{Worklist Service} % (fold)
-    \label{ssub:worklist_service}
-    % subsubsection worklist_service (end)
+    \paragraph{Workflow Engine Service} % (fold)
+      \label{par:workflow_engine_service}
+      % paragraph workflow_engine_service (end)
 
-  \subsubsection{Workflow Engine Service} % (fold)
-    \label{ssub:workflow_engine_service}
-    % subsubsection workflow_engine_service (end)
+    \paragraph{Developer Gateway} % (fold)
+      \label{par:developer_gateway}
+      % paragraph developer_gateway (end)
 
-  \subsubsection{Developer Interface} % (fold)
-    \label{ssub:developer_interface}
-    % subsubsection developer_interface (end)
+    \paragraph{User Gateway} % (fold)
+      \label{par:user_gateway}
+      % paragraph user_gateway (end)
 
-  \subsubsection{User Interface} % (fold)
-    \label{ssub:user_interface}
-    % subsubsection user_interface (end)
+    \paragraph{Developer Interface} % (fold)
+      \label{par:developer_interface}
+      % paragraph developer_interface (end)
 
-  \subsubsection{Provisioning Service} % (fold)
-    \label{ssub:provisioning_service}
-      - either one or more ``centralized''
-      - or one for each
-    % subsubsection provisioning_service (end)
+    \paragraph{User Interface} % (fold)
+      \label{par:user_interface}
+      % paragraph user_interface (end)
 
-  \subsubsection{Validation Service} % (fold)
-    \label{ssub:valitation_service}
-    % subsubsection valitation_service (end)
+    \paragraph{Organization Data} % (fold)
+    \label{par:organization_data}
 
+    % paragraph organization_data (end)
+    \paragraph{Process Definitions Data} % (fold)
+    \label{par:process_definitions_data}
+
+    % paragraph process_definitions_data (end)
+    \paragraph{Workflow Control Data} % (fold)
+    \label{par:workflow_control_data}
+
+    % paragraph workflow_control_data (end)
+    \paragraph{Workflow Relevant Data} % (fold)
+    \label{par:workflow_relevant_data}
+
+    % paragraph workflow_relevant_data (end)
+    \paragraph{Worklists} % (fold)
+    \label{par:worklists}
+
+    % paragraph worklists (end)
+  % subsubsection derived_services (end)
+
+  \paragraph{Validation Service} % (fold)
+    \label{par:valitation_service}
+    One micro-service that might be extracted from the above services concerns the validation of data is the validation service. Given a dataset and a set of rules on how to validate this dataset, the service is able to perform its task autonomously. As validation is a frequently recurring action in the execution of workflows -- before and after each activity and workflow -- it could be beneficial to be able to scale the execution of this task independently.
+    % paragraph valitation_service (end)
+
+  \subsubsection{Support Services} % (fold)
+  \label{ssub:support_components}
+    There are three services which are required for the infrastructure in order to achieve the specified objectives. First, some \ac{MOM}, as it enables the communication between all components. Second, a service that allows the configuration of the execution environment. And third, a component that takes care of provisioning all machines with the images they require.
+
+    \paragraph{Message Oriented Middleware} % (fold)
+      \label{par:message_oriented_middleware}
+      - must be reachable by all other services
+      % paragraph message_oriented_middleware (end)
+
+    \paragraph{Environment Management Service} % (fold)
+      \label{par:environment_management_service}
+      % paragraph environment_management_service (end)
+
+    \paragraph{Provisioning Service} % (fold)
+      \label{par:provisioning_service}
+        The objectives include the reduction of administrative work. In order to prevent the user from having to distribute the Docker images required for the execution of workflows manually, a service should perform this task. This service should provision each machine with said images whenever such an image is created or updated. If a workflow or an activity is deleted, the service should remove its respective image from all machines.
+
+        The service could either run as an instance on each machine, performing the required Docker operations locally, or run on the Docker Swarm master machine as one instance and perform the operations remotely on all machines.
+      % paragraph provisioning_service (end)
+  % subsubsection support_components (end)
 % subsection components (end)
+
+\subsection{Inter-component communication} % (fold)
+\label{sub:inter_component_communication}
+
+% subsection inter_component_communication (end)
 
 - inter-component communication
   - RabbitMQ was introduced to the project, which implements the Advanced Message Queuing Protocol (AMQP)
@@ -159,12 +218,5 @@
   - base images
   - container as instance w/ writable layer
   - autonomous vs centrally managed
-
-
-Given the decisions that ware already made, the exchange of data between the several execution time actors can happen on several ways.
-
-
-
-
 
 
