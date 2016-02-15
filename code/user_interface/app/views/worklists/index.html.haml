@@ -1,0 +1,11 @@
+%h1 Listing worklists
+
+%table
+  %thead
+    %tr
+      %th Worklist of
+
+  %tbody
+    - @worklists.each do |worklist|
+      %tr
+        %td= link_to worklist.user.name, worklist

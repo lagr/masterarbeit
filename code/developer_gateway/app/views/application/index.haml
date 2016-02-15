@@ -1,0 +1,17 @@
+!!!
+%html(ng-app="WFMS.WorkflowDevelopmentApplication")
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title {{$state.current.name}}
+    %base{ href: '/' }
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+  %body{ng_cloak: true, layout: 'column'}
+    %div{ ui_view: "", layout_fill: true }
+
+    / Preload the first visible templates for responsiveness
+    %script{ type: 'text/ng-template', id: 'application.html' }
+      = render partial: 'templates/application'
+    %script{ type: 'text/ng-template', id: 'dashboard.html' }
+      = render partial: 'templates/dashboard/dashboard'

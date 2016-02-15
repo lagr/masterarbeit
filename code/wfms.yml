@@ -7,8 +7,6 @@ networks:
     driver: overlay
   enactment:
     driver: overlay
-  development:
-    driver: overlay
 
 services:
   registry:
@@ -34,53 +32,6 @@ services:
     environment:
       - "constraint:node==internal-machine"
 
-  dev_db:
-    image: postgres
-    depends_on:
-      - dev_db_data
-    volumes_from:
-      - dev_db_data
-    networks:
-      - development
-    environment:
-      POSTGRES_PASSWORD: masterarbeit
-      POSTGRES_USER: workflow_development_server
-
-  dev_db_data:
-    image: cogniteev/echo
-    networks:
-      - development
-    volumes:
-      - /var/lib/postgresql/data
-    environment:
-      - "constraint:node==development-machine"
-
-  development_app:
-    image: development_app
-    build:
-      context: ./development_app
-      args:
-        - "constraint:node==development-machine"
-    depends_on:
-      - dev_db
-      - mom
-      - registry
-      - engine
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.docker/machine/certs/:/root/.docker
-    ports:
-      - "3000:3000"
-    networks:
-      - backend
-      - development
-    environment:
-      - "constraint:node==development-machine"
-      - "SWARM_MANAGER_URL=tcp://$SWARM_MANAGER_IP:3376"
-      - "SWARM_MANAGER_CERT_PATH=/root/.docker"
-      - "POSTGRES_PASSWORD=masterarbeit"
-      - "POSTGRES_USER=workflow_development_server"
-
   engine:
     image: wf_engine
     build:
@@ -96,5 +47,155 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ~/.docker/machine/certs/:/root/.docker
     environment:
-      SWARM_MANAGER_URL: tcp://$SWARM_MANAGER_IP:3376
       SWARM_MANAGER_CERT_PATH: /root/.docker
+
+  organization_db:
+    image: postgres
+    depends_on:
+      - organization_db_data
+    volumes_from:
+      - organization_db_data
+    networks:
+      - backend
+    environment:
+      POSTGRES_PASSWORD: masterarbeit
+      POSTGRES_USER: organization
+
+  organization_db_data:
+    image: cogniteev/echo
+    networks:
+      - backend
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - "constraint:node==development-machine"
+
+  organization:
+    image: organization
+    build:
+      context: ./organization
+      args:
+        - "constraint:node==development-machine"
+    depends_on:
+      - organization_db
+      - mom
+    ports:
+      - "3002:3000"
+    networks:
+      - backend
+    environment:
+      - "constraint:node==development-machine"
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=organization"
+
+  worklist_db:
+    image: postgres
+    volumes_from:
+      - worklist_db_data
+    networks:
+      - backend
+    environment:
+      POSTGRES_PASSWORD: masterarbeit
+      POSTGRES_USER: worklist
+
+  worklist_db_data:
+    image: cogniteev/echo
+    networks:
+      - backend
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - "constraint:node==development-machine"
+
+  worklist:
+    image: worklist
+    build:
+      context: ./worklist
+      args:
+        - "constraint:node==development-machine"
+    depends_on:
+      - worklist_db
+      - mom
+    ports:
+      - "3003:3000"
+    networks:
+      - backend
+      - enactment
+    environment:
+      - "constraint:node==development-machine"
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=worklist"
+
+  definition_db:
+    image: postgres
+    depends_on:
+      - definition_db_data
+    volumes_from:
+      - definition_db_data
+    networks:
+      - backend
+    environment:
+      POSTGRES_PASSWORD: masterarbeit
+      POSTGRES_USER: definition
+
+  definition_db_data:
+    image: cogniteev/echo
+    networks:
+      - backend
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - "constraint:node==development-machine"
+
+  definition:
+    image: definition
+    build:
+      context: ./definition
+      args:
+        - "constraint:node==development-machine"
+    depends_on:
+      - definition_db
+      - mom
+    ports:
+      - "3004:3000"
+    networks:
+      - backend
+      - enactment
+    environment:
+      - "constraint:node==development-machine"
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=definition"
+
+  user_interface:
+    image: user_interface
+    build:
+      context: ./user_interface
+      args:
+        - "constraint:node==development-machine"
+    depends_on:
+      - worklist
+      - mom
+    ports:
+      - "3001:3000"
+    networks:
+      - backend
+      - frontend
+    environment:
+      - "constraint:node==development-machine"
+
+  developer_gateway:
+    image: developer_gateway
+    build:
+      context: ./developer_gateway
+      args:
+        - "constraint:node==development-machine"
+    depends_on:
+      - definition
+      - organization
+      - mom
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+    environment:
+      - "constraint:node==development-machine"

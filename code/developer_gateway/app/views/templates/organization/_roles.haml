@@ -1,0 +1,13 @@
+%md-content
+  %md-toolbar{md_scroll_shrink: true}
+    .md-toolbar-tools
+      %h2 Roles
+      %span{flex: true}
+      %md-button.md-raised{ui_sref: 'app.organization.role'} Add role
+
+  %md-list{layout_padding: true}
+    %md-list-item.md-3-line{ ng_repeat: "role in orgCtrl.roles" }
+      .md-list-item-text{ layout: "column", ui_sref: 'app.organization.role({ role_id: role.id})'}
+        %h3 {{ role.name }}
+        %h4
+        %p

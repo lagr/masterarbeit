@@ -1,0 +1,13 @@
+%md-content
+  %md-toolbar{md_scroll_shrink: true}
+    .md-toolbar-tools
+      %h2 Users
+      %span{flex: true}
+      %md-button.md-raised{ui_sref: 'app.organization.user'} Add user
+
+  %md-list{layout_padding: true}
+    %md-list-item.md-2-line{ ng_repeat: "user in orgCtrl.users" }
+      .md-list-item-text{ layout: "column", ui_sref: 'app.organization.user({ user_id: user.id})'}
+        %h3 {{ user.firstName }} {{ user.lastName }}
+        %h4 {{ _.find(orgCtrl.roles, {id: user.roleId}) }}
+
