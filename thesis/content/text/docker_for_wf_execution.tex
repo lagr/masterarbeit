@@ -2,6 +2,57 @@
 
 There are several aspects on the use of Docker for the execution of workflows. First, to which extend workflow components are wrapped in separate containers. Second, the mechanism that decides which containers are run on which machines, \ie the scheduling. And third, whether to spread containers of one workflow instance across various machines or to run them on the same node. Each variant (and combination of variants) has its own advantages and disadvantages which are elaborated in this chapter.
 
+
+\begin{table}
+  \centering
+  \begin{tabular}[c]{p{3cm}|c|c|c}
+    \toprule
+    \textbf{Data Exchange \newline Grouping}
+    & Shared Data Volume
+    & Message Queue
+    & Direct HTTP/Rest Calls \\
+
+    \midrule
+
+    \multicolumn{4}{c}{\textbf{Group on one node} }\\ \hline
+
+    One image per \newline entity type
+    &&&
+    \\ \hline
+
+    Wf + ACs in \newline one container
+    &&&
+    \\ \hline
+
+    Workflows and \newline activities in \newline containers
+    &&&
+    \\ \hline
+
+    Activities in \newline containers
+    &&&
+    \\ \hline
+
+    \multicolumn{4}{c}{\textbf{Spread over available nodes} }\\ \hline
+
+    One image per \newline entity type
+    & --- &&
+    \\ \hline
+    Wf + ACs in \newline one container
+    & --- &&
+    \\ \hline
+    Workflows and \newline activities in \newline containers
+    & --- &&
+    \\ \hline
+    Activities in \newline containers
+    & --- &&
+    \\ \hline
+
+    \bottomrule
+  \end{tabular}
+  \caption{Grouping/Communication Pairings}
+  \label{tab:objectives_and_requirements}
+\end{table}
+
 Containerization of workflows and activities:
 \begin{enumerate}[nosep]
   \item Specific images per entity type
@@ -32,12 +83,12 @@ Containerization of workflows and activities:
 
 Scheduling containers for execution
 \begin{enumerate}[nosep]
-  \item manual
+  \item Explicit assignment
     \begin{enumerate}[nosep]
       \item manual to node (all)
       \item manual to node(-characteristic) (per activity)
     \end{enumerate}
-  \item automatic
+  \item Automatic assignment
     \begin{enumerate}[nosep]
       \item automatic (all)
       \item automatic (per activity)

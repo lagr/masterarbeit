@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  12 FEB 2016 18:17
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  15 FEB 2016 10:11
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1944,7 +1944,11 @@ LaTeX Info: Redefining \upshape on input line 2247.
 . and font adjustment code:
 . 
 .................................................
-(/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux)
+(/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux
+
+LaTeX Warning: Label `tab:objectives_and_requirements' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 50.
@@ -2361,12 +2365,15 @@ Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 148.
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 148.
  ) 
 Here is how much of TeX's memory you used:
  48419 strings out of 493706
  939707 string characters out of 6145770
- 1180077 words of memory out of 5000000
+ 1180103 words of memory out of 5000000
  50864 multiletter control sequences out of 15000+600000
  25139 words of font info for 101 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
