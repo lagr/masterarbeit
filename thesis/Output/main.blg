@@ -2,52 +2,52 @@ This is BibTeX, Version 0.99d (TeX Live 2015)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: Output/main.aux
 The style file: plain.bst
-Illegal, another \bibstyle command---line 484 of file Output/main.aux
+Illegal, another \bibstyle command---line 504 of file Output/main.aux
  : \bibstyle
  :          {iswiwwu}
 I'm skipping whatever remains of this command
 Database file #1: Remote.bib
 Warning--empty publisher in Felter2014Updated
 Warning--empty booktitle in Stubbs2015Distributed
-You've used 25 entries,
+You've used 26 entries,
             2118 wiz_defined-function locations,
-            657 strings with 8455 characters,
-and the built_in function-call counts, 8008 in all, are:
-= -- 737
-> -- 410
+            662 strings with 8548 characters,
+and the built_in function-call counts, 8241 in all, are:
+= -- 757
+> -- 423
 < -- 6
-+ -- 163
-- -- 134
-* -- 533
-:= -- 1349
-add.period$ -- 74
-call.type$ -- 25
-change.case$ -- 129
++ -- 168
+- -- 138
+* -- 543
+:= -- 1387
+add.period$ -- 76
+call.type$ -- 26
+change.case$ -- 134
 chr.to.int$ -- 0
-cite$ -- 27
-duplicate$ -- 306
-empty$ -- 644
-format.name$ -- 134
-if$ -- 1699
+cite$ -- 28
+duplicate$ -- 313
+empty$ -- 666
+format.name$ -- 138
+if$ -- 1749
 int.to.chr$ -- 0
-int.to.str$ -- 25
+int.to.str$ -- 26
 missing$ -- 23
-newline$ -- 123
-num.names$ -- 53
-pop$ -- 151
+newline$ -- 127
+num.names$ -- 55
+pop$ -- 161
 preamble$ -- 1
-purify$ -- 107
+purify$ -- 111
 quote$ -- 0
-skip$ -- 238
+skip$ -- 247
 stack$ -- 0
-substring$ -- 396
-swap$ -- 65
+substring$ -- 401
+swap$ -- 66
 text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 90
+type$ -- 94
 warning$ -- 2
-while$ -- 68
-width$ -- 27
-write$ -- 263
+while$ -- 70
+width$ -- 28
+write$ -- 271
 (There was 1 error message)

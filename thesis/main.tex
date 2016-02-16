@@ -14,8 +14,28 @@
 \usepackage{enumitem}
 \usepackage{pdfpages}
 
+
+\usepackage{adjustbox}
+
+\newcolumntype{R}[2]{%
+    >{\adjustbox{angle=#1,lap=\width-(#2)}\bgroup}%
+    l%
+    <{\egroup}%
+}
+\newcommand*\rot{\multicolumn{1}{R{80}{1em}}}
+
+
+\usepackage{amssymb}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\ja}{\tiny{\cmark}}
+
 \newlist{tabitemize}{itemize}{1}
 \setlist[tabitemize]{label=\textbullet,nosep,after=\strut,leftmargin=*}
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{T}[1]{>{\riggedright\arraybackslash}p{#1}}
 
 \usemintedstyle{tango}
 \robustify\textellipsis

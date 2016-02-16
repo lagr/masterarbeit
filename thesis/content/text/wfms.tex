@@ -69,7 +69,7 @@
     They further identified six types of data interaction between the various hierarchy levels in workflows \cite[p.~16-24]{Russell2005Workflow}:
     \begin{itemize}
       \item \textbf{Activity -- Activity} \hfill \\
-        Data is passed between one activity instance and another within the same workflow instance.
+        Data is passed between two activity instances which belong to the same workflow instance.
       \item \textbf{Sub-workflow Activity -- Sub-workflow Components} \hfill \\
         Data is passed from a sub-workflow activity instance to the corresponding sub-workflow.
       \item \textbf{Sub-workflow Components -- Sub-workflow Activity} \hfill \\
@@ -81,6 +81,8 @@
       \item \textbf{Workflow Instance -- Workflow Instance} \hfill \\
         Data is passed from one instance of a workflow during its execution to another workflow instance that is being executed in parallel.
     \end{itemize}
+
+    Workflow data may be either made available from a common data store, get passed along with the control flow of a workflow, or be explicitly passed to the receiving component \cite[pp.~16-21]{Russell2005Workflow}.
   % subsection workflow_data (end)
 
   \subsection{Workflow Participant and Worklist} % (fold)

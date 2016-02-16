@@ -1,129 +1,248 @@
 % -*- root: ../../main.tex -*- %
+- image = activity/workflow, container = activity instance / workflow instance
 
-There are several aspects on the use of Docker for the execution of workflows. First, to which extend workflow components are wrapped in separate containers. Second, the mechanism that decides which containers are run on which machines, \ie the scheduling. And third, whether to spread containers of one workflow instance across various machines or to run them on the same node. Each variant (and combination of variants) has its own advantages and disadvantages which are elaborated in this chapter.
+There are several possibilities how Docker can be utilized for the execution of workflows.
+Each combination of variants (abbreviated as depicted in Table~\ref{tab:docker_variants}) has its own advantages and disadvantages, which are elaborated in this chapter.
 
+The first aspect is whether one wants to spread the containers associated with one workflow instance across various machines for execution ($S$) or constraint them to run on the same node as a group ($G$).
 
-\begin{table}
+Second, one can differentiate to which extend workflow components are wrapped in their own containers.
+One could encapsulate only activities in containers ($*_{AC}^{*}$) and distribute workflow information on another way, let each workflow and activity reside in a different container ($*_{SEPC}^{*}$), or wrap them in one container together ($*_{1C}^{*}$). Since this container is an atomic unit, it cannot be spread across many nodes for execution. One also could abandon the idea of a one-to-one mapping between the Docker and workflow concepts and establish worker containers with specialized behavior (according to a workflow/activity type) which perform suitable tasks on request ($*_{Type}^{*}$).
+
+Third, it is important to define the way data is exchanged between containers. One possible solution could be a data volume that is shared by all containers in need to exchange data with each other ($*_{*}^{DV}$). Data could also be passed between containers via some system service, \eg a database, ($*_{*}^{SER}$), or on a direct connection between the containers ($*_{*}^{D}$).
+
+Finally, rather independent from the previous variants and hence discussed in isolation, one might want to choose the mechanism that decides which containers are run on which machines, \ie the execution scheduling.
+
+\begin{table}[!htbp]
   \centering
-  \begin{tabular}[c]{p{3cm}|c|c|c}
+  %\renewcommand*{\arraystretch}{1.25}
+  \begin{tabular}{C{4cm}|C{3cm}|C{3cm}|C{3cm}}
     \toprule
-    \textbf{Data Exchange \newline Grouping}
-    & Shared Data Volume
-    & Message Queue
-    & Direct HTTP/Rest Calls \\
+    \textbf{Data Exchange / Containerization}
 
-    \midrule
+    & Common Data~Volume  & Service & Direct \\ \midrule
 
-    \multicolumn{4}{c}{\textbf{Group on one node} }\\ \hline
+    \multicolumn{4}{c}{\textbf{Grouped execution on one node} }\\ [1ex] \midrule
 
-    One image per \newline entity type
-    &&&
-    \\ \hline
+    Activities in containers
+    & $G_{AC}^{DV}$   & $G_{AC}^{SER}$  & $G_{AC}^{D}$   \\ \midrule
 
-    Wf + ACs in \newline one container
-    &&&
-    \\ \hline
+    Workflows and activities in separate containers
+    & $G_{SEPC}^{DV}$  & $G_{SEPC}^{SER}$ & $G_{SEPC}^{D}$  \\ \midrule
 
-    Workflows and \newline activities in \newline containers
-    &&&
-    \\ \hline
+    Workflow and activities in one container
+    & $G_{1C}^{DV}$  & $G_{1C}^{SER}$ & $G_{1C}^{D}$  \\ \midrule
 
-    Activities in \newline containers
-    &&&
-    \\ \hline
+    Type based workers
+    & $G_{Type}^{DV}$  & $G_{Type}^{SER}$ & $G_{Type}^{D}$  \\ \midrule
 
-    \multicolumn{4}{c}{\textbf{Spread over available nodes} }\\ \hline
+    \multicolumn{4}{c}{\textbf{Spread execution over available nodes} }\\ [1ex] \midrule
 
-    One image per \newline entity type
-    & --- &&
-    \\ \hline
-    Wf + ACs in \newline one container
-    & --- &&
-    \\ \hline
-    Workflows and \newline activities in \newline containers
-    & --- &&
-    \\ \hline
-    Activities in \newline containers
-    & --- &&
-    \\ \hline
+    Activities in containers
+    & \xmark & $S_{AC}^{SER}$ & $S_{AC}^{D}$ \\ \midrule
+
+    Workflows and activities in separate containers
+    & \xmark & $S_{SEPC}^{SER}$ & $S_{SEPC}^{D}$ \\ \midrule
+
+    Workflow and activities in one container
+    & \xmark & \xmark & \xmark \\ \midrule
+
+    Type based workers
+    & \xmark & $S_{Type}^{SER}$ & $S_{Type}^{D}$ \\ \midrule
 
     \bottomrule
   \end{tabular}
-  \caption{Grouping/Communication Pairings}
-  \label{tab:objectives_and_requirements}
+  \caption{Containerization/Grouping/Communication Solution Pairings}
+  \label{tab:docker_variants}
 \end{table}
 
-Containerization of workflows and activities:
-\begin{enumerate}[nosep]
-  \item Specific images per entity type
-  \item Specific images per entity
-    \begin{enumerate}[nosep]
-      \item WF including AC as one container
-        % \begin{itemize}[nosep]
-        %   \item + (widely stand-alone executable)
-        %   \item + Pause/Resume as native docker commands
-        %   \item + movable between servers
-        %   \item - hard to update parts of WF
-        %   \item - fewer reuse of activities
-        % \end{itemize}
-      \item Workflows and activities in containers
-        % \begin{itemize}[nosep]
-        %   \item + (widely stand-alone executable)
-        %   \item + Pause/Resume as native docker commands
-        %   \item + movable between servers
-        %   \item - harder to establish connection for external triggers
-        % \end{itemize}
-      \item Activities in containers
-        % \begin{itemize}[nosep]
-        %   \item + activities movable between servers
-        %   \item + Pause/Resume as native docker commands for single activities
-        % \end{itemize}
-    \end{enumerate}
-\end{enumerate}
+\subsection[Grouped execution using common data volume]{Grouped execution using common data volume ($G_{*}^{DV}$)} % (fold)
+\label{sub:grouped_execution_using_common_data_volume}
 
-Scheduling containers for execution
-\begin{enumerate}[nosep]
-  \item Explicit assignment
-    \begin{enumerate}[nosep]
-      \item manual to node (all)
-      \item manual to node(-characteristic) (per activity)
-    \end{enumerate}
-  \item Automatic assignment
-    \begin{enumerate}[nosep]
-      \item automatic (all)
-      \item automatic (per activity)
-    \end{enumerate}
-\end{enumerate}
+  The idea behind this concept is, that all containers involved in the execution of one workflow instance have access to a common working directory, in which the data visibility scopes can be established using a file system structure. This working directory resides in a data volume owned by a container that is specific to the respective workflow instance and whose only purpose is to ensure the existence of said volume.
 
-Grouping containers for execution
-\begin{enumerate}[nosep]
-  \item WFI +contents on one node
-    \begin{enumerate}[nosep]
-      \item Data exchange via data volume
-        % \begin{itemize}[nosep]
-        % \item + pause/resume easier
-        % \item + persistence easier (data volumes)
-        % \item + no assumptions on environment
-        % \item + access management via user/groups?
-        % \item - disk IO rather slow for lots of accesses
-        % \end{itemize}
-      \item Data exchange via via MQ
-        % \begin{itemize}[nosep]
-        %   \item + no data volume needed
-        %   \item + fast data exchange
-        %   \item + event driven execution (-order) easier
-        %   \item - data must be serializable
-        %   \item - large data takes time to transfer
-        %   \item - assumptions on environment
-        % \end{itemize}
-      \item Data exchange via bridge network
-    \end{enumerate}
-  \item WFI + ACI spread across nodes
-    % \begin{itemize}[nosep]
-    %   \item -> communication via MQ or overlay network
-    %   \item + easier to balance load
-    %   \item + suitable nodes per activity
-    %   \item - harder to persist data
-    %   \item - large data takes time to transfer
-    % \end{itemize}
-\end{enumerate}
+  $G_{*}^{DV}$ natively supports all identified types of data visibility by providing respective directories and access to them, with the limitation that workflow data and environment data has to be copied to the data volume before execution and is thus restricted to the state it had at that time. Altering this data is possible, \eg by replacing the respective files via \texttt{docker copy} or altering it in a \texttt{docker exec} session, but extra measures have to be taken to request such an up-to-date version.
+
+  Data interactions between activity instances, a sub-workflow activity and its related components and vice versa are supported by $G_{*}^{DV}$. Exchanging data between two running workflow instances is not possible, though, as mounting volumes to running containers is not supported by Docker yet. This kind of interaction thus requires some additional tools. It would be possible to grant access to workflow instances running on the same machine -- at the price of loss of control over data visibility -- by mounting the top-level working directory of that machine in all containers.
+
+  As long as no requests to external sources are made within the workflow, data has to be transferred over the network only twice in this approach -- for the input and output of the workflow. All subsequent data transfers are either implicit, \eg by accessing the respective working directory or a symbolic link to it, or take place on the local machine, \eg copying one or more files. Because of transfer rates *QUOTE*, $G_{*}^{DV}$ has an advantage over message-based approaches when it comes to processing of large and/or many data sets. Also, unless required by the activities themselves, data conversion is less of an issue since relying on the file system allows arbitrary file types to be used.
+
+  Sharing a data volume using only Docker tools requires all containers to be on the same machine, which is why there is no spread version $S_{*}^{DV}$ of this concept. Approaches exist to utilize \ac{NFS} or \ac{P2P} file sharing for distributed access to data volumes, but given the limited scope of this thesis they shall not be regarded further here \cite{Miell2015How}.
+
+  $G_{1C}^{DV}$ could theoretically work on its own file system in the editable layer of the container without a dedicated data volume, since all workflow components would have access to it. This would make the container self contained on the one hand -- and thus easier to export or migrate -- but would on the other hand couple the data life cycle to the processing container's life cycle. That is, if the container is removed, the data is removed with it.
+
+% subsection grouped_execution_using_common_data_volume (end)
+
+\subsection[Grouped or spread execution using an intermediate service]{Grouped or spread execution using an intermediate service ($G_{*}^{SER}$ /$s_{*}^{SER}$)} % (fold)
+\label{sub:grouped_execution_using_a_intermediate_service}
+
+  $*_{*}^{SER}$ represents the concept of providing some service that is able to store and serve data on request. This implies, that the docker containers have to feature a mechanism to communicate to this service.
+
+  The service could either be running as a single instance on some node in the network or on each node in the network. While the former avoids having to deal with synchronization between service instances and inconsistencies resulting from race conditions, the latter could balance the load. (shorten repsonse times? hops)
+
+  Since the storage of workflow related data is decoupled from the execution in $*_{*}^{SER}$, the coverage of data visibility and data interaction capabilities depends on the chosen underlying service. Theoretically, all forms of data visibility and interactions should thus be possible. Also, the solution exhibits the same properties for the grouped and spread execution, for the same reason.
+
+  In this variant, data is transferred before and after each step in the workflow, \ie when the execution starts, when it ends, whenever an activity is instantiated or an instance finished its work. This is only economical if the amount of data is sufficiently small or if the workflows consist of few activities.
+
+  In order for the workflow execution to function correctly, the service must be reliably available to all containers.
+
+  - service must be present
+
+  - think about hosting multiple services (1 per node)
+  - probably superfluous network roundtrip
+  - less efficient for large files than using a file system
+
+% subsection grouped_execution_using_a_intermediate_service (end)
+
+\subsection[Grouped or spread execution using direct connections]{Grouped or spread execution using direct connections ($G_{*}^{D}$/$S_{*}^{D}$)} % (fold)
+\label{sub:grouped_execution_using_direct_connections}
+
+  In this scenario, the containers communicate with each other directly in order to exchange workflow relevant data. It can split again in two subvariants, according to the data passing patterns noted in \ref{sub:workflow_data}. On the one hand, one where the workflow relevant data is passed along the control flow ($*_{*}^{D_a}$). On the other hand, one where containers can query each other for their data($*_{*}^{D_b}$).
+
+  \subsubsection{Joined data and control flows ($*_{*}^{D_a}$)} % (fold)
+    In $*_{*}^{D_a}$, the data flow is managed by the workflow engine, which forwards the data returned by one activity instance to its successors. This requires all data that might be used in another activity instance to be passed along, no matter whether the succeeding activity uses them or not \cite{Russell2005Workflow}. While this allows to pass (and update) workflow and environment data, it may be problematic for larger amounts of data.
+  % subsubsection ___d_a_ (end)
+
+  \subsubsection{Separate data and control flows ($*_{*}^{D_b}$)} % (fold)
+    $*_{*}^{D_b}$ requires all containers that shall be queried for data to provide some communication mechanism and to be running. Thus, in the worst case every container related to a workflow instance has to be running. Even though the containers' use of processor time can be reduced by pausing them until they are needed, this approach could impose a considerable strain on the host machine's memory, as pausing containers has no effect on their memory consumption.
+
+    Workflow data and environment data in $*_{*}^{D_b}$ may be provided to the first activity, which then could be queried for a (static) version of it. Because workflow instances are not represented as containers in $*_{AC}^{D}$, $*_{AC}^{D_b}$ provides no means to store and access sub-workflow data, multiple instance data and workflow instance data.
+  % subsubsection (end)
+
+  As all workflow components reside in one container in $G_{1C}^{D}$, no communication between containers is necessary -- all data can be exchanged on an arbitrary way within that single container. This variant thus represents a special case.
+% subsection grouped_execution_using_direct_connections (end)
+
+\begin{table}[!htbp]
+  \centering
+  %\renewcommand*{\arraystretch}{1.7}
+  \begin{tabular}{C{1cm} C{1cm} C{1cm} C{1cm} C{1cm} C{1cm} C{1cm} | C{1cm} C{1cm} C{1cm} C{1cm}}
+    \toprule
+
+    \multicolumn{6}{c}{Data Visibility} & \multicolumn{4}{c}{Data Interactions} \\
+
+      & \rot{Ac Data}
+      & \rot{SubWF Ac Data}
+      & \rot{MultInst Ac Data}
+      & \rot{WFInst Data}
+      & \rot{WF Data}
+      & \rot{Env Data}
+
+      & \rot{Ac $\rightarrow$ Ac}
+      & \rot{SubWF Ac $\rightarrow$ SubWF}
+      & \rot{SubWF $\rightarrow$ SubWF Ac}
+      & \rot{WFInst $\rightarrow$ WFInst}
+    \\ \midrule
+
+
+    $G_{AC}^{DV}$    &   \ja   &   \ja            & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
+    $G_{SEPC}^{DV}$  &   \ja   &   \ja            & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
+    $G_{1C}^{DV}$    &   \ja   &   \ja            & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
+    $G_{Type}^{DV}$  &   \ja   &   \ja            & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
+
+
+    $G_{AC}^{SER}$   &   \ja   &   \ja            & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+    $G_{SEPC}^{SER}$ &   \ja   &   \ja            & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+    $G_{1C}^{SER}$   &   \ja   &   \ja            & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+    $G_{Type}^{SER}$ &   \ja   &   \ja            & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+
+                    % A Data   | SWF A Data       | Mult. Inst. A D  | Wf. Instance D   | Wf. Data   | Envir  Data ||
+
+    $G_{AC}^{D_a}$   & \ja     & \ja              & $\bigcirc$       & \ja              & \ja             & \ja             & \ja ($\ddagger$) & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      \\ \midrule
+    $G_{AC}^{D_b}$   & \ja     & $\bigcirc$       & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      & $\bigcirc$      & \ja ($\ddagger$) & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      \\ \midrule
+    $G_{SEPC}^{D}$   & \ja     & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$) & $\bigcirc$      & $\bigcirc$      & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$)\\ \midrule
+    $G_{1C}^{D}$     & \ja$^*$ & \ja$^*$          & \ja$^*$          & \ja$^*$          & $\bigcirc$      & $\bigcirc$      & \ja$^*$          & \ja$^*$          & \ja$^*$          & \ja$^*$         \\ \midrule
+    $G_{Type}^{D}$   & \ja     & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$) & $\bigcirc$      & $\bigcirc$      & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$)\\ \midrule
+
+
+    $S_{AC}^{SER}$   & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+    $S_{SEPC}^{SER}$ & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+    $S_{Type}^{SER}$ & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+
+
+    $S_{AC}^{D}$     & \ja     & $\bigcirc$       & $\bigcirc$       &  $\bigcirc$      & $\bigcirc$ & $\bigcirc$  & \ja ($\ddagger$) & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      \\ \midrule
+    $S_{SEPC}^{D}$   & \ja     & \ja              & \ja              & \ja              & $\bigcirc$ & $\bigcirc$  & \ja ($\ddagger$) &\ja ($\ddagger$)  & \ja ($\ddagger$) &\ja ($\ddagger$) \\ \midrule
+    $S_{Type}^{D}$   & \ja     & \ja              & \ja              & \ja              & $\bigcirc$ & $\bigcirc$  & \ja ($\ddagger$) &\ja ($\ddagger$)  & \ja ($\ddagger$) &\ja ($\ddagger$) \\ \bottomrule
+  \end{tabular}
+  \captionsetup{justification=centering}
+  \caption*{\ja~ natively supported ~~|~~ \ja$^*$~ natively supported, a direct connection within the container is assumed ~~|~~ \ja ($\dagger$)~ can be passsed on instantiation, real-time access requires additional tools \\ \ja ($\ddagger$) natively supported, assuming that all containers are left running for the time of workflow execution ~~|~~ $\bigcirc$~ not natively supported, requires additional tools \\[1em]
+
+  Ac = Activity ~|~ SubWF = Sub-workflow~|~ MultInst = Multiple instance ~|~ WFInst = Workflow instance~|~ WF = Workflow ~|~ Env = Environment
+  }
+  \label{tab:docker_variants}
+  \caption{Containerization/Grouping/Communication Solution Pairings}
+\end{table}
+
+% Containerization of workflows and activities:
+% \begin{enumerate}[nosep]
+%   \item Specific images per entity type
+%   \item Specific images per entity
+%     \begin{enumerate}[nosep]
+%       \item WF including AC as one container
+%         % \begin{itemize}[nosep]
+%         %   \item + (widely stand-alone executable)
+%         %   \item + Pause/Resume as native docker commands
+%         %   \item + movable between servers
+%         %   \item - hard to update parts of WF
+%         %   \item - fewer reuse of activities
+%         % \end{itemize}
+%       \item Workflows and activities in containers
+%         % \begin{itemize}[nosep]
+%         %   \item + (widely stand-alone executable)
+%         %   \item + Pause/Resume as native docker commands
+%         %   \item + movable between servers
+%         %   \item - harder to establish connection for external triggers
+%         % \end{itemize}
+%       \item Activities in containers
+%         % \begin{itemize}[nosep]
+%         %   \item + activities movable between servers
+%         %   \item + Pause/Resume as native docker commands for single activities
+%         % \end{itemize}
+%     \end{enumerate}
+% \end{enumerate}
+
+% Scheduling containers for execution
+% \begin{enumerate}[nosep]
+%   \item Explicit assignment
+%     \begin{enumerate}[nosep]
+%       \item manual to node (all)
+%       \item manual to node(-characteristic) (per activity)
+%     \end{enumerate}
+%   \item Automatic assignment
+%     \begin{enumerate}[nosep]
+%       \item automatic (all)
+%       \item automatic (per activity)
+%     \end{enumerate}
+% \end{enumerate}
+
+% Grouping containers for execution
+% \begin{enumerate}[nosep]
+%   \item WFI +contents on one node
+%     \begin{enumerate}[nosep]
+%       \item Data exchange via data volume
+%         % \begin{itemize}[nosep]
+%         % \item + pause/resume easier
+%         % \item + persistence easier (data volumes)
+%         % \item + no assumptions on environment
+%         % \item + access management via user/groups?
+%         % \item - disk IO rather slow for lots of accesses
+%         % \end{itemize}
+%       \item Data exchange via via MQ
+%         % \begin{itemize}[nosep]
+%         %   \item + no data volume needed
+%         %   \item + fast data exchange
+%         %   \item + event driven execution (-order) easier
+%         %   \item - data must be serializable
+%         %   \item - large data takes time to transfer
+%         %   \item - assumptions on environment
+%         % \end{itemize}
+%       \item Data exchange via bridge network
+%     \end{enumerate}
+%   \item WFI + ACI spread across nodes
+%     % \begin{itemize}[nosep]
+%     %   \item -> communication via MQ or overlay network
+%     %   \item + easier to balance load
+%     %   \item + suitable nodes per activity
+%     %   \item - harder to persist data
+%     %   \item - large data takes time to transfer
+%     % \end{itemize}
+% \end{enumerate}

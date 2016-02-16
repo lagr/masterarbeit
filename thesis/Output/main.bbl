@@ -29,7 +29,7 @@ Fabio Casati, Stefano Ceri, Stefano Paraboschi, and Guiseppe Pozzi.
 \newblock {\em ACM Transactions on Database Systems}, 24(3):405--451, 1999.
 
 \bibitem{Choi2010Implementing}
-Jae Choi, Derek~L. Nazareth, and Hemant~K. Jain.
+J.~Choi, D.L. Nazareth, and H.K. Jain.
 \newblock Implementing service-oriented architecture in organizations.
 \newblock {\em Journal of Management Information Systems}, 26(4):253--286,
   2010.
@@ -81,6 +81,10 @@ Open~Container Initiative.
 Peter Lawrence, editor.
 \newblock {\em Workflow Handbook 1997}.
 \newblock John Wiley \& Sons, Inc., New York, NY, USA, 1997.
+
+\bibitem{Miell2015How}
+Ian Miell and Aidan~H. Sayers.
+\newblock How to share docker volumes across hosts, 2015.
 
 \bibitem{Newman2015Building}
 Sam Newman.
