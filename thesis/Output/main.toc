@@ -51,38 +51,39 @@
 \contentsline {subsection}{\numberline {4.2.1}Grouped execution using common data volume}{19}{subsection.4.2.1}
 \contentsline {subsection}{\numberline {4.2.2}Grouped or spread execution using an intermediate service}{21}{subsection.4.2.2}
 \contentsline {subsection}{\numberline {4.2.3}Grouped or spread execution using direct connections}{22}{subsection.4.2.3}
-\contentsline {subsubsection}{Joined data and control flows ($*_{*}^{D_a}$)}{22}{subsection.4.2.3}
-\contentsline {subsubsection}{Separate data and control flows ($*_{*}^{D_b}$)}{22}{subsection.4.2.3}
-\contentsline {section}{\numberline {4.3}Architecture}{23}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Application Structure}{23}{subsection.4.3.1}
-\contentsline {paragraph}{Monolithic Architecture}{23}{subsection.4.3.1}
-\contentsline {paragraph}{Service-oriented Architecture}{25}{subsection.4.3.1}
-\contentsline {paragraph}{Micro-services Architecture}{26}{subsection.4.3.1}
-\contentsline {paragraph}{Choice of an architecture model}{27}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Components}{28}{subsection.4.3.2}
-\contentsline {subsubsection}{Derived Services and Databases}{29}{subsection.4.3.2}
-\contentsline {paragraph}{Workflow Modeling Service}{29}{subsection.4.3.2}
-\contentsline {paragraph}{Organization Management Service}{29}{subsection.4.3.2}
-\contentsline {paragraph}{Worklist Service}{29}{subsection.4.3.2}
-\contentsline {paragraph}{Workflow Engine Service}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Developer Gateway}{30}{subsection.4.3.2}
-\contentsline {paragraph}{User Gateway}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Developer Interface}{30}{subsection.4.3.2}
-\contentsline {paragraph}{User Interface}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Organization Data}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Process Definitions Data}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Workflow Control Data}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Workflow Relevant Data}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Worklists}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Validation Service}{30}{subsection.4.3.2}
-\contentsline {subsubsection}{Support Services}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Message Oriented Middleware}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Environment Management Service}{31}{subsection.4.3.2}
-\contentsline {paragraph}{Provisioning Service}{31}{subsection.4.3.2}
-\contentsline {subsection}{\numberline {4.3.3}Inter-component communication}{31}{subsection.4.3.3}
-\contentsline {chapter}{\numberline {5}Prototypical Implementation}{32}{chapter.5}
-\contentsline {section}{\numberline {5.1}Toolchain}{32}{section.5.1}
-\contentsline {section}{\numberline {5.2}Realization of the Architecture}{32}{section.5.2}
-\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{33}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{34}{chapter.7}
-\contentsline {chapter}{\nonumberline Bibliography}{35}{chapter*.28}
+\contentsline {subsubsection}{Joined data and control flows ($*_{*}^{D_j}$)}{22}{subsection.4.2.3}
+\contentsline {subsubsection}{Separate data and control flows ($*_{*}^{D_s}$)}{22}{subsection.4.2.3}
+\contentsline {subsection}{\numberline {4.2.4}Promising combinations of characteristics}{23}{subsection.4.2.4}
+\contentsline {section}{\numberline {4.3}Architecture}{25}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Application Structure}{25}{subsection.4.3.1}
+\contentsline {paragraph}{Monolithic Architecture}{25}{subsection.4.3.1}
+\contentsline {paragraph}{Service-oriented Architecture}{26}{subsection.4.3.1}
+\contentsline {paragraph}{Micro-services Architecture}{27}{subsection.4.3.1}
+\contentsline {paragraph}{Choice of an architecture model}{28}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Components}{29}{subsection.4.3.2}
+\contentsline {subsubsection}{Derived Services and Databases}{30}{subsection.4.3.2}
+\contentsline {paragraph}{Workflow Modeling Service}{30}{subsection.4.3.2}
+\contentsline {paragraph}{Organization Management Service}{30}{subsection.4.3.2}
+\contentsline {paragraph}{Worklist Service}{30}{subsection.4.3.2}
+\contentsline {paragraph}{Workflow Engine Service}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Developer Gateway}{31}{subsection.4.3.2}
+\contentsline {paragraph}{User Gateway}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Developer Interface}{31}{subsection.4.3.2}
+\contentsline {paragraph}{User Interface}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Organization Data}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Process Definitions Data}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Workflow Control Data}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Workflow Relevant Data}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Worklists}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Validation Service}{31}{subsection.4.3.2}
+\contentsline {subsubsection}{Support Services}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Message Oriented Middleware}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Environment Management Service}{32}{subsection.4.3.2}
+\contentsline {paragraph}{Provisioning Service}{32}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Inter-component communication}{32}{subsection.4.3.3}
+\contentsline {chapter}{\numberline {5}Prototypical Implementation}{33}{chapter.5}
+\contentsline {section}{\numberline {5.1}Toolchain}{33}{section.5.1}
+\contentsline {section}{\numberline {5.2}Realization of the Architecture}{33}{section.5.2}
+\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{34}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{35}{chapter.7}
+\contentsline {chapter}{\nonumberline Bibliography}{36}{chapter*.28}

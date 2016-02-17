@@ -13,6 +13,8 @@ Third, it is important to define the way data is exchanged between containers. O
 
 Finally, rather independent from the previous variants and hence discussed in isolation, one might want to choose the mechanism that decides which containers are run on which machines, \ie the execution scheduling.
 
+TODO: add the ``how's'', table consistent with text?
+
 \begin{table}[!htbp]
   \centering
   %\renewcommand*{\arraystretch}{1.25}
@@ -65,7 +67,7 @@ Finally, rather independent from the previous variants and hence discussed in is
 
   Data interactions between activity instances, a sub-workflow activity and its related components and vice versa are supported by $G_{*}^{DV}$. Exchanging data between two running workflow instances is not possible, though, as mounting volumes to running containers is not supported by Docker yet. This kind of interaction thus requires some additional tools. It would be possible to grant access to workflow instances running on the same machine -- at the price of loss of control over data visibility -- by mounting the top-level working directory of that machine in all containers.
 
-  As long as no requests to external sources are made within the workflow, data has to be transferred over the network only twice in this approach -- for the input and output of the workflow. All subsequent data transfers are either implicit, \eg by accessing the respective working directory or a symbolic link to it, or take place on the local machine, \eg copying one or more files. Because of transfer rates *QUOTE*, $G_{*}^{DV}$ has an advantage over message-based approaches when it comes to processing of large and/or many data sets. Also, unless required by the activities themselves, data conversion is less of an issue since relying on the file system allows arbitrary file types to be used.
+  As long as no requests to external sources are made within the workflow, data has to be transferred over the network only twice in this approach -- for the input and output of the workflow. All subsequent data transfers are either implicit, \eg by accessing the respective working directory or a symbolic link to it, or take place on the local machine, \eg copying one or more files. Because of transfer rates *QUOTE*, $G_{*}^{DV}$ has an advantage over message-based approaches when it comes to processing of large and/or many data sets, \ie log files, genome research data or images. Also, unless required by the activities themselves, data conversion is less of an issue since relying on the file system allows arbitrary file types to be used.
 
   Sharing a data volume using only Docker tools requires all containers to be on the same machine, which is why there is no spread version $S_{*}^{DV}$ of this concept. Approaches exist to utilize \ac{NFS} or \ac{P2P} file sharing for distributed access to data volumes, but given the limited scope of this thesis they shall not be regarded further here \cite{Miell2015How}.
 
@@ -97,16 +99,18 @@ Finally, rather independent from the previous variants and hence discussed in is
 \subsection[Grouped or spread execution using direct connections]{Grouped or spread execution using direct connections ($G_{*}^{D}$/$S_{*}^{D}$)} % (fold)
 \label{sub:grouped_execution_using_direct_connections}
 
-  In this scenario, the containers communicate with each other directly in order to exchange workflow relevant data. It can split again in two subvariants, according to the data passing patterns noted in \ref{sub:workflow_data}. On the one hand, one where the workflow relevant data is passed along the control flow ($*_{*}^{D_a}$). On the other hand, one where containers can query each other for their data($*_{*}^{D_b}$).
+  In this scenario, the containers communicate with each other directly in order to exchange workflow relevant data. It can be split again in two sub-variants, according to the data passing patterns noted in \ref{sub:workflow_data}. On the one hand, one where the workflow relevant data is passed along the control flow ($*_{*}^{D_j}$). On the other hand, one where containers can query each other for their data($*_{*}^{D_s}$).
 
-  \subsubsection{Joined data and control flows ($*_{*}^{D_a}$)} % (fold)
-    In $*_{*}^{D_a}$, the data flow is managed by the workflow engine, which forwards the data returned by one activity instance to its successors. This requires all data that might be used in another activity instance to be passed along, no matter whether the succeeding activity uses them or not \cite{Russell2005Workflow}. While this allows to pass (and update) workflow and environment data, it may be problematic for larger amounts of data.
+  \subsubsection{Joined data and control flows ($*_{*}^{D_j}$)} % (fold)
+    In $*_{*}^{D_j}$, the data flow is is directly coupled to the control flow, \ie all data is passed on on invocation. This requires all data that might be used in another activity instance to be passed along, no matter whether the succeeding activity uses them or not \cite{Russell2005Workflow}. While this allows to pass (and update) workflow and environment data, it may be problematic for larger amounts of data.
   % subsubsection ___d_a_ (end)
 
-  \subsubsection{Separate data and control flows ($*_{*}^{D_b}$)} % (fold)
-    $*_{*}^{D_b}$ requires all containers that shall be queried for data to provide some communication mechanism and to be running. Thus, in the worst case every container related to a workflow instance has to be running. Even though the containers' use of processor time can be reduced by pausing them until they are needed, this approach could impose a considerable strain on the host machine's memory, as pausing containers has no effect on their memory consumption.
+  \subsubsection{Separate data and control flows ($*_{*}^{D_s}$)} % (fold)
+    $*_{*}^{D_s}$ requires all containers that shall be queried for data to provide some communication mechanism and to be running. Thus, in the worst case every container related to a workflow instance has to be running. Even though the containers' use of processor time can be reduced by pausing them until they are needed, this approach could impose a considerable strain on the host machine's memory, as pausing containers has no effect on their memory consumption.
 
-    Workflow data and environment data in $*_{*}^{D_b}$ may be provided to the first activity, which then could be queried for a (static) version of it. Because workflow instances are not represented as containers in $*_{AC}^{D}$, $*_{AC}^{D_b}$ provides no means to store and access sub-workflow data, multiple instance data and workflow instance data.
+    Workflow data and environment data in $*_{*}^{D_s}$ may be provided to the first activity, which then could be queried for a (static) version of it. Because workflow instances are not represented as containers in $*_{AC}^{D}$, $*_{AC}^{D_s}$ provides no means to store and access sub-workflow data, multiple instance data and workflow instance data.
+
+    $*_{Type}^{D_s}$ is not a feasible solution, as keeping the worker containers running in order to make them queryable would block their use for other workflow instances, thus rendering the \ac{WfMS} incapable of processing further workflow instances once all workers are invoked -- unless further workers are spawned.
   % subsubsection (end)
 
   As all workflow components reside in one container in $G_{1C}^{D}$, no communication between containers is necessary -- all data can be exchanged on an arbitrary way within that single container. This variant thus represents a special case.
@@ -134,30 +138,27 @@ Finally, rather independent from the previous variants and hence discussed in is
     \\ \midrule
 
 
-    $G_{AC}^{DV}$    &   \ja   &   \ja            & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
-    $G_{SEPC}^{DV}$  &   \ja   &   \ja            & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
-    $G_{1C}^{DV}$    &   \ja   &   \ja            & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
-    $G_{Type}^{DV}$  &   \ja   &   \ja            & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
+                    % A Data   | SWF A Data       | Mult. Inst. A D  | Wf. Instance D   | Wf. Data        | Environment Da || AC -> AC         | subwf a -> subwf | subwf -> subwf a | wfi -> wfi
 
+    $G_{AC}^{DV}$    & \ja     & \ja              & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
+    $G_{SEPC}^{DV}$  & \ja     & \ja              & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
+    $G_{1C}^{DV}$    & \ja     & \ja              & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
+    $G_{Type}^{DV}$  & \ja     & \ja              & \ja              & \ja              & \ja ($\dagger$) & \ja ($\dagger$) & \ja              & \ja              & \ja              & $\bigcirc$      \\ \midrule
 
-    $G_{AC}^{SER}$   &   \ja   &   \ja            & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
-    $G_{SEPC}^{SER}$ &   \ja   &   \ja            & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
-    $G_{1C}^{SER}$   &   \ja   &   \ja            & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
-    $G_{Type}^{SER}$ &   \ja   &   \ja            & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+    $G_{AC}^{SER}$   & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+    $G_{SEPC}^{SER}$ & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+    $G_{1C}^{SER}$   & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
+    $G_{Type}^{SER}$ & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
 
-                    % A Data   | SWF A Data       | Mult. Inst. A D  | Wf. Instance D   | Wf. Data   | Envir  Data ||
-
-    $G_{AC}^{D_a}$   & \ja     & \ja              & $\bigcirc$       & \ja              & \ja             & \ja             & \ja ($\ddagger$) & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      \\ \midrule
-    $G_{AC}^{D_b}$   & \ja     & $\bigcirc$       & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      & $\bigcirc$      & \ja ($\ddagger$) & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      \\ \midrule
+    $G_{AC}^{D_j}$   & \ja     & \ja              & $\bigcirc$       & \ja              & \ja             & \ja             & \ja ($\ddagger$) & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      \\ \midrule
+    $G_{AC}^{D_s}$   & \ja     & $\bigcirc$       & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      & $\bigcirc$      & \ja ($\ddagger$) & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      \\ \midrule
     $G_{SEPC}^{D}$   & \ja     & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$) & $\bigcirc$      & $\bigcirc$      & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$)\\ \midrule
     $G_{1C}^{D}$     & \ja$^*$ & \ja$^*$          & \ja$^*$          & \ja$^*$          & $\bigcirc$      & $\bigcirc$      & \ja$^*$          & \ja$^*$          & \ja$^*$          & \ja$^*$         \\ \midrule
     $G_{Type}^{D}$   & \ja     & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$) & $\bigcirc$      & $\bigcirc$      & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$) & \ja ($\ddagger$)\\ \midrule
 
-
     $S_{AC}^{SER}$   & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
     $S_{SEPC}^{SER}$ & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
     $S_{Type}^{SER}$ & \ja     & \ja              & \ja              & \ja              & \ja             & \ja             & \ja              & \ja              & \ja              & \ja             \\ \midrule
-
 
     $S_{AC}^{D}$     & \ja     & $\bigcirc$       & $\bigcirc$       &  $\bigcirc$      & $\bigcirc$ & $\bigcirc$  & \ja ($\ddagger$) & $\bigcirc$       & $\bigcirc$       & $\bigcirc$      \\ \midrule
     $S_{SEPC}^{D}$   & \ja     & \ja              & \ja              & \ja              & $\bigcirc$ & $\bigcirc$  & \ja ($\ddagger$) &\ja ($\ddagger$)  & \ja ($\ddagger$) &\ja ($\ddagger$) \\ \midrule
@@ -172,77 +173,23 @@ Finally, rather independent from the previous variants and hence discussed in is
   \caption{Containerization/Grouping/Communication Solution Pairings}
 \end{table}
 
-% Containerization of workflows and activities:
-% \begin{enumerate}[nosep]
-%   \item Specific images per entity type
-%   \item Specific images per entity
-%     \begin{enumerate}[nosep]
-%       \item WF including AC as one container
-%         % \begin{itemize}[nosep]
-%         %   \item + (widely stand-alone executable)
-%         %   \item + Pause/Resume as native docker commands
-%         %   \item + movable between servers
-%         %   \item - hard to update parts of WF
-%         %   \item - fewer reuse of activities
-%         % \end{itemize}
-%       \item Workflows and activities in containers
-%         % \begin{itemize}[nosep]
-%         %   \item + (widely stand-alone executable)
-%         %   \item + Pause/Resume as native docker commands
-%         %   \item + movable between servers
-%         %   \item - harder to establish connection for external triggers
-%         % \end{itemize}
-%       \item Activities in containers
-%         % \begin{itemize}[nosep]
-%         %   \item + activities movable between servers
-%         %   \item + Pause/Resume as native docker commands for single activities
-%         % \end{itemize}
-%     \end{enumerate}
-% \end{enumerate}
+\subsection{Promising combinations of characteristics} % (fold)
+\label{sub:promising_combinations_of_characteristics}
+  Due to its shortcomings regarding the supported types of data visibility and interactions, direct communication between instance-related containers ($*_{*}^{D}$) can be ruled out as a candidate for the prototype. The remaining combinations may be eligible depending on the intended use case and desired properties of the \ac{WfMS}, \eg the kind of data that is processed, the targeted infrastructure, and nature of the workflows.
 
-% Scheduling containers for execution
-% \begin{enumerate}[nosep]
-%   \item Explicit assignment
-%     \begin{enumerate}[nosep]
-%       \item manual to node (all)
-%       \item manual to node(-characteristic) (per activity)
-%     \end{enumerate}
-%   \item Automatic assignment
-%     \begin{enumerate}[nosep]
-%       \item automatic (all)
-%       \item automatic (per activity)
-%     \end{enumerate}
-% \end{enumerate}
+  If the data volume approach is chosen, one is committed to grouped execution on one node. Considering the different containerization solutions, $G_{SEPC}^{DV}$ is favorable over $G_{AC}^{DV}$, because the explicit existence of containers which represent (sub-)workflow instances makes it possible to both track their state using Docker mechanisms and manage their respective working directories. Embedding workflow engine logic into these containers could enable workflows to be exported and used in a stand-alone fashion.
 
-% Grouping containers for execution
-% \begin{enumerate}[nosep]
-%   \item WFI +contents on one node
-%     \begin{enumerate}[nosep]
-%       \item Data exchange via data volume
-%         % \begin{itemize}[nosep]
-%         % \item + pause/resume easier
-%         % \item + persistence easier (data volumes)
-%         % \item + no assumptions on environment
-%         % \item + access management via user/groups?
-%         % \item - disk IO rather slow for lots of accesses
-%         % \end{itemize}
-%       \item Data exchange via via MQ
-%         % \begin{itemize}[nosep]
-%         %   \item + no data volume needed
-%         %   \item + fast data exchange
-%         %   \item + event driven execution (-order) easier
-%         %   \item - data must be serializable
-%         %   \item - large data takes time to transfer
-%         %   \item - assumptions on environment
-%         % \end{itemize}
-%       \item Data exchange via bridge network
-%     \end{enumerate}
-%   \item WFI + ACI spread across nodes
-%     % \begin{itemize}[nosep]
-%     %   \item -> communication via MQ or overlay network
-%     %   \item + easier to balance load
-%     %   \item + suitable nodes per activity
-%     %   \item - harder to persist data
-%     %   \item - large data takes time to transfer
-%     % \end{itemize}
-% \end{enumerate}
+  $G_{SEPC}^{DV}$ is also favorable over $G_{1C}^{DV}$, because the modularity of $G_{SEPC}^{DV}$ permits to update single activities within the workflow by distributing new versions of their respective image. In $G_{1C}^{DV}$, the whole image would have to be updated due to the way layering in Docker images works. Also, $G_{1C}^{DV}$ does not provide the means to track the activity instances' life cycles with Docker mechanisms, only that of the workflow instance. If the workflow is not meant to be updated but to be distributed to third parties as a stand-alone solution, \eg an automated batch process for photos that is sold to photographers, it is a viable option, though.
+
+  The main benefit of $*_{Type}^{*}$ is that it allows to distribute the workload among several workers. Since $G_{*}^{DV}$ requires all involved workers to be on the same machine, this advantage is voided.
+
+  Altogether, this makes $G_{SEPC}^{DV}$ the variant of choice for data-centric \acp{WfMS}.
+
+  When comparing the service-based variants with each other, $G_{*}^{SER}$ and $S_{*}^{SER}$ share most their advantages and drawbacks. $S_{*}^{SER}$ permits the containers to run on different nodes, though. As this allows containers to be assigned to machines according to their resource requirements and the momentary workload of a machine, it is the preferred variant of those two.
+
+  Because the decoupling of data and containers is well supported by $*_{*}^{SER}$, it is a good fit for the worker-based approach of $*_{TYPE}^{*}$, which in turn facilitates load balancing.
+
+    - AC vs SEPC?
+
+  ** DECISION TREE**
+% subsection promising_combinations_of_characteristics (end)
