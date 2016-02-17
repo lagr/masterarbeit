@@ -1,0 +1,13 @@
+%md-content
+  %md-toolbar{md_scroll_shrink: true}
+    .md-toolbar-tools
+      %h2 Workflows
+      %span{flex: true}
+
+  %md-list{layout_padding: true}
+    %md-list-item.md-2-line{ ng_repeat: "workflow in wfmgmgtCtrl.servers" }
+      .md-list-item-text{ layout: "column", ui_sref: 'app.workflow_management.workflow({ workflow_id: workflow})'}
+        %h3 {{ workflow.name }}
+        %h4
+
+

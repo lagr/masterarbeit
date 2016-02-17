@@ -65,6 +65,39 @@ angular.module 'WFMS.WorkflowDevelopmentApplication'
       resolve:
         servers: (Server) -> Server.query()
 
+    'app.infrastructure.servers':
+      url: '/servers'
+      templateUrl: 'templates/infrastructure/servers.html'
+
+    'app.infrastructure.server':
+      url: '/server/:name'
+      templateUrl: 'templates/infrastructure/server.html'
+      controller: 'ServerController'
+      controllerAs: 'serverCtrl'
+      resolve:
+        server: (Server, $stateParams) -> Server.get($stateParams.name)
+
+    'app.workflow_management':
+      url: '/workflow_management'
+      abstract: true
+      template: '<ui-view></ui-view>'
+      controller: 'WorkflowManagementController'
+      controllerAs: 'wfmgmtCtrl'
+      resolve:
+        workflows: (Workflow) -> Workflow.query()
+
+    'app.workflow_management.workflows':
+      url: '/workflows'
+      templateUrl: 'templates/workflow_management/workflows.html'
+
+    'app.workflow_management.workflow':
+      url: '/workflow/:workflow_id'
+      templateUrl: 'templates/workflow_management/workflow.html'
+      controller: 'WorkflowController'
+      controllerAs: 'wfCtrl'
+      resolve:
+        workflow: (Workflow, $stateParams) -> Server.get($stateParams.workflow_id)
+
   $stateProvider.state(stateName, state) for stateName, state of states
 
   $urlRouterProvider.otherwise ($injector, $location) ->

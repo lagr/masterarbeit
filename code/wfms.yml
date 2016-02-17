@@ -166,6 +166,23 @@ services:
       - "POSTGRES_PASSWORD=masterarbeit"
       - "POSTGRES_USER=definition"
 
+  infrastructure:
+    image: infrastructure
+    build:
+      context: ./infrastructure
+      args:
+        - "constraint:node==development-machine"
+    ports:
+      - "3005:3000"
+    networks:
+      - backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    environment:
+      - "SWARM_MANAGER_CERT_PATH=/root/.docker"
+      - "constraint:node==development-machine"
+
   user_interface:
     image: user_interface
     build:
