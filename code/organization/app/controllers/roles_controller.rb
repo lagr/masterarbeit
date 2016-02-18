@@ -1,29 +1,20 @@
 class RolesController < ApplicationController
   before_action :set_role, only: [:show, :update, :destroy, :get_user]
 
-  # GET /roles
-  # GET /roles.json
   def index
     @roles = Role.all
-
     render json: @roles
   end
 
-  # GET /roles/:id
-  # GET /roles/:id.json
   def show
     render json: @role
   end
 
-  # GET /roles/:id
-  # GET /roles/:id.json
   def get_user
     @user = @role.users.sample
     render json: @user
   end
 
-  # POST /roles
-  # POST /roles.json
   def create
     @role = Role.new(role_params)
 
@@ -35,8 +26,6 @@ class RolesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /roles/:id
-  # PATCH/PUT /roles/:id.json
   def update
     @role = Role.find(params[:id])
 
@@ -48,8 +37,6 @@ class RolesController < ApplicationController
     end
   end
 
-  # DELETE /roles/:id
-  # DELETE /roles/:id.json
   def destroy
     @role.destroy
     Hutch.publish 'wfms.role.deleted', role: @role

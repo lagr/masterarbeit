@@ -1,22 +1,15 @@
 class ProcessDefinitionsController < ApplicationController
   before_action :set_process_definition, only: [:show, :update, :destroy]
 
-  # GET /process_definitions
-  # GET /process_definitions.json
   def index
     @process_definitions = ProcessDefinition.all
-
     render json: @process_definitions
   end
 
-  # GET /process_definitions/1
-  # GET /process_definitions/1.json
   def show
     render json: @process_definition
   end
 
-  # POST /process_definitions
-  # POST /process_definitions.json
   def create
     @process_definition = ProcessDefinition.new(process_definition_params)
 
@@ -27,8 +20,6 @@ class ProcessDefinitionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /process_definitions/1
-  # PATCH/PUT /process_definitions/1.json
   def update
     @process_definition = ProcessDefinition.find(params[:id])
 
@@ -39,11 +30,8 @@ class ProcessDefinitionsController < ApplicationController
     end
   end
 
-  # DELETE /process_definitions/1
-  # DELETE /process_definitions/1.json
   def destroy
     @process_definition.destroy
-
     head :no_content
   end
 

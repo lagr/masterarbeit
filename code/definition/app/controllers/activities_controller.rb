@@ -1,22 +1,15 @@
 class ActivitiesController < ApplicationController
   before_action :set_activity, only: [:show, :update, :destroy]
 
-  # GET /activities
-  # GET /activities.json
   def index
     @activities = Activity.all
-
     render json: @activities
   end
 
-  # GET /activities/1
-  # GET /activities/1.json
   def show
     render json: @activity
   end
 
-  # POST /activities
-  # POST /activities.json
   def create
     @activity = Activity.new(activity_params)
 
@@ -27,8 +20,6 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /activities/1
-  # PATCH/PUT /activities/1.json
   def update
     @activity = Activity.find(params[:id])
 
@@ -39,11 +30,8 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  # DELETE /activities/1
-  # DELETE /activities/1.json
   def destroy
     @activity.destroy
-
     head :no_content
   end
 

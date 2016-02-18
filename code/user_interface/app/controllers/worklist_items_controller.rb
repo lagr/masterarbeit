@@ -1,12 +1,9 @@
 class WorklistItemsController < ApplicationController
   before_action :set_worklist_item, only: [:edit, :update, :destroy]
 
-  # GET /worklist_items/1/edit
   def edit
   end
 
-  # PATCH/PUT /worklist_items/1
-  # PATCH/PUT /worklist_items/1.json
   def update
     respond_to do |format|
       if @worklist_item.update(worklist_item_params)
@@ -19,8 +16,6 @@ class WorklistItemsController < ApplicationController
     end
   end
 
-  # DELETE /worklist_items/1
-  # DELETE /worklist_items/1.json
   def destroy
     @worklist_item.destroy
     respond_to do |format|

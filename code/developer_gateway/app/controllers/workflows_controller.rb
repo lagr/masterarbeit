@@ -1,22 +1,15 @@
 class WorkflowsController < ApplicationController
   before_action :set_workflow, only: [:show, :update, :destroy]
 
-  # GET /workflows
-  # GET /workflows.json
   def index
     @workflows = Workflow.all
-
     render json: @workflows
   end
 
-  # GET /workflows/1
-  # GET /workflows/1.json
   def show
     render json: @workflow
   end
 
-  # POST /workflows
-  # POST /workflows.json
   def create
     @workflow = Workflow.new(workflow_params)
 
@@ -27,8 +20,6 @@ class WorkflowsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /workflows/1
-  # PATCH/PUT /workflows/1.json
   def update
     @workflow.update_attributes(workflow_params)
 
@@ -39,8 +30,6 @@ class WorkflowsController < ApplicationController
     end
   end
 
-  # DELETE /workflows/1
-  # DELETE /workflows/1.json
   def destroy
     @workflow.destroy
 

@@ -1,29 +1,21 @@
 class RolesController < ApplicationController
   before_action :set_role, only: [:show, :edit, :update, :destroy]
 
-  # GET /roles
-  # GET /roles.json
   def index
     render json: @roles = Role.all
   end
 
-  # GET /roles/1
-  # GET /roles/1.json
   def show
     render json: @role
   end
 
-  # GET /roles/new
   def new
     @role = Role.new
   end
 
-  # GET /roles/1/edit
   def edit
   end
 
-  # POST /roles
-  # POST /roles.json
   def create
     @role = Role.new(role_params)
 
@@ -34,8 +26,6 @@ class RolesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /roles/1
-  # PATCH/PUT /roles/1.json
   def update
     @role.update_attributes(role_params)
     if @role.save
@@ -45,8 +35,6 @@ class RolesController < ApplicationController
     end
   end
 
-  # DELETE /roles/1
-  # DELETE /roles/1.json
   def destroy
     @role.destroy
     head :no_content
