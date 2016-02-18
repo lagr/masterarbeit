@@ -1,9 +1,13 @@
 class Activity < ActiveRecord::Base
-  ACTIVITY_TYPES = [:manual, :automatic, :container, :subworkflow].freeze
-  ACTIVITY_TYPES.each { |type| scope "#{type}_activities", ->{ where(activity_type: type) } }
+  ACTIVITY_TYPES = [:start, :end, :orsplit, :orjoin, :andsplit, :andjoin, :manual, :automatic, :container, :subworkflow].freeze
+  ELEMENTS_WITH_ONE_SUCCESSOR   = [:start, :andjoin, :orjoin, :manual, :automatic, :container, :subworkflow].freeze
+  ELEMENTS_WITHOUT_SUCCESSOR    = [:end].freeze
+  ELEMENTS_WITH_ONE_PREDECESSOR = [:end, :manual, :automatic, :containerized, :container, :subworkflow].freeze
+  ELEMENTS_WITHOUT_PREDECESSOR  = [:start].freeze
 
   belongs_to :process_definition
   belongs_to :subworkflow, class_name: 'Workflow', foreign_key: 'subworkflow_id'
+  has_many :assignments
 
   store_accessor :input_schema
   store_accessor :output_schema
@@ -14,6 +18,12 @@ class Activity < ActiveRecord::Base
   has_many :outgoing_control_flows, foreign_key: 'predecessor_id', class_name: 'ControlFlow', dependent: :destroy
 
   validates :activity_type, inclusion: { in: ACTIVITY_TYPES.map(&:to_s) }
+  validates_length_of :incoming_control_flows, maximum: 1, if: ->{ activity_type.in? Activity::ELEMENTS_WITH_ONE_PREDECESSOR }
+  validates_length_of :outgoing_control_flows, maximum: 1, if: ->{ activity_type.in? Activity::ELEMENTS_WITH_ONE_SUCCESSOR   }
+  validates_length_of :incoming_control_flows, is: 0,      if: ->{ activity_type.in? Activity::ELEMENTS_WITHOUT_PREDECESSOR  }
+  validates_length_of :outgoing_control_flows, is: 0,      if: ->{ activity_type.in? Activity::ELEMENTS_WITHOUT_SUCCESSOR    }
+
+  ACTIVITY_TYPES.each { |type| scope "#{type}_activities", ->{ where(activity_type: type) } }
 
   def required_images
     case activity_type

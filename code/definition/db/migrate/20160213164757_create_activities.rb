@@ -1,6 +1,6 @@
 class CreateActivities < ActiveRecord::Migration
   def change
-    create_table :activities do |t|
+    create_table :activities, id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
       t.string :name
       t.string :activity_type
       t.uuid :process_definition_id

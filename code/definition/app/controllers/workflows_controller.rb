@@ -12,7 +12,7 @@ class WorkflowsController < ApplicationController
   # GET /workflows/1
   # GET /workflows/1.json
   def show
-    render json: @workflow
+    render json: @workflow, serializer: WorkflowFullSerializer, include: '**'
   end
 
   # POST /workflows

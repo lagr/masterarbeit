@@ -5,10 +5,12 @@
         %a{ ui_sref: 'app.dashboard', ui_sref_opts: '{reload: true}' } WFMS Administration
     %md-list
       %md-list-item
+        %md-button{ ui_sref: 'app.infrastructure.servers' } Infrastructure
+      %md-list-item
         %md-button{ ui_sref: 'app.workflow_management.workflows' } Workflows
       %md-list-item
-        %md-button{ ui_sref: 'app.organization.roles' } Organization
+        %md-button{ ui_sref: 'app.organization.roles' } Roles
       %md-list-item
-        %md-button{ ui_sref: 'app.infrastructure.servers' } Infrastructure
+        %md-button{ ui_sref: 'app.organization.users' } Users
 
   .relative{ layout_fill: true, role: 'main', ui_view: "" }

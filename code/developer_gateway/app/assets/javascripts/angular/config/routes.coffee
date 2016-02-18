@@ -96,7 +96,7 @@ angular.module 'WFMS.WorkflowDevelopmentApplication'
       controller: 'WorkflowController'
       controllerAs: 'wfCtrl'
       resolve:
-        workflow: (Workflow, $stateParams) -> Server.get($stateParams.workflow_id)
+        workflow: (Workflow, $stateParams) -> Workflow.get($stateParams.workflow_id)
 
   $stateProvider.state(stateName, state) for stateName, state of states
 
