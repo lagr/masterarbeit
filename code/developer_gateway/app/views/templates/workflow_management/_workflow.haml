@@ -1,7 +1,9 @@
-%md-content
+%md-content{ layout: :column, flex: true }
   %md-toolbar{md_scroll_shrink: true}
     .md-toolbar-tools
       %md-button{ui_sref: 'app.workflow_management.workflows'} Go Back
-      %h2 {{workflowCtrl.workflow.name}}
-      %md-button.md-raised{ui_sref: 'app.workflow_management.process_definition({workflow_id: wfCtrl.workflow.id})'} Edit process definition
+      %h2 {{wfCtrl.workflow.name}}
+      %md-button.md-raised{ng_click: 'wfCtrl.saveWorkflow()'} Save
       %span{flex: true}
+
+  = render partial: 'templates/process_designer/process_designer'

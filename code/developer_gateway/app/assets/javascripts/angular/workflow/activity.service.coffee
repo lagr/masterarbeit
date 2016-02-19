@@ -4,7 +4,14 @@ angular.module('WFMS.Workflow').factory 'Activity', (RailsResource, railsSeriali
       url: "/activities/{{id}}"
       name: "activity"
       serializer: railsSerializer( ->
-        @only 'id', 'activity_type', 'input_schema', 'output_schema',
-              'activity_configuration', 'representation',
-              'process_definition_id', 'subworkflow_id'
+        @only 'id', 'activityType', 'inputSchema', 'outputSchema',
+              'activityConfiguration', 'representation',
+              'processDefinitionId', 'subworkflowId'
+        @nestedAttribute 'representation'
       )
+    constructor: (data) ->
+      super(data)
+      _.defaults @representation, { x: 0, y: 0 }
+      @inputSchema ||= {}
+      @outputSchema ||= {}
+      @activityConfiguration ||= {}

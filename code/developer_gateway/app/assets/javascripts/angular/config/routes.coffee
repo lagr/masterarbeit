@@ -23,7 +23,7 @@ angular.module 'WFMS.WorkflowDevelopmentApplication'
     'app.organization':
       url: '/organization'
       abstract: true
-      template: '<ui-view></ui-view>'
+      template: '<ui-view flex layout="column"></ui-view>'
       controller: 'OrganizationController'
       controllerAs: 'orgCtrl'
       resolve:
@@ -59,7 +59,7 @@ angular.module 'WFMS.WorkflowDevelopmentApplication'
     'app.infrastructure':
       url: '/infrastructure'
       abstract: true
-      template: '<ui-view></ui-view>'
+      template: '<ui-view flex layout="column"></ui-view>'
       controller: 'InfrastructureController'
       controllerAs: 'infCtrl'
       resolve:
@@ -80,7 +80,7 @@ angular.module 'WFMS.WorkflowDevelopmentApplication'
     'app.workflow_management':
       url: '/workflow_management'
       abstract: true
-      template: '<ui-view></ui-view>'
+      template: '<ui-view flex layout="column"></ui-view>'
       controller: 'WorkflowManagementController'
       controllerAs: 'wfmgmtCtrl'
       resolve:

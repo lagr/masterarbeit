@@ -1,0 +1,61 @@
+.workflow-designer--canvas
+  width: 100%
+
+  &, & *
+    -webkit-touch-callout: none
+    -webkit-user-select: none
+    -khtml-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+
+    &:focus
+      outline: none
+      border: 0
+
+// #grid
+//   path
+//     stroke: transparentize($light-grey, .8)
+
+// #smallGrid
+//   path
+//     stroke: transparentize($light-grey, .9)
+
+.arrow
+  line
+    stroke: $medium-grey
+
+.workflow-designer--circle-menu
+  circle, rect
+    fill: $blue-50
+    stroke: $blue-500
+
+  text
+    color: $text-on-light
+
+.activity
+  fill: $blue-300
+  cursor: pointer
+
+  &.selected
+    fill: $blue-100
+    cursor: -webkit-grab
+    cursor: -moz-grab
+
+  &.dragging
+    cursor: move
+    cursor: -webkit-grabbing
+    cursor: -moz-grabbing
+
+.arrow
+  line
+    stroke: $blue-50
+    stroke-width: 2
+
+.workflow-designer--menu
+  circle, rect
+    fill: $blue-50
+    stroke: $blue-500
+
+  text
+    color: $text-on-light

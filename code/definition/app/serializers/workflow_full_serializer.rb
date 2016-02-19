@@ -24,7 +24,7 @@ class WorkflowFullSerializer < ActiveModel::Serializer
     end
 
     class ControlFlowSerializer < ActiveModel::Serializer
-      attributes :id, :successor_id, :predecessor_id
+      attributes :id, :successor_id, :predecessor_id, :process_definition_id
     end
   end
 end

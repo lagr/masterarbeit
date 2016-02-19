@@ -6,4 +6,5 @@ angular.module('WFMS.Workflow').factory 'ProcessDefinition', (RailsResource, rai
       serializer: railsSerializer( ->
         @only 'id'
         @resource 'activities', 'Activity'
+        @resource 'controlFlows', 'ControlFlow'
       )
