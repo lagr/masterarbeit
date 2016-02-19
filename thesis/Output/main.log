@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  17 FEB 2016 14:45
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  19 FEB 2016 09:45
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2429,7 +2429,7 @@ although it is yet undefined on input line 45.
 Package acronym Info: Label `acro:MOM' newly defined as it shall be overridden
 although it is yet undefined on input line 58.
 [28] [29] [30] [31]
-Overfull \hbox (8.88463pt too wide) in paragraph at lines 217--221
+Overfull \hbox (8.88463pt too wide) in paragraph at lines 224--228
 []\EU1/CrimsonText(0)/m/n/12 - docker for workflow execution - base images - co
 ntainer as instance w/ writable layer - autonom-
  []
@@ -2464,10 +2464,10 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 168.
  ) 
 Here is how much of TeX's memory you used:
- 49065 strings out of 493706
- 951019 string characters out of 6145770
- 1209463 words of memory out of 5000000
- 51471 multiletter control sequences out of 15000+600000
+ 49063 strings out of 493706
+ 950957 string characters out of 6145770
+ 1209403 words of memory out of 5000000
+ 51469 multiletter control sequences out of 15000+600000
  29359 words of font info for 115 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
  73i,16n,88p,10415b,702s stack positions out of 5000i,500n,10000p,200000b,80000s

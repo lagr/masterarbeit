@@ -65,11 +65,9 @@
 \contentsline {paragraph}{Workflow Modeling Service}{30}{subsection.4.3.2}
 \contentsline {paragraph}{Organization Management Service}{30}{subsection.4.3.2}
 \contentsline {paragraph}{Worklist Service}{30}{subsection.4.3.2}
-\contentsline {paragraph}{Workflow Engine Service}{31}{subsection.4.3.2}
-\contentsline {paragraph}{Developer Gateway}{31}{subsection.4.3.2}
-\contentsline {paragraph}{User Gateway}{31}{subsection.4.3.2}
-\contentsline {paragraph}{Developer Interface}{31}{subsection.4.3.2}
-\contentsline {paragraph}{User Interface}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Workflow Engine Service}{30}{subsection.4.3.2}
+\contentsline {paragraph}{Developer Gateway}{30}{subsection.4.3.2}
+\contentsline {paragraph}{User Gateway}{30}{subsection.4.3.2}
 \contentsline {paragraph}{Organization Data}{31}{subsection.4.3.2}
 \contentsline {paragraph}{Process Definitions Data}{31}{subsection.4.3.2}
 \contentsline {paragraph}{Workflow Control Data}{31}{subsection.4.3.2}
@@ -78,7 +76,8 @@
 \contentsline {paragraph}{Validation Service}{31}{subsection.4.3.2}
 \contentsline {subsubsection}{Support Services}{31}{subsection.4.3.2}
 \contentsline {paragraph}{Message Oriented Middleware}{31}{subsection.4.3.2}
-\contentsline {paragraph}{Environment Management Service}{32}{subsection.4.3.2}
+\contentsline {paragraph}{Environment Management Service}{31}{subsection.4.3.2}
+\contentsline {paragraph}{Registry}{32}{subsection.4.3.2}
 \contentsline {paragraph}{Provisioning Service}{32}{subsection.4.3.2}
 \contentsline {subsection}{\numberline {4.3.3}Inter-component communication}{32}{subsection.4.3.3}
 \contentsline {chapter}{\numberline {5}Prototypical Implementation}{33}{chapter.5}

@@ -90,7 +90,7 @@
 \label{sub:components}
   As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that suitable service boundaries have to be determined. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted. In case of a \ac{WfMS}, the identification of system components by the \ac{WFMC} can be interpreted as such an analysis. Based on those components, described in \ref{sub:system_components}, further subordinate micro-services are then identified.
 
-  As described in \ref{sub:system_components}, the \ac{WFMC} identified:
+  As described in \ref{sub:system_components}, the \ac{WFMC} identified the following components:
     \begin{itemize}[nosep]
       \item Software Components
         \begin{itemize}[nosep]
@@ -136,19 +136,18 @@
 
     \paragraph{Developer Gateway} % (fold)
       \label{par:developer_gateway}
+        - provides access to
+          - infrastructure
+          - definition
+          - organization
       % paragraph developer_gateway (end)
 
     \paragraph{User Gateway} % (fold)
       \label{par:user_gateway}
+        - provides access to
+          - worklists
+          - forms
       % paragraph user_gateway (end)
-
-    \paragraph{Developer Interface} % (fold)
-      \label{par:developer_interface}
-      % paragraph developer_interface (end)
-
-    \paragraph{User Interface} % (fold)
-      \label{par:user_interface}
-      % paragraph user_interface (end)
 
     \paragraph{Organization Data} % (fold)
     \label{par:organization_data}
@@ -188,7 +187,15 @@
 
     \paragraph{Environment Management Service} % (fold)
       \label{par:environment_management_service}
+        - see machines in the swarm
+        - see their (labelled) properties
+        - see (running) containers and available images
       % paragraph environment_management_service (end)
+
+    \paragraph{Registry} % (fold)
+    \label{par:registry}
+
+    % paragraph registry (end)
 
     \paragraph{Provisioning Service} % (fold)
       \label{par:provisioning_service}
