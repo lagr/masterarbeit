@@ -7,6 +7,8 @@ module ImageManager
     images[:failed].empty?
   end
 
+  private
+
   def publish_image(subject, image)
     type = subject.class.name.underscore.to_sym
     image_name = DockerHelper.image_name(type: type, id: subject.id)
