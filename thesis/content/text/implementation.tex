@@ -2,10 +2,16 @@
 
 \section{Design decisions} % (fold)
 \label{sec:design_decisions}
+
   - GDVSEPC
     - why?
   - wf engine partially in wf container
-  - ruby / ruby on rails for readability and because i know it, easy to build restful APIs
+
+  - ruby / ruby on rails
+    - for readability
+    - because i know it,
+    - easy to build restful APIs
+    - docker library exists
     - drawback: speed, runtime
 
   - extra validator
@@ -50,84 +56,69 @@
   \subsection{Workflow Definition Service} % (fold)
     \label{sub:workflow_definition_service}
 
-      \subsubsection{Technical Realization} % (fold)
-      \label{ssub:technical_realization}
-        The workflow definition service is composed of three components: a Ruby on Rails application which is configured to expose a JSON API, a PostgreSQL database and a data volume container for persistent storage for that database.
+    The workflow definition service is composed of three components: one container running a Ruby on Rails application which is configured to expose a JSON API, one container running a PostgreSQL database and a data volume container which provides persistent storage to that database.
 
-        PostgreSQL was chosen as database solution for the definition service, because it supports both relational data, which is useful for storing the workflow, its elements and their relations, and the document-store-like JSONB format, which allows the schema-less storage of configuration information.
-        - useful for queryable conf with dynamic structure
-        In order to keep the stored data during container restarts or migrations across nodes, the database makes use of a data volume container which provides its working directory.
-      % subsubsection technical_realization (end)
+    PostgreSQL was chosen as database solution for the definition service, because it supports both relational data, which is useful for storing the workflow, its elements and their relations, and the document-store-like JSONB format, which allows the schema-less storage of configuration information.
+    - useful for queryable conf with dynamic structure
+    In order to keep the stored data during container restarts or migrations across nodes, the database makes use of a data volume container which provides its working directory.
 
+    The application container is granted access to the Docker daemon of its host node in form of a mounted volume in order to build and push images.
 
-      - application
-        - ruby on rails (api)
-        - components
-          - app logic
-            - dockerhelper
-            - image builder
-            - image manager
-          - controllers
-          - models
-            - activity
-            - control-flow
-            - process-definition
-            - workflow
-          - serializers
-            - process definition image serializer
-            - workflow full serializer
+    As planned in \ref{}, the service has the model classes \texttt{Activity}, \texttt{ControlFlow}, \texttt{ProcessDefinition} and \texttt{Workflow}, which on the one hand act as object-relational mappers for persistence to the database, on the other hand ensure some validity constraints. Further, there exists a controller class for each of the aforementioned models, which provides \ac{CRUD} actions for the respective model. In order to have more fine-grained control over the serialization of a workflow, the \texttt{WorkflowFullSerializer} is used if a specific workflow is requested. It nests all relevant workflow elements into the workflow model before it is serialized.
 
-      - database
-        - postgresql
-      - data volume
-        - docker volume
+    While the modeling logic is partially explicitly contained in the model and controller classes and implicitly in the underlying data schema, the export logic resides in the classes \texttt{ImageManager} and \texttt{ImageBuilder}, which are supported by the class \texttt{ProcessDefinitionImageSerializer}.
+
+    The \texttt{ProcessDefinitionImageSerializer} provides the means to create the consolidated JSON representation of a process definition with all necessary information to be interpreted in order to execute the corresponding workflow.
+
 
     \begin{figure}[htbp]
       \centering
-
       \includegraphics[width=0.95\textwidth]{content/images/class_diagram_definition-crop.pdf}
-      \caption*{\scriptsize Controllers omitted for the sake of simplicity. Workflow, ProcessDefinition, Activity and ControlFlow each have a controller with the respective pluralized name plus a `Controller' suffix.}
+      \caption*{\scriptsize Note: Controllers omitted for the sake of simplicity. Workflow, ProcessDefinition, Activity and ControlFlow each have a controller with the respective pluralized name plus a `Controller' suffix.}
       \caption{UML Class Diagram for the Definition Service}
       \label{fig:label}
     \end{figure}
 
 
-    \subsubsection{Exporting a Workflow} % (fold)
+    \subsubsection{Export of a Workflow} % (fold)
       \label{ssub:exporting_a_workflow}
       If the user requests the export of a workflow, the request is forwarded to the \texttt{ImageManager}.
       In order to export a workflow, the first step is to identify all of its elements that require to be wrapped in an image. Obviously, one of them is the workflow itself. The other required images are determined by traversing the workflow's process definition recursively. Each activity has to be exported, too, and each sub-workflow has a method that exposes the Docker images it requires beyond that. It does so by passing the call for required images on to the referenced workflow, which collects its required images analogously, and returning the result.
 
-      The \texttt{ImageBuilder} then iterates over all these elements and creates a correspondent image for each. Starting with the respective base image, it creates the files which are specific to the current element from the activity's or workflow's configuration, \ie the input/output validation schemata, the element's description file, and in case of a workflow the process definition, in a temporary directory . The \texttt{ImageBuilder} then copies these files to the image and names it after the workflow element that it represents.
+      The \texttt{ImageBuilder} then iterates over all these elements and creates a correspondent image for each. Starting with the respective base image -- \texttt{ac\_base} or \texttt{wf\_base} -- it adds additional layers to do so. The \texttt{ImageBuilder} creates the files which are specific to the current element from the activity's or workflow's configuration, \ie the input/output validation schemata, the element's description file, and in case of a workflow the serialized process definition, in a temporary directory. The \texttt{ImageBuilder} then copies these files to the image and names it after the workflow element that it represents.
 
-      The \texttt{ImageManager} then uploads all images which were successfully built to the private repository and publishes a notification of the successful build via the message broker.
+      The \texttt{ImageManager} then uploads all images that were successfully built to the private repository and publishes a notification of the successful build via the message broker.
       % subsubsection exporting_a_workflow (end)
     % subsection workflow_definition_service (end)
 
   \subsection{Organization Management Service} % (fold)
     \label{sub:organization_management_service}
-      - application
-        - controllers
-        - models
-          - role
-            - ancestors
-          - user
-            - with role
-      - database
-        - postgresql
-      - data volume
-        - docker volume
+      The organization management service is built similar to the workflow definition service. Just like it, the service consists of three Docker containers: a \ac{RoR}-based application that is backed by a PostgreSQL database with a data volume.
+
+      As visible in Figure~\ref{fig:uml_class_diagram_organization}, the application itself is simpler than that of the workflow definition service, though. It merely consists of the classes User and Role and their respective controller classes. The RoleController offers an additional method to draw one user form all users with a certain role at random, which can be used as a rudimentary way to distribute tasks among users.
+
+      The organization management service publishes successful CRUD events on the models to the message broker, such that the other services can react to it.
+
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=0.65\textwidth]{content/images/class_diagram_organization-crop.pdf}
+      \caption*{\scriptsize Note: Controllers omitted for the sake of simplicity. User and Role both have a controller with the respective pluralized name plus a `Controller' suffix.}
+      \caption{UML Class Diagram for the Organization Service}
+      \label{fig:uml_class_diagram_organization}
+    \end{figure}
     % subsection organization_management_service (end)
 
   \subsection{Worklist Service} % (fold)
     \label{sub:worklist_service}
-      - application
-        - controllers
-        - models
-          - worklist item
-      - database
-        - postgresql
-      - data volume
-        - docker volume
+      The worklist service is even simpler than the organization management service. It consists of three Docker containers of the same kind, too. It only features one model class and its corresponding controller: the \texttt{WorklistItem} and the \texttt{WorklistItemController}.
+
+      Worklist items may be queried by the identifier of the assigned user. They contain a JSON schema that describes the expected data and, after they have been worked on, the data itself.
+
+      TODO
+      % - reacts to
+      %   - user created/deleted/updated
+      %   - workflow finished
+      %     - remove
     % subsection worklist_service (end)
 
   \subsection{Workflow Engine Service} % (fold)
@@ -137,9 +128,20 @@
 
   \subsection{Developer Gateway} % (fold)
     \label{sub:developer_gateway}
-      - application
-        - backend: rails
-        - frontend: angular app
+
+      Since it only offers a unified user interface for the \ac{WfMS}' services and does not store any data itself, the developer gateway does not require any database. Hence, it consists of a single Docker container that wraps a \ac{RoR} application.
+
+      \subsubsection{Backend} % (fold)
+      \label{ssub:backend}
+        The backend consists of
+
+      % subsubsection backend (end)
+
+      \subsubsection{Frontend} % (fold)
+        \label{ssub:frontend}
+
+
+        % subsubsection frontend (end)
     % subsection developer_gateway (end)
 
   \subsection{User Gateway} % (fold)

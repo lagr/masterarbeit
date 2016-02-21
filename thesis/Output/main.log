@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  21 FEB 2016 12:19
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  21 FEB 2016 16:13
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2535,21 +2535,48 @@ Chapter 5.
 (./content/text/implementation.tex [36
 
 ]
+
+LaTeX Warning: Reference `' on page 37 undefined on input line 67.
+
+Package acronym Info: Label `acro:CRUD' newly defined as it shall be overridden
+
+although it is yet undefined on input line 67.
+
+Package acronym Warning: Acronym `CRUD' is not defined on input line 67.
+
+
+Package acronym Warning: Acronym `CRUD' is not defined on input line 67.
+
 File: content/images/class_diagram_definition-crop.pdf Graphic file (type QTm)
-<use  "content/images/class_diagram_definition-crop.pdf" > [37] [38]
+<use  "content/images/class_diagram_definition-crop.pdf" > [37]
+Package acronym Info: Label `acro:RoR' newly defined as it shall be overridden
+although it is yet undefined on input line 96.
+
+Package acronym Warning: Acronym `RoR' is not defined on input line 96.
+
+
+Package acronym Warning: Acronym `RoR' is not defined on input line 96.
+
+File: content/images/class_diagram_organization-crop.pdf Graphic file (type QTm
+)
+<use  "content/images/class_diagram_organization-crop.pdf" > [38]
+
+Package acronym Warning: Acronym `RoR' is not defined on input line 132.
+
+[39]
 File: content/images/class_d_definition-crop.pdf Graphic file (type QTm)
-<use  "content/images/class_d_definition-crop.pdf" >) [39] [40]
+<use  "content/images/class_d_definition-crop.pdf" >) [40] [41]
 Chapter 6.
-(./content/text/evaluation_discussion.tex) [41
+(./content/text/evaluation_discussion.tex) [42
 
 ]
 Chapter 7.
 (./content/text/conclusion.tex) (/Users/larsgreiving/eigene/masterarbeit/thesis
-/Output/main.bbl [42
+/Output/main.bbl [43
 
-] [43
+] [44
 
-]) [44]
+]) [45]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 203.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 203.
 (/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux)
@@ -2564,13 +2591,13 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 203.
  ) 
 Here is how much of TeX's memory you used:
- 54746 strings out of 493706
- 1110030 string characters out of 6145770
- 1320533 words of memory out of 5000000
- 57101 multiletter control sequences out of 15000+600000
+ 54763 strings out of 493706
+ 1110280 string characters out of 6145770
+ 1320761 words of memory out of 5000000
+ 57117 multiletter control sequences out of 15000+600000
  29375 words of font info for 117 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
  110i,16n,136p,10415b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on /Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.pd
-f (51 pages).
+f (52 pages).
