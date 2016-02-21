@@ -73,6 +73,32 @@ TODO: add the ``how's'', table consistent with text?
 
   $G_{1C}^{DV}$ could theoretically work on its own file system in the editable layer of the container without a dedicated data volume, since all workflow components would have access to it. This would make the container self contained on the one hand -- and thus easier to export or migrate -- but would on the other hand couple the data life cycle to the processing container's life cycle. That is, if the container is removed, the data is removed with it.
 
+  \begin{figure}[htbp]
+    \centering
+    \begin{forest}
+      dir tree
+      [workflow\_relevant\_data
+        [env]
+        [wf\_1cc594ba-...]
+        [wf\_b45d2564-...]
+        [ac\_0225d86f-...]
+        [ac\_2a5aa4ff-...]
+        [ac\_7fc09132-...]
+        [wfi\_e65c8533-...
+          [aci\_76b8680c-...]
+          [aci\_1e09d287-...
+            [wfi\_68e17268-...
+              [aci\_2708fd1a-...]
+            ]
+          ]
+        ]
+      ]
+    \end{forest}
+    \caption{Exemplary directory structure for $G_{*}^{DV}$}
+    \label{fig:dv_dir_structure}
+  \end{figure}
+
+
 % subsection grouped_execution_using_common_data_volume (end)
 
 \subsection[Grouped or spread execution using an intermediate service]{Grouped or spread execution using an intermediate service ($G_{*}^{SER}$ /$s_{*}^{SER}$)} % (fold)

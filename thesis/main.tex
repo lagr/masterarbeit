@@ -1,7 +1,6 @@
 % -*- program: xelatex -*- %
 \documentclass[language=english,noinputenc]{wiwwuwordrprt}
 
-
 \usepackage{wiwwubildertabellen}
 \usepackage{wiwwumathe}
 \usepackage{wiwwulistings}
@@ -9,10 +8,14 @@
 \usepackage{etoolbox}
 \usepackage{blindtext}
 \usepackage{minted}
-\usepackage{tikz-uml}
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{pdfpages}
+
+\usepackage{tikz-uml}
+\usepackage{forest}
+\usetikzlibrary{trees, arrows,shadows, positioning,chains,fit,shapes,calc, math}
+\usepackage{pgf-umlsd}
 
 
 \usepackage{adjustbox}
@@ -23,6 +26,32 @@
     <{\egroup}%
 }
 \newcommand*\rot{\multicolumn{1}{R{80}{1em}}}
+
+\forestset{
+  dir tree/.style={
+    for tree={
+      parent anchor=south west,
+      child anchor=west,
+      anchor=mid west,
+      inner ysep=1pt,
+      grow'=0,
+      align=left,
+      edge path={
+        \noexpand\path [draw, \forestoption{edge}] (!u.parent anchor) ++(0.75em,0) |- (.child anchor)\forestoption{edge label};
+      },
+      font=\sffamily,
+      if n children=0{}{
+        delay={
+          prepend={[,phantom, calign with current]}
+        }
+      },
+      fit=band,
+      before computing xy={
+        l=1.5em
+      }
+    },
+  }
+}
 
 
 \usepackage{amssymb}
@@ -48,7 +77,7 @@
   ItalicFont={Crimson Text Italic},
   BoldItalicFont={Crimson Text Bold Italic}
   ]{Crimson Text}
-\setmonofont{Source Code Pro}
+\setmonofont[Scale=0.9]{Source Code Pro}
 \setsansfont{Lato}
 
 \newcommand{\tabitem}{~~\llap{--}~~}
@@ -115,7 +144,7 @@
     \input{content/text/docker}
     % chapter docker (end)
 
-  \chapter{Application Design} % (fold)
+  \chapter{Conceptual Development of the WFMS} % (fold)
     \label{cha:solution_design}
 
     In order to make substanciated decisions in the design process, the intended outcome has to be outlined first. Bearing in mind the concepts presented in Chapter \ref{cha:workflow_management_systems} and \ref{cha:docker}, objectives that together form the intended outcome are thus compiled in Section \ref{sec:determination_of_objectives}. Based on these objectives, the concept of a Docker-based \ac{WfMS} is then shaped in Section \ref{sec:architecture}.
@@ -132,12 +161,12 @@
       \input{content/text/objectives}
       % section determination_of_objectives (end)
 
-    \section{Potential Scenarios for Docker in Workflow Execution} % (fold)
+    \section{Docker in Workflow Execution} % (fold)
       \label{sec:docker_for_wf_execution}
       \input{content/text/docker_for_wf_execution}
       % section docker_for_wf_execution (end)
 
-    \section{Architecture} % (fold)
+    \section{System Architecture} % (fold)
       \label{sec:architecture}
 
       After the determination of objectives in Section \ref{sec:determination_of_objectives}, the solution can be developed in this section. Since it has considerable impact on the other aspects, the higher level architecture is chosen first in \ref{sub:application_structure}. With increasing level of detail, the other aspects are then fleshed out gradually. (~Sections go here~)
@@ -145,6 +174,12 @@
       \input{content/text/architecture}
       % section architecture (end)
 
+    \section{System Design} % (fold)
+      \label{sec:design}
+      \input{content/text/design}
+      % section design (end)
+
+    % section docker_in_workflow_management (end)
   % chapter solution_design (end)
 
   \chapter{Prototypical Implementation} % (fold)

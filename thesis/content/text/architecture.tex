@@ -1,11 +1,7 @@
 % -*- root: ../../main.tex -*- %
 
-\subsection{Application Structure} % (fold)
+\subsection{Architecture Styles} % (fold)
   \label{sub:application_structure}
-  Micro-services, service discovery \cite{Stubbs2015Distributed}
-
-  Use Docker only for execution vs docker all the things
-
   Developers of software systems have to cope with factors which impose challenges on them, such as high complexity within their systems, an increased need for integration of internal and external functionality and evolving technologies. Several architectural approaches emerged from the attempt to overcome these challenges. Strîmbei et al consider \emph{monolithic architecture}, \emph{\ac{SOA}} and \emph{Micro-services} to be the most relevant \cite[p.~13]{Strimbei2015Software}.
 
   \paragraph{Monolithic Architecture} % (fold)
@@ -63,151 +59,67 @@
     % paragraph micro_services_architecture (end)
 
   <<Possible instances of the wfms components in monolith, soa and msa>>
+% subsection application_structure (end)
 
-  \paragraph{Choice of an architecture model} % (fold)
-    \label{par:choice_of_an_achitecture_model}
+\subsection{Choice of an Architecture Style} % (fold)
+  \label{sub:choice_of_an_achitecture_model}
 
-    One central requirement for the stated objectives is the modularization of the application. It enables the containment of failures, the replacement or upgrading of components at runtime, and the individual scaling of parts of the \ac{WfMS}. The concept of \ac{SOA} and \ac{MSA} inherently requires the modularization of code, while it is optional -- yet, advisable -- in a monolithic architecture.
+  One central requirement for the stated objectives is the modularization of the application. It enables the containment of failures, the replacement or upgrading of components at runtime, and the individual scaling of parts of the \ac{WfMS}. The concept of \ac{SOA} and \ac{MSA} inherently requires the modularization of code, while it is optional -- yet, advisable -- in a monolithic architecture.
 
-    While measures can be taken in monolithic applications to cope with failure of components to some degree, if the underlying machine fails or the process dies for whatever reason, the whole application is rendered inoperative \cite[p.~55]{Newman2015Building}. \ac{SOA} and \ac{MSA} both urge to account for the possibility of a non-responding service -- in the first place because of the unreliability of network communication, but that works or any other reason, too. They hence inherently support the objective of resilience better than monolithic architecture.
+  While measures can be taken in monolithic applications to cope with failure of components to some degree, if the underlying machine fails or the process dies for whatever reason, the whole application is rendered inoperative \cite[p.~55]{Newman2015Building}. \ac{SOA} and \ac{MSA} both urge to account for the possibility of a non-responding service -- in the first place because of the unreliability of network communication, but that works or any other reason, too. They hence inherently support the objective of resilience better than monolithic architecture.
 
-    Upgrading or replacing components of an application at runtime is possible in each of the presented architectures. In \ac{SOA} the service may be replaced at will by directing requests to an instance of the new version of that service, given that the previously exhibited behavior does not change. The same applies for \ac{MSA}, but as there is no direct messaging, the replaced components just have to adhere to the expected messaging scheme. Monolithic applications may introduce patterns such as dependency injection and dynamic loading to make changes at runtime possible.
+  Upgrading or replacing components of an application at runtime is possible in each of the presented architectures. In \ac{SOA} the service may be replaced at will by directing requests to an instance of the new version of that service, given that the previously exhibited behavior does not change. The same applies for \ac{MSA}, but as there is no direct messaging, the replaced components just have to adhere to the expected messaging scheme. Monolithic applications may introduce patterns such as dependency injection and dynamic loading to make changes at runtime possible.
 
-    Even though scaling individual parts of an application is a non-trivial task in \ac{SOA} and \ac{MSA}, it is possible. With a monolithic architecture, scaling the whole application is usually easier than in \ac{SOA} and \ac{MSA} -- in most cases, another instance of the application may be started for that purpose --, but it is not possible to scale only those parts of an application where performance bottlenecks arise.
+  Even though scaling individual parts of an application is a non-trivial task in \ac{SOA} and \ac{MSA}, it is possible. With a monolithic architecture, scaling the whole application is usually easier than in \ac{SOA} and \ac{MSA} -- in most cases, another instance of the application may be started for that purpose --, but it is not possible to scale only those parts of an application where performance bottlenecks arise.
 
-    Facing these considerations, monolithic architecture is ruled out as the favored application structure. In the following, only the decision between \ac{SOA} and \ac{MOM} thus has to be made.
+  Facing these considerations, monolithic architecture is ruled out as the favored application structure. In the following, only the decision between \ac{SOA} and \ac{MSA} thus has to be made.
 
-    The Docker Ecosystem facilitates the setup of the infrastructure for a \ac{MSA}. As stated in \ref{par:micro_services_architecture}, the \ac{MOM} itself contains little to no knowledge about the system using it. Thus, the \ac{MOM} and all application components may simply be started in separate containers and connected using an overlay network.
+  The Docker Ecosystem facilitates the setup of the infrastructure for a \ac{MSA}. As stated in \ref{par:micro_services_architecture}, the \ac{MOM} itself contains little to no knowledge about the system using it. Thus, the \ac{MOM} and all application components may simply be started in separate containers and connected using an overlay network.
 
-    Docker permits the configuration of restart policies for specific containers. In case that one container crashes, it is restarted with its previous settings, if configured so.
+  Docker permits the configuration of restart policies for specific containers. In case that one container crashes, it is restarted with its previous settings, if configured so.
 
-    This reasoning leads to the overall conclusion, that micro-services are the architecture of choice with regards to the chosen objectives.
-    % paragraph choice_of_an_achitecture_model (end)
+  This reasoning leads to the overall conclusion, that micro-services are the architecture of choice with regards to the chosen objectives.
+  % subsection choice_of_an_achitecture_model (end)
 
-  % subsection application_structure (end)
+\subsection{User Interaction with the System} % (fold)
+\label{sub:user_interaction_with_the_system}
+  - API gateway pattern
+% subsection user_interaction_with_the_system (end)
 
-\subsection{Components} % (fold)
-\label{sub:components}
-  As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that suitable service boundaries have to be determined. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted. In case of a \ac{WfMS}, the identification of system components by the \ac{WFMC} can be interpreted as such an analysis. Based on those components, described in \ref{sub:system_components}, further subordinate micro-services are then identified.
-
-  As described in \ref{sub:system_components}, the \ac{WFMC} identified the following components:
-    \begin{itemize}[nosep]
-      \item Software Components
-        \begin{itemize}[nosep]
-          \item Definition Tool
-          \item Organization Modeling Tool
-          \item User Interface
-          \item Workflow Engine(s)
-          \item Worklists Handler
-        \end{itemize}
-      \item Data Components
-        \begin{itemize}[nosep]
-          \item Organization Data
-          \item Process Definitions Data
-          \item Workflow Control Data
-          \item Workflow Relevant Data
-          \item Worklists
-        \end{itemize}
-    \end{itemize}
-
-  \subsubsection{Derived Services and Databases} % (fold)
-  \label{ssub:derived_services}
-
-    \paragraph{Workflow Modeling Service} % (fold)
-      \label{par:workflow_modeling_service}
-      - manage workflows, activities, assignments
-      % paragraph workflow_modeling_service (end)
-
-    \paragraph{Organization Management Service} % (fold)
-      \label{par:organization_management_service}
-      - manage users and roles
-      - authenticate users
-      - sample user from specified role
-      % paragraph organization_management_service (end)
-
-    \paragraph{Worklist Service} % (fold)
-      \label{par:worklist_service}
-      The sole responsibility of this service is the management of users' worklists. It should create and delete worklist items on demand and publish the data users submitted to it. If a user is deleted, it should reschedule the worklist item to a new provided user.
-      % paragraph worklist_service (end)
-
-    \paragraph{Workflow Engine Service} % (fold)
-      \label{par:workflow_engine_service}
-      % paragraph workflow_engine_service (end)
-
-    \paragraph{Developer Gateway} % (fold)
-      \label{par:developer_gateway}
-        - provides access to
-          - infrastructure
-          - definition
-          - organization
-      % paragraph developer_gateway (end)
-
-    \paragraph{User Gateway} % (fold)
-      \label{par:user_gateway}
-        - provides access to
-          - worklists
-          - forms
-      % paragraph user_gateway (end)
-
-    \paragraph{Organization Data} % (fold)
-    \label{par:organization_data}
-
-    % paragraph organization_data (end)
-    \paragraph{Process Definitions Data} % (fold)
-    \label{par:process_definitions_data}
-
-    % paragraph process_definitions_data (end)
-    \paragraph{Workflow Control Data} % (fold)
-    \label{par:workflow_control_data}
-
-    % paragraph workflow_control_data (end)
-    \paragraph{Workflow Relevant Data} % (fold)
-    \label{par:workflow_relevant_data}
-
-    % paragraph workflow_relevant_data (end)
-    \paragraph{Worklists} % (fold)
-    \label{par:worklists}
-
-    % paragraph worklists (end)
-  % subsubsection derived_services (end)
-
-  \paragraph{Validation Service} % (fold)
-    \label{par:valitation_service}
-    One micro-service that might be extracted from the above services concerns the validation of data is the validation service. Given a dataset and a set of rules on how to validate this dataset, the service is able to perform its task autonomously. As validation is a frequently recurring action in the execution of workflows -- before and after each activity and workflow -- it could be beneficial to be able to scale the execution of this task independently.
-    % paragraph valitation_service (end)
-
-  \subsubsection{Support Services} % (fold)
-  \label{ssub:support_components}
-    There are three services which are required for the infrastructure in order to achieve the specified objectives. First, some \ac{MOM}, as it enables the communication between all components. Second, a service that allows the configuration of the execution environment. And third, a component that takes care of provisioning all machines with the images they require.
-
-    \paragraph{Message Oriented Middleware} % (fold)
-      \label{par:message_oriented_middleware}
-      - must be reachable by all other services
-      % paragraph message_oriented_middleware (end)
-
-    \paragraph{Environment Management Service} % (fold)
-      \label{par:environment_management_service}
-        - see machines in the swarm
-        - see their (labelled) properties
-        - see (running) containers and available images
-      % paragraph environment_management_service (end)
-
-    \paragraph{Registry} % (fold)
-    \label{par:registry}
-
-    % paragraph registry (end)
-
-    \paragraph{Provisioning Service} % (fold)
-      \label{par:provisioning_service}
-        The objectives include the reduction of administrative work. In order to prevent the user from having to distribute the Docker images required for the execution of workflows manually, a service should perform this task. This service should provision each machine with said images whenever such an image is created or updated. If a workflow or an activity is deleted, the service should remove its respective image from all machines.
-
-        The service could either run as an instance on each machine, performing the required Docker operations locally, or run on the Docker Swarm master machine as one instance and perform the operations remotely on all machines.
-      % paragraph provisioning_service (end)
-  % subsubsection support_components (end)
-% subsection components (end)
-
-\subsection{Inter-component communication} % (fold)
+\subsection{Communication between the Components} % (fold)
 \label{sub:inter_component_communication}
+  - Docker overlay networks
+    - backend/enactment
+
+  - REST between non-scaling services
+  - MOM for broadcasts / asynchronous jobs
+
+
+  % \begin{sequencediagram}
+  % \newinst{u}{Developer Gateway}
+  % \newinst[1]{d}{Definition Service}
+  % \newinst[1]{m}{MOM}
+  % \newinst[1]{p}{Provisioner}
+
+  % \mess{u}{subscribe}{m}
+  % \mess{d}{subscribe}{m}
+  % \mess{p}{subscribe}{m}
+
+  % \mess{u}{wfms.wf.create}{m}
+  % \mess{m}{wfms.wf.create}{d}
+  % \mess{d}{wfms.wf.created}{m}
+  % \mess{m}{wfms.wf.created}{u}
+  % \mess{u}{wfms.pd.update}{m}
+  % \mess{m}{wfms.pd.update}{d}
+  % \mess{d}{wfms.pd.updated}{m}
+  % \mess{m}{wfms.pd.updated}{u}
+  % \mess{u}{wfms.wf.export}{m}
+  % \mess{m}{wfms.wf.export}{d}
+  % \mess{d}{wfms.wf.exported}{m}
+  % \mess{m}{wfms.wf.exported}{p}
+  % \mess{m}{wfms.wf.exported}{u}
+
+  % \end{sequencediagram}
 
 % subsection inter_component_communication (end)
 

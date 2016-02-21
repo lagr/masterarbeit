@@ -27,6 +27,8 @@ module ImageBuilder
     end
   end
 
+  private
+
   def build_image_from_config(build_config)
     image = nil
     type = build_config[:type]
@@ -44,8 +46,6 @@ module ImageBuilder
 
     image
   end
-
-  private
 
   def prepare_build_enviroment(tmpdir, config)
     config[:files_to_write].each_pair { |path, content| File.open("#{tmpdir}/#{path}", 'w') { |a| a.write(content) } }
