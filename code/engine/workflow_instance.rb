@@ -15,9 +15,11 @@ module WorkflowEngine
     def run
       Docker::Network.get('wfms_enactment').connect(@instance_container.id)
       @instance_container.start
+
       @instance_container.pause
       copy_input_data_to_container
       @instance_container.unpause
+
       @instance_container.wait
       copy_output_data_from_container
       #@instance_container.delete(:force => true)
@@ -26,15 +28,13 @@ module WorkflowEngine
     private
 
     def create_data_container
-      data_container = Docker::Container.create({
+      Docker::Container.create({
         'name' => "data_#{@instance_id}",
         'Image' => 'cogniteev/echo',
         'Cmd' => ['echo', "Data container for #{@instance_id}"],
         'HostConfig' => {'Binds' => ["/workflow_relevant_data/#{@instance_id}:/workflow_relevant_data"]},
         'Env' => ["constraint:node==#{@target_node}"]
-      })
-
-      data_container.refresh!.tap(&:start)
+      }).refresh!.tap(&:start)
     end
 
     def copy_output_data_from_container
@@ -54,7 +54,7 @@ module WorkflowEngine
     end
 
     def create_instance_container
-      instance_container = Docker::Container.create({
+      Docker::Container.create({
         'name' => "wfi_#{@instance_id}",
         'Labels' => {"wfi_#{@instance_id}" => ""},
         'Image' => "192.168.99.100:5000/workflow:#{DockerHelper.image_name(type: :workflow, id: @workflow_id)}",

@@ -93,14 +93,14 @@
 \contentsline {subsection}{\numberline {5.3.3}Worklist Service}{39}{subsection.5.3.3}
 \contentsline {subsection}{\numberline {5.3.4}Workflow Engine Service}{39}{subsection.5.3.4}
 \contentsline {subsection}{\numberline {5.3.5}Developer Gateway}{39}{subsection.5.3.5}
-\contentsline {subsubsection}{Backend}{39}{subsection.5.3.5}
+\contentsline {subsubsection}{Backend}{40}{subsection.5.3.5}
 \contentsline {subsubsection}{Frontend}{40}{subsection.5.3.5}
 \contentsline {subsection}{\numberline {5.3.6}User Gateway}{40}{subsection.5.3.6}
 \contentsline {subsection}{\numberline {5.3.7}Message Oriented Middleware}{40}{subsection.5.3.7}
-\contentsline {subsection}{\numberline {5.3.8}Infrastructure Management Service}{40}{subsection.5.3.8}
-\contentsline {subsection}{\numberline {5.3.9}Registry}{40}{subsection.5.3.9}
-\contentsline {subsection}{\numberline {5.3.10}Provisioning Service}{40}{subsection.5.3.10}
-\contentsline {section}{\numberline {5.4}Implementation Issues}{40}{section.5.4}
-\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{42}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{43}{chapter.7}
-\contentsline {chapter}{\nonumberline Bibliography}{44}{chapter*.35}
+\contentsline {subsection}{\numberline {5.3.8}Infrastructure Management Service}{41}{subsection.5.3.8}
+\contentsline {subsection}{\numberline {5.3.9}Registry}{41}{subsection.5.3.9}
+\contentsline {subsection}{\numberline {5.3.10}Provisioning Service}{41}{subsection.5.3.10}
+\contentsline {section}{\numberline {5.4}Implementation Issues}{41}{section.5.4}
+\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{43}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{44}{chapter.7}
+\contentsline {chapter}{\nonumberline Bibliography}{45}{chapter*.35}

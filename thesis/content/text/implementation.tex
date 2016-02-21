@@ -129,23 +129,36 @@
   \subsection{Developer Gateway} % (fold)
     \label{sub:developer_gateway}
 
-      Since it only offers a unified user interface for the \ac{WfMS}' services and does not store any data itself, the developer gateway does not require any database. Hence, it consists of a single Docker container that wraps a \ac{RoR} application.
+      Since it only offers a unified user interface for the \ac{WfMS}' services and does not store any data itself, the developer gateway does not require any database. Hence, it consists of a single Docker container that wraps a \ac{RoR} application. This application is realized in a two-tier architecture, with a backend part, which fetches data from the various services of the \ac{WfMS}, and a frontend part, which presents that data to the developer and accepts his or her input.
+
+      - must expose ports
 
       \subsubsection{Backend} % (fold)
       \label{ssub:backend}
-        The backend consists of
+        The only task of the backend is forwarding requests to the appropriate services and their responses to the user. The model and controller classes are thus very lean. The model classes are built upon \texttt{ActiveResource}, a \ac{RoR} component that provides object-relational mapping for REST web services. The workflow definition service, the organization management service and the infrastructure service all serve a RESTful API, which enables a drop-in use of \texttt{ActiveResource} possible.
 
+        Requests to the workflow engine are realized as messages sent to respective queues via the \ac{MOM}. An example for such a request is the instantiation of a workflow.
+
+        Due to the Docker networking services, each service can simply be addressed by its container's name. As long as their required ports are not exposed on the host's network interface, any number of containers may be reachable on the same port. This is especially beneficial for running multiple containers that offer the same application, since they all can use their default ports this way.
       % subsubsection backend (end)
 
       \subsubsection{Frontend} % (fold)
         \label{ssub:frontend}
-
+          - forms for data manipulation
+          - visual workflow modeling
+          - infrastructure:
+            - display available nodes + ip
+            - display installed images and running containers
 
         % subsubsection frontend (end)
     % subsection developer_gateway (end)
 
   \subsection{User Gateway} % (fold)
     \label{sub:user_gateway}
+    Just like the developer gateway, the user gateway does not require any storage mechanism. It thus also consists of only one Docker container, which contains the \ac{RoR} application.
+
+    - must expose ports
+
       - application
         - backend: rails
         - frontend: angular app
@@ -161,6 +174,16 @@
 
   \subsection{Infrastructure Management Service} % (fold)
     \label{sub:infrastructure_management_service}
+      The data that this service offers -- the state of the Docker swarm and its nodes -- should be up-to-date. It is thus gathered ad-hoc when a request arrives. This proceeding makes a database obsolete, that is why the infrastructure management service solely consists of one Docker container which contains the application.
+
+      The \texttt{EnvironmentManager} queries the Docker daemon and processes the response. It is supported by the \texttt{DockerHelper}, which provides the means to point the local Docker client at arbitrary members of the swarm or the swarm manager.
+
+      % It could be argued, that requests to the swarm could be made directly in the developer gateway backend. This, however, would counter the \ac{MSA} principle. In case that the Docker service alters the way it returns information, the adaption to it would require
+
+      % -- It could be argued that the functionality could also be implemented in the developer gateway, but
+      %   - separation of tasks, can be adapted independently if docker API changes
+
+      The infrastructure management service
       - application
         - app logic
           - docker helper
@@ -174,6 +197,9 @@
 
   \subsection{Registry} % (fold)
     \label{sub:registry}
+    - one docker image
+    - port exposed on host
+    - deployed on coordination machine
     % subsection registry (end)
 
   \subsection{Provisioning Service} % (fold)
@@ -186,7 +212,7 @@
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.95\textwidth]{content/images/class_d_definition-crop.pdf}
-  \caption{UML Class Diagram for Workflowe Definition Service}
+  \caption{UML Class Diagram of the Workflow Definition Service}
   \label{fig:uml_class_diagram_definition_service}
 \end{figure}
 
