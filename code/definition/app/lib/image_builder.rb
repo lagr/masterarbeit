@@ -32,7 +32,7 @@ module ImageBuilder
   def build_image_from_config(build_config)
     image = nil
     type = build_config[:type]
-    base_name  = DockerHelper.image_name(type: type)
+    base_name  = ImageManager.image_name(type: type)
     base_image = Docker::Image.get(base_name)
 
     Dir.mktmpdir do |tmpdir|
@@ -57,7 +57,7 @@ module ImageBuilder
   end
 
   def activity_build_config(activity)
-    image_name = DockerHelper.image_name(type: :activity, id: activity.id)
+    image_name = ImageManager.image_name(type: :activity, id: activity.id)
     {
       type: :activity,
       name: image_name,
@@ -77,7 +77,7 @@ module ImageBuilder
   end
 
   def workflow_build_config(workflow)
-    image_name = DockerHelper.image_name(type: :workflow, id: workflow.id)
+    image_name = ImageManager.image_name(type: :workflow, id: workflow.id)
     {
       type: :workflow,
       name: image_name,

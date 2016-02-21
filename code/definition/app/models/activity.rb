@@ -35,6 +35,11 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  def child_elements
+    return nil unless activity_type == :subworkflow
+    [subworkflow] + subworkflow.child_elements
+  end
+
   def image_with_version
     { name: activity_configuration['image'], version: activity_configuration['image_version'] }
   end
