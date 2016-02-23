@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  21 FEB 2016 19:54
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  23 FEB 2016 09:21
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2523,20 +2523,34 @@ although it is yet undefined on input line 41.
 Package acronym Info: Label `acro:MOM' newly defined as it shall be overridden
 although it is yet undefined on input line 54.
 [28] [29]
-Overfull \hbox (8.88463pt too wide) in paragraph at lines 136--140
-[]\EU1/CrimsonText(0)/m/n/12 - docker for workflow execution - base images - co
-ntainer as instance w/ writable layer - autonom-
- []
+Package acronym Info: Label `acro:IP' newly defined as it shall be overridden
+although it is yet undefined on input line 112.
 
-) (./content/text/design.tex [30] [31] [32] [33]
+Package acronym Warning: Acronym `IP' is not defined on input line 112.
+
+
+Package acronym Warning: Acronym `IP' is not defined on input line 112.
+
+
+Package acronym Warning: Acronym `IP' is not defined on input line 117.
+
+Package acronym Info: Label `acro:all' newly defined as it shall be overridden
+although it is yet undefined on input line 123.
+
+Package acronym Warning: Acronym `all' is not defined on input line 123.
+
+
+Package acronym Warning: Acronym `all' is not defined on input line 123.
+
+[30] [31]) (./content/text/design.tex [32] [33] [34] [35]
 File: content/images/Architecture-crop.pdf Graphic file (type QTm)
-<use  "content/images/Architecture-crop.pdf" >) [34] [35]
+<use  "content/images/Architecture-crop.pdf" >) [36] [37]
 Chapter 5.
-(./content/text/implementation.tex [36
+(./content/text/implementation.tex [38
 
 ]
 
-LaTeX Warning: Reference `' on page 37 undefined on input line 67.
+LaTeX Warning: Reference `' on page 39 undefined on input line 67.
 
 Package acronym Info: Label `acro:CRUD' newly defined as it shall be overridden
 
@@ -2548,7 +2562,7 @@ Package acronym Warning: Acronym `CRUD' is not defined on input line 67.
 Package acronym Warning: Acronym `CRUD' is not defined on input line 67.
 
 File: content/images/class_diagram_definition-crop.pdf Graphic file (type QTm)
-<use  "content/images/class_diagram_definition-crop.pdf" > [37]
+<use  "content/images/class_diagram_definition-crop.pdf" > [39]
 Package acronym Info: Label `acro:RoR' newly defined as it shall be overridden
 although it is yet undefined on input line 96.
 
@@ -2559,31 +2573,31 @@ Package acronym Warning: Acronym `RoR' is not defined on input line 96.
 
 File: content/images/class_diagram_organization-crop.pdf Graphic file (type QTm
 )
-<use  "content/images/class_diagram_organization-crop.pdf" > [38]
+<use  "content/images/class_diagram_organization-crop.pdf" > [40]
 
 Package acronym Warning: Acronym `RoR' is not defined on input line 132.
 
 
 Package acronym Warning: Acronym `RoR' is not defined on input line 138.
 
-[39]
+[41]
 
 Package acronym Warning: Acronym `RoR' is not defined on input line 158.
 
-[40]
+[42]
 File: content/images/class_d_definition-crop.pdf Graphic file (type QTm)
-<use  "content/images/class_d_definition-crop.pdf" >) [41] [42]
+<use  "content/images/class_d_definition-crop.pdf" >) [43] [44]
 Chapter 6.
-(./content/text/evaluation_discussion.tex) [43
+(./content/text/evaluation_discussion.tex) [45
 
 ]
 Chapter 7.
 (./content/text/conclusion.tex) (/Users/larsgreiving/eigene/masterarbeit/thesis
-/Output/main.bbl [44
+/Output/main.bbl [46
 
-] [45
+] [47
 
-]) [46]
+]) [48]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 203.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 203.
 (/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux)
@@ -2598,13 +2612,13 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 203.
  ) 
 Here is how much of TeX's memory you used:
- 54763 strings out of 493706
- 1110280 string characters out of 6145770
- 1320763 words of memory out of 5000000
- 57117 multiletter control sequences out of 15000+600000
+ 54781 strings out of 493706
+ 1110577 string characters out of 6145770
+ 1321030 words of memory out of 5000000
+ 57135 multiletter control sequences out of 15000+600000
  29375 words of font info for 117 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
  110i,16n,136p,10415b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on /Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.pd
-f (53 pages).
+f (55 pages).

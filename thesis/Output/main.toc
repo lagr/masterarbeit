@@ -32,7 +32,7 @@
 \contentsline {subsection}{\numberline {3.1.3}Data Volumes}{11}{subsection.3.1.3}
 \contentsline {subsection}{\numberline {3.1.4}Dockerfiles}{11}{subsection.3.1.4}
 \contentsline {subsection}{\numberline {3.1.5}Registries and Repositories}{11}{subsection.3.1.5}
-\contentsline {subsection}{\numberline {3.1.6}Docker Networks}{12}{subsection.3.1.6}
+\contentsline {subsection}{\numberline {3.1.6}Docker Networking}{12}{subsection.3.1.6}
 \contentsline {section}{\numberline {3.2}Docker Engine}{12}{section.3.2}
 \contentsline {section}{\numberline {3.3}Docker Ecosystem}{13}{section.3.3}
 \contentsline {subsection}{\numberline {3.3.1}Docker Swarm}{13}{subsection.3.3.1}
@@ -61,46 +61,47 @@
 \contentsline {paragraph}{Micro-services Architecture}{28}{subsection.4.3.1}
 \contentsline {subsection}{\numberline {4.3.2}Choice of an Architecture Style}{29}{subsection.4.3.2}
 \contentsline {subsection}{\numberline {4.3.3}User Interaction with the System}{30}{subsection.4.3.3}
-\contentsline {subsection}{\numberline {4.3.4}Communication between the Components}{30}{subsection.4.3.4}
-\contentsline {section}{\numberline {4.4}System Design}{30}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}Components}{30}{subsection.4.4.1}
-\contentsline {subsubsection}{Workflow Definition Service}{31}{subsection.4.4.1}
-\contentsline {subsubsection}{Organization Management Service}{32}{subsection.4.4.1}
-\contentsline {subsubsection}{Worklist Service}{32}{subsection.4.4.1}
-\contentsline {subsubsection}{Workflow Engine Service}{32}{subsection.4.4.1}
-\contentsline {subsubsection}{Developer Gateway}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{User Gateway}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{Organization Data}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{Process Definitions Data}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{Workflow Control Data}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{Workflow Relevant Data}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{Worklists Data}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{Validation Service}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{Support Services}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{Message Oriented Middleware}{34}{subsection.4.4.1}
-\contentsline {subsubsection}{Infrastructure Management Service}{34}{subsection.4.4.1}
-\contentsline {subsubsection}{Registry}{34}{subsection.4.4.1}
-\contentsline {subsubsection}{Provisioning Service}{34}{subsection.4.4.1}
-\contentsline {chapter}{\numberline {5}Prototypical Implementation}{36}{chapter.5}
-\contentsline {section}{\numberline {5.1}Design decisions}{36}{section.5.1}
-\contentsline {section}{\numberline {5.2}Execution Images}{36}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}Workflow Image}{36}{subsection.5.2.1}
-\contentsline {subsection}{\numberline {5.2.2}Activity Image}{36}{subsection.5.2.2}
-\contentsline {section}{\numberline {5.3}System Components}{36}{section.5.3}
-\contentsline {subsection}{\numberline {5.3.1}Workflow Definition Service}{36}{subsection.5.3.1}
-\contentsline {subsubsection}{Export of a Workflow}{37}{figure.caption.31}
-\contentsline {subsection}{\numberline {5.3.2}Organization Management Service}{38}{subsection.5.3.2}
-\contentsline {subsection}{\numberline {5.3.3}Worklist Service}{39}{subsection.5.3.3}
-\contentsline {subsection}{\numberline {5.3.4}Workflow Engine Service}{39}{subsection.5.3.4}
-\contentsline {subsection}{\numberline {5.3.5}Developer Gateway}{39}{subsection.5.3.5}
-\contentsline {subsubsection}{Backend}{40}{subsection.5.3.5}
-\contentsline {subsubsection}{Frontend}{40}{subsection.5.3.5}
-\contentsline {subsection}{\numberline {5.3.6}User Gateway}{40}{subsection.5.3.6}
-\contentsline {subsection}{\numberline {5.3.7}Message Oriented Middleware}{40}{subsection.5.3.7}
-\contentsline {subsection}{\numberline {5.3.8}Infrastructure Management Service}{41}{subsection.5.3.8}
-\contentsline {subsection}{\numberline {5.3.9}Registry}{41}{subsection.5.3.9}
-\contentsline {subsection}{\numberline {5.3.10}Provisioning Service}{41}{subsection.5.3.10}
-\contentsline {section}{\numberline {5.4}Implementation Issues}{41}{section.5.4}
-\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{43}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{44}{chapter.7}
-\contentsline {chapter}{\nonumberline Bibliography}{45}{chapter*.35}
+\contentsline {subsection}{\numberline {4.3.4}Inter-component Communication}{30}{subsection.4.3.4}
+\contentsline {section}{\numberline {4.4}System Design}{32}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Components}{32}{subsection.4.4.1}
+\contentsline {subsubsection}{Workflow Definition Service}{33}{subsection.4.4.1}
+\contentsline {subsubsection}{Organization Management Service}{33}{subsection.4.4.1}
+\contentsline {subsubsection}{Worklist Service}{34}{subsection.4.4.1}
+\contentsline {subsubsection}{Workflow Engine Service}{34}{subsection.4.4.1}
+\contentsline {subsubsection}{Developer Gateway}{34}{subsection.4.4.1}
+\contentsline {subsubsection}{User Gateway}{34}{subsection.4.4.1}
+\contentsline {subsubsection}{Organization Data}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Process Definitions Data}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Workflow Control Data}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Workflow Relevant Data}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Worklists Data}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Validation Service}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Support Services}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Message Oriented Middleware}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Infrastructure Management Service}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Registry}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Provisioning Service}{36}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Communication}{36}{subsection.4.4.2}
+\contentsline {chapter}{\numberline {5}Prototypical Implementation}{38}{chapter.5}
+\contentsline {section}{\numberline {5.1}Design decisions}{38}{section.5.1}
+\contentsline {section}{\numberline {5.2}Execution Images}{38}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Workflow Image}{38}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Activity Image}{38}{subsection.5.2.2}
+\contentsline {section}{\numberline {5.3}System Components}{38}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Workflow Definition Service}{38}{subsection.5.3.1}
+\contentsline {subsubsection}{Export of a Workflow}{39}{figure.caption.33}
+\contentsline {subsection}{\numberline {5.3.2}Organization Management Service}{40}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}Worklist Service}{41}{subsection.5.3.3}
+\contentsline {subsection}{\numberline {5.3.4}Workflow Engine Service}{41}{subsection.5.3.4}
+\contentsline {subsection}{\numberline {5.3.5}Developer Gateway}{41}{subsection.5.3.5}
+\contentsline {subsubsection}{Backend}{42}{subsection.5.3.5}
+\contentsline {subsubsection}{Frontend}{42}{subsection.5.3.5}
+\contentsline {subsection}{\numberline {5.3.6}User Gateway}{42}{subsection.5.3.6}
+\contentsline {subsection}{\numberline {5.3.7}Message Oriented Middleware}{42}{subsection.5.3.7}
+\contentsline {subsection}{\numberline {5.3.8}Infrastructure Management Service}{43}{subsection.5.3.8}
+\contentsline {subsection}{\numberline {5.3.9}Registry}{43}{subsection.5.3.9}
+\contentsline {subsection}{\numberline {5.3.10}Provisioning Service}{43}{subsection.5.3.10}
+\contentsline {section}{\numberline {5.4}Implementation Issues}{43}{section.5.4}
+\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{45}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{46}{chapter.7}
+\contentsline {chapter}{\nonumberline Bibliography}{47}{chapter*.37}

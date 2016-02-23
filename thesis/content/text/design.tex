@@ -151,3 +151,41 @@
     \label{fig:label}
   \end{figure}
 % subsection components (end)
+
+\subsection{Communication} % (fold)
+  \label{sub:application_level_communication}
+  While the previous considerations were targeted at finding a model for the low-level communication, a way how the services communicate with each other
+
+  - likeliness of scaling
+  - REST between non-scaling services
+  - MOM for broadcasts / asynchronous jobs
+
+% subsection application_level_communication (end)
+
+  % \begin{sequencediagram}
+  % \newinst{u}{Developer Gateway}
+  % \newinst[1]{d}{Definition Service}
+  % \newinst[1]{m}{MOM}
+  % \newinst[1]{p}{Provisioner}
+
+  % \mess{u}{subscribe}{m}
+  % \mess{d}{subscribe}{m}
+  % \mess{p}{subscribe}{m}
+
+  % \mess{u}{wfms.wf.create}{m}
+  % \mess{m}{wfms.wf.create}{d}
+  % \mess{d}{wfms.wf.created}{m}
+  % \mess{m}{wfms.wf.created}{u}
+  % \mess{u}{wfms.pd.update}{m}
+  % \mess{m}{wfms.pd.update}{d}
+  % \mess{d}{wfms.pd.updated}{m}
+  % \mess{m}{wfms.pd.updated}{u}
+  % \mess{u}{wfms.wf.export}{m}
+  % \mess{m}{wfms.wf.export}{d}
+  % \mess{d}{wfms.wf.exported}{m}
+  % \mess{m}{wfms.wf.exported}{p}
+  % \mess{m}{wfms.wf.exported}{u}
+
+  % \end{sequencediagram}
+
+% subsection inter_component_communication (end)
