@@ -7,7 +7,7 @@ _.contains = _.includes
 
 angular.module 'WFMS.WorkflowDevelopmentApplication', [
   # helper modules
-  'uuid4', 'ngMaterial', 'formly', 'ui.router', 'rails'
+  'uuid4', 'ngMaterial', 'formly', 'ui.router', 'rails', 'ng.jsoneditor',
   'WFMS.Dashboard', 'WFMS.Organization', 'WFMS.Workflow', 'WFMS.Infrastructure', 'WFMS.ProcessDefinition'
 ]
 

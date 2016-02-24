@@ -1,10 +1,11 @@
 class ServersController < ApplicationController
   def index
-    render json: @servers = Server.all
+    @servers = mq_request 'server.index', 'server.indexed', {}
+    render json: @servers
   end
 
   def show
-    @server = Server.find(params[:name])
+    @server = mq_request 'server.show', 'server.showed', name: params[:name]
     render json: @server
   end
 end

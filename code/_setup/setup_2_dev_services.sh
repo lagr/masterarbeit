@@ -16,4 +16,3 @@ step "Start services.."
 eval "$(docker-machine env --swarm development-machine)"
 docker-compose -p wfms -f ../wfms.yml build development_app engine
 docker-compose -p wfms -f ../wfms.yml up -d
-

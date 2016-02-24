@@ -1,11 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.4'
+gem 'rails', '4.2.5'
 
 # Rails extensions
-gem 'activeresource', require: 'active_resource'
-gem "active_model_serializers", github: "rails-api/active_model_serializers"
-#gem 'actioncable', github: 'rails/actioncable'
 gem 'sprockets'
 gem 'therubyracer'
 gem 'hutch'
@@ -16,7 +13,6 @@ gem 'pg'
 #Asset related
 gem 'haml-rails'
 gem 'sass-rails', '~> 5.0'
-gem 'compass-rails', github: "Compass/compass-rails", branch: "master"
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 
@@ -36,12 +32,11 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-angular-animate'
   gem 'rails-assets-angular-aria'
   gem 'rails-assets-angular-material'
-  gem 'rails-assets-angular-material-data-table'
   gem 'rails-assets-angular-uuid4'
   gem 'rails-assets-angular-formly'
-  gem 'rails-assets-restangular'
   gem 'rails-assets-api-check'
   gem 'rails-assets-svg-pan-zoom'
+  gem 'rails-assets-jsoneditor'
 end
 
 group :development, :test do
@@ -50,8 +45,6 @@ end
 
 group :development do
   gem 'web-console', '~> 2.0'
-  gem 'awesome_print'
-  gem "railroady"
   gem 'spring'
 end
 

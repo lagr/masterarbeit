@@ -83,12 +83,12 @@
 
 \subsection{User Interaction with the System} % (fold)
 \label{sub:user_interaction_with_the_system}
+  In a monolithic architecture, the use of a single user interface that provides access to the whole functionality of the \ac{WfMS} suggests itself.
+  Contrary to that, the modular structure of a \ac{MSA} with clearly defined borders intuitively promotes separate user interfaces for different functionalities.
+  In a \ac{MSA}, either each service offers its own user interface or there is a component at some point between the user and the \ac{WfMS} that consolidates the interaction. As this architectural style is chosen in \ref{sub:choice_of_an_achitecture_model}, the advantages and disadvantages of both options are briefly discussed in the following.
 
-  TODO: implemented as REST + MQ for simplicity
+  Separate user interfaces increase the flexibility regarding changes in both frontend and backend of a service. While the adaption of a consolidating component to a change would likely require its redeployment -- and thus affect the availability of other services --, this is
 
-
-  - in monolithic architecture
-    -  unified frontend feels natural
   - with micro services
     - two options
       - separate frontends per service
@@ -100,8 +100,9 @@
         - + decouples internal structure from clients / encapsulates the internal structure of the application
         - - new single point of failure
         - - has to be maintained
-    \cite{}
-  - options:
+
+
+  Web-GUI vs application GUI vs CLI
 % subsection user_interaction_with_the_system (end)
 
 \subsection{Inter-component Communication} % (fold)
@@ -133,6 +134,8 @@
   This enables the creation of purpose-oriented networks, \eg a ``backend'' and a ``frontend'' network. Containers that are members of both networks can communicate with all containers, while containers which are exclusively connected to the frontend network can only see other containers of this network. This way, one could for example force access to a database to be routed through a container that filters malicious requests.
 
   This concept can be adapted to suit the needs *TODO WHAT ARE THE NEEDS MY FRIEND* of the prototype: one overarching network is created, which allows all micro-services to communicate with each other. Their containers may are also be members of smaller networks that connect them to their support containers, \eg databases, while keeping these containers isolated from the rest of the \ac{WfMS}. In order to limit access of (probably untrustworthy) third party containers in the workflow to the \ac{WfMS}, a second network may be created in which only containers required for the enactment of workflows are members.
-  ** TODO drawbacks? **
 
-  As the last approach has the fewest drawbacks, it should be favored over the other presented ones.
+  As a convenience of Docker networking, each service can simply be addressed by its container's name and its port. As long as their required ports are not exposed on the host's network interface, any number of containers may be reachable on the same port. This is especially beneficial for running multiple containers that offer the same application, since they all can use their default ports this way.
+
+  ** TODO drawbacks? **
+  As the last approach offers the required capabilities and has the fewest drawbacks, it should be favored over the other presented ones.

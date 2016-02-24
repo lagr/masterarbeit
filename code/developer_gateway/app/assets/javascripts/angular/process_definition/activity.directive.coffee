@@ -10,7 +10,7 @@ angular.module 'WFMS.ProcessDefinition'
   scope:
     activity: '=activity'
   link: (scope, domElement, attrs) ->
-    scope.activity.domElement = domElement
+    scope.domElement = domElement
 
     scope.$watch 'activity', ->
       return unless scope.activity?.activityType?

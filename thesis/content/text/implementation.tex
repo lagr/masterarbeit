@@ -9,8 +9,7 @@
 
   - ruby / ruby on rails
     - for readability
-    - because i know it,
-    - easy to build restful APIs
+    - because i know it
     - docker library exists
     - drawback: speed, runtime
 
@@ -131,15 +130,12 @@
 
       Since it only offers a unified user interface for the \ac{WfMS}' services and does not store any data itself, the developer gateway does not require any database. Hence, it consists of a single Docker container that wraps a \ac{RoR} application. This application is realized in a two-tier architecture, with a backend part, which fetches data from the various services of the \ac{WfMS}, and a frontend part, which presents that data to the developer and accepts his or her input.
 
-      - must expose ports
+      In order to be reachable by its users, this container needs to expose the port of the application to the host's network.
 
       \subsubsection{Backend} % (fold)
       \label{ssub:backend}
-        The only task of the backend is forwarding requests to the appropriate services and their responses to the user. The model and controller classes are thus very lean. The model classes are built upon \texttt{ActiveResource}, a \ac{RoR} component that provides object-relational mapping for REST web services. The workflow definition service, the organization management service and the infrastructure service all serve a RESTful API, which enables a drop-in use of \texttt{ActiveResource} possible.
+        The only task of the backend is forwarding the user's requests to the message queue and the corresponding responses back to the user. The controller classes are thus very lean; they only contain the logic to map requests to suitable routing keys.
 
-        Requests to the workflow engine are realized as messages sent to respective queues via the \ac{MOM}. An example for such a request is the instantiation of a workflow.
-
-        Due to the Docker networking services, each service can simply be addressed by its container's name. As long as their required ports are not exposed on the host's network interface, any number of containers may be reachable on the same port. This is especially beneficial for running multiple containers that offer the same application, since they all can use their default ports this way.
       % subsubsection backend (end)
 
       \subsubsection{Frontend} % (fold)
@@ -216,7 +212,9 @@
   \label{fig:uml_class_diagram_definition_service}
 \end{figure}
 
-\section{Implementation Issues} % (fold)
+\section{Implementation Issues and compromises} % (fold)
+  - gateways are synchronous to keep them simple
+    - no concurrent requests made
 \label{sec:implementation_issues}
 
 % section implementation_issues (end)

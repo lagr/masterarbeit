@@ -3,12 +3,12 @@ angular.module('WFMS.Workflow').factory 'Activity', (RailsResource, railsSeriali
     @configure
       url: "/activities/{{id}}"
       name: "activity"
-      serializer: railsSerializer( ->
-        @only 'id', 'activityType', 'inputSchema', 'outputSchema',
-              'activityConfiguration', 'representation',
-              'processDefinitionId', 'subworkflowId'
-        @nestedAttribute 'representation'
-      )
+      # serializer: railsSerializer( ->
+      #   # @only 'id', 'activityType', 'inputSchema', 'outputSchema',
+      #   #       'activityConfiguration', 'representation',
+      #   #       'processDefinitionId', 'subworkflowId'
+      #   # @nestedAttribute 'representation'
+      # )
     constructor: (data) ->
       super(data)
       _.defaults @representation, { x: 0, y: 0 }

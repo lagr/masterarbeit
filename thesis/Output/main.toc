@@ -65,11 +65,11 @@
 \contentsline {section}{\numberline {4.4}System Design}{32}{section.4.4}
 \contentsline {subsection}{\numberline {4.4.1}Components}{32}{subsection.4.4.1}
 \contentsline {subsubsection}{Workflow Definition Service}{33}{subsection.4.4.1}
-\contentsline {subsubsection}{Organization Management Service}{33}{subsection.4.4.1}
+\contentsline {subsubsection}{Organization Management Service}{34}{subsection.4.4.1}
 \contentsline {subsubsection}{Worklist Service}{34}{subsection.4.4.1}
 \contentsline {subsubsection}{Workflow Engine Service}{34}{subsection.4.4.1}
-\contentsline {subsubsection}{Developer Gateway}{34}{subsection.4.4.1}
-\contentsline {subsubsection}{User Gateway}{34}{subsection.4.4.1}
+\contentsline {subsubsection}{Developer Gateway}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{User Gateway}{35}{subsection.4.4.1}
 \contentsline {subsubsection}{Organization Data}{35}{subsection.4.4.1}
 \contentsline {subsubsection}{Process Definitions Data}{35}{subsection.4.4.1}
 \contentsline {subsubsection}{Workflow Control Data}{35}{subsection.4.4.1}
@@ -78,8 +78,8 @@
 \contentsline {subsubsection}{Validation Service}{35}{subsection.4.4.1}
 \contentsline {subsubsection}{Support Services}{35}{subsection.4.4.1}
 \contentsline {subsubsection}{Message Oriented Middleware}{35}{subsection.4.4.1}
-\contentsline {subsubsection}{Infrastructure Management Service}{35}{subsection.4.4.1}
-\contentsline {subsubsection}{Registry}{35}{subsection.4.4.1}
+\contentsline {subsubsection}{Infrastructure Management Service}{36}{subsection.4.4.1}
+\contentsline {subsubsection}{Registry}{36}{subsection.4.4.1}
 \contentsline {subsubsection}{Provisioning Service}{36}{subsection.4.4.1}
 \contentsline {subsection}{\numberline {4.4.2}Communication}{36}{subsection.4.4.2}
 \contentsline {chapter}{\numberline {5}Prototypical Implementation}{38}{chapter.5}
@@ -98,10 +98,10 @@
 \contentsline {subsubsection}{Frontend}{42}{subsection.5.3.5}
 \contentsline {subsection}{\numberline {5.3.6}User Gateway}{42}{subsection.5.3.6}
 \contentsline {subsection}{\numberline {5.3.7}Message Oriented Middleware}{42}{subsection.5.3.7}
-\contentsline {subsection}{\numberline {5.3.8}Infrastructure Management Service}{43}{subsection.5.3.8}
+\contentsline {subsection}{\numberline {5.3.8}Infrastructure Management Service}{42}{subsection.5.3.8}
 \contentsline {subsection}{\numberline {5.3.9}Registry}{43}{subsection.5.3.9}
 \contentsline {subsection}{\numberline {5.3.10}Provisioning Service}{43}{subsection.5.3.10}
-\contentsline {section}{\numberline {5.4}Implementation Issues}{43}{section.5.4}
-\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{45}{chapter.6}
-\contentsline {chapter}{\numberline {7}Conclusion}{46}{chapter.7}
-\contentsline {chapter}{\nonumberline Bibliography}{47}{chapter*.37}
+\contentsline {section}{\numberline {5.4}Implementation Issues and compromises}{43}{section.5.4}
+\contentsline {chapter}{\numberline {6}Evaluation and Discussion}{44}{chapter.6}
+\contentsline {chapter}{\numberline {7}Conclusion}{45}{chapter.7}
+\contentsline {chapter}{\nonumberline Bibliography}{46}{chapter*.37}

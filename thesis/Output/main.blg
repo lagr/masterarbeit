@@ -2,12 +2,11 @@ This is BibTeX, Version 0.99d (TeX Live 2015)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: Output/main.aux
 The style file: plain.bst
-Illegal, another \bibstyle command---line 585 of file Output/main.aux
+Illegal, another \bibstyle command---line 586 of file Output/main.aux
  : \bibstyle
  :          {iswiwwu}
 I'm skipping whatever remains of this command
 Database file #1: Remote.bib
-Warning--I didn't find a database entry for ""
 Warning--empty publisher in Felter2014Updated
 Warning--empty booktitle in Stubbs2015Distributed
 You've used 28 entries,

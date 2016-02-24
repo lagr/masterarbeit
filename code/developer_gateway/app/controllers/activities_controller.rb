@@ -1,58 +1,37 @@
 class ActivitiesController < ApplicationController
-  before_action :set_activity, only: [:show, :update, :destroy]
-
   def index
-    @activities = Activity.all
+    @activities = mq_request 'activity.index', 'activity.indexed', {}
     render json: @activities
   end
 
   def show
+    @activity = mq_request 'activity.show', 'activity.showed', id: params[:id]
     render json: @activity
   end
 
   def create
-    @activity = Activity.new(activity_params)
-
-    if @activity.save
-      render json: @activity, status: :created, location: @activity
-    else
-      render json: @activity.errors, status: :unprocessable_entity
-    end
+    @activity = mq_request 'activity.create', 'activity.created', activity: activity_params
+    render json: @activity, status: :created
   end
 
   def update
-    @activity.update_attributes(activity_params)
-
-    if @activity.save
-      head :no_content
-    else
-      render json: @activity.errors, status: :unprocessable_entity
-    end
+    @activity = mq_request 'activity.update', 'activity.updated', activity: activity_params, id: params[:id]
+    render json: @activity, status: :created
   end
 
   def destroy
-    @activity.destroy
-
+    mq_request 'wfms.activity.destroy', 'wfms.activity.destroyed', id: params[:id]
     head :no_content
   end
 
-  def export
-    redirect_to @activity, notice: 'Exported'
-  end
-
-  def start_instance
-    redirect_to @activity, notice: 'Started'
-  end
-
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_activity
-      @activity = Activity.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def activity_params
-      params.require(:activity).permit(:id, :subworkflow_id, :process_definition_id, :activity_type, :input_schema, :output_schema,
-              :activity_configuration, :representation)
+  def activity_params
+    params.require(:activity).permit(:id, :subactivity_id, :process_definition_id, :activity_type, :input_schema, :output_schema, :activity_configuration, :representation ).tap do |whitelisted|
+      whitelisted[:representation] = params[:activity][:representation]
+      whitelisted[:input_schema]   = params[:activity][:input_schema]
+      whitelisted[:output_schema]  = params[:activity][:output_schema]
+      whitelisted[:activity_configuration] = params[:activity][:activity_configuration]
     end
+  end
 end

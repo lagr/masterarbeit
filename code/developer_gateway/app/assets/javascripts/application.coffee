@@ -22,5 +22,7 @@
 #= require angular-formly
 #= require angular-uuid4
 #= require angularjs/rails/resource
+#= require jsoneditor
+#= require ng-jsoneditor
 #= require ui-router
 #= require angular/app

@@ -79,8 +79,6 @@ services:
     depends_on:
       - organization_db
       - mom
-    ports:
-      - "3002:3000"
     networks:
       - backend
     environment:
@@ -116,8 +114,6 @@ services:
     depends_on:
       - worklist_db
       - mom
-    ports:
-      - "3003:3000"
     networks:
       - backend
       - enactment
@@ -156,8 +152,6 @@ services:
     depends_on:
       - definition_db
       - mom
-    ports:
-      - "3004:3000"
     networks:
       - backend
       - enactment
@@ -172,8 +166,6 @@ services:
       context: ./infrastructure
       args:
         - "constraint:node==development-machine"
-    ports:
-      - "3005:3000"
     networks:
       - backend
     volumes:

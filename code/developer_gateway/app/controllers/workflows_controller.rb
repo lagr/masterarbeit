@@ -1,57 +1,44 @@
 class WorkflowsController < ApplicationController
-  before_action :set_workflow, only: [:show, :update, :destroy]
-
   def index
-    @workflows = Workflow.all
+    @workflows = mq_request 'workflow.index', 'workflow.indexed', {}
     render json: @workflows
   end
 
   def show
+    @workflow = mq_request 'workflow.show', 'workflow.showed', id: params[:id]
     render json: @workflow
   end
 
   def create
-    @workflow = Workflow.new(workflow_params)
-
-    if @workflow.save
-      render json: @workflow, status: :created, location: @workflow
-    else
-      render json: @workflow.errors, status: :unprocessable_entity
-    end
+    @workflow = mq_request 'workflow.create', 'workflow.created', workflow: workflow_params
+    render json: @workflow, status: :created
   end
 
   def update
-    @workflow.update_attributes(workflow_params)
-
-    if @workflow.save
-      head :no_content
-    else
-      render json: @workflow.errors, status: :unprocessable_entity
-    end
+    @workflow = mq_request 'workflow.update', 'workflow.updated', workflow: workflow_params, id: params[:id]
+    render json: @workflow, status: :created
   end
 
   def destroy
-    @workflow.destroy
-
+    mq_request 'wfms.workflow.destroy', 'wfms.workflow.destroyed', id: params[:id]
     head :no_content
   end
 
   def export
-    redirect_to @workflow, notice: 'Exported'
+    rq = new_response_queue("wfms.workflow.exported", 0)
+    Hutch.publish "wfms.workflow.export", payload
+    get_response(rq)
+    head :no_content
   end
 
   def start_instance
-    redirect_to @workflow, notice: 'Started'
+    mq_request 'wfms.workflow.start', 'wfms.workflow.started', id: params[:id], input_data: { this: 'is a test' }
+    head :no_content
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_workflow
-      @workflow = Workflow.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def workflow_params
-      params.require(:workflow).permit(:name, :user_id)
-    end
+  def workflow_params
+    params.require(:workflow).permit(:name, :user_id)
+  end
 end

@@ -1,53 +1,31 @@
 class RolesController < ApplicationController
-  before_action :set_role, only: [:show, :edit, :update, :destroy]
-
   def index
-    render json: @roles = Role.all
+    @roles = mq_request 'role.index', 'role.indexed', {}
+    render json: @roles
   end
 
   def show
+    @role = mq_request 'role.show', 'role.showed', id: params[:id]
     render json: @role
   end
 
-  def new
-    @role = Role.new
-  end
-
-  def edit
-  end
-
   def create
-    @role = Role.new(role_params)
-
-    if @role.save
-      render json: @role, status: :created, location: @role
-    else
-      render json: @role.errors, status: :unprocessable_entity
-    end
+    @role = mq_request 'role.create', 'role.created', role: role_params
+    render json: @role, status: :created
   end
 
   def update
-    @role.update_attributes(role_params)
-    if @role.save
-      head :no_content
-    else
-      render json: @role.errors, status: :unprocessable_entity
-    end
+    @role = mq_request 'role.update', 'role.updated', role: role_params, id: params[:id]
+    render json: @role
   end
 
   def destroy
-    @role.destroy
+    mq_request 'wfms.role.destroy', 'wfms.role.destroyed', id: params[:id]
     head :no_content
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_role
-      @role = Role.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def role_params
-      params.require(:role).permit(:name, :parent_role_id)
-    end
+  def role_params
+    params.require(:role).permit(:name, :parent_role_id)
+  end
 end
