@@ -70,7 +70,7 @@
 
   Upgrading or replacing components of an application at runtime is possible in each of the presented architectures. In \ac{SOA} the service may be replaced at will by directing requests to an instance of the new version of that service, given that the previously exhibited behavior does not change. The same applies for \ac{MSA}, but as there is no direct messaging, the replaced components just have to adhere to the expected messaging scheme. Monolithic applications may introduce patterns such as dependency injection and dynamic loading to make changes at runtime possible.
 
-  Even though scaling individual parts of an application is a non-trivial task in \ac{SOA} and \ac{MSA}, it is possible. With a monolithic architecture, scaling the whole application is usually easier than in \ac{SOA} and \ac{MSA} -- in most cases, another instance of the application may be started for that purpose --, but it is not possible to scale only those parts of an application where performance bottlenecks arise.
+  Even though scaling individual parts of an application is a non-trivial task in \ac{SOA} and \ac{MSA}, it is possible. With a monolithic architecture, scaling the whole application is usually easier than in \ac{SOA} and \ac{MSA} -- in most cases, another instance of the application may be started for that purpose -- but it is not possible to scale only those parts of an application where performance bottlenecks arise.
 
   Facing these considerations, monolithic architecture is ruled out as the favored application structure. In the following, only the decision between \ac{SOA} and \ac{MSA} thus has to be made.
 
@@ -87,19 +87,31 @@
   Contrary to that, the modular structure of a \ac{MSA} with clearly defined borders intuitively promotes separate user interfaces for different functionalities.
   In a \ac{MSA}, either each service offers its own user interface or there is a component at some point between the user and the \ac{WfMS} that consolidates the interaction. As this architectural style is chosen in \ref{sub:choice_of_an_achitecture_model}, the advantages and disadvantages of both options are briefly discussed in the following.
 
-  Separate user interfaces increase the flexibility regarding changes in both frontend and backend of a service. While the adaption of a consolidating component to a change would likely require its redeployment -- and thus affect the availability of other services --, this is
+  Separate user interfaces increase the flexibility regarding changes in both frontend and backend of a service. While the adaption of a consolidating component to a change within one service would likely require its redeployment and thus affect the availability of other services -- this is not the case if a dedicated user interface is in place, which can be restarted without affecting other services.
+
+
+
+  - no of requests
+  - bundle logic in one place, danger of monolith-like heap of logic
 
   - with micro services
     - two options
-      - separate frontends per service
-        - more flexibility
-        - client somehow has to know the services
+      - separate user interfaces per service
+        - + more flexibility
+        - + no single point of failure
+        - - client somehow has to know the services
+        - - auth / load balancing / ... duplicated per service
+        - - multiple clients: need to be updated on service changes
+
       - API gateway pattern to consolidate  services the user can interact with
         - The API gateway handles requests in one of two ways. Some requests are simply proxied/routed to the appropriate service. It handles other requests by fanning out to multiple services.
         - + single entry point for all clients.
         - + decouples internal structure from clients / encapsulates the internal structure of the application
         - - new single point of failure
+          -> can be duplicated behind Load balancer
         - - has to be maintained
+
+  API Gateway in this case features message endpoint pattern \cite[pp.~95-97]{Hohpe2004Enterprise}
 
 
   Web-GUI vs application GUI vs CLI
@@ -110,7 +122,7 @@
 
   Since all services reside in separate containers, \ie are isolated through namespaces for processes, networks etc, they have to be connected to each other somehow.
 
-  The naïve approach would be to let each container expose its required ports on the host's network interface. In order to communicate with a service in another container, an application would then address the host machine \ac{IP} with the respective port. While this solution appeals because of its simplicity, it comes with considerable drawbacks.
+  The naïve approach would be to let each container expose its required ports on the host's network interface. In order to communicate with a service in another container, an application would then contact the host machine \ac{IP} address with the respective port. While this solution appeals because of its simplicity, it comes with considerable drawbacks.
   First, a port can only be used by one application at a time. This poses a problem as soon as a container is run more than once simultaneously, \eg if multiple services require the same database application or a service is started several times for scaling.
   Second, this exposes the services in doubt to requests from any computer that can communicate with the host machine. Unless this is desired behavior, it creates an unnecessary attack surface.
 

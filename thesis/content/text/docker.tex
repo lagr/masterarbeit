@@ -67,7 +67,7 @@
     As mentioned in \ref{sub:virtualization_and_software_containers}, Docker features virtual networks in order to isolate containers in this regard, but at the same time allow containers to communicate with the host, each other and the outside world. These networks are based on virtual interfaces and are managed by the Docker daemon. Containers may be member of multiple networks at the same time \cite{Docker????Dockera}.
 
     By default, Docker installs three networks: a \emph{bridge} network, a \emph{host} network, and a \emph{none} network. \\
-    The \emph{bridge} network, titled \emph{docker0}, is a subnetwork that is connected to the host's networks. Docker connects containers to this network if it is not instructed otherwise. Containers that are membsers of this network can communicate with each other by using their respective IP addresses. They also may expose ports that can be mapped to the hosts network, which makes applications in them accessible from the outside. \\
+    The \emph{bridge} network, titled \emph{docker0}, is a subnetwork that is connected to the host's networks. Docker connects containers to this network if it is not instructed otherwise. Containers that are membsers of this network can communicate with each other by using their respective \ac{IP} addresses. They also may expose ports that can be mapped to the hosts network, which makes applications in them accessible from the outside. \\
     The \emph{host} network represents the actual hosts network. If containers are assigned to this network, they will be placed in the hosts network stack, \ie all network interfaces defined on the host are available to the container \cite{Docker????Dockera}. \\
     The \emph{none} network provides containers with their own network stack. Containers that are only members of the \emph{none} network are completely isolated in regards to network communication, unless futher configuration is undertaken \cite{Docker????Dockera}.
 
@@ -76,7 +76,7 @@
 
       %- service discovery
 
-      % The benefits of service discovery are very well known: it’s a great way to remove the need to manually specify topology network information (IP and port) of an environment (dev, prod, etc.) when launching containers.
+      % The benefits of service discovery are very well known: it’s a great way to remove the need to manually specify topology network information (IP address and port) of an environment (dev, prod, etc.) when launching containers.
 
       % Docker links force you to use environment variables or “placeholder” hostnames in the application image configuration files. This is a great way to allow the image to be reusable across different environments. Both environment variables and DNS hostnames are supported in virtually any programming language, needing very little change to the application codebase.
 

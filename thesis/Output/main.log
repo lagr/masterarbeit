@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  24 FEB 2016 11:33
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  25 FEB 2016 12:30
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2059,6 +2059,10 @@ LaTeX Info: Redefining \upshape on input line 2247.
 .................................................
 (/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux
 
+LaTeX Warning: Label `fig:layers_for_element_wrapping_containers' multiply defi
+ned.
+
+
 LaTeX Warning: Label `tab:docker_variants' multiply defined.
 
 
@@ -2174,7 +2178,7 @@ File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
 \c@lstlisting=\count333
 ABD: EveryShipout initializing macros
 \customtabwidth=\skip139
-Package hyperref Info: Option `pageanchor' set `false' on input line 104.
+Package hyperref Info: Option `pageanchor' set `false' on input line 105.
 
 Underfull \hbox (badness 10000) has occurred while \output is active
 |
@@ -2185,7 +2189,7 @@ Underfull \hbox (badness 10000) has occurred while \output is active
 
 
 ]
-Package hyperref Info: Option `pageanchor' set `true' on input line 104.
+Package hyperref Info: Option `pageanchor' set `true' on input line 105.
 (/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.toc
 LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 3.
 
@@ -2265,71 +2269,101 @@ Underfull \hbox (badness 10000) detected at line 5
 
 
 Underfull \hbox (badness 10000) detected at line 6
+[][]\EU1/CrimsonText(0)/bx/n/12 CRUD[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 7
 [][]\EU1/CrimsonText(0)/bx/n/12 cgroups[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 8
+Underfull \hbox (badness 10000) detected at line 9
 [][]\EU1/CrimsonText(0)/bx/n/12 CoW[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 9
+Underfull \hbox (badness 10000) detected at line 10
 [][]\EU1/CrimsonText(0)/bx/n/12 ESB[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 10
+Underfull \hbox (badness 10000) detected at line 11
 [][]\EU1/CrimsonText(0)/bx/n/12 GUI[]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 13
-[][]\EU1/CrimsonText(0)/bx/n/12 MSA[]
- []
-
-
 Underfull \hbox (badness 10000) detected at line 14
-[][]\EU1/CrimsonText(0)/bx/n/12 MOM[]
+[][]\EU1/CrimsonText(0)/bx/n/12 ID[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 15
-[][]\EU1/CrimsonText(0)/bx/n/12 OASIS[]
+[][]\EU1/CrimsonText(0)/bx/n/12 IP[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 16
-[][]\EU1/CrimsonText(0)/bx/n/12 OS[]
+[][]\EU1/CrimsonText(0)/bx/n/12 MSA[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 17
-[][]\EU1/CrimsonText(0)/bx/n/12 PID[]
+[][]\EU1/CrimsonText(0)/bx/n/12 MOM[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 18
-[][]\EU1/CrimsonText(0)/bx/n/12 REST[]
+[][]\EU1/CrimsonText(0)/bx/n/12 OASIS[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 19
-[][]\EU1/CrimsonText(0)/bx/n/12 SOA[]
+[][]\EU1/CrimsonText(0)/bx/n/12 OS[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 20
+[][]\EU1/CrimsonText(0)/bx/n/12 PID[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 21
-[][]\EU1/CrimsonText(0)/bx/n/12 WFMC[]
+[][]\EU1/CrimsonText(0)/bx/n/12 P2P[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 22
-[][]\EU1/CrimsonText(0)/bx/n/12 WfMS[]
+[][]\EU1/CrimsonText(0)/bx/n/12 NFS[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 23
+[][]\EU1/CrimsonText(0)/bx/n/12 RoR[]
  []
 
 
 Underfull \hbox (badness 10000) detected at line 24
+[][]\EU1/CrimsonText(0)/bx/n/12 REST[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 25
+[][]\EU1/CrimsonText(0)/bx/n/12 SOA[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 27
+[][]\EU1/CrimsonText(0)/bx/n/12 WFMC[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 28
+[][]\EU1/CrimsonText(0)/bx/n/12 WfMS[]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 30
 [][]\EU1/CrimsonText(0)/bx/n/12 WSDL[]
  []
 
@@ -2362,10 +2396,10 @@ Class scrreprt Warning: \float@addtolists detected!
 Chapter 2.
 Package acronym Info: Label `acro:WFMC' newly defined as it shall be overridden
 
-although it is yet undefined on input line 130.
+although it is yet undefined on input line 131.
 Package acronym Info: Label `acro:WfMS' newly defined as it shall be overridden
 
-although it is yet undefined on input line 130.
+although it is yet undefined on input line 131.
 (./content/text/wfms.tex
 Overfull \hbox (1.63724pt too wide) in paragraph at lines 10--11
 []\EU1/CrimsonText(0)/m/it/12 Process activities \EU1/CrimsonText(0)/m/n/12 are
@@ -2389,7 +2423,7 @@ LaTeX Warning: Reference `key' on page 8 undefined on input line 151.
 Chapter 3.
 
 LaTeX Warning: Reference `sec:functionality' on page 9 undefined on input line 
-142.
+143.
 
 (./content/text/docker.tex
 Package acronym Info: Label `acro:OS' newly defined as it shall be overridden
@@ -2410,6 +2444,8 @@ although it is yet undefined on input line 23.
 Package acronym Info: Label `acro:CoW' newly defined as it shall be overridden
 although it is yet undefined on input line 26.
 [10] [11]
+Package acronym Info: Label `acro:IP' newly defined as it shall be overridden
+although it is yet undefined on input line 70.
 Package acronym Info: Label `acro:REST' newly defined as it shall be overridden
 
 although it is yet undefined on input line 96.
@@ -2434,7 +2470,7 @@ Overfull \hbox (17.99998pt too wide) in paragraph at lines 80--105
 
 ] [16] [17]) (./content/text/docker_for_wf_execution.tex
 
-Package caption Warning: \label without proper \caption on input line 198.
+Package caption Warning: \label without proper \caption on input line 271.
 See the caption package documentation for explanation.
 
 
@@ -2442,25 +2478,10 @@ LaTeX Warning: Reference `tab:docker_variants' on page 18 undefined on input li
 ne 5.
 
 [18]
-LaTeX Font Info:    Font shape `EU1/SourceCodePro(0)/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 66.
-[19] [20]
-Package acronym Info: Label `acro:NFS' newly defined as it shall be overridden
-although it is yet undefined on input line 72.
-
-Package acronym Warning: Acronym `NFS' is not defined on input line 72.
-
-
-Package acronym Warning: Acronym `NFS' is not defined on input line 72.
-
-Package acronym Info: Label `acro:P2P' newly defined as it shall be overridden
-although it is yet undefined on input line 72.
-
-Package acronym Warning: Acronym `P2P' is not defined on input line 72.
-
-
-Package acronym Warning: Acronym `P2P' is not defined on input line 72.
-
+File: content/images/execution_container-crop.pdf Graphic file (type QTm)
+<use  "content/images/execution_container-crop.pdf" >
+File: content/images/layer_concept-crop.pdf Graphic file (type QTm)
+<use  "content/images/layer_concept-crop.pdf" > [19] [20] [21]
 \forest@temp@box=\box32767 (local)
 \forest@temp@box=\box32766 (local)
 \forest@temp@box=\box32765 (local)
@@ -2478,145 +2499,129 @@ Package acronym Warning: Acronym `P2P' is not defined on input line 72.
 \forest@temp@box=\box32753 (local)
 \forest@temp@box=\box32752 (local)
 \forest@temp@box=\box32751 (local)
-[21] [22]
+[22]
+LaTeX Font Info:    Font shape `EU1/SourceCodePro(0)/m/n' will be
+(Font)              scaled to size 10.79993pt on input line 165.
+Package acronym Info: Label `acro:NFS' newly defined as it shall be overridden
+although it is yet undefined on input line 171.
+Package acronym Info: Label `acro:P2P' newly defined as it shall be overridden
+although it is yet undefined on input line 171.
+[23] [24]
 LaTeX Font Info:    External font `cmex7' loaded for size
-(Font)              <5> on input line 169.
+(Font)              <5> on input line 242.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 169.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 242.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 169.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 242.
 
-Overfull \hbox (2.68901pt too wide) in paragraph at lines 170--170
+Overfull \hbox (2.68901pt too wide) in paragraph at lines 243--243
  []|$\OML/ztmcm/m/it/12 G[]$| 
  []
 
 
-Overfull \hbox (2.68901pt too wide) in paragraph at lines 175--175
+Overfull \hbox (2.68901pt too wide) in paragraph at lines 248--248
  []|$\OML/ztmcm/m/it/12 G[]$| 
  []
 
 
-Overfull \hbox (2.68901pt too wide) in paragraph at lines 181--181
+Overfull \hbox (2.68901pt too wide) in paragraph at lines 254--254
  []|$\OML/ztmcm/m/it/12 G[]$| 
  []
 
 
-Overfull \hbox (4.36246pt too wide) in paragraph at lines 148--197
+Overfull \hbox (4.36246pt too wide) in paragraph at lines 221--270
  [][] 
  []
 
-[23] [24]) (./content/text/architecture.tex [25]
+[25] [26] [27]
+Package acronym Info: Label `acro:ID' newly defined as it shall be overridden
+although it is yet undefined on input line 345.
+[28] [29]) (./content/text/architecture.tex
 Package acronym Info: Label `acro:SOA' newly defined as it shall be overridden
 although it is yet undefined on input line 5.
+[30]
 Package acronym Info: Label `acro:OASIS' newly defined as it shall be overridde
 n
 although it is yet undefined on input line 24.
 Package acronym Info: Label `acro:WSDL' newly defined as it shall be overridden
 
 although it is yet undefined on input line 24.
-[26]
+[31]
 Package acronym Info: Label `acro:ESB' newly defined as it shall be overridden
 although it is yet undefined on input line 26.
 Package acronym Info: Label `acro:MSA' newly defined as it shall be overridden
 although it is yet undefined on input line 41.
-[27]
+[32]
 Package acronym Info: Label `acro:MOM' newly defined as it shall be overridden
 although it is yet undefined on input line 54.
-[28] [29]
-Package acronym Info: Label `acro:IP' newly defined as it shall be overridden
-although it is yet undefined on input line 113.
-
-Package acronym Warning: Acronym `IP' is not defined on input line 113.
-
-
-Package acronym Warning: Acronym `IP' is not defined on input line 113.
-
-[30]
-
-Package acronym Warning: Acronym `IP' is not defined on input line 118.
-
+[33] [34] [35]
 Package acronym Info: Label `acro:all' newly defined as it shall be overridden
-although it is yet undefined on input line 124.
+although it is yet undefined on input line 136.
 
-Package acronym Warning: Acronym `all' is not defined on input line 124.
+Package acronym Warning: Acronym `all' is not defined on input line 136.
 
 
-Package acronym Warning: Acronym `all' is not defined on input line 124.
+Package acronym Warning: Acronym `all' is not defined on input line 136.
 
-[31]) (./content/text/design.tex [32] [33] [34] [35]
+[36]) (./content/text/design.tex [37] [38] [39] [40]
 File: content/images/Architecture-crop.pdf Graphic file (type QTm)
-<use  "content/images/Architecture-crop.pdf" >) [36] [37]
+<use  "content/images/Architecture-crop.pdf" >) [41] [42]
 Chapter 5.
-(./content/text/implementation.tex [38
+(./content/text/implementation.tex [43
 
 ]
 
-LaTeX Warning: Reference `' on page 39 undefined on input line 66.
+LaTeX Warning: Reference `' on page 44 undefined on input line 66.
 
 Package acronym Info: Label `acro:CRUD' newly defined as it shall be overridden
 
 although it is yet undefined on input line 66.
-
-Package acronym Warning: Acronym `CRUD' is not defined on input line 66.
-
-
-Package acronym Warning: Acronym `CRUD' is not defined on input line 66.
-
 File: content/images/class_diagram_definition-crop.pdf Graphic file (type QTm)
-<use  "content/images/class_diagram_definition-crop.pdf" > [39]
+<use  "content/images/class_diagram_definition-crop.pdf" > [44]
 Package acronym Info: Label `acro:RoR' newly defined as it shall be overridden
 although it is yet undefined on input line 95.
-
-Package acronym Warning: Acronym `RoR' is not defined on input line 95.
-
-
-Package acronym Warning: Acronym `RoR' is not defined on input line 95.
-
 File: content/images/class_diagram_organization-crop.pdf Graphic file (type QTm
 )
-<use  "content/images/class_diagram_organization-crop.pdf" > [40]
-
-Package acronym Warning: Acronym `RoR' is not defined on input line 131.
-
-[41]
-
-Package acronym Warning: Acronym `RoR' is not defined on input line 154.
-
-[42]
+<use  "content/images/class_diagram_organization-crop.pdf" > [45] [46] [47]
 File: content/images/class_d_definition-crop.pdf Graphic file (type QTm)
-<use  "content/images/class_d_definition-crop.pdf" >) [43]
+<use  "content/images/class_d_definition-crop.pdf" >) [48]
 Chapter 6.
-(./content/text/evaluation_discussion.tex) [44
+(./content/text/evaluation_discussion.tex) [49
 
 ]
 Chapter 7.
-(./content/text/conclusion.tex) (/Users/larsgreiving/eigene/masterarbeit/thesis
-/Output/main.bbl [45
+(./content/text/conclusion.tex)
+Overfull \hbox (134.30911pt too wide) in paragraph at lines 9--201
+\EU1/CrimsonText(0)/m/n/12 container-with-criu/ - evaluate supported patterns? 
+http://www.workflowpatterns.com/documentation/documents/BPM-
+ []
 
-] [46
+(/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.bbl [50
 
-]) [47]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 203.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 203.
+] [51
+
+]) [52]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 204.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 204.
 (/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 203.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 203.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 204.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 204.
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 203.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 204.
  ) 
 Here is how much of TeX's memory you used:
- 54781 strings out of 493706
- 1110577 string characters out of 6145770
- 1321068 words of memory out of 5000000
- 57135 multiletter control sequences out of 15000+600000
+ 54838 strings out of 493706
+ 1112159 string characters out of 6145770
+ 1323938 words of memory out of 5000000
+ 57190 multiletter control sequences out of 15000+600000
  29375 words of font info for 117 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 110i,16n,136p,10415b,2377s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 110i,16n,136p,10415b,2376s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on /Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.pd
-f (54 pages).
+f (59 pages).

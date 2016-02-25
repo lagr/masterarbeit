@@ -628,6 +628,8 @@ INPUT content/text/objectives.tex
 INPUT content/text/objectives.tex
 INPUT content/text/docker_for_wf_execution.tex
 INPUT content/text/docker_for_wf_execution.tex
+INPUT content/images/execution_container-crop.pdf
+INPUT content/images/layer_concept-crop.pdf
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/adobe/times/zptmcm7t.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/adobe/times/zptmcm7m.tfm

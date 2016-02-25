@@ -13,7 +13,7 @@ Third, it is important to define the way data is exchanged between containers. O
 
 Finally, rather independent from the previous variants and hence discussed in isolation, one might want to choose the mechanism that decides which containers are run on which machines, \ie the execution scheduling.
 
-TODO: add the ``how's'', table consistent with text?
+TODO: table consistent with text?
 
 \begin{table}[!htbp]
   \centering
@@ -58,10 +58,109 @@ TODO: add the ``how's'', table consistent with text?
   \label{tab:docker_variants}
 \end{table}
 
+\subsection{Mode of operation of the Aspects} % (fold)
+\label{sub:mode_of_operation_of_the_aspects}
+  **ASD ASD ASD** (afrob und samy deluxe)
+  In the following the previously introduced concepts are explained in more detail and some variations on them are given.
+
+  \subsubsection{Grouped or spread execution} % (fold)
+  \label{ssub:grouped_or_spread_execution}
+    - couple all containers
+    - couple specific containers
+    - spread execution
+  % subsubsection grouped_or_spread_execution (end)
+
+  \subsubsection{Element-wrapping containers} % (fold)
+  \label{ssub:element_wrapping_containers}
+    - functionality in image layers
+    - instance specifics in container write layer
+    - started / ended
+
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=0.95\textwidth]{content/images/execution_container-crop.pdf}
+      \caption{Layer Contents for Element-wrapping Containers}
+      \label{fig:layers_for_element_wrapping_containers}
+    \end{figure}
+
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=0.95\textwidth]{content/images/layer_concept-crop.pdf}
+      \caption{Layers of Element-wrapping containers}
+      \label{fig:layers_for_element_wrapping_containers}
+    \end{figure}
+  % subsubsection element_wrapping_containers (end)
+
+  \subsubsection{Worker containers} % (fold)
+  \label{ssub:worker_containers}
+    - generic functionality in image layers
+    - instance specifica passed in
+    - keeps running
+  % subsubsection worker_containers (end)
+
+  \subsubsection{Data Exchange via Data Volume} % (fold)
+  \label{ssub:data_exchange_via_data_volume}
+
+    The idea behind this concept is, that all containers involved in the execution of one workflow instance have access to a common working directory, in which the data visibility scopes can be established using a file system structure. This working directory resides in a data volume owned by a container that is specific to the respective workflow instance and whose only purpose is to ensure the existence of said volume.
+
+    - data volume mountable via -v option
+    - arbitrary name and location in container
+
+    - structure
+      - simple
+        - self-managed by all participating containers (/tmp)
+      - predefined
+        - env/wf\_/wc\_ for data defined at build time
+        - wfi\_ for current workflow instance
+          - nested aci\_/wfi\_ for child elements
+        - as in Figure~\ref{fig:dv_dir_structure}
+    - access
+      - mount respective workdir as wrd
+        - copy/ link required data
+      - mount root workdir and pass own workdir name
+        - directly access required data
+
+    \begin{figure}[htbp]
+      \centering
+      \begin{forest}
+        dir tree
+        [workflow\_relevant\_data
+          [env]
+          [wf\_1cc594ba-...]
+          [wf\_b45d2564-...]
+          [ac\_0225d86f-...]
+          [ac\_2a5aa4ff-...]
+          [ac\_7fc09132-...]
+          [wfi\_e65c8533-... \textcolor{gray}{(instance of wf\_1cc594ba-...)}
+            [aci\_76b8680c-... \textcolor{gray}{(instance of ac\_0225d86f-...)}]
+            [aci\_1e09d287-... \textcolor{gray}{(instance of ac\_2a5aa4ff-...)}
+              [wfi\_68e17268-... \textcolor{gray}{(instance of wf\_b45d2564-...)}
+                [aci\_2708fd1a-... \textcolor{gray}{(instance of ac\_7fc09132-...)}]
+              ]
+            ]
+          ]
+        ]
+      \end{forest}
+      \caption{Exemplary directory structure for $G_{*}^{DV}$}
+      \label{fig:dv_dir_structure}
+    \end{figure}
+  % subsubsection data_exchange_via_data_volume (end)
+
+  \subsubsection{Data Exchange via Service} % (fold)
+  \label{ssub:data_exchange_via_service}
+    - communication via MOM
+    -
+  % subsubsection data_exchange_via_service (end)
+
+  \subsubsection{Data Exchange via Direct Communication} % (fold)
+  \label{ssub:data_exchange_via_direct_communication}
+    - communidation via REST / Sockets
+  % subsubsection data_exchange_via_direct_communication (end)
+% subsection mode_of_operation_of_the_aspects (end)
+
+
 \subsection[Grouped execution using common data volume]{Grouped execution using common data volume ($G_{*}^{DV}$)} % (fold)
 \label{sub:grouped_execution_using_common_data_volume}
-
-  The idea behind this concept is, that all containers involved in the execution of one workflow instance have access to a common working directory, in which the data visibility scopes can be established using a file system structure. This working directory resides in a data volume owned by a container that is specific to the respective workflow instance and whose only purpose is to ensure the existence of said volume.
 
   $G_{*}^{DV}$ natively supports all identified types of data visibility by providing respective directories and access to them, with the limitation that workflow data and environment data has to be copied to the data volume before execution and is thus restricted to the state it had at that time. Altering this data is possible, \eg by replacing the respective files via \texttt{docker copy} or altering it in a \texttt{docker exec} session, but extra measures have to be taken to request such an up-to-date version.
 
@@ -72,32 +171,6 @@ TODO: add the ``how's'', table consistent with text?
   Sharing a data volume using only Docker tools requires all containers to be on the same machine, which is why there is no spread version $S_{*}^{DV}$ of this concept. Approaches exist to utilize \ac{NFS} or \ac{P2P} file sharing for distributed access to data volumes, but given the limited scope of this thesis they shall not be regarded further here \cite{Miell2015How}.
 
   $G_{1C}^{DV}$ could theoretically work on its own file system in the editable layer of the container without a dedicated data volume, since all workflow components would have access to it. This would make the container self contained on the one hand -- and thus easier to export or migrate -- but would on the other hand couple the data life cycle to the processing container's life cycle. That is, if the container is removed, the data is removed with it.
-
-  \begin{figure}[htbp]
-    \centering
-    \begin{forest}
-      dir tree
-      [workflow\_relevant\_data
-        [env]
-        [wf\_1cc594ba-...]
-        [wf\_b45d2564-...]
-        [ac\_0225d86f-...]
-        [ac\_2a5aa4ff-...]
-        [ac\_7fc09132-...]
-        [wfi\_e65c8533-...
-          [aci\_76b8680c-...]
-          [aci\_1e09d287-...
-            [wfi\_68e17268-...
-              [aci\_2708fd1a-...]
-            ]
-          ]
-        ]
-      ]
-    \end{forest}
-    \caption{Exemplary directory structure for $G_{*}^{DV}$}
-    \label{fig:dv_dir_structure}
-  \end{figure}
-
 
 % subsection grouped_execution_using_common_data_volume (end)
 
@@ -219,3 +292,128 @@ TODO: add the ``how's'', table consistent with text?
 
   ** DECISION TREE**
 % subsection promising_combinations_of_characteristics (end)
+
+
+\subsection{Execution Scheduling} % (fold)
+\label{sub:execution_scheduling}
+  In the course of a workflow enactment, several containers have to be instantiated -- unless the worker-based approach ($*_{TYPE}^{*}$) is chosen. Choosing the node on which the instantiation takes place is a task that may impact the performance of the containers and the enactment itself, as the nodes may differ regarding their available resources. There are three aspects that concern the scheduling of containers: whether Docker Swarm or a custom component manages it, by which rules or criteria the scheduling takes place, and whether and how the user should be able to take influence on the scheduling.
+
+  \subsubsection{Identification of Desired Scheduling Criteria} % (fold)
+  \label{ssub:identification_of_desired_scheduling_criteria}
+    In order to examine scheduling solutions, some goals should be specified to which they can be evaluated against -- an exhaustive list of these goals is not in the scope of this thesis, though. Thus, two groups of scheduling goals are considered.
+
+    On the one hand, scheduling may be performed based on the properties of the nodes, which can be of qualitative or quantitative nature. Examples for qualitative node properties could be its name, geographical location, membership in some arbitrary grouping, the intended use
+
+    On the other hand, containers may be assigned to nodes based on \ac{WfMS}-specific data.
+
+    - scheduling goals
+      - based on WFMS info
+        - active components
+        - internal data
+        - nature of activity/workflow
+      - based on node resources
+        - qualitative
+        - quantitative
+
+    \begin{table}[!htbp]
+      \centering
+      \begin{tabular}{r c c}
+        \toprule
+        \textbf{Scheduling based on} & Docker Swarm & Custom Component \\
+        \midrule
+        \textbf{Node Properties} & \cmark & \cmark \\
+        Qualitative & \cmark & \cmark \\
+        Quantitative & \cmark & \cmark \\ \midrule
+        \textbf{\ac{WfMS} Data} & \cmark & \cmark\\
+        Live Data & \xmark & \cmark \\
+        Active Workflow Components  & $\bigcirc$ & \cmark \\
+        Activity/Workflow Properties & \cmark & \cmark \\
+        \bottomrule
+      \end{tabular}
+      \label{tab:scheduling_criteria}
+      \captionsetup{justification=centering}
+      \caption*{\footnotesize{\ja~ supported ~~|~~ $\bigcirc$~ depends on chosen containerization model, (partially supported for $*_{*}^{AC}$/$*_{*}^{SEPC}$) ~~|~~ \xmark~ not supported}
+      }
+      \caption{Supported Scheduling Criteria}
+    \end{table}
+  % subsubsection identification_of_desired_scheduling_criteria (end)
+
+  \subsubsection{Scheduling Abilities of Docker Swarm} % (fold)
+    \label{ssub:abilities_of_docker_swarm}
+    As mentioned in \ref{sub:docker_swarm}, Docker Swarm offers two kinds of scheduling mechanisms: filters and strategies. Filters can be passed on instantiation as an environment variable parameter with the format \texttt{<filter-type>:<key><operator><value>}. The value of \texttt{filter-type} can either be ``constraint'' or ``affinity'' -- the two types of filters supported by Swarm.
+
+    \texttt{<key>} can take the values \emph{node} or \emph{container} (which signals a comparison to the respective name or \ac{ID}), one of the default node tags, or the name of some custom label which can refer to both node labels and container labels. By default, nodes get tagged by Docker with a name, their \ac{ID}, their storage driver, their execution driver, the kernel version they use and the name of their operating system.
+    Custom labels may be applied to nodes when their daemon is started and to containers as a parameter to the \texttt{run} command. In order to avoid conflicting label names, reverse domain name notation is advised by Docker.
+    \texttt{<operator>} may either take the value \texttt{==} or \texttt{!=}, indicating whether a match is desired or should be avoided. It can be followed by a tilde, \eg \texttt{==~} to signal that if the condition cannot be met, the container should be scheduled according to a strategy instead.
+    The \texttt{<value>} is a string made of alpha-numeric characters, dots, hyphens, and underscores. It may be either a regular expression or a globbing pattern, to which names, \acp{ID} tags or labels will be matched against.
+
+    Constraints focus on the characteristics of nodes for scheduling; either \ref{itm:const_first} some identifier or \ref{itm:const_second} node tags or \ref{itm:const_third} labels:
+
+    \begin{enumerate}[label=\alph*), nosep]
+      \item \label{itm:const_first} \texttt{constraint:node==...}
+      \item \label{itm:const_second} \texttt{constraint:operatingsystem==...}
+      \item \label{itm:const_third} \texttt{constraint:com.example.label==...}
+    \end{enumerate}
+
+    Affinities can be specified to schedule containers based on the presence of images or containers on the target node. Possible criteria are \ref{itm:aff_first} container names or \acp{ID}, \ref{itm:aff_second} image names or \acp{ID} or \ref{itm:aff_third} a custom label on a container:
+
+    \begin{enumerate}[label=\alph*), nosep]
+      \item \label{itm:aff_first} \texttt{affinity:container==...}
+      \item \label{itm:aff_second} \texttt{affinity:image==...}
+      \item \label{itm:aff_third} \texttt{affinity:com.example.label==...}
+    \end{enumerate}
+
+    Further, there are some implicit forms of scheduling. First, containers will not be executed on nodes that Swarm considers \emph{unhealthy}, \ie that do not respond or otherwise exhibit faulty behavior. Second, some Docker features imply scheduling rules. If the container requires an exposed port, it will not be scheduled on nodes where this port is already occupied. Mounted volumes of, a shared network stack with or a link to another container imply an affinity to that container, which will prohibit the execution if it is not met.
+  % subsubsection abilities_of_docker_swarm (end)
+
+  \subsubsection{Abilities of Custom Scheduling Components} % (fold)
+  \label{ssub:abilities_of_custom_scheduling_components}
+    By querying the swarm master, a custom scheduler component can theoretically infer the information required to perform the same kind of scheduling offered by Docker Swarm. Opposed to the latter, it could further acquire information related to current workflow enactments and perform the scheduling based on that live data. For example, if an user specifies his/her current location in the course of a workflow enactment, all subsequent containers could be scheduled to run on nodes that suit the laws of that country.
+  % subsubsection abilities_of_custom_scheduling_components (end)
+
+  \subsubsection{Approaches for Scheduling Criteria} % (fold)
+  \label{ssub:approaches_for_scheduling_criteria}
+    - swarm
+      - docker based
+        - qualitative: encode in labels
+        - quantitative: encode in labels
+      - wfms based
+        - Live Data
+          - no, cannot man
+        - Active Workflow Components
+          - get running containers, rules based on container labels
+        - ``passive'' Activity/Workflow Properties
+          - encode in labels
+    - custom
+      - like swarm
+
+    - solutions
+      - container state (wf status based)
+        - only custom solution
+      - location based (eg for compliance)
+        - label
+        - ip?
+      - resource based
+        - regex for comparisons
+          - eg
+            - label: wfms.ram.\$ram in mb
+            - \texttt{wfms.ram.([1-9]{\textbackslash}d\{3,\}|[6-9]{\textbackslash}d\{2,\})} for 600MB+ ram
+  % subsubsection approaches_for_scheduling_criteria (end)
+
+
+
+
+  \subsubsection{Implications of Other Design Decisions} % (fold)
+  \label{ssub:implications_of_other_design_decisions}
+    \acp{WfMS} may let the workflow modeling developer take influence on the scheduling of workflow containers by letting that user define constraints or affinities on them at build time. This could be beneficial because of the user's potential a priori knowledge on these elements, \eg whether they are data-intensive and thus require some large storage, or because it enables meeting compliance rules, \eg concerning the geographical location of data storage and processing.
+
+    Since the $G_{DV}^{*}$ approaches are grouped on one node by definition, the scheduling takes place for the first container only, while subsequent containers are bound to the same node by the implicit affinity created through the mounted data volume.
+  % subsubsection implications_of_other_design_decisions (end)
+
+
+==> most use cases can be modeled with custom labels and swarm
+==> not possible: altering node / container labels after creation
+==> wf
+
+
+% subsection execution_scheduling (end)
