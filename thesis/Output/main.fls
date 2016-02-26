@@ -456,6 +456,8 @@ INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libr
 INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
 INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarychains.code.tex
 INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarychains.code.tex
+INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryautomata.code.tex
+INPUT /usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryautomata.code.tex
 INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/pgf-umlsd/pgf-umlsd.sty
 INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/pgf-umlsd/pgf-umlsd.sty
 INPUT /usr/local/texlive/2015/texmf-dist/tex/latex/adjustbox/adjustbox.sty
@@ -628,8 +630,6 @@ INPUT content/text/objectives.tex
 INPUT content/text/objectives.tex
 INPUT content/text/docker_for_wf_execution.tex
 INPUT content/text/docker_for_wf_execution.tex
-INPUT content/images/execution_container-crop.pdf
-INPUT content/images/layer_concept-crop.pdf
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/adobe/times/zptmcm7t.tfm
 INPUT /usr/local/texlive/2015/texmf-dist/fonts/tfm/adobe/times/zptmcm7m.tfm
@@ -645,8 +645,10 @@ INPUT content/text/architecture.tex
 INPUT content/text/design.tex
 INPUT content/text/design.tex
 INPUT content/images/Architecture-crop.pdf
+INPUT content/images/layer_concept-crop.pdf
 INPUT content/text/implementation.tex
 INPUT content/text/implementation.tex
+INPUT content/images/execution_container-crop.pdf
 INPUT content/images/class_diagram_definition-crop.pdf
 INPUT content/images/class_diagram_organization-crop.pdf
 INPUT content/images/class_d_definition-crop.pdf

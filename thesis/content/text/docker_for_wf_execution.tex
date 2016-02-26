@@ -65,40 +65,113 @@ TODO: table consistent with text?
 
   \subsubsection{Grouped or spread execution} % (fold)
   \label{ssub:grouped_or_spread_execution}
-    These variations are about the allocation of containers related to one workflow instance on the available nodes. While \ref{sub:execution_scheduling} deals with the mechanisms behind the scheduling, the larger concept of grouped or spread execution will be discussed here.
+    These variations are about the allocation of containers related to one workflow instance on the available nodes. While \ref{sub:execution_scheduling} deals with the mechanisms behind the scheduling, the larger concept of grouped or spread execution will be focused here.
 
-    On the one hand, one could assign the containers to different nodes. This could happen at random, with regards to characteristics of the containers or their underlying workflow elements, or based on the current workload of the nodes. Spread execution requires the images that belong the the workflow elements in doubt to be present at all nodes.
+    On the one hand, one could assign the containers to different nodes. This could happen at random, with regards to characteristics of the containers or their underlying workflow elements, or based on the current workload of the nodes. Balancing the workload and matching containers to specific nodes could have a positive impact on the performance of the execution. Negative effects might arise from the introduced network latency, though. Also, spread execution requires the images that belong to the workflow elements in doubt to be present on all nodes.
 
-    On the other hand, the first container might be assigned to one node and all subsequently started containers
-
-
-    - couple all containers
-    - couple specific containers
-    - spread execution
-      - at random
-      - with regards to properties
-      - respective images must be available on all nodes
+    On the other hand, the first container of a workflow enactment might be assigned to one node and all subsequently started containers are started on that same node. While this reduces the ability to balance the workload across nodes, it could be beneficial for the speed of communication between containers, since no transfer via network is required.
   % subsubsection grouped_or_spread_execution (end)
 
-  \subsubsection{Element-wrapping containers} % (fold)
+  \subsubsection{Element-wrapping Images} % (fold)
   \label{ssub:element_wrapping_containers}
-    - functionality in image layers
-    - instance specifics in container write layer
-    - started / ended
+    The general idea behind this concept is that activities and workflows can be represented by images, activity instances and workflow instances by containers.
+
+    As described in \ref{sec:concepts}, activities can be perceived as self-contained units of work, that is, they contain the information on how to autonomously perform a task on a given set of data.
+    Analogously, Docker images contain the information on how to run processes in an instance of themselves -- a container -- given a set of parameters. If the work that an activity performs can be manifested in  program code, this code and its required runtime environment could be contained in a Docker image. An instance of that image that is created with a specific set of data would then be the counterpart of an activity instance. This notion is the foundation for the $*_{AC}^{*}$ and $*_{SEPC}^{*}$ variants.
+
+    A similar train of thought can be applied to workflows: they contain the information that is necessary to perform sequences of tasks in an automated way. The sequence order is usually given in a formalized way by a process definition. In the given mindset, this process definition would be a list of Docker images in combination with a formal description of the control flow and data flow between these images. A workflow can thus be seen as a set of appropriate images and a corresponding process definition.
+    A workflow instance, in turn, would consist of the relevant containers, the data that is used and created by these containers, and the enactment state of the workflow. These conceptual mappings are summarized in Figure~\ref{fig:conceptual_correspondence_between_wfms_and_docker_entities}.
+
+    Like activities, workflows can thus be represented by images. Such a workflow image could contain the process definition of the respective workflow and other data that is specific to it. Alternatively, the workflow data may be passed to the workflow engine for enactment in another format.
+    The variant in which the workflow information is distributed in a separate image along with the activity images is referred to in the following as $*_{SEPC}^{*}$, while the variant in which the workflow information is passed along otherwise is denoted as $*_{AC}^{*}$.
+    Theoretically, a workflow could be completely encapsulated in an image, \ie with all its related activities and its configuration. This case is referred to as $*_{1C}^*$.
 
     \begin{figure}[htbp]
       \centering
-      \includegraphics[width=0.95\textwidth]{content/images/execution_container-crop.pdf}
-      \caption{Layer Contents for Element-wrapping Containers}
-      \label{fig:layers_for_element_wrapping_containers}
+        \begin{tabular}{r c l}
+          \toprule
+          Activity           & $\rightarrow$ & Image\\
+          Activity instance  & $\rightarrow$ & Container\\
+          Process definition & $\rightarrow$ & List of images + control flow + data flow\\
+          Workflow           & $\rightarrow$ & Activity images + process definition\\
+          Workflow instance  & $\rightarrow$ & Activity containers + data + enactment status\\
+          \bottomrule
+        \end{tabular}
+      \caption{Possible Mapping of WfMS and Docker Concepts}
+      \label{fig:conceptual_correspondence_between_wfms_and_docker_entities}
     \end{figure}
+
+    Wrapping activities -- and optionally workflows -- in Docker images creates new possibilities in regard to distribution and enactment of these entities. Images can be uploaded to public or private image registries to provide a standardized way for the deployment to nodes. This offers a way to make the deployment available as a service. Nodes can be instructed to contact these registries in order to be provided with required images or update existing ones.
+
+    The layering principle behind Docker images makes updates to activity and workflow images lightweight -- as long as only the uppermost layers are changed, the lower ones do not have to be up- and downloaded again. This allows to distribute a complete runtime environment to new nodes while updating only specific layers on existing nodes using one and the same image.
+
+    Containers can be paused and resumed, \ie all processes within them are suspended. -> saves CPU until activity/workflow is resumed
+
+
+      - enactment
+        - state traceable
+        - pause resume
+        - user input: own form provider vs centralized
+
+
+    What are the drawbacks of this concept?
+
+
+
+
+    - concept
+      - idea
+        - similar life cycles
+          - container
+            - states
+              - created
+              - running
+              - paused
+              - stopped
+              - deleted
+          - process instance
+            - states
+              - initiated
+              - runnning
+              - active
+              - suspended
+              - terminated
+              - complete
+          - thus state trackable with docker
 
     \begin{figure}[htbp]
       \centering
-      \includegraphics[width=0.95\textwidth]{content/images/layer_concept-crop.pdf}
-      \caption{Layers of Element-wrapping containers}
-      \label{fig:layers_for_element_wrapping_containers}
+      \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=5cm, semithick]
+        \sffamily\fontsize{10}{10}\selectfont
+        \node (cr){};
+        \node (run){};
+        \node[state] (A)     [right =3cm of cr]         {created};
+        \node[state]         (B) [right =2.5cm of A] {running};
+        \node[state]         (C) [below right of=B] {stopped};
+        \node[state]         (D) [above =2cm of B] {paused};
+        \node[state]         (E) [below of=A] {deleted};
+
+        \path (cr) edge [] node {create} (A)
+            (run) edge [out=45,in=150]                     node {run} (B)
+              (A) edge []                              node {start} (B)
+                  edge [bend right]                    node {rm}    (E)
+              (B) edge [out=230, in=200, distance=4cm] node {kill}  (C)
+                  edge [out=250,in=175, distance=2.5cm]node {stop}  (C)
+                  edge [bend left]                     node {pause}  (D)
+                  edge [in=30, out=45, loop]           node {restart}  (D)
+                  edge [out=10, in=90, distance=2cm]   node {\textit{container process exited}}  (C)
+              (C) edge [bend right]                    node {start}  (B)
+                  edge [bend left]                     node {rm}  (E)
+              (D) edge [bend left]                     node {unpause} (B)
+              ;
+      \end{tikzpicture}
+      \caption*{Simplified version. Commands should be understood prefixed with \textit{docker}. \newline \scriptsize Based on https://docs.docker.com/engine/reference/api/docker\_remote\_api/\#docker-events }
+      \caption[Docker Container Life Cycle]{Docker Container Life Cycle \cite{Docker2016Docker}}
+      \label{fig:docker_container_lifecycle}
     \end{figure}
+
+
+
   % subsubsection element_wrapping_containers (end)
 
   \subsubsection{Worker containers} % (fold)
@@ -110,7 +183,6 @@ TODO: table consistent with text?
 
   \subsubsection{Data Exchange via Data Volume} % (fold)
   \label{ssub:data_exchange_via_data_volume}
-
     The idea behind this concept is, that all containers involved in the execution of one workflow instance have access to a common working directory, in which the data visibility scopes can be established using a file system structure. This working directory resides in a data volume owned by a container that is specific to the respective workflow instance and whose only purpose is to ensure the existence of said volume.
 
     - data volume mountable via -v option

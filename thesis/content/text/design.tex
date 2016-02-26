@@ -1,7 +1,7 @@
 % -*- root: ../../main.tex -*- %
 \subsection{Components} % (fold)
 \label{sub:components}
-  As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that suitable service boundaries have to be determined. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted. In case of \acp{WfMS}, the identification of system components by the \ac{WFMC} for their reference model can be interpreted as such an analysis. Based on those components further micro-services for the prototype are then identified.
+  As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that it is crucial to determine suitable service boundaries. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted. In case of \acp{WfMS}, the identification of system components by the \ac{WFMC} for their reference model can be interpreted as such an analysis. Based on those components further micro-services for the prototype are then identified.
 
   As presented in \ref{sub:system_components}, the \ac{WFMC} identified the following components:
     \begin{itemize}[nosep]
@@ -151,6 +151,45 @@
     \label{fig:label}
   \end{figure}
 % subsection components (end)
+
+\subsection{Workflow and Activity Images} % (fold)
+\label{sub:workflow_activity_images}
+  To reap the benefits of the layer mechanism, the structure of the images should be chosen with care. Layers should be created in a way that enables reusability among the different use cases and they should be ordered by the frequency that they are changed with.
+
+  The proposed structure of workflow and activity images, which is depicted in Figure~\ref{fig:layers_for_element_wrapping_containers} and reflected in the respective Dockerfiles \ref{}, \ref{}, , is thus as follows.
+
+  The proposed structure consists on three images, which should build on each other consecutively, as they are meant to be increasingly specialized. The first image should provide the runtime environment. This image could be provided by a third-party vendor that specializes in building such images, \ie an \ac{OS} community or framework developers. Based on this image, a generic activity image \texttt{ac\_base} (and, for $*_{SEPC}^{*}$, a generic workflow image \texttt{wf\_base}) should be created. This image can be extended with element-specific information for each element of a workflow, when that workflow is exported for deployment, to yield the uppermost images \texttt{ac\_\$activity\_id} (and \texttt{wf\_\$workflow\_id}). An instance of this last image would then be a container with a suitable name of the form \texttt{aci\_\$activity\_instance\_id} (and respectively \texttt{wfi\_\$workflow\\\_instance\_id}).
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{content/images/layer_concept-crop.pdf}
+    \caption{Layer Structure for Activity-/Workflow Images}
+    \label{fig:layers_for_element_wrapping_containers}
+  \end{figure}
+
+  Regarded in a more detailed fashion, the images' structure should look as follows.
+  The foundation should be formed by \emph{runtime environment layers}, as they are expected to change rather seldom and are required by all derived images. Usually, these layers contain an \ac{OS}, common libraries and utility programs.
+
+  The layers that form the \emph{$^*$\_base} images can be separated in two groups, \emph{common layers} and \emph{element-type-specific layers}. The \emph{element type} refers to either activity or workflow.
+  The common layers should be created on top of these runtime environment layers. They are intended to contain the effects of invoked commands, added directory structures and files which are required by both activity images and workflow images. Even though no explicit name is given to these layers, they will be stored by Docker in its cache and used during the build process.
+
+  In the next step, element-type-specific layers should be added. These layers are meant to contain data that is required for the execution of an activity \emph{or} a workflow, for example scripts which perform validation tasks (if they are not provided by a service) or general-purpose data transformation.
+
+  The element-specific layers, which are added in the course of the export of an element (activity or workflow), contain files that are particular to single workflows or activities. In case of workflow images, for example, one of these layers would contain the process definition. In an activity image, one of these layers would contain the activity configuration and another layer could bring the schemata for data validation.
+
+  - writable container layer
+
+  At the time of writing, Docker registries do not yet reuse layers across repository borders during uploads, even though it is a proposed feature \cite{Mcgowan2015Proposal}. In order to benefit from the layering in the previously described way, it is thus necessary to let all activity images reside in the same repositoryby naming them in the format
+
+  \centerline{\texttt{\$repository\_url/activity}}
+
+  and using the respective activity's \ac{ID} as a tag to differentiate between them. They can then be referred to as
+
+  \centerline{\texttt{\$repository\_url/activity:ac\_\$activity\_id}}.
+
+  Since one loses the internal image versioning mechanism this way, this solution should only be used as a workaround until cross-repository sharing of layers is possible.
+
+% subsection workflow_activity_images (end)
 
 \subsection{Communication} % (fold)
   \label{sub:application_level_communication}

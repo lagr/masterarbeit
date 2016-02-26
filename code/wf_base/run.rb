@@ -29,7 +29,7 @@ module Workflow
 end
 
 
-#ensure the container is connected to the networks before starting processing
+#ensure the container is connected to the required networks before starting processing
 retries = 20
 begin
   Resolv.getaddress("wfms_engine_1.wfms_enactment")

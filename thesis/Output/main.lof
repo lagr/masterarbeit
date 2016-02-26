@@ -4,14 +4,16 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Layer Contents for Element-wrapping Containers\relax }}{21}{figure.caption.21}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Layers of Element-wrapping containers\relax }}{22}{figure.caption.22}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Exemplary directory structure for $G_{*}^{DV}$\relax }}{23}{figure.caption.23}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Deployment Diagram of the Architecture\relax }}{44}{figure.caption.35}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Possible Mapping of WfMS and Docker Concepts\relax }}{22}{figure.caption.21}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Docker Container Life Cycle}}{23}{figure.caption.22}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Exemplary directory structure for $G_{*}^{DV}$\relax }}{24}{figure.caption.23}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Deployment Diagram of the Architecture\relax }}{45}{figure.caption.35}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Layer Structure for Activity-/Workflow Images\relax }}{46}{figure.caption.36}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces UML Class Diagram for the Definition Service\relax }}{48}{figure.caption.37}
-\contentsline {figure}{\numberline {5.2}{\ignorespaces UML Class Diagram for the Organization Service\relax }}{49}{figure.caption.39}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces UML Class Diagram of the Workflow Definition Service\relax }}{51}{figure.caption.40}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Layer Contents for Element-wrapping Containers\relax }}{50}{figure.caption.37}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces UML Class Diagram for the Definition Service\relax }}{52}{figure.caption.39}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces UML Class Diagram for the Organization Service\relax }}{53}{figure.caption.41}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces UML Class Diagram of the Workflow Definition Service\relax }}{55}{figure.caption.42}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
