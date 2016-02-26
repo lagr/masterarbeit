@@ -61,13 +61,23 @@ TODO: table consistent with text?
 \subsection{Mode of operation of the Aspects} % (fold)
 \label{sub:mode_of_operation_of_the_aspects}
   **ASD ASD ASD** (afrob und samy deluxe)
-  In the following the previously introduced concepts are explained in more detail and some variations on them are given.
+  In the following the previously briefly introduced concepts are explained in more detail and some variations on them are given.
 
   \subsubsection{Grouped or spread execution} % (fold)
   \label{ssub:grouped_or_spread_execution}
+    These variations are about the allocation of containers related to one workflow instance on the available nodes. While \ref{sub:execution_scheduling} deals with the mechanisms behind the scheduling, the larger concept of grouped or spread execution will be discussed here.
+
+    On the one hand, one could assign the containers to different nodes. This could happen at random, with regards to characteristics of the containers or their underlying workflow elements, or based on the current workload of the nodes. Spread execution requires the images that belong the the workflow elements in doubt to be present at all nodes.
+
+    On the other hand, the first container might be assigned to one node and all subsequently started containers
+
+
     - couple all containers
     - couple specific containers
     - spread execution
+      - at random
+      - with regards to properties
+      - respective images must be available on all nodes
   % subsubsection grouped_or_spread_execution (end)
 
   \subsubsection{Element-wrapping containers} % (fold)
@@ -185,14 +195,7 @@ TODO: table consistent with text?
 
   In this variant, data is transferred before and after each step in the workflow, \ie when the execution starts, when it ends, whenever an activity is instantiated or an instance finished its work. This is only economical if the amount of data is sufficiently small or if the workflows consist of few activities.
 
-  In order for the workflow execution to function correctly, the service must be reliably available to all containers.
-
-  - service must be present
-
-  - think about hosting multiple services (1 per node)
-  - probably superfluous network roundtrip
-  - less efficient for large files than using a file system
-
+  In order for the workflow execution to function correctly, the data management service must be reliably available to all containers.
 % subsection grouped_execution_using_a_intermediate_service (end)
 
 \subsection[Grouped or spread execution using direct connections]{Grouped or spread execution using direct connections ($G_{*}^{D}$/$S_{*}^{D}$)} % (fold)
@@ -296,47 +299,7 @@ TODO: table consistent with text?
 
 \subsection{Execution Scheduling} % (fold)
 \label{sub:execution_scheduling}
-  In the course of a workflow enactment, several containers have to be instantiated -- unless the worker-based approach ($*_{TYPE}^{*}$) is chosen. Choosing the node on which the instantiation takes place is a task that may impact the performance of the containers and the enactment itself, as the nodes may differ regarding their available resources. There are three aspects that concern the scheduling of containers: whether Docker Swarm or a custom component manages it, by which rules or criteria the scheduling takes place, and whether and how the user should be able to take influence on the scheduling.
-
-  \subsubsection{Identification of Desired Scheduling Criteria} % (fold)
-  \label{ssub:identification_of_desired_scheduling_criteria}
-    In order to examine scheduling solutions, some goals should be specified to which they can be evaluated against -- an exhaustive list of these goals is not in the scope of this thesis, though. Thus, two groups of scheduling goals are considered.
-
-    On the one hand, scheduling may be performed based on the properties of the nodes, which can be of qualitative or quantitative nature. Examples for qualitative node properties could be its name, geographical location, membership in some arbitrary grouping, the intended use
-
-    On the other hand, containers may be assigned to nodes based on \ac{WfMS}-specific data.
-
-    - scheduling goals
-      - based on WFMS info
-        - active components
-        - internal data
-        - nature of activity/workflow
-      - based on node resources
-        - qualitative
-        - quantitative
-
-    \begin{table}[!htbp]
-      \centering
-      \begin{tabular}{r c c}
-        \toprule
-        \textbf{Scheduling based on} & Docker Swarm & Custom Component \\
-        \midrule
-        \textbf{Node Properties} & \cmark & \cmark \\
-        Qualitative & \cmark & \cmark \\
-        Quantitative & \cmark & \cmark \\ \midrule
-        \textbf{\ac{WfMS} Data} & \cmark & \cmark\\
-        Live Data & \xmark & \cmark \\
-        Active Workflow Components  & $\bigcirc$ & \cmark \\
-        Activity/Workflow Properties & \cmark & \cmark \\
-        \bottomrule
-      \end{tabular}
-      \label{tab:scheduling_criteria}
-      \captionsetup{justification=centering}
-      \caption*{\footnotesize{\ja~ supported ~~|~~ $\bigcirc$~ depends on chosen containerization model, (partially supported for $*_{*}^{AC}$/$*_{*}^{SEPC}$) ~~|~~ \xmark~ not supported}
-      }
-      \caption{Supported Scheduling Criteria}
-    \end{table}
-  % subsubsection identification_of_desired_scheduling_criteria (end)
+  In the course of a workflow enactment, several containers have to be instantiated -- unless the worker-based approach ($*_{TYPE}^{*}$) is chosen. Choosing the node on which the instantiation takes place is a task that may impact the performance of the containers and the enactment itself, as the nodes may differ regarding their available resources. It is thus of interest to examine by which rules or criteria the scheduling may take place and whether and how the user should be able to take influence on the scheduling.
 
   \subsubsection{Scheduling Abilities of Docker Swarm} % (fold)
     \label{ssub:abilities_of_docker_swarm}
@@ -366,48 +329,109 @@ TODO: table consistent with text?
     Further, there are some implicit forms of scheduling. First, containers will not be executed on nodes that Swarm considers \emph{unhealthy}, \ie that do not respond or otherwise exhibit faulty behavior. Second, some Docker features imply scheduling rules. If the container requires an exposed port, it will not be scheduled on nodes where this port is already occupied. Mounted volumes of, a shared network stack with or a link to another container imply an affinity to that container, which will prohibit the execution if it is not met.
   % subsubsection abilities_of_docker_swarm (end)
 
-  \subsubsection{Abilities of Custom Scheduling Components} % (fold)
-  \label{ssub:abilities_of_custom_scheduling_components}
-    By querying the swarm master, a custom scheduler component can theoretically infer the information required to perform the same kind of scheduling offered by Docker Swarm. Opposed to the latter, it could further acquire information related to current workflow enactments and perform the scheduling based on that live data. For example, if an user specifies his/her current location in the course of a workflow enactment, all subsequent containers could be scheduled to run on nodes that suit the laws of that country.
-  % subsubsection abilities_of_custom_scheduling_components (end)
+  \subsubsection{Identification of Possible Scheduling Criteria} % (fold)
+  \label{ssub:identification_of_desired_scheduling_criteria}
+    In order to examine scheduling solutions, some goals should be specified to which they can be evaluated against -- an exhaustive list of these goals is not in the scope of this thesis, though. Thus, two groups of exemplary scheduling criteria are considered, which are depicted in Table~\ref{tab:scheduling_criteria}.
 
-  \subsubsection{Approaches for Scheduling Criteria} % (fold)
-  \label{ssub:approaches_for_scheduling_criteria}
-    - swarm
-      - docker based
-        - qualitative: encode in labels
-        - quantitative: encode in labels
-      - wfms based
-        - Live Data
-          - no, cannot man
-        - Active Workflow Components
-          - get running containers, rules based on container labels
-        - ``passive'' Activity/Workflow Properties
-          - encode in labels
-    - custom
-      - like swarm
+    On the one hand, scheduling may be performed based on the properties of the nodes, which can be of qualitative or quantitative nature, their tags or the execution environment they have to offer. Examples for qualitative node properties could be its name, present containers or images, geographical location, the nature of its storage device, or its membership in some arbitrary groups. Quantitative properties of interest might be the amount of available memory or storage, the number of currently running containers or the node's network speed.
 
-    - solutions
-      - container state (wf status based)
-        - only custom solution
-      - location based (eg for compliance)
-        - label
-        - ip?
-      - resource based
-        - regex for comparisons
-          - eg
-            - label: wfms.ram.\$ram in mb
-            - \texttt{wfms.ram.([1-9]{\textbackslash}d\{3,\}|[6-9]{\textbackslash}d\{2,\})} for 600MB+ ram
+    On the other hand, containers may be assigned to nodes based on \ac{WfMS}-specific data. This could be for example properties of the underlying activities and workflows, the status and data of their instances or the state of a custom scheduling mechanism of the \ac{WfMS}. For example, if an user specifies his/her current location in the course of a workflow enactment, all subsequent containers could be scheduled to run on nodes that suit the laws of that country.
+
+    \begin{table}[!htbp]
+      \centering
+      \begin{tabular}{l l l}
+        \toprule
+        Data Source & Criterion Type & Examples \\
+        \midrule
+        Docker
+          & Node tags
+            & Name \\
+            && \ac{ID} \\
+            && Storage driver \\
+            && Execution driver \\
+            && Kernel version  \\
+            && Operating system \\ [1.2ex]
+          & Qualitative node properties
+            & Geographic location\\
+            && Custom grouping membership\\
+            && Ownership status\\ [1.2ex]
+          & Quantitative node properties
+            & Available memory \\
+            && Available storage \\
+            && Network speed \\ [1.2ex]
+          & Execution environment
+            & Existing containers \\
+            && Existing images \\
+            && Currently running containers \\ [1.4ex]
+        WfMS
+          & Live data
+            & Enactment status \\
+            & Activity input/output data \\
+            && Workflow input/output data \\ [1.2ex]
+          & Activity/workflow properties
+            & Expected data-intensity \\
+            && Compliance requirements\\
+            &&\\ [1.2ex]
+        \bottomrule
+      \end{tabular}
+      \label{tab:scheduling_criteria}
+      \caption{Scheduling Criteria}
+    \end{table}
+
+    Both qualitative and quantitative properties of a node can be stored in custom labels on that node.
+    Qualitative values can simply be stored as strings and used in constraints via globbing and regular expressions. Assuming, for example, the nodes had their location stored as a label with the format
+
+    \centerline{\texttt{com.example.location=\$country}}
+
+    with \texttt{\$country} being the respective ISO 3166-1 alpha-2 code \cite{Standardization2013De}; and the information whether they belong to the own company or are rented servers stored as a label with the format
+
+    \centerline{\texttt{com.example.internal=\$internal}}
+
+    with \texttt{\$internal} being the string representation of a boolean value. Then, in order to schedule a container to a self-owned node in Germany running any version of the \emph{Ubuntu} operating system, the following combination of tag and label constraints could be used:
+
+    \centerline{\texttt{constraint:operatingsystem==Ubuntu*}}
+    \centerline{\texttt{constraint:com.example.location==de}}
+    \centerline{\texttt{constraint:com.example.internal==true}}
+
+    Quantitative values stored in a label may be queried with comparisons using regular expressions. Assuming all nodes have a label that specifies their amount of memory, which has the form
+
+    \centerline{\texttt{com.example.ram=\$mem}}
+
+    with \texttt{\$mem} being the amount of memory in megabytes. In this setting, a container can be scheduled to a node with at least 650 megabytes of memory by enforcing the constraint
+
+    \centerline{\texttt{constraint:com.example.ram==/([6][5-9]{\textbackslash}d|[7-9]{\textbackslash}d\{2,\}|{\textbackslash}d\{4,\})/}.}
+
+    This regular expression will match a) any number with four or more digits and b) any three digits number that starts with a number in the range of 7-9 and c) any three digits number that starts with 6 and continues with a number in the range of 5-9. Analogously to this, other quantitative measures may be stored and queried.
+
+    Scheduling constraints regarding present images and containers can be realized using the appropriate affinity filters. One possible use case is to ensure, that all images and containers required for the enactment of a workflow element are present:
+
+    \centerline{\texttt{affinity:image==required-image-name}}
+    \centerline{\texttt{affinity:container==required-container-name}}
+
+    At the current state of Docker Swarm, it is not possible to make sure that the containers are not only present but also running. If it is required, this criterion has to be addressed by some custom mechanism of the \ac{WfMS}, \eg a method that queries the swarm master's \ac{API}, selects a suitable node with running instances of the required container and constructs an according node constraint.
+
+    Since updating labels and tags of containers and nodes after their creation is not possible at the time of writing, all \ac{WfMS} related data created during enactment has to be sent to the system and managed internally by it.
+
+    Properties of activities and workflows that has been defined at build time may be stored in the form of labels when they are created. This is possible by using the \texttt{LABEL} command for desired labels in the respective Dockerfile in combination with passing their value as an argument for the build command:
+
+    \textcolor{gray}{in Dockerfile:}
+
+    \centerline{\texttt{\textbf{LABEL} com.example.expected-data-intensity=\$data-intensity}}
+
+    \textcolor{gray}{in command line:}
+
+    \centerline{\texttt{docker build [...] --build-arg data-intensity=high [...]}}
+
+    The workflow engine could then use the image's labels to take these properties into account. For complex properties, labels containing serialized JSON objects could be used \cite{Docker????Docker}.
   % subsubsection approaches_for_scheduling_criteria (end)
-
-
-
 
   \subsubsection{Implications of Other Design Decisions} % (fold)
   \label{ssub:implications_of_other_design_decisions}
     \acp{WfMS} may let the workflow modeling developer take influence on the scheduling of workflow containers by letting that user define constraints or affinities on them at build time. This could be beneficial because of the user's potential a priori knowledge on these elements, \eg whether they are data-intensive and thus require some large storage, or because it enables meeting compliance rules, \eg concerning the geographical location of data storage and processing.
 
-    Since the $G_{DV}^{*}$ approaches are grouped on one node by definition, the scheduling takes place for the first container only, while subsequent containers are bound to the same node by the implicit affinity created through the mounted data volume.
+    Since the $G_{*}^{DV}$ approaches are grouped on one node by definition, the scheduling takes place for the first container only, while subsequent containers are bound to the same node by the implicit affinity created through the mounted data volume.
+
+    There is no need for scheduling in the sense of managing container startups in the $*_{TYPE}^{*}$ use case, since the workers are already running. One could restrict the workers that are allowed to work on a task, though.
   % subsubsection implications_of_other_design_decisions (end)
 
 

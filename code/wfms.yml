@@ -152,6 +152,9 @@ services:
     depends_on:
       - definition_db
       - mom
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
     networks:
       - backend
       - enactment

@@ -28,7 +28,7 @@ module Activity
     container = Docker::Container.create({
       'name' => "aci_#{Activity::Configuration.activity_instance_id}_#{config['image']}",
       'Image' => "#{Activity::Configuration.image_registry}/#{config['image']}:#{config['image_version']}",
-      'Cmd' => config['cmd']
+      'Cmd' => config['cmd'].split(' ')
     })
 
     container.start

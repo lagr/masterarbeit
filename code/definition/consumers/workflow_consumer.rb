@@ -27,7 +27,7 @@ class WorkflowConsumer
       Hutch.publish "wfms.workflow.destroyed"
 
     when :export
-      Hutch.publish "wfms.workflow.exported"
+      Hutch.publish "wfms.workflow.exported", {}
       workflow = Workflow.find(message['id'])
       ImageManager.export_workflow(workflow)
     end
