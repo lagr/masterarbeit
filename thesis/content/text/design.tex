@@ -108,7 +108,7 @@
 
   \subsubsection{Validation Service} % (fold)
     \label{subs:valitation_service}
-    One micro-service that might be extracted from the above services concerns the validation of data is the validation service. Given a dataset and a set of rules on how to validate this dataset, the service is able to perform its task autonomously. As validation is a frequently recurring action in the execution of workflows -- before and after each activity and workflow -- it could thus be beneficial to be able to scale the execution of this task independently.
+    One micro-service that might be extracted from the above services concerns the validation of data. Given a dataset and a set of rules on how to validate this dataset, the service is able to perform its task autonomously. As validation is a frequently recurring action in the execution of workflows -- before and after each activity and workflow -- it could thus be beneficial to be able to scale the execution of this task independently.
     % subsubsection valitation_service (end)
 
   \subsubsection{Support Services} % (fold)
@@ -163,7 +163,7 @@
   \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{content/images/layer_concept-crop.pdf}
-    \caption{Layer Structure for Activity-/Workflow Images}
+    \caption{Layer Structure for Activity/Workflow Images}
     \label{fig:layers_for_element_wrapping_containers}
   \end{figure}
 
@@ -175,20 +175,19 @@
 
   In the next step, element-type-specific layers should be added. These layers are meant to contain data that is required for the execution of an activity \emph{or} a workflow, for example scripts which perform validation tasks (if they are not provided by a service) or general-purpose data transformation.
 
-  The element-specific layers, which are added in the course of the export of an element (activity or workflow), contain files that are particular to single workflows or activities. In case of workflow images, for example, one of these layers would contain the process definition. In an activity image, one of these layers would contain the activity configuration and another layer could bring the schemata for data validation.
+  The element-specific layer, which is added in the course of the export of an element (activity or workflow), contains files that are particular to single workflows or activities. In case of workflow images, for example, this layer would contain the process definition. In an activity image, it would contain the activity configuration and the schemata for data validation.
 
-  - writable container layer
+  By instantiating the resulting image a container is created at runtime, which owns the uppermost, writable layer. This is where the activity or workflow may store data that it needs during execution.
 
-  At the time of writing, Docker registries do not yet reuse layers across repository borders during uploads, even though it is a proposed feature \cite{Mcgowan2015Proposal}. In order to benefit from the layering in the previously described way, it is thus necessary to let all activity images reside in the same repositoryby naming them in the format
+  At the time of writing, Docker registries do not yet reuse layers across repository borders during uploads, even though it is a proposed feature \cite{Mcgowan2015Proposal}. In order to benefit from the layering in the previously described way, it is thus necessary to let all activity images reside in the same repository by tagging them in the format
 
   \centerline{\texttt{\$repository\_url/activity}}
 
-  and using the respective activity's \ac{ID} as a tag to differentiate between them. They can then be referred to as
+  and using the respective activity's \ac{ID} as a version tag to differentiate between them. They can then be referred to as
 
-  \centerline{\texttt{\$repository\_url/activity:ac\_\$activity\_id}}.
+  \centerline{\texttt{\$repository\_url/activity:ac\_\$activity\_id}}
 
-  Since one loses the internal image versioning mechanism this way, this solution should only be used as a workaround until cross-repository sharing of layers is possible.
-
+  Analogously, this is done with workflow images. Since it implies losing the internal image versioning mechanism, this solution should only be used as a workaround until cross-repository sharing of layers is possible.
 % subsection workflow_activity_images (end)
 
 \subsection{Communication} % (fold)

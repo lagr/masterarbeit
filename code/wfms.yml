@@ -178,10 +178,10 @@ services:
       - "SWARM_MANAGER_CERT_PATH=/root/.docker"
       - "constraint:node==development-machine"
 
-  user_interface:
-    image: user_interface
+  user_gateway:
+    image: user_gateway
     build:
-      context: ./user_interface
+      context: ./user_gateway
       args:
         - "constraint:node==development-machine"
     depends_on:

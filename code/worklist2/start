@@ -1,3 +1,0 @@
-#!/bin/bash
-rake wfms:create_db_if_non_existant
-bundle exec rails s -b 0.0.0.0
