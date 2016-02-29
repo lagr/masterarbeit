@@ -24,16 +24,22 @@ module Activity
   def start_container
     require 'docker-api'
     config = activity_info['configuration']
+    registry = Activity::Configuration.image_registry
+    image_name = [config['image'], config['image_version']].join(':')
 
     container = Docker::Container.create({
-      'name' => "aci_#{Activity::Configuration.activity_instance_id}_#{config['image']}",
-      'Image' => "#{Activity::Configuration.image_registry}/#{config['image']}:#{config['image_version']}",
+      'name' => "#{Activity::Configuration.container_name}_#{config['image']}",
+      'Image' => "#{registry}/#{image_name}",
       'Cmd' => config['cmd'].split(' ')
     })
 
     container.start
     container.wait(60 * 60)
-    input[Activity::Configuration.activity_instance_id] = { container_logs: container.logs(stdout: true) }
+
+    input[Activity::Configuration.activity_instance_id] = {
+      container_out: container.logs(stdout: true),
+      container_err: container.logs(stderr: true)
+    }
   end
 
   def start_user_input
@@ -49,18 +55,25 @@ module Activity
     #   get_form_data
     # end
     # request_form_deletion
-    input[Activity::Configuration.activity_instance_id] = { activity: Activity::Configuration.activity_id, manual_form_data: {name: "Peter Müllerd"} }
+    input[Activity::Configuration.activity_instance_id] = {
+      activity: Activity::Configuration.activity_id,
+      manual_form_data: {name: "Peter Müllerd"}
+    }
   end
 
   def start_subworkflow
   end
 
   def log_self_to_input
-    input[Activity::Configuration.activity_instance_id] = { activity: Activity::Configuration.activity_id }
+    input[Activity::Configuration.activity_instance_id] = {
+      activity: Activity::Configuration.activity_id
+    }
   end
 
   def write_output
-    File.open("#{ENV['WORKDIR']}/output/input.data.json", "w") { |f| f.write(input.to_json) }
+    File.open(Activity::FileHelper.output_data, "w") do |file|
+      file.write(input.to_json)
+    end
   end
 
   def activity_info
@@ -75,7 +88,7 @@ end
 
 # ensure the container is connected to the networks before starting processing
 begin
-  Resolv.getaddress "aci_#{Activity::Configuration.activity_instance_id}.wfms_enactment"
+  Resolv.getaddress "#{Activity::Configuration.container_name}.wfms_enactment"
 rescue
   sleep 0.1
   retry

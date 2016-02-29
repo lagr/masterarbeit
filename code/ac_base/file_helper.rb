@@ -21,5 +21,9 @@ module Activity
     def input_data
       "#{input_dir}/input.data.json"
     end
+
+    def output_data
+      "#{output_dir}/input.data.json"
+    end
   end
 end

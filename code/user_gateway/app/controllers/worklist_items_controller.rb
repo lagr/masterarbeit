@@ -1,35 +1,25 @@
 class WorklistItemsController < ApplicationController
-  before_action :set_worklist_item, only: [:edit, :update, :destroy]
+  def index
+    @worklist_items = mq_request 'worklist_item.index', 'worklist_item.indexed', user_id: params[:user_id]
+  end
 
   def edit
+    @worklist_item = mq_request 'worklist_item.show', 'worklist_item.showed', id: params[:id]
   end
 
   def update
-    respond_to do |format|
-      if @worklist_item.update(worklist_item_params)
-        format.html { redirect_to @worklist_item, notice: 'Worklist item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @worklist_item }
-      else
-        format.html { render :edit }
-        format.json { render json: @worklist_item.errors, status: :unprocessable_entity }
-      end
-    end
+    mq_request 'worklist_item.update', 'worklist_item.updated', id: params[:id], worklist_item: params[:worklist_item]
+    redirect_to worklist_items_url, notice: 'Worklist item was successfully submitted.' }
   end
 
   def destroy
-    @worklist_item.destroy
-    respond_to do |format|
-      format.html { redirect_to worklist_items_url, notice: 'Worklist item was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    mq_request 'wfms.user.destroy', 'wfms.user.destroyed', id: params[:id]
+    redirect_to worklist_items_url, notice: 'Worklist item was successfully destroyed.'
   end
 
   private
-    def set_worklist_item
-      @worklist_item = WorklistItem.find(params[:id])
-    end
 
-    def worklist_item_params
-      params[:worklist_item]
-    end
+  def worklist_item_params
+    params[:worklist_item]
+  end
 end

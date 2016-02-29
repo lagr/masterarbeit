@@ -45,5 +45,9 @@ module Activity
     def image_registry
       ENV['IMAGE_REGISTRY'] || '192.168.99.100:5000'
     end
+
+    def container_name
+      "aci_#{Activity::Configuration.activity_instance_id}"
+    end
   end
 end

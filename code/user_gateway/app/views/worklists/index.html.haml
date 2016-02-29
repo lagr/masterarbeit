@@ -1,4 +1,4 @@
-%h1 Listing worklists
+%h1 Worklists
 
 %table
   %thead
@@ -6,6 +6,6 @@
       %th Worklist of
 
   %tbody
-    - @worklists.each do |worklist|
+    - @users.each do |user|
       %tr
-        %td= link_to worklist.user.name, worklist
+        %td= user.name, link_to worklist_items_path(user_id: user.id)

@@ -19,5 +19,5 @@ rescue
   retry
 end
 
-Dir.glob(File.join('./', '{models,lib,consumers}', '**', '*.rb'), &method(:require))
+Dir.glob(File.join('./', '{models,consumers}', '**', '*.rb'), &method(:require))
 

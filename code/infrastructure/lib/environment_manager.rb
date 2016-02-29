@@ -1,3 +1,5 @@
+require 'thread'
+
 module EnvironmentManager
   extend self
 
@@ -16,7 +18,34 @@ module EnvironmentManager
     Docker::Image.all({all: true, filters: { dangling: [false] } }.to_json, DockerHelper.docker_connection(server))
   end
 
+  def watch_for_new_nodes
+    Thread.new do
+      Docker::Event.stream do |event|
+        return unless event.status == 'engine_connect'
+        server = Server.new(name: event.from.gsub('swarm node:', ''), ip: nil)
+        start_provisioner(server_name)
+      end
+    end
+  end
+
   private
+
+  def start_provisioner(server)
+    provisioner = Docker::Container.create({
+      'name' => "provisioner-#{server.name}",
+      'Image' => "provisioner",
+      'Cmd' => [''],
+      'HostConfig' => {'Binds'=>['/var/run/docker.sock:/var/run/docker.sock']},
+      'Env' => ["constraint:node==#{server.name}"],
+      'AttachStdin' => false, 'AttachStdout' => false, 'AttachStderr' => false,
+      'Tty' => true
+    }, DockerHelper.swarm_manager_connection)
+
+    Docker::Network.get('wfms_enactment', DockerHelper.swarm_manager_connection)
+      .connect("provisioner-#{server.name}")
+
+    provisioner.start
+  end
 
   def ip?(string)
     remove_port(string) =~ Resolv::IPv4::Regex
