@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  27 FEB 2016 09:38
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.5)  28 FEB 2016 13:24
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -901,7 +901,7 @@ Package: blindtext 2012/01/06 V2.0 blindtext-Package
 \c@blind@pangramcount=\count169
 \c@blind@pangrammax=\count170
 ) (/usr/local/texlive/2015/texmf-dist/tex/latex/minted/minted.sty
-Package: minted 2015/01/31 v2.0 Yet another Pygments shim for LaTeX
+Package: minted 2015/09/09 v2.1 Yet another Pygments shim for LaTeX
 (/usr/local/texlive/2015/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2008/02/07
 
@@ -966,7 +966,7 @@ LaTeX Info: Redefining \\ on input line 3056.
 \FV@BreakSymbolSepLeft=\dimen167
 \FV@BreakSymbolSepRight=\dimen168
 \FV@BreakSymbolIndentLeft=\dimen169
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 677.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 688.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
@@ -981,10 +981,6 @@ File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 \c@listing=\count187
 )
 runsystem(mkdir -p "_minted-main")...executed.
-
-runsystem(which "pygmentize" && touch "main.aex")...executed.
-
-runsystem(rm "main.aex")...executed.
 
 (./_minted-main/default.pygstyle) (/usr/local/texlive/2015/texmf-dist/tex/latex
 /booktabs/booktabs.sty
@@ -2061,6 +2057,10 @@ LaTeX Info: Redefining \upshape on input line 2247.
 . and font adjustment code:
 . 
 .................................................
+runsystem(which "pygmentize" && touch "main.aex")...executed.
+
+runsystem(rm "main.aex")...executed.
+
 (/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux
 
 LaTeX Warning: Label `tab:docker_variants' multiply defined.
@@ -2176,7 +2176,8 @@ File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \c@lstlisting=\count333
-ABD: EveryShipout initializing macros
+(./_minted-main/default-pyg-prefix.pygstyle) ABD: EveryShipout initializing mac
+ros
 \customtabwidth=\skip139
 Package hyperref Info: Option `pageanchor' set `false' on input line 105.
 
@@ -2398,10 +2399,10 @@ Class scrreprt Warning: \float@addtolists detected!
 Chapter 2.
 Package acronym Info: Label `acro:WFMC' newly defined as it shall be overridden
 
-although it is yet undefined on input line 131.
+although it is yet undefined on input line 130.
 Package acronym Info: Label `acro:WfMS' newly defined as it shall be overridden
 
-although it is yet undefined on input line 131.
+although it is yet undefined on input line 130.
 (./content/text/wfms.tex
 Overfull \hbox (1.63724pt too wide) in paragraph at lines 10--11
 []\EU1/CrimsonText(0)/m/it/12 Process activities \EU1/CrimsonText(0)/m/n/12 are
@@ -2425,7 +2426,7 @@ LaTeX Warning: Reference `key' on page 8 undefined on input line 148.
 Chapter 3.
 
 LaTeX Warning: Reference `sec:functionality' on page 9 undefined on input line 
-143.
+141.
 
 (./content/text/docker.tex
 Package acronym Info: Label `acro:OS' newly defined as it shall be overridden
@@ -2472,14 +2473,16 @@ Overfull \hbox (17.99998pt too wide) in paragraph at lines 80--105
 
 ] [16] [17]) (./content/text/docker_for_wf_execution.tex
 
-Package caption Warning: \label without proper \caption on input line 346.
+Package caption Warning: \label without proper \caption on input line 296.
 See the caption package documentation for explanation.
 
 
 LaTeX Warning: Reference `tab:docker_variants' on page 18 undefined on input li
-ne 5.
+ne 4.
 
-[18] [19] [20] [21] [22]
+[18] [19] [20] [21] [22] [23]
+LaTeX Font Info:    Font shape `EU1/SourceCodePro(0)/m/n' will be
+(Font)              scaled to size 10.79993pt on input line 171.
 \forest@temp@box=\box32767 (local)
 \forest@temp@box=\box32766 (local)
 \forest@temp@box=\box32765 (local)
@@ -2497,126 +2500,153 @@ ne 5.
 \forest@temp@box=\box32753 (local)
 \forest@temp@box=\box32752 (local)
 \forest@temp@box=\box32751 (local)
-LaTeX Font Info:    Font shape `EU1/SourceCodePro(0)/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 247.
-[23] [24]
+\forest@temp@box=\box32750 (local)
+\forest@temp@box=\box32749 (local)
+[24]
 Package acronym Info: Label `acro:NFS' newly defined as it shall be overridden
-although it is yet undefined on input line 253.
+although it is yet undefined on input line 211.
 Package acronym Info: Label `acro:P2P' newly defined as it shall be overridden
-although it is yet undefined on input line 253.
-[25]
+although it is yet undefined on input line 211.
+[25] [26]
 LaTeX Font Info:    External font `cmex7' loaded for size
-(Font)              <5> on input line 317.
+(Font)              <5> on input line 267.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 317.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 267.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 317.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 267.
 
-Overfull \hbox (2.68901pt too wide) in paragraph at lines 318--318
+Overfull \hbox (2.68901pt too wide) in paragraph at lines 268--268
  []|$\OML/ztmcm/m/it/12 G[]$| 
  []
 
 
-Overfull \hbox (2.68901pt too wide) in paragraph at lines 323--323
+Overfull \hbox (7.13493pt too wide) in paragraph at lines 270--270
  []|$\OML/ztmcm/m/it/12 G[]$| 
  []
 
 
-Overfull \hbox (2.68901pt too wide) in paragraph at lines 329--329
+Overfull \hbox (2.68901pt too wide) in paragraph at lines 273--273
  []|$\OML/ztmcm/m/it/12 G[]$| 
  []
 
 
-Overfull \hbox (4.36246pt too wide) in paragraph at lines 296--345
+Overfull \hbox (7.13493pt too wide) in paragraph at lines 275--275
+ []|$\OML/ztmcm/m/it/12 G[]$| 
+ []
+
+
+Overfull \hbox (2.68901pt too wide) in paragraph at lines 279--279
+ []|$\OML/ztmcm/m/it/12 G[]$| 
+ []
+
+
+Overfull \hbox (7.13493pt too wide) in paragraph at lines 281--281
+ []|$\OML/ztmcm/m/it/12 G[]$| 
+ []
+
+
+Overfull \hbox (4.47098pt too wide) in paragraph at lines 285--285
+ []|$\OML/ztmcm/m/it/12 S[]$| 
+ []
+
+
+Overfull \hbox (4.47098pt too wide) in paragraph at lines 289--289
+ []|$\OML/ztmcm/m/it/12 S[]$| 
+ []
+
+
+Overfull \hbox (4.36246pt too wide) in paragraph at lines 249--295
  [][] 
  []
 
-[26] [27] [28] [29]
+[27] [28]
+\nodeDist=\dimen305
+[29] [30] [31]
 
-Package caption Warning: \label without proper \caption on input line 449.
+Package caption Warning: \label without proper \caption on input line 441.
 See the caption package documentation for explanation.
 
 
-LaTeX Warning: Reference `tab:scheduling_criteria' on page 30 undefined on inpu
-t line 406.
+LaTeX Warning: Reference `tab:scheduling_criteria' on page 32 undefined on inpu
+t line 398.
 
 
-Overfull \hbox (13.18098pt too wide) in paragraph at lines 406--407
+Overfull \hbox (13.18098pt too wide) in paragraph at lines 398--399
 \EU1/CrimsonText(0)/m/n/12 Thus, two groups of exemplary scheduling criteria ar
 e considered, which are depicted in Table [][][]. 
  []
 
-
-Overfull \hbox (2.4747pt too wide) in paragraph at lines 458--459
+[32] [33]
+Overfull \hbox (2.43954pt too wide) in paragraph at lines 450--451
 []\EU1/CrimsonText(0)/m/n/12 with \EU1/SourceCodePro(0)/m/n/12 $country \EU1/Cr
 imsonText(0)/m/n/12 being the respective ISO 3166-1 alpha-2 code [[]]; and the 
 information whether
  []
 
-[30] [31]
+[34]
 LaTeX Font Info:    Font shape `EU1/SourceCodePro(0)/bx/n' will be
-(Font)              scaled to size 10.79993pt on input line 491.
-[32]) (./content/text/architecture.tex
+(Font)              scaled to size 10.79993pt on input line 483.
+) [35] (./content/text/architecture.tex
 Package acronym Info: Label `acro:SOA' newly defined as it shall be overridden
 although it is yet undefined on input line 5.
-[33]
+[36]
 Package acronym Info: Label `acro:OASIS' newly defined as it shall be overridde
 n
-although it is yet undefined on input line 24.
+although it is yet undefined on input line 23.
 Package acronym Info: Label `acro:WSDL' newly defined as it shall be overridden
 
-although it is yet undefined on input line 24.
-[34]
+although it is yet undefined on input line 23.
 Package acronym Info: Label `acro:ESB' newly defined as it shall be overridden
-although it is yet undefined on input line 26.
+although it is yet undefined on input line 25.
 Package acronym Info: Label `acro:MSA' newly defined as it shall be overridden
-although it is yet undefined on input line 41.
-[35]
+although it is yet undefined on input line 39.
+[37]
 Package acronym Info: Label `acro:MOM' newly defined as it shall be overridden
-although it is yet undefined on input line 54.
-[36] [37] [38]
+although it is yet undefined on input line 52.
+[38] [39] [40]
 Package acronym Info: Label `acro:all' newly defined as it shall be overridden
-although it is yet undefined on input line 136.
+although it is yet undefined on input line 131.
 
-Package acronym Warning: Acronym `all' is not defined on input line 136.
+Package acronym Warning: Acronym `all' is not defined on input line 131.
 
 
-Package acronym Warning: Acronym `all' is not defined on input line 136.
+Package acronym Warning: Acronym `all' is not defined on input line 131.
 
-[39]) (./content/text/design.tex [40] [41] [42] [43]
+[41]) (./content/text/design.tex [42] [43] [44] [45]
 File: content/images/Architecture-crop.pdf Graphic file (type QTm)
-<use  "content/images/Architecture-crop.pdf" > [44] [45]
+<use  "content/images/Architecture-crop.pdf" >
 
-LaTeX Warning: Reference `' on page 46 undefined on input line 159.
+LaTeX Warning: Reference `' on page 46 undefined on input line 157.
 
 
-LaTeX Warning: Reference `' on page 46 undefined on input line 159.
+LaTeX Warning: Reference `' on page 46 undefined on input line 157.
 
+[46] [47]
 File: content/images/layer_concept-crop.pdf Graphic file (type QTm)
-<use  "content/images/layer_concept-crop.pdf" > [46]) [47] [48]
+<use  "content/images/layer_concept-crop.pdf" > [48]) [49]
 Chapter 5.
 (./content/text/implementation.tex
 File: content/images/execution_container-crop.pdf Graphic file (type QTm)
-<use  "content/images/execution_container-crop.pdf" > [49
+<use  "content/images/execution_container-crop.pdf" > [50
 
-] [50]
+] [51]
 
-LaTeX Warning: Reference `' on page 51 undefined on input line 72.
+LaTeX Warning: Reference `' on page 52 undefined on input line 72.
 
 Package acronym Info: Label `acro:CRUD' newly defined as it shall be overridden
 
 although it is yet undefined on input line 72.
 File: content/images/class_diagram_definition-crop.pdf Graphic file (type QTm)
-<use  "content/images/class_diagram_definition-crop.pdf" > [51]
+<use  "content/images/class_diagram_definition-crop.pdf" > [52]
 Package acronym Info: Label `acro:RoR' newly defined as it shall be overridden
 although it is yet undefined on input line 101.
 File: content/images/class_diagram_organization-crop.pdf Graphic file (type QTm
 )
-<use  "content/images/class_diagram_organization-crop.pdf" > [52] [53] [54]
+<use  "content/images/class_diagram_organization-crop.pdf" > [53] [54] [55]
 File: content/images/class_d_definition-crop.pdf Graphic file (type QTm)
-<use  "content/images/class_d_definition-crop.pdf" >) [55]
+<use  "content/images/class_d_definition-crop.pdf" >) [56]
 Chapter 6.
-(./content/text/evaluation_discussion.tex) [56
+(./content/text/evaluation_discussion.tex) [57
 
 ]
 Chapter 7.
@@ -2626,32 +2656,94 @@ Overfull \hbox (134.30911pt too wide) in paragraph at lines 9--201
 http://www.workflowpatterns.com/documentation/documents/BPM-
  []
 
-(/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.bbl [57
+(/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.bbl [58
 
-] [58
+] [59
 
-]) [59]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 204.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 204.
+]) [60]
+\openout5 = `main.mintedcmd'.
+
+runsystem(python -c "import hashlib; hasher = hashlib.sha1(); f = open(\"main.m
+intedcmd\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"../code/ac_
+base/run.rb\", \"rb\"); hasher.update(f.read()); f.close(); f = open(\"main.min
+tedmd5\", \"w\"); macro = \"\\edef\\minted@hash\" + chr(123) + hasher.hexdigest
+() + chr(125) + \"\"; f.write(\"\\makeatletter\" + macro + \"\\makeatother\\end
+input\n \"); f.close();")...executed.
+
+
+! Package minted Error: Missing Pygments output; \inputminted was
+probably given a file that does not exist--otherwise, you may need 
+the outputdir package option, or may be using an incompatible build tool.
+
+See the minted package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.208   \inputminted{ruby}{../code/ac_base/run.rb}
+                                                  
+This could be caused by using -output-directory or -aux-directory 
+without setting minted's outputdir, or by using a build tool that 
+changes paths in ways minted cannot detect.
+
+! Undefined control sequence.
+<argument> ...ile {\minted@cachedir /\minted@hash 
+                                                  .pygtex}\IfFileExists {\mi...
+l.208   \inputminted{ruby}{../code/ac_base/run.rb}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...achefile \expandafter {\minted@hash 
+                                                  .pygtex}\minted@inputpyg 
+l.208   \inputminted{ruby}{../code/ac_base/run.rb}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+(./_minted-main/.pygtex [61
+
+]
+
+LaTeX Font Warning: Font shape `EU1/SourceCodePro(0)/m/it' undefined
+(Font)              using `EU1/SourceCodePro(0)/m/n' instead on input line 41.
+
+LaTeX Font Info:    Font shape `EU1/SourceCodePro(0)/m/it' will be
+(Font)              scaled to size 10.79993pt on input line 42.
+[62])
+runsystem(rm "main.mintedcmd")...executed.
+
+[63]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 212.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 212.
 (/Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 204.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 204.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 212.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 212.
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
 
 LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 204.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 212.
  ) 
 Here is how much of TeX's memory you used:
- 55061 strings out of 493706
- 1117617 string characters out of 6145770
- 1333911 words of memory out of 5000000
- 57407 multiletter control sequences out of 15000+600000
+ 55505 strings out of 493706
+ 1128989 string characters out of 6145770
+ 1332999 words of memory out of 5000000
+ 57845 multiletter control sequences out of 15000+600000
  29399 words of font info for 120 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
- 110i,16n,136p,10415b,2375s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 110i,16n,136p,10415b,2569s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on /Users/larsgreiving/eigene/masterarbeit/thesis/Output/main.pd
-f (66 pages).
+f (70 pages).

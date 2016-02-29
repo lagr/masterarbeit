@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{} Base image}
+\PYG{k}{FROM}\PYG{l+s}{ ruby:2.2}
+
+\PYG{c}{\PYGZsh{} Shared files}
+\PYG{k}{RUN} apt\PYGZhy{}get update \PYG{o}{\PYGZam{}\PYGZam{}} apt\PYGZhy{}get install \PYGZhy{}y git \PYG{l+s+se}{\PYGZbs{}}
+	\PYG{o}{\PYGZam{}\PYGZam{}} wget \PYGZhy{}qO\PYGZhy{} https://get.docker.com/ \PYG{p}{|} sh \PYG{l+s+se}{\PYGZbs{}}
+ 	\PYG{o}{\PYGZam{}\PYGZam{}} rm \PYGZhy{}rf /var/lib/apt/lists/*
+
+\PYG{k}{RUN} mkdir /wfms
+\PYG{k}{WORKDIR}\PYG{l+s}{ /wfms}
+\PYG{k}{ADD}\PYG{l+s}{ [\PYGZdq{}Gemfile\PYGZdq{}, \PYGZdq{}Gemfile.lock\PYGZdq{}, \PYGZdq{}/wfms/\PYGZdq{}]}
+\PYG{k}{RUN} bundle install
+
+\PYG{c}{\PYGZsh{} Activity files}
+\PYG{k}{RUN} mkdir /activity
+\PYG{k}{WORKDIR}\PYG{l+s}{ /activity}
+\PYG{k}{ENTRYPOINT}\PYG{l+s}{ ruby run.rb}
+\PYG{k}{ADD}\PYG{l+s}{ . /activity}
+\end{Verbatim}

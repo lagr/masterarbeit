@@ -1,0 +1,30 @@
+{
+  "activities": [
+    {
+      "id": "81769dfd-6336-4604-a550-5264f1603269",
+      "type": "start",
+      "successors": [
+        "a0990b04-7c47-4490-8981-8e434523121b"
+      ],
+      "predecessors": []
+    },
+    {
+      "id": "5ff2892c-7325-439b-835f-d8f582005dd5",
+      "type": "end",
+      "successors": [],
+      "predecessors": [
+        "a0990b04-7c47-4490-8981-8e434523121b"
+      ]
+    },
+    {
+      "id": "a0990b04-7c47-4490-8981-8e434523121b",
+      "type": "container",
+      "successors": [
+        "5ff2892c-7325-439b-835f-d8f582005dd5"
+      ],
+      "predecessors": [
+        "81769dfd-6336-4604-a550-5264f1603269"
+      ]
+    }
+  ]
+}

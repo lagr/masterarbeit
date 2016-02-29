@@ -1,5 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYGdefault{k}{class} \PYGdefault{n+nc}{Workflow} \PYGdefault{o}{\PYGdefaultZlt{}} \PYGdefault{n+no}{ActiveRecord}\PYGdefault{o}{::}\PYGdefault{n+no}{Base}
-  \PYGdefault{n+no}{WORKFLOW\PYGdefaultZus{}ELEMENT\PYGdefaultZus{}TYPES} \PYGdefault{o}{=} \PYGdefault{l+s+sx}{\PYGdefaultZpc{}w[ StartElement EndElement OrSplit OrJoin AndSplit AndJoin ManualActivity AutomaticActivity ]}
-\PYGdefault{k}{end}
-\end{Verbatim}

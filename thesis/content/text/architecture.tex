@@ -14,7 +14,6 @@
     The weaknesses of monolithic architecture stem from its cohesive nature. As its components are usually tightly coupled, changes to one component can affect other parts of the application, which complicates the introduction of new components and the refactoring of existing ones \cite{Stubbs2015Distributed}.
     Components cannot be deployed individually, which hinders reuse of functionality across several applications more difficult and makes scaling of single bootleneck components impossible \cite{Stubbs2015Distributed}. Also, if the application runs in a single process, the failure of one component may bring down the whole application \cite[p.~5]{Newman2015Building}.
 
-    In combination with Docker, a possible solution could look like this: ...
     % paragraph monolithic_architecture (end)
 
   \paragraph{Service-oriented Architecture} % (fold)
@@ -26,14 +25,13 @@
     Messages between services in \ac{SOA} are either of direct nature, which is called point-to-point connection, or backed by a message bus, the \ac{ESB} which incorporates the integration logic, \eg on transport and transformation of messages, between services and supports asynchronous messages \cite[p.~393]{Papazoglou2007Service}. While the former leads to tight coupling between the components, which becomes impractical with increasing numbers of endpoints, the latter manages this scenario better \cite[p.~393]{Papazoglou2007Service}.
 
     On the one hand, \ac{SOA} has some advantages in comparison to monolithic architecture.
-    Service consumers do not have to make assumptions - or know - how services work, they only have to rely on the invokation of a service and its result to be formed as expected \cite[p.~390]{Papazoglou2007Service}. As long as the interface and the output of existing services do not change, a service provider may thus be altered or its capabilities be extended without affecting its services' consumers \cite[p.~390]{Papazoglou2007Service}. \ac{SOA} thus enhances an organization’s ability to respond quickly to changes \cite[p.~390]{Papazoglou2007Service}, \cite[p.~254]{Choi2010Implementing}. \\
+    Service consumers do not have to make assumptions - or know - how services work, they only have to rely on the invocation of a service and its result to be formed as expected \cite[p.~390]{Papazoglou2007Service}. As long as the interface and the output of existing services do not change, a service provider may thus be altered or its capabilities be extended without affecting its services' consumers \cite[p.~390]{Papazoglou2007Service}. \ac{SOA} thus enhances an organization’s ability to respond quickly to changes \cite[p.~390]{Papazoglou2007Service}, \cite[p.~254]{Choi2010Implementing}. \\
     Since legacy applications can be provided with appropriate interfaces, SOA can help to integrate and extend them \cite[p.~390]{Papazoglou2007Service}.
 
     On the other hand, \ac{SOA} has some drawbacks, too.
     For example, the failure of a single service provider may bring down multiple applications that consume its services, if no fallback measures are in place \cite[p.~408f]{Papazoglou2007Service}.
     Also, the overall performance of an application with \ac{SOA} depends on the aggregated performances of the services it uses and their respective interactions \cite[p.~408f]{Papazoglou2007Service}.
 
-    In combination with Docker, a possible solution could look like this: ...
     % paragraph service_oriented_architecture (end)
 
   \paragraph{Micro-services Architecture} % (fold)
@@ -44,7 +42,7 @@
 
     Strîmbei et al created a differentiation between SOA and MSA as a distinct concept based on several sources. They come to the conclusion, that while the communication in \ac{SOA} is synchronous and ``smart but dependency-laden'', \ac{MSA} usually relies on asynchronous, ``dumb, fast messaging'' -- meaning that there is few information on the participating services contained in the messaging infrastructure. Further, they perceive applications in \ac{SOA} to be typically imperative in their programming style, while \ac{MSA} would be in an event-driven programming style \cite[pp.~17-20]{Strimbei2015Software}. They see \ac{SOA} applications as being usually stateful and \ac{MSA} applications as stateless. Finally they characterize the databases in \ac{SOA} as large relational databases and the databases in \ac{MSA} as small, often non-relational databases.
 
-    One benefit of \ac{MSA}, which it shares with \ac{SOA} is that each service can be developed in a language and with a toolset that suits its specific needs, \eg a lower-level language for time-critical but simple tasks or a high-level language with some framework for complex ones, instead of having to find a compromise that suits most of the application  \cite[p.~35]{Stubbs2015Distributed}, \cite[p.~4]{Newman2015Building}, \cite[p.~113]{Thones2015Microservices}.
+    One benefit of \ac{MSA}, which it shares with \ac{SOA}, is that each service can be developed in a language and with a toolset that suits its specific needs, \eg a lower-level language for time-critical but simple tasks or a high-level language with some framework for complex ones, instead of having to find a compromise that suits most of the application  \cite[p.~35]{Stubbs2015Distributed}, \cite[p.~4]{Newman2015Building}, \cite[p.~113]{Thones2015Microservices}.
     The narrow focus of each service makes it less specialized to certain uses, which should theoretically enable better reuse of code \cite[p.~35]{Stubbs2015Distributed}.
     Another positive aspect is the \emph{resilience} of micro-services when it comes to service failures, that is, a single failing service does not render the whole system incapable of working \cite[p.~5]{Newman2015Building}.
     Due to the properties of the \ac{MSA}, micro-services may be deployed, upgraded and scaled individually \cite[p.~116]{Thones2015Microservices}.
@@ -52,13 +50,10 @@
     Researchers also see disadvantages and problems that may go hand in hand with the use of \ac{MSA}.
     While \ac{MSA} facilitates deploying parts of an application individually, the overall amount of work required for the deployment of all services is higher and the coordination of the deployments is complexer than the deployment of a monolithic application.
     As services may be unavailable at times, a mechanism has to be in place that allows the discovery of services (such as the \ac{MOM}) \cite[p.~35]{Stubbs2015Distributed}.
-    Unless a dedicated service is introduced, there is no central access to the services' logs. Aggregation, analysis and fixing errors is thus more complicated in comparison to monolithic architecture \cite[p.~35]{Stubbs2015Distributed}.
+    Unless a dedicated logging service is introduced and used, there is no central access to the services' logs. Aggregation and analysis of errors and fixing them is thus more complicated in comparison to monolithic architecture \cite[p.~35]{Stubbs2015Distributed}.
     In order to define the different services, it is necessary to find the right size for each service, \ie the appropriate scope of its functionality. This process is difficult and not needed to this extend in monolithic architectures or \ac{SOA}.
 
-    In combination with Docker, a possible solution could look like this: ...
     % paragraph micro_services_architecture (end)
-
-  <<Possible instances of the wfms components in monolith, soa and msa>>
 % subsection application_structure (end)
 
 \subsection{Choice of an Architecture Style} % (fold)
@@ -87,13 +82,12 @@
   Contrary to that, the modular structure of a \ac{MSA} with clearly defined borders intuitively promotes separate user interfaces for different functionalities.
   In a \ac{MSA}, either each service offers its own user interface or there is a component at some point between the user and the \ac{WfMS} that consolidates the interaction. As this architectural style is chosen in \ref{sub:choice_of_an_achitecture_model}, the advantages and disadvantages of both options are briefly discussed in the following.
 
-  Separate user interfaces increase the flexibility regarding changes in both frontend and backend of a service. While the adaption of a consolidating component to a change within one service would likely require its redeployment and thus affect the availability of other services -- this is not the case if a dedicated user interface is in place, which can be restarted without affecting other services.
+  Separate user interfaces increase the flexibility regarding changes in both frontend and backend of a service. While the adaption of a consolidating component to a change within one service would likely require its redeployment and thus affect the availability of other services, this is not the case if a dedicated user interface is in place, which can be restarted without affecting other services.
 
-
-
+  One disadvantage of separate access to the different services is, that the user needs to know the location of each service in order to address it. Another drawback is that in this setting, tasks such as authentication, load balancing etc would have to be performed for each service separately.
+\textcolor{red}{
   - no of requests
   - bundle logic in one place, danger of monolith-like heap of logic
-
   - with micro services
     - two options
       - separate user interfaces per service
@@ -102,7 +96,6 @@
         - - client somehow has to know the services
         - - auth / load balancing / ... duplicated per service
         - - multiple clients: need to be updated on service changes
-
       - API gateway pattern to consolidate  services the user can interact with
         - The API gateway handles requests in one of two ways. Some requests are simply proxied/routed to the appropriate service. It handles other requests by fanning out to multiple services.
         - + single entry point for all clients.
@@ -110,13 +103,10 @@
         - - new single point of failure
           -> can be duplicated behind Load balancer
         - - has to be maintained
-
   API Gateway in this case features message endpoint pattern \cite[pp.~95-97]{Hohpe2004Enterprise}
-
-
   Web-GUI vs application GUI vs CLI
+}
 % subsection user_interaction_with_the_system (end)
-
 \subsection{Inter-component Communication} % (fold)
 \label{sub:inter_component_communication}
 
@@ -124,7 +114,7 @@
 
   The naïve approach would be to let each container expose its required ports on the host's network interface. In order to communicate with a service in another container, an application would then contact the host machine \ac{IP} address with the respective port. While this solution appeals because of its simplicity, it comes with considerable drawbacks.
   First, a port can only be used by one application at a time. This poses a problem as soon as a container is run more than once simultaneously, \eg if multiple services require the same database application or a service is started several times for scaling.
-  Second, this exposes the services in doubt to requests from any computer that can communicate with the host machine. Unless this is desired behavior, it creates an unnecessary attack surface.
+  Second, this exposes the services in question to requests from any computer that can communicate with the host machine. Unless this is desired behavior, it creates an unnecessary attack surface.
 
   Another approach is the use of a Docker feature called \emph{links}, which allows to specify direct connections between containers based on their names.
   Docker then creates a secure tunnel between the specified containers and provides information on how the link source container may be addressed to the recipient container. This happens in two ways: it passes along all environment variables of the link source container to the targeted container and updates the \texttt{/etc/hosts} file, which is responsible for manual resolution of hostnames to \ac{IP} addresses.
@@ -149,5 +139,5 @@
 
   As a convenience of Docker networking, each service can simply be addressed by its container's name and its port. As long as their required ports are not exposed on the host's network interface, any number of containers may be reachable on the same port. This is especially beneficial for running multiple containers that offer the same application, since they all can use their default ports this way.
 
-  ** TODO drawbacks? **
-  As the last approach offers the required capabilities and has the fewest drawbacks, it should be favored over the other presented ones.
+  As the last approach offers the required capabilities and, at the time of this writing, had no published drawbacks, it should be favored over the other presented ones.
+% subsection inter_component_communication (end)

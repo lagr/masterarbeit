@@ -1,0 +1,1 @@
+pygmentize -l ruby -f latex -P commandprefix=PYG -F tokenmerge -o "main.out.pyg" "../code/ac_base/run.rb" 

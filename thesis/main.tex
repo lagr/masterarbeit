@@ -85,7 +85,7 @@
   \setThema{Prototypical Development of a\\Docker-based Workflow Management System}
   \setTyp{Masterthesis}
   \setFachgebiet{}
-  \setLehrstuhl{Department of Information Systems --- Practical Computer Science}
+  \setLehrstuhl{Department of Information Systems --- Chair for Practical Computer Science}
   \setThemensteller{Prof.\ Dr.\ Herbert Kuchen}
   \setBetreuer{MScIS Vincent von Hof}
   \setAutor{Lars Greiving}
@@ -125,22 +125,20 @@
 
   \chapter{Workflow Management Systems} % (fold)
     \label{cha:workflow_management_systems}
-
     In this chapter, the concepts of workflows and workflow management systems will be briefly introduced and related to each other.
     There is a plethora of term definitions and deviating understandings of workflows and the concepts related to them \cite{Casati1999Specification}.
     In large parts, the concepts presented here thus rely on specifications published by the \ac{WFMC}, a consortium of workflow management software vendors, researchers in the field of workflow management and \ac{WfMS} users, as they represent some form of consensus.
 
-    The identified use cases and properties will be used in \ref{sec:determination_of_objectives} to identify objectives for the architecture. Also, they will be the reference to which the final architecture developed in this thesis is evaluated against.
-
+    The identified use cases and properties will be used in \ref{sec:determination_of_objectives} to identify objectives for the architecture. Also, they will be the reference to which the final architecture developed in this thesis is compared against.
     \input{content/text/wfms}
     % chapter workflow_management_systems (end)
 
   \chapter{Docker} % (fold)
     \label{cha:docker}
 
-    When multiple applications or application instances are intended to run on one physical machine without interfering with each other, they are usually isolated in terms of execution environments and provided with a controllable share of system resources \cite{Felter2014Updated}. These goals can be fulfilled by both virtual machines and software containers \cite{Ruiz2015Performance}. The difference between these two options and the basic principles of software containers are shown in \ref{sec:docker_concepts}.
+    When multiple applications or application instances are intended to run on one physical machine without interfering with each other, they are usually isolated in terms of execution environments and provided with a controllable share of system resources \cite{Felter2014Updated}. These goals can be fulfilled by both virtual machines and software containers \cite{Ruiz2015Performance}. The difference between these two options and the basic principles of software containers are shown in \ref{sec:docker_concepts} to give an understanding of the technology.
 
-    Docker is a tool, that aims at simplifying software container creation and management. In Section \ref{sec:docker_concepts} its underlying concepts will be presented. Based on that, the functionality that Docker provides will be explained in Section \ref{sec:functionality}. Finally, the Docker ecosystem, \ie the set of tools that enhance the core docker tool, is introduced in Section \ref{sec:docker_ecosystem}.
+    Docker is a tool, that aims at simplifying the creation and management of software containers. In Section \ref{sec:docker_concepts} its underlying concepts will be presented. Based on that, the functionality that Docker provides will be explained in Section \ref{sec:functionality}. Finally, the Docker ecosystem, \ie the set of tools that enhance the core docker tool, is introduced in Section \ref{sec:docker_ecosystem}.
 
     \input{content/text/docker}
     % chapter docker (end)
@@ -148,11 +146,12 @@
   \chapter{Conceptual Development of the WFMS} % (fold)
     \label{cha:solution_design}
 
-    In order to make substanciated decisions in the design process, the intended outcome has to be outlined first. Bearing in mind the concepts presented in Chapter \ref{cha:workflow_management_systems} and \ref{cha:docker}, objectives that together form the intended outcome are thus compiled in Section \ref{sec:determination_of_objectives}. Based on these objectives, the concept of a Docker-based \ac{WfMS} is then shaped in Section \ref{sec:architecture}.
+    In order to make substanciated decisions in the design process, the intended outcome has to be outlined first. Bearing in mind the concepts presented in Chapter \ref{cha:workflow_management_systems} and \ref{cha:docker}, objectives that together form the intended outcome are thus compiled in Section \ref{sec:determination_of_objectives}.
 
-    The benefit \acp{WfMS} could obtain from using the Docker ecosystem is twofold.
-    On the one hand, the distribution and execution of workflows could be improved.
-    On the other hand, the infrastructure of the system itself might be improved by the use of Docker.
+    The potential benefit \acp{WfMS} could obtain from using the Docker ecosystem is twofold.
+    On the one hand, the distribution and execution of workflows and their components could be enhanced, which is addressed in Section~\ref{sec:docker_for_wf_execution}.
+    On the other hand, the mode of operation of the \ac{WfMS} itself might be improved by the use of Docker.
+    Based on the previously determined objectives, the architecture of a Docker-based \ac{WfMS} is thus shaped in Section~\ref{sec:architecture} and subsequently its design in Section~\ref{sec:design}.
 
     \section{Determination of Objectives} % (fold)
       \label{sec:determination_of_objectives}
@@ -170,13 +169,17 @@
     \section{System Architecture} % (fold)
       \label{sec:architecture}
 
-      After the determination of objectives in Section \ref{sec:determination_of_objectives}, the solution can be developed in this section. Since it has considerable impact on the other aspects, the higher level architecture is chosen first in \ref{sub:application_structure}. With increasing level of detail, the other aspects are then fleshed out gradually. (~Sections go here~)
+      With the objectives determined in Section \ref{sec:determination_of_objectives} in mind, a Docker-based architecture is developed in this section. First, possible architecture styles are presented in \ref{sub:application_structure}, of which one is then chosen with regards to potential benefits in combination with Docker. Subsequently, the manner users interact with the system is chosen in \ref{sub:user_interaction_with_the_system} and the high-level mode of communication between containers in \ref{sub:inter_component_communication}.
 
       \input{content/text/architecture}
       % section architecture (end)
 
     \section{System Design} % (fold)
       \label{sec:design}
+
+      While high-level decisions are made in Section~\ref{sec:architecture}, this section is concerned with the more detailed view on the system design.
+      First, the structure and desired behavior of workflow images and activity images is determined in \ref{sub:workflow_activity_images}. Then, the mode of communication between the system components is chosen in \ref{sub:application_level_communication}. Finally, the system's components are identified and designed in \ref{sub:components}.
+
       \input{content/text/design}
       % section design (end)
 
@@ -201,4 +204,30 @@
 
   \bibliographystyle{plain}
   \bibliography{Remote}
+
+  \appendix
+  \AnhChapter{Kapitel}
+
+  % \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/ac_base/run.rb}
+
+  \begin{figure}[htbp]
+    \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{json}{./content/snippets/process_definition.json}
+    \caption{Exported process definition in JSON format}
+    \label{fig:exported_process_definition_in_json_format}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{Dockerfile}{../code/ac_base/Dockerfile}
+    \caption{Dockerfile for activity base image}
+    \label{fig:dockerfile_for_activity_base_image}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{Dockerfile}{../code/wf_base/Dockerfile}
+    \caption{Dockerfile for workflow base image}
+    \label{fig:dockerfile_for_workflow_base_image}
+  \end{figure}
+
+  \AnhSection{Unterkapitel}
+
 \end{document}

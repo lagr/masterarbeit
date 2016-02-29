@@ -34,6 +34,10 @@ J.~Choi, D.L. Nazareth, and H.K. Jain.
 \newblock {\em Journal of Management Information Systems}, 26(4):253--286,
   2010.
 
+\bibitem{Dehamer2015Docker}
+Brian DeHamer.
+\newblock Docker hub top 10, 2015.
+
 \bibitem{Docker????Dockerb}
 Inc. Docker.
 \newblock Docker orchestration product brief.
@@ -86,6 +90,10 @@ David Hollingsworth.
 Open~Container Initiative.
 \newblock Open containers initative.
 
+\bibitem{Kim2015Checkpoint}
+Hirokuni Kim.
+\newblock Checkpoint and restore docker container with criu, 2015.
+
 \bibitem{Lawrence1997Workflow}
 Peter Lawrence, editor.
 \newblock {\em Workflow Handbook 1997}.
@@ -94,6 +102,10 @@ Peter Lawrence, editor.
 \bibitem{Mcgowan2015Proposal}
 Derek McGowan.
 \newblock Proposal: Cross repository push, 2015.
+
+\bibitem{Merker2015How}
+Kit Merker.
+\newblock How did the quake demo from dockercon work?, 2015.
 
 \bibitem{Miell2015How}
 Ian Miell and Aidan~H. Sayers.

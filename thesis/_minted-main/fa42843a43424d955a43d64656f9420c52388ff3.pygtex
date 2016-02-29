@@ -1,0 +1,32 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{\PYGZob{}}
+  \PYG{n+nt}{\PYGZdq{}activities\PYGZdq{}}\PYG{p}{:} \PYG{p}{[}
+    \PYG{p}{\PYGZob{}}
+      \PYG{n+nt}{\PYGZdq{}id\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}81769dfd\PYGZhy{}6336\PYGZhy{}4604\PYGZhy{}a550\PYGZhy{}5264f1603269\PYGZdq{}}\PYG{p}{,}
+      \PYG{n+nt}{\PYGZdq{}type\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}start\PYGZdq{}}\PYG{p}{,}
+      \PYG{n+nt}{\PYGZdq{}successors\PYGZdq{}}\PYG{p}{:} \PYG{p}{[}
+        \PYG{l+s+s2}{\PYGZdq{}a0990b04\PYGZhy{}7c47\PYGZhy{}4490\PYGZhy{}8981\PYGZhy{}8e434523121b\PYGZdq{}}
+      \PYG{p}{],}
+      \PYG{n+nt}{\PYGZdq{}predecessors\PYGZdq{}}\PYG{p}{:} \PYG{p}{[]}
+    \PYG{p}{\PYGZcb{},}
+    \PYG{p}{\PYGZob{}}
+      \PYG{n+nt}{\PYGZdq{}id\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}5ff2892c\PYGZhy{}7325\PYGZhy{}439b\PYGZhy{}835f\PYGZhy{}d8f582005dd5\PYGZdq{}}\PYG{p}{,}
+      \PYG{n+nt}{\PYGZdq{}type\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}end\PYGZdq{}}\PYG{p}{,}
+      \PYG{n+nt}{\PYGZdq{}successors\PYGZdq{}}\PYG{p}{:} \PYG{p}{[],}
+      \PYG{n+nt}{\PYGZdq{}predecessors\PYGZdq{}}\PYG{p}{:} \PYG{p}{[}
+        \PYG{l+s+s2}{\PYGZdq{}a0990b04\PYGZhy{}7c47\PYGZhy{}4490\PYGZhy{}8981\PYGZhy{}8e434523121b\PYGZdq{}}
+      \PYG{p}{]}
+    \PYG{p}{\PYGZcb{},}
+    \PYG{p}{\PYGZob{}}
+      \PYG{n+nt}{\PYGZdq{}id\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}a0990b04\PYGZhy{}7c47\PYGZhy{}4490\PYGZhy{}8981\PYGZhy{}8e434523121b\PYGZdq{}}\PYG{p}{,}
+      \PYG{n+nt}{\PYGZdq{}type\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}container\PYGZdq{}}\PYG{p}{,}
+      \PYG{n+nt}{\PYGZdq{}successors\PYGZdq{}}\PYG{p}{:} \PYG{p}{[}
+        \PYG{l+s+s2}{\PYGZdq{}5ff2892c\PYGZhy{}7325\PYGZhy{}439b\PYGZhy{}835f\PYGZhy{}d8f582005dd5\PYGZdq{}}
+      \PYG{p}{],}
+      \PYG{n+nt}{\PYGZdq{}predecessors\PYGZdq{}}\PYG{p}{:} \PYG{p}{[}
+        \PYG{l+s+s2}{\PYGZdq{}81769dfd\PYGZhy{}6336\PYGZhy{}4604\PYGZhy{}a550\PYGZhy{}5264f1603269\PYGZdq{}}
+      \PYG{p}{]}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{]}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

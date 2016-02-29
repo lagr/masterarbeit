@@ -5,7 +5,10 @@
 
   - GDVSEPC
     - why?
+
   - wf engine partially in wf container
+
+  - communication via mom
 
   - ruby / ruby on rails
     - for readability
@@ -41,6 +44,12 @@
       - activity instance
       - file helper
       - configuration
+    - dirs
+      - /workflow
+        - process definition.json
+        - input.mapping.json
+        - input.schema.json
+        - workflow.info.json
 
   % subsection workflow_container (end)
 
@@ -49,6 +58,11 @@
     - application
       - configuration
       - file helper
+    - dirs
+      - /activity
+        - input.mapping.json
+        - input.schema.json
+        - activity.info.json
 
     - application wrapper
     - manual input wrapper
@@ -69,21 +83,11 @@
 
     The application container is granted access to the Docker daemon of its host node in form of a mounted volume in order to build and push images.
 
-    As planned in \ref{}, the service has the model classes \texttt{Activity}, \texttt{ControlFlow}, \texttt{ProcessDefinition} and \texttt{Workflow}, which on the one hand act as object-relational mappers for persistence to the database, on the other hand ensure some validity constraints. Further, there exists a controller class for each of the aforementioned models, which provides \ac{CRUD} actions for the respective model. In order to have more fine-grained control over the serialization of a workflow, the \texttt{WorkflowFullSerializer} is used if a specific workflow is requested. It nests all relevant workflow elements into the workflow model before it is serialized.
+    As planned in \ref{subs:workflow_definition_service}, the service has the model classes \texttt{Activity}, \texttt{ControlFlow}, \texttt{ProcessDefinition} and \texttt{Workflow}, which on the one hand act as object-relational mappers for persistence to the database, on the other hand ensure some validity constraints. Further, there exists a controller class for each of the aforementioned models, which provides \ac{CRUD} actions for the respective model. In order to have more fine-grained control over the serialization of a workflow, the \texttt{WorkflowFullSerializer} is used if a specific workflow is requested. It nests all relevant workflow elements into the workflow model before it is serialized.
 
     While the modeling logic is partially explicitly contained in the model and controller classes and implicitly in the underlying data schema, the export logic resides in the classes \texttt{ImageManager} and \texttt{ImageBuilder}, which are supported by the class \texttt{ProcessDefinitionImageSerializer}.
 
-    The \texttt{ProcessDefinitionImageSerializer} provides the means to create the consolidated JSON representation of a process definition with all necessary information to be interpreted in order to execute the corresponding workflow.
-
-
-    \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=0.95\textwidth]{content/images/class_diagram_definition-crop.pdf}
-      \caption*{\scriptsize Note: Controllers omitted for the sake of simplicity. Workflow, ProcessDefinition, Activity and ControlFlow each have a controller with the respective pluralized name plus a `Controller' suffix.}
-      \caption{UML Class Diagram for the Definition Service}
-      \label{fig:label}
-    \end{figure}
-
+    The \texttt{ProcessDefinitionImageSerializer} provides the means to create the consolidated JSON representation of a process definition with all information that is necessary to execute the corresponding workflow. An example for the serialized output can be seen in Figure~\ref{fig:exported_process_definition_in_json_format}.
 
     \subsubsection{Export of a Workflow} % (fold)
       \label{ssub:exporting_a_workflow}
@@ -133,14 +137,13 @@
 
   \subsection{Developer Gateway} % (fold)
     \label{sub:developer_gateway}
-
-      Since it only offers a unified user interface for the \ac{WfMS}' services and does not store any data itself, the developer gateway does not require any database. Hence, it consists of a single Docker container that wraps a \ac{RoR} application. This application is realized in a two-tier architecture, with a backend part, which fetches data from the various services of the \ac{WfMS}, and a frontend part, which presents that data to the developer and accepts his or her input.
+      The developer gateway does not require any database, as it merely forwards requests to the \ac{MOM}. Hence, it consists of a single Docker container that wraps a \ac{RoR} application.
 
       In order to be reachable by its users, this container needs to expose the port of the application to the host's network.
 
       \subsubsection{Backend} % (fold)
       \label{ssub:backend}
-        The only task of the backend is forwarding the user's requests to the message queue and the corresponding responses back to the user. The controller classes are thus very lean; they only contain the logic to map requests to suitable routing keys.
+
 
       % subsubsection backend (end)
 
@@ -172,6 +175,9 @@
 
       RabbitMQ exists as a pre-configured Docker image on the Docker Hub and can thus be utilized easily. The configuration of RabbitMQ in this image takes place when the respective container is run, which allows its configuration in the \texttt{docker-compose} configuration file.
       For the sake of simplicity, no authentication mechanism was introduced besides the simple default username/password combination.
+
+      - topic exchange
+        -
     % subsection message_oriented_middleware (end)
 
   \subsection{Infrastructure Management Service} % (fold)
@@ -210,12 +216,12 @@
     % subsection provisioning_service (end)
 % section components (end)
 
-
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.95\textwidth]{content/images/class_d_definition-crop.pdf}
-  \caption{UML Class Diagram of the Workflow Definition Service}
-  \label{fig:uml_class_diagram_definition_service}
+  \includegraphics[width=0.95\textwidth]{content/images/Architecture-crop.pdf}
+  \caption*{\scriptsize Note: the depicted distribution of containers to nodes is just exemplarily. Most of them could run on any node in the swarm. The only mandatory assignments are the swarm agents, of which each node needs one, and the provisioners, of which each node that is intended to execute workflows on needs one. \\ Also, the databases and their respective data volumes were omitted for the sake of clarity.}
+  \caption{Deployment Diagram of the Architecture}
+  \label{fig:label}
 \end{figure}
 
 \section{Implementation Issues and compromises} % (fold)
