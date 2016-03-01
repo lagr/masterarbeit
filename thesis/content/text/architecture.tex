@@ -112,27 +112,27 @@
 
   Since all services reside in separate containers, \ie are isolated through namespaces for processes, networks etc, they have to be connected to each other somehow.
 
-  The naïve approach would be to let each container expose its required ports on the host's network interface. In order to communicate with a service in another container, an application would then contact the host machine \ac{IP} address with the respective port. While this solution appeals because of its simplicity, it comes with considerable drawbacks.
-  First, a port can only be used by one application at a time. This poses a problem as soon as a container is run more than once simultaneously, \eg if multiple services require the same database application or a service is started several times for scaling.
+  The naïve approach would be to let each container expose its required ports on the host's network interface. In order to communicate with a service in another container, an application would then contact the host machine \ac{IP} address on the respective port. While this solution appeals because of its simplicity, it comes with considerable drawbacks.
+  First, a port can only be used by one application at a time. This poses a problem as soon as a container is run more than once simultaneously, \eg if multiple services require an instance of the same database application or a service is started several times for scaling.
   Second, this exposes the services in question to requests from any computer that can communicate with the host machine. Unless this is desired behavior, it creates an unnecessary attack surface.
 
+  ** TODO: add citations **
   Another approach is the use of a Docker feature called \emph{links}, which allows to specify direct connections between containers based on their names.
   Docker then creates a secure tunnel between the specified containers and provides information on how the link source container may be addressed to the recipient container. This happens in two ways: it passes along all environment variables of the link source container to the targeted container and updates the \texttt{/etc/hosts} file, which is responsible for manual resolution of hostnames to \ac{IP} addresses.
   Links can be specified when a container is created by referring to one or more already running containers.
   Linked containers can be contacted via their hostname from within the started container.
-  While links -- in contrast to the first approach -- allow the same port to be used in different containers and do not expose the containers per se, they too have disadvantages.
+  While links -- in contrast to the first approach -- allow the same port to be used in different containers and do not expose the containers per se, they have disadvantages, too.
   First, and most important, they are static. That is, restarting one container breaks the link functionality. This is problematic, as the re-deployment of a service that relies on links or is linked to may require a domino-like chain of container restarts to restore the linking behavior.
   Second, they do only work on the same host. This solution thus does not support the distributed execution of the \ac{WfMS} micro-services, unless directly related containers, \eg a service and its database, are placed on the same node and all other communication takes place via exposed ports on the respective host machines.
-  Third, \ac{all} environment variables that Docker created within a container are passed to any container that links to it, which could post problems regarding security if they contain sensitive data like passwords.
+  Third, \emph{all} environment variables that Docker created within a container are passed to any container that links to it, which could post problems regarding security if they contain sensitive data like passwords.
 
   To cope with these disadvantages, the ambassador pattern was introduced \cite{Docker2016Docker}. The idea behind that pattern is the introduction of a container that acts as an intermediator between two services. This container is linked to both original containers and forwards their requests. In case that one of them needs to be restarted, this container is restarted to restore the connection -- in place of the other container.
-  By using two ambassador containers which point to each other, a multi-host setup can be achieved.
-  An obvious drawback of this pattern is, that it does not scale well, since each connection requires at least one additional container to be added to the setup. In a clique-like connection setup between five containers \emph{on the same host}, the ambassador pattern would already require ten additional containers.
-
-  While they are still supported under the name \emph{legacy links}, they have been deprecated with the introduction of Docker networks due to their drawbacks.
+  By using two ambassador containers that point at each other, a multi-host setup can be achieved.
+  An obvious drawback of this pattern is, that it does not scale well, since each connection requires at least one additional container to be added to the setup. In a clique-like connection setup between five containers \emph{on the same host}, the ambassador pattern would already require ten additional containers. In a two-host setup, this number would grow to twenty additional containers.
+  While they are still supported under the name \emph{legacy links}, they have been deprecated with the introduction of Docker networking due to their drawbacks.
 
   Another solution is based on the Docker networking feature set, which was introduced in the end of 2015.
-  To be more specific, it utilizes overlay networks, which were briefly presented in \ref{sub:docker_networks}. During the development of this feature set, the \emph{Container Network Model} was added, which allows containers to become member of multiple networks \cite{Tucker2015Docker}.
+  To be more specific, this solution utilizes overlay networks, which were briefly presented in \ref{sub:docker_networks}. During the development of this feature set, the \emph{Container Network Model} was added, which allows containers to become member of multiple networks \cite{Tucker2015Docker}.
   This enables the creation of purpose-oriented networks, \eg a ``backend'' and a ``frontend'' network. Containers that are members of both networks can communicate with all containers, while containers which are exclusively connected to the frontend network can only see other containers of this network. This way, one could for example force access to a database to be routed through a container that filters malicious requests.
 
   This concept can be adapted to suit the needs *TODO WHAT ARE THE NEEDS MY FRIEND* of the prototype: one overarching network is created, which allows all micro-services to communicate with each other. Their containers may are also be members of smaller networks that connect them to their support containers, \eg databases, while keeping these containers isolated from the rest of the \ac{WfMS}. In order to limit access of (probably untrustworthy) third party containers in the workflow to the \ac{WfMS}, a second network may be created in which only containers required for the enactment of workflows are members.

@@ -1,0 +1,209 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{l+lScalar+lScalarPlain}{version}\PYG{p+pIndicator}{:} \PYG{l+s}{\PYGZdq{}2\PYGZdq{}}
+
+\PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+  \PYG{l+lScalar+lScalarPlain}{frontend}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{driver}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{overlay}
+  \PYG{l+lScalar+lScalarPlain}{backend}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{driver}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{overlay}
+  \PYG{l+lScalar+lScalarPlain}{enactment}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{driver}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{overlay}
+
+\PYG{l+lScalar+lScalarPlain}{services}\PYG{p+pIndicator}{:}
+  \PYG{l+lScalar+lScalarPlain}{registry}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{registry:2.3}
+    \PYG{l+lScalar+lScalarPlain}{restart}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{always}
+    \PYG{l+lScalar+lScalarPlain}{ports}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{5000:5000}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{enactment}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==coordination\PYGZhy{}machine\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{mom}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{rabbitmq:3\PYGZhy{}management}
+    \PYG{l+lScalar+lScalarPlain}{restart}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{always}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{enactment}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{frontend}
+    \PYG{l+lScalar+lScalarPlain}{ports}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}8080:15672\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==internal\PYGZhy{}machine\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{engine}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{wf\PYGZus{}engine}
+    \PYG{l+lScalar+lScalarPlain}{build}\PYG{p+pIndicator}{:}
+      \PYG{l+lScalar+lScalarPlain}{context}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{./engine}
+      \PYG{l+lScalar+lScalarPlain}{args}\PYG{p+pIndicator}{:}
+        \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{depends\PYGZus{}on}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{mom}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{enactment}
+    \PYG{l+lScalar+lScalarPlain}{volumes}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{/var/run/docker.sock:/var/run/docker.sock}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{\PYGZti{}/.docker/machine/certs/:/root/.docker}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{l+lScalar+lScalarPlain}{SWARM\PYGZus{}MANAGER\PYGZus{}CERT\PYGZus{}PATH}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{/root/.docker}
+
+  \PYG{l+lScalar+lScalarPlain}{organization\PYGZus{}db}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{postgres}
+    \PYG{l+lScalar+lScalarPlain}{depends\PYGZus{}on}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{organization\PYGZus{}db\PYGZus{}data}
+    \PYG{l+lScalar+lScalarPlain}{volumes\PYGZus{}from}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{organization\PYGZus{}db\PYGZus{}data}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}PASSWORD=masterarbeit\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}USER=organization\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{organization\PYGZus{}db\PYGZus{}data}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{cogniteev/echo}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+    \PYG{l+lScalar+lScalarPlain}{volumes}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{/var/lib/postgresql/data}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{organization}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{organization}
+    \PYG{l+lScalar+lScalarPlain}{build}\PYG{p+pIndicator}{:}
+      \PYG{l+lScalar+lScalarPlain}{context}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{./organization}
+      \PYG{l+lScalar+lScalarPlain}{args}\PYG{p+pIndicator}{:}
+        \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{depends\PYGZus{}on}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{organization\PYGZus{}db}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{mom}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}PASSWORD=masterarbeit\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}USER=organization\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{worklist\PYGZus{}db}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{postgres}
+    \PYG{l+lScalar+lScalarPlain}{volumes\PYGZus{}from}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{worklist\PYGZus{}db\PYGZus{}data}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{enactment}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}PASSWORD=masterarbeit\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}USER=worklist\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{worklist\PYGZus{}db\PYGZus{}data}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{cogniteev/echo}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{enactment}
+    \PYG{l+lScalar+lScalarPlain}{volumes}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{/var/lib/postgresql/data}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{worklist}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{worklist}
+    \PYG{l+lScalar+lScalarPlain}{build}\PYG{p+pIndicator}{:}
+      \PYG{l+lScalar+lScalarPlain}{context}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{./worklist}
+      \PYG{l+lScalar+lScalarPlain}{args}\PYG{p+pIndicator}{:}
+        \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{depends\PYGZus{}on}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{worklist\PYGZus{}db}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{mom}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{enactment}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}PASSWORD=masterarbeit\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}USER=worklist\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{definition\PYGZus{}db}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{postgres}
+    \PYG{l+lScalar+lScalarPlain}{depends\PYGZus{}on}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{definition\PYGZus{}db\PYGZus{}data}
+    \PYG{l+lScalar+lScalarPlain}{volumes\PYGZus{}from}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{definition\PYGZus{}db\PYGZus{}data}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}PASSWORD=masterarbeit\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}USER=definition\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{definition\PYGZus{}db\PYGZus{}data}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{cogniteev/echo}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+    \PYG{l+lScalar+lScalarPlain}{volumes}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{/var/lib/postgresql/data}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{definition}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{definition}
+    \PYG{l+lScalar+lScalarPlain}{build}\PYG{p+pIndicator}{:}
+      \PYG{l+lScalar+lScalarPlain}{context}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{./definition}
+      \PYG{l+lScalar+lScalarPlain}{args}\PYG{p+pIndicator}{:}
+        \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{depends\PYGZus{}on}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{definition\PYGZus{}db}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{mom}
+    \PYG{l+lScalar+lScalarPlain}{volumes}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{/var/run/docker.sock:/var/run/docker.sock}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{\PYGZti{}/.docker/machine/certs/:/root/.docker}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}PASSWORD=masterarbeit\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}POSTGRES\PYGZus{}USER=definition\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{infrastructure}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{infrastructure}
+    \PYG{l+lScalar+lScalarPlain}{build}\PYG{p+pIndicator}{:}
+      \PYG{l+lScalar+lScalarPlain}{context}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{./infrastructure}
+      \PYG{l+lScalar+lScalarPlain}{args}\PYG{p+pIndicator}{:}
+        \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+    \PYG{l+lScalar+lScalarPlain}{volumes}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{/var/run/docker.sock:/var/run/docker.sock}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{\PYGZti{}/.docker/machine/certs/:/root/.docker}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}SWARM\PYGZus{}MANAGER\PYGZus{}CERT\PYGZus{}PATH=/root/.docker\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{user\PYGZus{}gateway}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{user\PYGZus{}gateway}
+    \PYG{l+lScalar+lScalarPlain}{build}\PYG{p+pIndicator}{:}
+      \PYG{l+lScalar+lScalarPlain}{context}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{./user\PYGZus{}gateway}
+      \PYG{l+lScalar+lScalarPlain}{args}\PYG{p+pIndicator}{:}
+        \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{depends\PYGZus{}on}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{mom}
+    \PYG{l+lScalar+lScalarPlain}{ports}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}3001:3000\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{frontend}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{developer\PYGZus{}gateway}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{developer\PYGZus{}gateway}
+    \PYG{l+lScalar+lScalarPlain}{build}\PYG{p+pIndicator}{:}
+      \PYG{l+lScalar+lScalarPlain}{context}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{./developer\PYGZus{}gateway}
+      \PYG{l+lScalar+lScalarPlain}{args}\PYG{p+pIndicator}{:}
+        \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{depends\PYGZus{}on}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{mom}
+    \PYG{l+lScalar+lScalarPlain}{ports}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}3000:3000\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+\end{Verbatim}

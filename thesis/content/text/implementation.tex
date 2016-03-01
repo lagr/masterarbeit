@@ -1,34 +1,21 @@
 % -*- root: ../../main.tex -*- %
 
-\section{Design decisions} % (fold)
+\section{Preliminary decisions} % (fold)
 \label{sec:design_decisions}
+  All of the variants highlighted in \ref{sub:promising_combinations_of_characteristics} represent interesting approaches for the utilization of Docker for the enactment of workflows for different use cases.
+  For this prototype, $G_{DV}^{SEPC}$ with a partially integrated workflow engine is the implemented variant for several reasons. First and foremost, this combination enables the use of basic Docker commands for the suspension and continuation of a workflow and single activities, as described in \ref{ssub:element_wrapping_containers}. Second, $*_{*}^{SEPC}$ leverages the already existing communication between the local daemon of a node and the swarm master daemon to publish the status of both workflow instances and activity instances, in the form of events concerning container statuses. Third, $G_{DV}^{*}$ is a promising variant for the demonstration of  various scheduling mechanisms introduced in \ref{sub:execution_scheduling}, since this variant includes implicit affinities by default. While partially integrating the workflow engine is mainly interesting for its role in the previously mentioned native pausing, it also facilitates the working directory management, as argued in \ref{ssub:element_wrapping_containers}.
 
-  - sepc
-    - why?
+  The services are implemented using \emph{Ruby}, a dynamically typed object-oriented programming language. Ruby provides the means to write concise, well readable code \cite[p.~782]{Nanz2015Comparative}. It is by no means the language with the best performance \cite[p.~786]{Nanz2015Comparative}. However, the focus of this thesis is to explore conceptual possibilities rather than developing efficient implementations of them. An emphasis is thus put on the expressiveness of the used language to help the reader to grasp the underlying concept quickly.
 
-  - GDVSEPC
-    - why?
+  All services that require access to any Docker \ac{API} do so by using a gem called \texttt{docker-api}, which provides a client for these \acp{API}. \emph{Gem} is the name for distributable packages in the Ruby ecosystem. These packages can be managed using \emph{Gemfiles}, in which the package dependencies of an application may be declared.
 
-  - wf engine partially in wf container
-    - why?
+  The Ruby-based web application framework \ac{RoR} is used for the implementation of the developer gateway and user gateway. It qualifies for this task because it comes with several functionalities that aim at the fast creation of prototypes. For example, so called \emph{scaffolds} permit the creation of model and controller classes and appropriate views based on a specified database schema; the included library \emph{ActiveRecord} supports adding object-relational mapping functionality to model classes \cite[p.~5]{Jazayeri2007Some}.
 
-  - communication via mom
+  ActiveRecord is also used in those services that do not use Rails but need to store objects in databases, namely in the \texttt{definition}, \texttt{organization}, and \texttt{worklist} services.
 
-  - ruby / ruby on rails
-    - for readability
-    - because i know it
-    - docker library exists
-    - drawback: speed, runtime
+  For this prototype, RabbitMQ was chosen as message oriented middleware, because it is well documented and provides a web interface for monitoring and administration.
+  The gems \texttt{Hutch} and \texttt{Bunny} provide different levels of abstraction for the interaction with the RabbitMQ message queue. \texttt{Hutch} itself is based on \texttt{Bunny} and imposes some opinionated conventions for the use of the message queue, as well as automatic (de-)serialization of the messages' payload.
 
-  - extra validator
-    - defeats purpose of not sending data in gdvsepc but, just POC
-
-  - for sake of simplicity:
-    - no compiled language
-
-  - activity types
-
-  - export request synchronous
 % section design_decisions (end)
 
 \section{Execution Images} % (fold)
@@ -42,6 +29,10 @@
 
   \subsection{Workflow Image} % (fold)
   \label{sub:workflow_container}
+    The workflow image is structured as planned in \ref{sub:workflow_activity_images}. The runtime-environment layers are provided by inheriting all layers of the \texttt{ruby:2.2} image. On top of these, common layers are created, in which the required gems are installed. Then, the \texttt{/workflow} directory is created, into which the required Ruby files are copied. The file \texttt{run.rb} is set as the default command.
+
+    The workflow instance is structured as depicted in \ref{fig:uml_class_diagram_wf_base}. The \texttt{run} script loads the required dependencies and ensures, that the container is connected to the \texttt{enactment} network. Then, it initiates the enactment by creating an instance of the \texttt{ProcessInstance} class and calling its start method.
+
     - application
       - process instance
       - process definition
@@ -175,13 +166,15 @@
 
   \subsection{Message Oriented Middleware} % (fold)
     \label{sub:message_oriented_middleware}
-      For this prototype, RabbitMQ was chosen as message oriented middleware, because it is well documented and has various ruby clients, \eg \emph{Hutch} and \emph{Bunny}.
+      RabbitMQ exists as a pre-configured Docker image (\texttt{rabbitmq}) on the Docker Hub and can thus be utilized easily. The configuration of RabbitMQ in this image takes place when the respective container is run, which allows its configuration in the \texttt{docker-compose} configuration file as depicted in Figure~\ref{fig:configuration_of_the_mom_service_in_the_docker_compose_file}.
+      For the sake of simplicity, no authentication mechanism was introduced besides the simple default username/password combination. As the central point of communication, the \ac{MOM} is the only container which is connected to all three overlay networks. While one would probably avoid exposing this service in a real world use case, it is exposed to the host's network for its use in a prototype, as this allows to monitor the messaging activity of the services.
 
-      RabbitMQ exists as a pre-configured Docker image on the Docker Hub and can thus be utilized easily. The configuration of RabbitMQ in this image takes place when the respective container is run, which allows its configuration in the \texttt{docker-compose} configuration file.
-      For the sake of simplicity, no authentication mechanism was introduced besides the simple default username/password combination.
-
-      - topic exchange
-        -
+      ** TODO constraints **
+      \begin{figure}[!htbp]
+        \inputminted[firstline=23,lastline=33,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
+        \caption{Configuration of the \ac{MOM} service in the Docker Compose file}
+        \label{fig:configuration_of_the_mom_service_in_the_docker_compose_file}
+      \end{figure}
     % subsection message_oriented_middleware (end)
 
   \subsection{Infrastructure Management Service} % (fold)
@@ -209,9 +202,16 @@
 
   \subsection{Registry} % (fold)
     \label{sub:registry}
-    - one docker image
-    - port exposed on host
-    - deployed on coordination machine
+    A local registry is deployed in its own container in order to distribute the created images.
+    Docker provides the \texttt{registry} image for this purpose, of which the version \texttt{registry:2.3} is used, since it is the newest stable version at the time of this writing.
+
+    The registry is configured to be restarted automatically in case that itself or the node it runs on fails. Further, it is exposed on the host's network do make it reachable for all nodes in the swarm. This is necessary, as their daemons are no containers and thus cannot be connected to the overlay network. Consequentially, it is configured in the \ac{WfMS}' Docker Compose file as follows:
+
+    \begin{figure}[!htbp]
+      \inputminted[firstline=12,lastline=21,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
+      \caption{Configuration of the registry service in the Docker Compose file}
+      \label{fig:configuration_of_the_registry_service_in_the_docker_compose_file}
+    \end{figure}
     % subsection registry (end)
 
   \subsection{Provisioning Service} % (fold)
@@ -220,17 +220,43 @@
     % subsection provisioning_service (end)
 % section components (end)
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.95\textwidth]{content/images/Architecture-crop.pdf}
-  \caption*{\scriptsize Note: the depicted distribution of containers to nodes is just exemplarily. Most of them could run on any node in the swarm. The only mandatory assignments are the swarm agents, of which each node needs one, and the provisioners, of which each node that is intended to execute workflows on needs one. \\ Also, the databases and their respective data volumes were omitted for the sake of clarity.}
-  \caption{Deployment Diagram of the Architecture}
-  \label{fig:label}
-\end{figure}
+
+\section{Exemplary Deployment} % (fold)
+\label{sec:exemplary_deployment}
+
+  - 4 VMs
+
+  The deployment of all services is performed using Docker Compose, as this tool provides some conveniences for deployment-related tasks.
+  First, Docker Compose enables the automatic building, starting, stopping and removal of the services' images, as described in \ref{sub:docker_compose}.
+    **  - build w/ image name
+        - build on specifc node
+        - up command
+          - build missing images
+          - start stopped/missing containers
+          - recreate containers with changed images
+          - ignore existing containers
+
+  Second, the configuration of all services and the required networks that connect them may be specified in a single \emph{YAML} file. \ac{YAML} is designed with a focus on human readability \cite{Kiki2009Yaml}. The configuration file may thus serve as a textual documentation of the system's architecture.
+
+  - deployment as in Figure~\ref{fig:deployment_diagram_of_the_architecture}
+  - not really WAN, not really LAN -> exemplary
+
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{content/images/Architecture-crop.pdf}
+    \caption*{\scriptsize Note: the depicted distribution of containers to nodes is just exemplarily. Most of them could run on any node in the swarm. The only mandatory assignments are the swarm agents, of which each node needs one, and the provisioners, of which each node that is intended to execute workflows on needs one. \\ Also, the databases and their respective data volumes were omitted for the sake of clarity.}
+    \caption{Deployment Diagram of the Architecture}
+    \label{fig:deployment_diagram_of_the_architecture}
+  \end{figure}
+  -
+% section exemplary_deployment (end)
 
 \section{Implementation Issues and compromises} % (fold)
   - gateways are synchronous to keep them simple
     - no concurrent requests made
+
+  -ruby: requires run env: large images
 \label{sec:implementation_issues}
 
 % section implementation_issues (end)

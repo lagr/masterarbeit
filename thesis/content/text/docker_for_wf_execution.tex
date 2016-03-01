@@ -105,6 +105,9 @@ Finally, rather independent from the previous variants and hence discussed in is
     The layering principle behind Docker images makes updates to activity and workflow images lightweight -- as long as only the uppermost layers are changed, the lower ones do not have to be up- and downloaded again. This allows to distribute a complete runtime environment to new nodes while updating only specific layers on existing nodes using one and the same image.
 
     Containers can be paused and unpaused, \ie all processes within them are suspended. This is useful to save processor capacity for suspended activities or workflows until they are resumed.
+
+    ** Second, $*_{*}^{SEPC}$ leverages the already existing communication between a container, the local daemon and the swarm master to communicate the status of workflow instances and activity instances, as the creation of a container
+
     **more benefits here**
 
 
@@ -140,9 +143,9 @@ Finally, rather independent from the previous variants and hence discussed in is
     \end{figure}
 
     One possible variation on $G_{1C}^{DV}$ and $G_{SEPC}^{DV}$ would be the inclusion of engine logic in the workflow instance container. While the scheduling of this container and preparations on the targeted node would still be in the responsiblity of the main \acp{WfMS}' workflow engine, the control over the started activity instances would be handed to a smaller, workflow instance specific engine.
-    This setup facilitates the management of the required directory structure, since the container that issues the commands has direct access to the data volume.
+    This setup facilitates the management of the required directory structure, since the container that issues the commands has direct access to the data volume -- no information on the upcoming element instances has to be transferred.
 
-    Further, suspending and resuming of workflows and activities could both be realized with the respective pause/unpause Docker commands. In combination with a checkpoint/restore tool, which provides the means to save and restore the memory state of a process, long running workflows could be paused and restored across server restarts, or be migrated to another server, if necessary. Proofs of concept for the feasibility of this procedure have been presented in the past \cite{Kim2015Checkpoint,Merker2015How}.
+    Further, in this case suspending and resuming of workflows and activities could both be realized with the respective pause/unpause Docker commands. In combination with a checkpoint/restore tool, which provides the means to save and restore the memory state of a process, long running workflows could be paused and restored across server restarts, or be migrated to another server, if necessary. Proofs of concept for the feasibility of this procedure have been presented in the past \cite{Kim2015Checkpoint,Merker2015How}.
 
     A drawback of this variation is, that the status of the enactment is then held in the workflow instance container. By following the event stream, started and stopped activity instances could be tracked by the main workflow engine, but low-level details would have to be transferred separately, if it was needed there.
   % subsubsection element_wrapping_containers (end)
