@@ -58,8 +58,8 @@ services:
     networks:
       - backend
     environment:
-      POSTGRES_PASSWORD: masterarbeit
-      POSTGRES_USER: organization
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=organization"
 
   organization_db_data:
     image: cogniteev/echo
@@ -91,15 +91,15 @@ services:
     volumes_from:
       - worklist_db_data
     networks:
-      - backend
+      - enactment
     environment:
-      POSTGRES_PASSWORD: masterarbeit
-      POSTGRES_USER: worklist
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=worklist"
 
   worklist_db_data:
     image: cogniteev/echo
     networks:
-      - backend
+      - enactment
     volumes:
       - /var/lib/postgresql/data
     environment:
@@ -115,7 +115,6 @@ services:
       - worklist_db
       - mom
     networks:
-      - backend
       - enactment
     environment:
       - "constraint:node==development-machine"
@@ -131,8 +130,8 @@ services:
     networks:
       - backend
     environment:
-      POSTGRES_PASSWORD: masterarbeit
-      POSTGRES_USER: definition
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=definition"
 
   definition_db_data:
     image: cogniteev/echo
@@ -157,7 +156,6 @@ services:
       - ~/.docker/machine/certs/:/root/.docker
     networks:
       - backend
-      - enactment
     environment:
       - "constraint:node==development-machine"
       - "POSTGRES_PASSWORD=masterarbeit"
@@ -185,12 +183,10 @@ services:
       args:
         - "constraint:node==development-machine"
     depends_on:
-      - worklist
       - mom
     ports:
       - "3001:3000"
     networks:
-      - backend
       - frontend
     environment:
       - "constraint:node==development-machine"
@@ -202,8 +198,6 @@ services:
       args:
         - "constraint:node==development-machine"
     depends_on:
-      - definition
-      - organization
       - mom
     ports:
       - "3000:3000"

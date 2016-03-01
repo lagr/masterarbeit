@@ -1,6 +1,7 @@
 class WorklistItemsController < ApplicationController
   def index
     @worklist_items = mq_request 'worklist_item.index', 'worklist_item.indexed', user_id: params[:user_id]
+    @worklist_items = @worklist_items['worklist_items']
   end
 
   def edit
@@ -9,7 +10,7 @@ class WorklistItemsController < ApplicationController
 
   def update
     mq_request 'worklist_item.update', 'worklist_item.updated', id: params[:id], worklist_item: params[:worklist_item]
-    redirect_to worklist_items_url, notice: 'Worklist item was successfully submitted.' }
+    redirect_to worklist_items_url, notice: 'Worklist item was successfully submitted.'
   end
 
   def destroy

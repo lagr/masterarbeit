@@ -1,11 +1,13 @@
 %h1 Worklists
 
+%p= @users
+
 %table
   %thead
     %tr
       %th Worklist of
 
   %tbody
-    - @users.each do |user|
+    - @users['users'].each do |user|
       %tr
-        %td= user.name, link_to worklist_items_path(user_id: user.id)
+        %td= link_to "#{user['first_name']} #{user['last_name']}", worklist_items_path(user_id: user['id'])

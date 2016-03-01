@@ -25,11 +25,11 @@ module Activity
     require 'docker-api'
     config = activity_info['configuration']
     registry = Activity::Configuration.image_registry
-    image_name = [config['image'], config['image_version']].join(':')
+    image_tag = "#{config['image']}:#{config['image_version']}"
 
     container = Docker::Container.create({
       'name' => "#{Activity::Configuration.container_name}_#{config['image']}",
-      'Image' => "#{registry}/#{image_name}",
+      'Image' => "#{registry}/#{image_tag}",
       'Cmd' => config['cmd'].split(' ')
     })
 
@@ -43,21 +43,14 @@ module Activity
   end
 
   def start_user_input
-    # config = activity_info['configuration']
-    # unser_input_container = config['user_input_container']
-    # unless Docker::Container.exist?('user-interface')
-    # end
+    require_relative 'worklist_item'
 
-    # ui ||= Docker::Container.get('user-interface')
-    # request_input_form
-    # loop do
-    #   query_form_data_present?
-    #   get_form_data
-    # end
-    # request_form_deletion
+    worklist_item = Activity::WorklistItem.new(activity_info['configuration'])
+    worklist_item.expose
+
     input[Activity::Configuration.activity_instance_id] = {
       activity: Activity::Configuration.activity_id,
-      manual_form_data: {name: "Peter Müllerd"}
+      manual_form_data: worklist_item.data
     }
   end
 

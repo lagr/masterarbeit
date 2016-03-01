@@ -16,6 +16,7 @@ class WorkflowsController < ApplicationController
 
   def update
     @workflow = mq_request 'workflow.update', 'workflow.updated', workflow: workflow_params, id: params[:id]
+    @workflow = mq_request 'workflow.export', 'workflow.exported', id: params[:id]
     render json: @workflow, status: :created
   end
 

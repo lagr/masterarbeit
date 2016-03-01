@@ -3,6 +3,7 @@
     .md-toolbar-tools
       %h2 Workflows
       %span{flex: true}
+      %md-button.md-raised{ng_click: 'wfmgmtCtrl.createWorkflow()'} New
 
   %md-list{layout_padding: true}
     %md-list-item.secondary-button-padding{ ng_repeat: "workflow in wfmgmtCtrl.workflows" }
