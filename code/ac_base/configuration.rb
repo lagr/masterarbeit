@@ -6,6 +6,10 @@ module Activity
       ENV['MAIN_WORKFLOW_ID']
     end
 
+    def main_workflow_instance_id
+      ENV['MAIN_WORKFLOW_INSTANCE_ID']
+    end
+
     def workflow_id
       ENV['WORKFLOW_ID']
     end

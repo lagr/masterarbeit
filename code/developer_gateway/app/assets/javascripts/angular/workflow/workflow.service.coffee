@@ -7,3 +7,6 @@ angular.module('WFMS.Workflow').factory 'Workflow', (RailsResource, railsSeriali
         @only 'id', 'name'
         @resource 'processDefinition', 'ProcessDefinition'
 
+    startInstance: (queryParams, authorId) ->
+      @$patch @$url('/start')
+

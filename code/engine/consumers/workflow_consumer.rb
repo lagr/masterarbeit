@@ -5,16 +5,9 @@ module WorkflowEngine
 
     def process(message)
       subject, action, subject_id = WorkflowEngine.match_message(message)
-      case action
-      when :start
-        begin
-          wfi = WorkflowEngine::WorkflowInstance.new(message[:id], message[:input_data], 'cloud-machine')
-          result = wfi.run
-          Hutch.publish "wfms.workflow_instance.finished", workflow_instance: wfi.instance_id, result: result
-        rescue Exception => e
-          Hutch.publish "wfms.workflow_instance.failed", workflow_instance: wfi.instance_id, exception: e
-        end
-      end
+      return unless action == :start
+      Hutch.publish "wfms.workflow_instance.started", id: message[:id]
+      WorkflowEngine.instanciate(message[:id], message[:input_data])
     end
   end
 end

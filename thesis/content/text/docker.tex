@@ -115,12 +115,21 @@
 
   \subsection{Docker Machine} % (fold)
   \label{sub:docker_machine}
-    The goal of the Docker Machine tool is to facilitate the setup of Docker hosts. In order to fulfill this goal, Docker Machine creates one virtual machine per requested host \cite{Docker????Dockerb,Docker????Dockera}. This has several reasons. First, this proceeding allows several Docker hosts to run on the same machine without having them interfere with each other. Second, it enables machines with \acp{OS}, which natively do not support Docker and Docker containers, to act as a host \cite{Docker????Dockera}. And third, as the virtual machine image is known, it lets the setup procedure make assumptions on its environment, which simplifies the installation and configuration of the Docker Engine.
+    The goal of the Docker Machine tool is to facilitate the setup of Docker hosts. In order to fulfill this goal, Docker Machine creates one virtual machine per requested host \cite{Docker????Dockerb,Docker????Dockera}. This has several reasons. First, this proceeding allows several Docker hosts to run on the same computer without having them interfere with each other. Second, it enables computers with \acp{OS}, which natively do not support Docker and Docker containers, to act as a host \cite{Docker????Dockera}. And third, as the virtual machine image is known, it lets the setup procedure make assumptions on its environment, which simplifies the installation and configuration of the Docker Engine.
   % subsection docker_machine (end)
 
   \subsection{Docker Compose} % (fold)
   \label{sub:docker_compose}
     Docker Compose is a tool that enables the user to specify and run applications that consist of many containers. Similar to the way an image is described in a Dockerfile, the user lists the required containers and their respective run configuration in a YAML (?) file. Docker Compose interprets this file and sets the containers up accordingly \cite{Docker????Dockerb}.
+
+
+    **  - build w/ image name
+        - build on specifc node
+        - up command
+          - build missing images
+          - start stopped/missing containers
+          - recreate containers with changed images
+          - ignore existing containers
 
   % subsection docker_compose (end)
 

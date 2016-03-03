@@ -7,10 +7,12 @@ class WorklistItemConsumer
     case action
 
     when :index
-      Hutch.publish "wfms.worklist_item.indexed", worklist: WorklistItem.where(user_id: message[:user_id]).as_json
+      worklist_items = WorklistItem.where(user_id: message[:user_id]).as_json
+      Hutch.publish "wfms.worklist_item.indexed", worklist: worklist_items
 
     when :show
-      Hutch.publish "wfms.worklist_item.showed", worklist_item: WorklistItem.find(message[:id]).as_json
+      worklist_item = WorklistItem.find(message[:id]).as_json
+      Hutch.publish "wfms.worklist_item.showed", worklist_item: worklist_item
 
     when :create
       worklist_item = WorklistItem.create(message['worklist_item'])

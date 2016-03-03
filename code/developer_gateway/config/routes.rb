@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   resources :roles
   resources :users
   resources :servers, only: [:index, :show], param: :name
-  resources :workflows
+  resources :workflows do
+    member do
+      patch '/start', to: 'workflows#start_instance'
+    end
+  end
   resources :process_definitions
   resources :activities
   resources :control_flows

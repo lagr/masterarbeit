@@ -16,7 +16,6 @@ Finally, rather independent from the previous variants and hence discussed in is
 
 \begin{table}[!htbp]
   \centering
-  %\renewcommand*{\arraystretch}{1.25}
   \begin{tabular}{C{4cm}|C{3cm}|C{3cm}|C{3cm}}
     \toprule
     \textbf{Data Exchange / Containerization}
@@ -466,7 +465,7 @@ Finally, rather independent from the previous variants and hence discussed in is
 
     with \texttt{\$mem} being the amount of memory in megabytes. In this setting, a container can be scheduled to a node with at least 650 megabytes of memory by enforcing the constraint
 
-    \centerline{\texttt{constraint:com.example.ram==/([6][5-9]{\textbackslash}d|[7-9]{\textbackslash}d\{2,\}|{\textbackslash}d\{4,\})/}.}
+    \centerline{\texttt{constraint:com.example.ram==/({\textbackslash}d{\textbackslash}d{\textbackslash}d{\textbackslash}d+|[7-9]{\textbackslash}d{\textbackslash}d|[6][5-9]{\textbackslash}d)/}}
 
     This regular expression will match a) any number with four or more digits and b) any three digits number that starts with a number in the range of 7-9 and c) any three digits number that starts with 6 and continues with a number in the range of 5-9. Analogously to this, other quantitative measures may be stored and queried.
 

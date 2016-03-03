@@ -3,7 +3,9 @@ module ImageManager
   SHORT_TYPES = { activity: 'ac', workflow: 'wf' }.freeze
 
   def export_workflow(workflow)
+    #elements = [workflow] + workflow.child_elements.flatten
     images = ImageBuilder.build_images([workflow] + workflow.activities + workflow.activities.map(&:child_elements).flatten)
+    #third_party_images = workflow.activities
     images[:successful].each { |built_image| publish_image(built_image[:subject], built_image[:image]) }
     images[:failed].empty?
   end
@@ -23,7 +25,6 @@ module ImageManager
   def publish_image(subject, image)
     type = subject.class.name.underscore.to_sym
     image_name = image_name(type: type, id: subject.id)
-    #repo_tag = "192.168.99.100:5000/#{type}"
     repo_tag = "#{registry_address}/#{type}"
 
     image.tag(repo: repo_tag, tag: image_name, force: true)

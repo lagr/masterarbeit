@@ -1,8 +1,8 @@
 class Activity < ActiveRecord::Base
-  ACTIVITY_TYPES = [:start, :end, :orsplit, :orjoin, :andsplit, :andjoin, :manual, :automatic, :container, :subworkflow].freeze
-  ELEMENTS_WITH_ONE_SUCCESSOR   = [:start, :andjoin, :orjoin, :manual, :automatic, :container, :subworkflow].freeze
+  ACTIVITY_TYPES = [:start, :end, :orsplit, :orjoin, :andsplit, :andjoin, :manual, :container, :subworkflow].freeze
+  ELEMENTS_WITH_ONE_SUCCESSOR   = [:start, :andjoin, :orjoin, :manual, :container, :subworkflow].freeze
   ELEMENTS_WITHOUT_SUCCESSOR    = [:end].freeze
-  ELEMENTS_WITH_ONE_PREDECESSOR = [:end, :manual, :automatic, :containerized, :container, :subworkflow].freeze
+  ELEMENTS_WITH_ONE_PREDECESSOR = [:end, :manual, :container, :subworkflow].freeze
   ELEMENTS_WITHOUT_PREDECESSOR  = [:start].freeze
 
   belongs_to :process_definition

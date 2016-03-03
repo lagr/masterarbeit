@@ -1,0 +1,72 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{quire} \PYG{l+s+s1}{\PYGZsq{}securerandom\PYGZsq{}}
+
+\PYG{k}{dule} \PYG{n+nn}{Workflow}
+\PYG{k}{class} \PYG{n+nc}{ActivityInstance}
+  \PYG{k+kp}{attr\PYGZus{}accessor} \PYG{l+s+ss}{:activity}\PYG{p}{,} \PYG{l+s+ss}{:completed\PYGZus{}predecessors}\PYG{p}{,} \PYG{l+s+ss}{:id}
+
+  \PYG{k}{def} \PYG{n+nf}{initialize}\PYG{p}{(}\PYG{n}{activity}\PYG{p}{)}
+    \PYG{n+nv+vi}{@id} \PYG{o}{=} \PYG{n+no}{SecureRandom}\PYG{o}{.}\PYG{n}{uuid}
+    \PYG{n+nv+vi}{@activity} \PYG{o}{=} \PYG{n}{activity}
+    \PYG{n+nv+vi}{@completed\PYGZus{}predecessors} \PYG{o}{=} \PYG{o}{[]}
+    \PYG{n+nv+vi}{@completed} \PYG{o}{=} \PYG{k+kp}{false}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{completed?}
+    \PYG{n+nv+vi}{@completed}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{required\PYGZus{}predecessors\PYGZus{}completed?}
+    \PYG{k}{return} \PYG{k+kp}{true} \PYG{k}{if} \PYG{n+nv+vi}{@activity}\PYG{o}{.}\PYG{n}{type} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}start\PYGZsq{}}
+    \PYG{k}{return} \PYG{k+kp}{true} \PYG{k}{if} \PYG{n+nv+vi}{@activity}\PYG{o}{.}\PYG{n}{type} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}orjoin\PYGZdq{}} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n+nv+vi}{@completed\PYGZus{}predecessors}\PYG{o}{.}\PYG{n}{length} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}
+    \PYG{k}{return} \PYG{k+kp}{true} \PYG{k}{if} \PYG{n+nv+vi}{@completed\PYGZus{}predecessors}\PYG{o}{.}\PYG{n}{length} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}
+
+    \PYG{n}{completed\PYGZus{}predecessors\PYGZus{}activity\PYGZus{}ids} \PYG{o}{=} \PYG{n+nv+vi}{@completed\PYGZus{}predecessors}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:activity}\PYG{p}{)}\PYG{o}{.}\PYG{n}{collect}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:id}\PYG{p}{)}
+    \PYG{p}{(}\PYG{n+nv+vi}{@activity}\PYG{o}{.}\PYG{n}{predecessors}\PYG{o}{.}\PYG{n}{collect}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:id}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{completed\PYGZus{}predecessors\PYGZus{}activity\PYGZus{}ids}\PYG{p}{)}\PYG{o}{.}\PYG{n}{empty?}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{run}
+    \PYG{n}{container}\PYG{o}{.}\PYG{n}{tap} \PYG{k}{do} \PYG{o}{|}\PYG{n}{c}\PYG{o}{|}
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Network}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{network}\PYG{p}{)}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n}{c}\PYG{o}{.}\PYG{n}{id}\PYG{p}{)}
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Network}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}enactment\PYGZsq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n}{c}\PYG{o}{.}\PYG{n}{id}\PYG{p}{)}
+      \PYG{n}{c}\PYG{o}{.}\PYG{n}{start}
+      \PYG{n}{c}\PYG{o}{.}\PYG{n}{wait}\PYG{p}{(}\PYG{l+m+mi}{60} \PYG{o}{*} \PYG{l+m+mi}{60}\PYG{p}{)}
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Network}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{network}\PYG{p}{)}\PYG{o}{.}\PYG{n}{disconnect}\PYG{p}{(}\PYG{n}{c}\PYG{o}{.}\PYG{n}{id}\PYG{p}{)}
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Network}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}enactment\PYGZsq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{disconnect}\PYG{p}{(}\PYG{n}{c}\PYG{o}{.}\PYG{n}{id}\PYG{p}{)}
+      \PYG{n}{c}\PYG{o}{.}\PYG{n}{delete} \PYG{k}{unless} \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{keep\PYGZus{}activity\PYGZus{}containers?}
+    \PYG{k}{end}
+    \PYG{n+nv+vi}{@completed} \PYG{o}{=} \PYG{k+kp}{true}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{container}
+    \PYG{n}{config} \PYG{o}{=} \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}
+
+    \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Container}\PYG{o}{.}\PYG{n}{create}\PYG{p}{(\PYGZob{}}
+      \PYG{l+s+s1}{\PYGZsq{}name\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}aci\PYGZus{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}Labels\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}
+        \PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}workflow\PYGZus{}instance\PYGZdq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{.}\PYG{n}{main\PYGZus{}workflow\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}workflow\PYGZus{}instance\PYGZdq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}activity\PYGZus{}instance\PYGZdq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+      \PYG{p}{\PYGZcb{},}
+      \PYG{l+s+s1}{\PYGZsq{}Image\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{.}\PYG{n}{image\PYGZus{}registry}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/activity:ac\PYGZus{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@activity}\PYG{o}{.}\PYG{n}{id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}Cmd\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}\PYG{o}{]}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}WorkingDir\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s1}{\PYGZsq{}/activity\PYGZsq{}}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}Tty\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{true}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}Env\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}
+        \PYG{l+s+s2}{\PYGZdq{}MAIN\PYGZus{}WORKFLOW\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{.}\PYG{n}{main\PYGZus{}workflow\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}MAIN\PYGZus{}WORKFLOW\PYGZus{}INSTANCE\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{.}\PYG{n}{main\PYGZus{}workflow\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}WORKFLOW\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}WORKFLOW\PYGZus{}INSTANCE\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}ACTIVITY\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@activity}\PYG{o}{.}\PYG{n}{id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}ACTIVITY\PYGZus{}INSTANCE\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}WORKDIR=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{activity\PYGZus{}instance\PYGZus{}workdir}\PYG{p}{(}\PYG{n+nb}{self}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+      \PYG{o}{]}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}HostConfig\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}
+        \PYG{l+s+s1}{\PYGZsq{}Binds\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}/var/run/docker.sock:/var/run/docker.sock\PYGZsq{}}\PYG{o}{]}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}VolumesFrom\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{n}{config}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}relevant\PYGZus{}data\PYGZus{}container}\PYG{o}{]}\PYG{p}{,}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{})}
+  \PYG{k}{end}
+\PYG{k}{end}
+\PYG{k}{d}
+\end{Verbatim}

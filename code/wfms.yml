@@ -16,13 +16,12 @@ services:
       - 5000:5000
     networks:
       - backend
-      - enactment
     environment:
       - "constraint:node==coordination-machine"
 
   mom:
     image: rabbitmq:3-management
-    restart: always
+    restart: on-failure:3
     networks:
       - backend
       - enactment
@@ -38,6 +37,7 @@ services:
       context: ./engine
       args:
         - "constraint:node==development-machine"
+    restart: on-failure:3
     depends_on:
       - mom
     networks:
@@ -51,6 +51,7 @@ services:
 
   organization_db:
     image: postgres
+    restart: on-failure:3
     depends_on:
       - organization_db_data
     volumes_from:
@@ -76,6 +77,7 @@ services:
       context: ./organization
       args:
         - "constraint:node==development-machine"
+    restart: on-failure:3
     depends_on:
       - organization_db
       - mom
@@ -88,6 +90,7 @@ services:
 
   worklist_db:
     image: postgres
+    restart: on-failure:3
     volumes_from:
       - worklist_db_data
     networks:
@@ -103,26 +106,28 @@ services:
     volumes:
       - /var/lib/postgresql/data
     environment:
-      - "constraint:node==development-machine"
+      - "constraint:node==internal-machine"
 
   worklist:
     image: worklist
     build:
       context: ./worklist
       args:
-        - "constraint:node==development-machine"
+        - "constraint:node==internal-machine"
+    restart: on-failure:3
     depends_on:
       - worklist_db
       - mom
     networks:
       - enactment
     environment:
-      - "constraint:node==development-machine"
+      - "constraint:node==internal-machine"
       - "POSTGRES_PASSWORD=masterarbeit"
       - "POSTGRES_USER=worklist"
 
   definition_db:
     image: postgres
+    restart: on-failure:3
     depends_on:
       - definition_db_data
     volumes_from:
@@ -148,6 +153,7 @@ services:
       context: ./definition
       args:
         - "constraint:node==development-machine"
+    restart: on-failure:3
     depends_on:
       - definition_db
       - mom
@@ -167,6 +173,9 @@ services:
       context: ./infrastructure
       args:
         - "constraint:node==development-machine"
+    restart: on-failure:3
+    depends_on:
+      - mom
     networks:
       - backend
     volumes:
@@ -181,7 +190,8 @@ services:
     build:
       context: ./user_gateway
       args:
-        - "constraint:node==development-machine"
+        - "constraint:node==internal-machine"
+    restart: on-failure:3
     depends_on:
       - mom
     ports:
@@ -189,7 +199,7 @@ services:
     networks:
       - frontend
     environment:
-      - "constraint:node==development-machine"
+      - "constraint:node==internal-machine"
 
   developer_gateway:
     image: developer_gateway
@@ -197,11 +207,12 @@ services:
       context: ./developer_gateway
       args:
         - "constraint:node==development-machine"
+    restart: on-failure:3
     depends_on:
       - mom
     ports:
       - "3000:3000"
     networks:
-      - backend
+      - frontend
     environment:
       - "constraint:node==development-machine"

@@ -1,7 +1,8 @@
 require 'hutch'
+require 'securerandom'
 
 module Activity
-  class WorklistItem
+  class WorklistClient
     attr_accessor :data
 
     def initialize(configuration)
@@ -20,26 +21,28 @@ module Activity
       @item = {}
     end
 
-    def expose
+    def request_user_input
       @item = create_worklist_item
       wait_for_completion
       delete_worklist_item
     end
 
-    def data
-      @item['data']
+    def result
+      { data: @item['data'] }
     end
 
     private
     def create_worklist_item
-      created_queue = new_response_queue("wfms.worklist_item.created")
-      Hutch.publish "wfms.worklist_item.create", {
+      @item = {
+        id: SecureRandom.uuid,
         user_id: @configuration['user_id'],
         config: @configuration,
         activity_instance_id: Activity::Configuration.activity_instance_id,
         workflow_instance_id: Activity::Configuration.workflow_instance_id
       }
 
+      created_queue = new_response_queue("wfms.worklist_item.created")
+      Hutch.publish "wfms.worklist_item.create", @item
       get_response(created_queue)
     end
 
@@ -60,13 +63,18 @@ module Activity
       response_queue
     end
 
+    def is_relevant_item?(object)
+      !object.nil? && @item['id'] == object['id']
+    end
+
     def get_response(queue)
-      @response_object = nil
+      response_value = nil
 
       begin
         queue.subscribe(:block => true) do |delivery_info, properties, body|
-          @response_object = JSON.parse(body)['worklist_item']
-          if !@response_object.nil? && (@item['id'] == nil || @item['id'] == @response_object['id'])
+          response_object = JSON.parse(body)['worklist_item']
+          if is_relevant_item?(response_object)
+            response_value = response_object
             delivery_info.consumer.cancel
           end
         end
@@ -74,7 +82,7 @@ module Activity
         queue.delete
       end
 
-      @response_object
+      response_value
     end
   end
 end

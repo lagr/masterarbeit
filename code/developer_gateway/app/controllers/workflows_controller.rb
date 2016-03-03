@@ -33,7 +33,7 @@ class WorkflowsController < ApplicationController
   end
 
   def start_instance
-    mq_request 'wfms.workflow.start', 'wfms.workflow.started', id: params[:id], input_data: { this: 'is a test' }
+    Hutch.publish "wfms.workflow.start", id: params[:id], input_data: { this: 'is a test' }
     head :no_content
   end
 

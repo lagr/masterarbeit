@@ -11,6 +11,9 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{pdfpages}
+\robustify\textellipsis
+\usepackage{fontawesome}
+
 
 \usepackage{tikz-uml}
 \usepackage{forest}
@@ -189,6 +192,11 @@
   \chapter{Prototypical Implementation} % (fold)
     \label{cha:implementation}
 
+    Based on the considerations of the previos chapter, a Docker-based \ac{WfMS} prototype was implemented.
+    ** etc**
+
+    Since the principle of event-driven service invocation is already demonstrated in the definition service, a detailed documentation of the organization and worklist services would not contribute further relevant insights. They are thus only described regarding their realization with Docker containers and the network configuration of these containers.
+
     \input{content/text/implementation}
     % chapter implementation (end)
 
@@ -203,10 +211,21 @@
     % chapter conclusion (end)
 
   \bibliographystyle{plain}
-  \bibliography{Remote}
+  \Literaturverzeichnisse{Literatur}
+  % \bibliography{Remote}
 
   \appendix
-  \AnhChapter{Kapitel}
+  \AnhChapter{Architecture and design}
+
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=0.65\textwidth]{content/images/class_diagram_organization-crop.pdf}
+      \caption*{\scriptsize Note: Controllers omitted for the sake of simplicity. User and Role both have a controller with the respective pluralized name plus a `Controller' suffix.}
+      \caption{UML Class Diagram for the Organization Service}
+      \label{fig:uml_class_diagram_organization}
+    \end{figure}
+
+  \AnhChapter{Implementation}
 
   % \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/ac_base/run.rb}
 
@@ -230,34 +249,35 @@
 
   \begin{figure}[!htbp]
     \inputminted[lastline=50,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (1)}
-    \label{fig:the_whole_docker_compose_file}
+    \caption{The whole Docker Compose file of the \ac{WfMS} (1/5)}
+    \label{fig:the_whole_docker_compose_file_1}
   \end{figure}
 
   \begin{figure}[!htbp]
     \inputminted[firstline=51,lastline=98,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (2)}
-    \label{fig:the_whole_docker_compose_file}
+    \caption{The whole Docker Compose file of the \ac{WfMS} (2/5)}
+    \label{fig:the_whole_docker_compose_file_2}
   \end{figure}
 
   \begin{figure}[!htbp]
     \inputminted[firstline=99,lastline=145,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (2)}
-    \label{fig:the_whole_docker_compose_file}
+    \caption{The whole Docker Compose file of the \ac{WfMS} (3/5)}
+    \label{fig:the_whole_docker_compose_file_3}
   \end{figure}
 
   \begin{figure}[!htbp]
     \inputminted[firstline=146,lastline=197,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (2)}
-    \label{fig:the_whole_docker_compose_file}
+    \caption{The whole Docker Compose file of the \ac{WfMS} (4/5)}
+    \label{fig:the_whole_docker_compose_file_4}
   \end{figure}
 
   \begin{figure}[!htbp]
     \inputminted[firstline=198,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (2)}
-    \label{fig:the_whole_docker_compose_file}
+    \caption{The whole Docker Compose file of the \ac{WfMS} (5/5)}
+    \label{fig:the_whole_docker_compose_file_5}
   \end{figure}
 
   \AnhSection{Unterkapitel}
 
+\AbschlErklaerung{03-08-2016}
 \end{document}

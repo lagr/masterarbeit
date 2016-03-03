@@ -16,3 +16,4 @@ rescue
 end
 
 Dir.glob(File.join('./', '{models,lib,consumers}', '**', '*.rb'), &method(:require))
+EnvironmentManager.watch_for_new_nodes

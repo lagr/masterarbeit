@@ -179,13 +179,13 @@
 
   \subsubsection{Worklist Service} % (fold)
     \label{subs:worklist_service}
-    The sole responsibility of this service is the management of users' worklists. It should create, update and delete worklist items on request and publish the data submitted to it by users to the other services. If an user is deleted, it should remove the worklist item or reassign it to another user. The former tasks are performed by the \texttt{WorklistConsumer}, which reacts on related events. The latter task is in the responsibility of the \texttt{UserConsumer}, which reacts to the deletion of an user. The worklist item's object-relational mapping is performed by the \texttt{WorklistItem} model class.
+    The sole responsibility of this service is the management of users' worklists. It should create, update and delete worklist items on request and publish the data submitted to it by users to the other services. If an user is deleted, it should remove the worklist item or reassign it to another user. The former tasks are performed by the \texttt{WorklistConsumer}, which reacts on related events. The latter task is in the responsibility of the \texttt{UserConsumer}, which reacts to the deletion of an user. The worklist items' object-relational mapping is performed by the \texttt{WorklistItem} model class.
     % subsubsection worklist_service (end)
 
   \subsubsection{Workflow Engine Service} % (fold)
     \label{subs:workflow_engine_service}
     ** TODO: incomplete **
-    In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WFMC} in terms of functionality, which is described in \ref{par:workflow_engine}. The way  to utilize Docker for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has, though.
+    In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WFMC} in terms of functionality, which is described in \ref{par:workflow_engine}. The way to utilize Docker for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has, though. ** like, how
 
     - choose participants
     - add to execution networks
@@ -208,13 +208,9 @@
 
     The \texttt{TemplatesController} is different from the other controller classes, as is not involved in forwarding requests, but serves the only purpose to render and deliver the \ac{HTML} fragments required by the frontend.
 
-    This service and the user gateway service are intended to be the only services that can be reached from outside of the \ac{WfMS}.
+    Following the API gateway pattern, this service and the user gateway service are intended to be the only services that can be reached from outside of the \ac{WfMS}.
+    ** API GATEWAY DEFINED?
 
-    % ** - provides access to
-    %   - infrastructure
-    %   - definition
-    %   - organization
-    % - gives a visual modeling interface for workflows
     % subsubsection developer_gateway (end)
 
   \subsubsection{User Gateway} % (fold)
@@ -224,19 +220,13 @@
     Due to the few responsibilities of this gateway, there exist only two controller classes: \texttt{WorklistItemsController}, which forwards \ac{CRUD} requests that concern worklist items and \texttt{WorklistController}, which provides the means to obtain all existing worklists.
     % subsubsection user_gateway (end)
 
-
-  % \subsubsection{Validation Service} % (fold)
-    %   \label{subs:valitation_service}
-    %   One micro-service that might be extracted from the above services concerns the validation of data. Given a dataset and a set of rules on how to validate this dataset, the service is able to perform its task autonomously. As validation is a frequently recurring action in the execution of workflows -- before and after each activity and workflow -- it could thus be beneficial to be able to scale the execution of this task independently.
-    %   % subsubsection valitation_service (end)
-
   \subsubsection{Infrastructure Management Service} % (fold)
     \label{subs:environment_management_service}
     The infrastructure management service fetches and refines the information related to the swarms nodes.
     That is, it lists all nodes and can return their properties, (running) containers and available images.
     Supported by the \texttt{DockerHelper}, which provides the connections to the different nodes, the \texttt{EnvironmentManager} contains the required logic to fulfil thise tasks. The \texttt{ServerConsumer} waits for relevant requests via the \ac{MOM}, instructs the \texttt{EnvironmentManager} accordingly, and returns the results. Further, there is a \texttt{Server} model class, which is used to structure the obtained information.
 
-    Additionally to its role in the information retrieval, the \texttt{EnvironmentManager} listens for  new nodes in the swarm and launches the provisioning service on joining nodes.
+    Additionally to its role in the information retrieval, the \texttt{EnvironmentManager} listens for new nodes in the swarm and launches the provisioning service on joining nodes.
     % subsubsection environment_management_service (end)
 
   \subsubsection{Registry} % (fold)
@@ -248,9 +238,7 @@
     \label{subs:provisioning_service}
     The objectives include the reduction of administrative work. In order to prevent the user from having to distribute the Docker images required for the execution of workflows manually, a service should perform this task. This service should provision each machine with said images whenever such an image is created or updated. To do so, the \texttt{ImageConsumer} and \texttt{ServerConsumer} classes react to relevant events by invoking the appropriate Docker commands.
 
-    The service could either run as an instance on each machine, performing the required Docker operations locally, or run on the Docker Swarm master machine as one instance and perform the operations remotely on all machines.
-
-    **perform what, when?**
+    The service could either run as an instance on each machine, performing the required Docker operations locally, or run on the Docker Swarm master machine as one instance and perform the operations remotely on all machines. The former variant enables all nodes to react concurrently to the event of a published image, while in the latter variant, the distribution would take place sequentially -- unless the service is implemented in a multi-threaded or multi-process way. While the idea of provisioning all nodes at the same time might be appealing, the workload imposed on the registry node by a big swarm should be considered.
     % subsubsection provisioning_service (end)
 % subsection components (end)
 

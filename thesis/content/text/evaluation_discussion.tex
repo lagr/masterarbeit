@@ -1,5 +1,23 @@
 % -*- root: ../../main.tex -*- %
+  In Chapter~\ref{cha:implementation}, the prototypical implementation of a Docker-based \ac{WfMS} is presented. This implementation is based on the considerations that are made in Chapter~\ref{cha:solution_design}. In that chapter, objectives for the prototypical implementation were gathered, together with the requirements that must be met in order for these objectives to be considered fulfilled.
 
-- other two models would be interesting to see
-- choice of ruby impacted performance, could be better with the worker model
--
+  % Using the prototype, a developer is able to model an organization hierarchy, create workflows and define their processes graphically. These workflows can be exported to Docker containers and are then distributed to all nodes. The developer can start workflows, and -- if a manual activity is present -- a user can enter data. The developer can pause and unpause the workflow.
+
+  One of the objectives was that components of the \ac{WfMS} should be alterable without a full system restart. In order to deploy a new version of a micro-service, that new version may simply be started in parallel to the old version -- as long as the externally perceived behavior of the currently used functions of that service has not changed. This is made possible through the loose coupling of the micro-services via the message queue and the deployment of these services in separate containers. The two versions of the service will work on incoming requests in round robin, as they are subscribed to the same queue. If the new version of the service is deemed stable, the old version may be shut down.
+
+  Regarding the requirements that concern the failure resilience of a service, the prototype is able to let all parts of the system that do not rely on failed services continue to offer their functionality. If, for example, the organization service failed, it would still be possible to model and execute a workflow. Also, the possibility to instruct Docker to restart failed containers can help to keep the system available. In case of a micro-service failure, the unanswered requests to it remain in the queue and can be processed as soon as the service is available again. The prototype's ability to cope with failure can thus mainly be attributed to the combination of Docker with a \ac{MSA}.
+
+  The management of nodes that are available for execution is mostly handled by Docker Swarm. By starting appropriately configured swarm agent containers on them, new nodes may be added to the swarm at any time. The infrastructure service notices the addition of new nodes and starts a provisioning service on them. This service in turn reacts to pushed images and instructs its respective node to pull them.
+
+  The prototype supports the user in using third-party images by providing the means to search for images on the public Docker Hub registry. Further, the invoked command can be specified for utilized third-party images. The graphical modeling environment abstracts from the fact that the container is started by an intermediate activity container.
+
+  % \textbullet ~ User can specify validation schemata
+  % \textbullet ~ \ac{WfMS} performs validity checks
+
+  Some of the objectives were addressed in theory only, but were not implemented in the prototype.
+  As described in \ref{sub:execution_scheduling}, nodes can be labeled and these labels can be used to enforce required properties of nodes for certain workflows or activities. ** for single entities?**
+  The prototype applies this principle, but in a static way -- not on a dynamic, per-element level.
+
+  Likewise, a solution for the priorization of activities and workflows was presented in \ref{} ** show it**, but it was not implemented in the prototype.
+
+  An objective that was disregarded in the implementation to keep the *what? thesis short?* is the management of permanently running services which are provided for specific workflows or activities. While it is theoretically described in \ref{}, there is no corresponding functionality in the prototype.

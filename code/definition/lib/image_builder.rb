@@ -66,7 +66,6 @@ module ImageBuilder
         files_to_copy: {},
         files_to_write: {
           'input.schema.json' => {type: 'object', required: ['this'], properties: { this: {type: 'string'} } }.to_json,
-          'input.mapping.json' => "{}",
           'activity.info.json' => {
             image_name: image_name,
             type: activity.activity_type,
@@ -86,7 +85,6 @@ module ImageBuilder
         files_to_copy: {},
         files_to_write: {
           'process_definition.json' => serialize_process_definition(workflow),
-          'input.mapping.json' => '{}',
           'input.schema.json' => { type: 'object', required: ['this'], properties: { this: { type: 'string' } } }.to_json,
           'workflow.info.json' => { image_name: image_name }.to_json
         }

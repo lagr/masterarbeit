@@ -75,6 +75,7 @@ angular.module 'WFMS.ProcessDefinition'
       vm.canvas.disablePan()
 
       if event.altKey
+        selectActivity(activity)
         showActivityDetails()
         return
 

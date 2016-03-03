@@ -10,68 +10,96 @@
 
   \begin{table}[p!]
     \centering
-    \renewcommand{\arraystretch}{1.75}
-    \begin{tabular}[t]{>{\raggedleft}p{0.3\customtabwidth} p{0.7\customtabwidth}}
+    \begin{tabular}[t]{l l}
       \toprule
       \textbf{Objective} & \textbf{~~~~Requirements} \\
       \midrule
 
-      \textbf{Resilience in case of failures}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item Non-failed components continue to provide their functionality
-            \item Failed components are restarted
-          \end{tabitemize} \end{minipage} \\
+      \multicolumn{2}{l}{\textbf{Ability to alter components} }\\
+        & \textbullet ~ Components can be altered on a running system \\ [1.2ex]
 
-      \textbf{Dynamic addition of enactment servers}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item Suitable servers are discovered
-            \item User can add servers during execution time
-          \end{tabitemize} \end{minipage} \\
+      \multicolumn{2}{l}{\textbf{Resilience in case of failures} }\\
+        & \textbullet ~ Non-failed components continue to provide their functionality \\
+        & \textbullet ~ Failed components are restarted \\ [1.2ex]
 
-      \textbf{Environment of arbitrary services}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item Required services for a workflow can be selected
-            \item Required services are started on respective nodes
-            \item Workflows are connected to their required services
-            \item Services are restarted if necessary
-          \end{tabitemize} \end{minipage} \\
+      \multicolumn{2}{l}{\textbf{Dynamic addition of enactment servers} }\\
+        & \textbullet ~ Suitable servers are discovered \\
+        & \textbullet ~ User can add servers during execution time \\ [1.2ex]
 
-      \textbf{Third-party containers as workflow components}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item \ac{GUI} for browsing Docker Hub images exists
-            \item Modeling \ac{GUI} has a ``Container'' element
-            \item User can specify start parameters and commands
-          \end{tabitemize} \end{minipage} \\
+      \multicolumn{2}{l}{\textbf{Environment of arbitrary services ** WAS OMMITTED! **} }\\
+        & \textbullet ~ Required services for a workflow can be selected \\
+        & \textbullet ~ Required services are started on respective nodes \\
+        & \textbullet ~ Workflows are connected to their required services \\
+        & \textbullet ~ Services are restarted if necessary \\ [1.2ex]
 
-      \textbf{Input and output validation}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item User can specify validation schemata
-            \item \ac{WfMS} performs validity checks
-          \end{tabitemize} \end{minipage} \\
+      \multicolumn{2}{l}{\textbf{Third-party containers as workflow components} }\\
+        & \textbullet ~ \ac{GUI} for browsing Docker Hub images exists \\
+        & \textbullet ~ Modeling \ac{GUI} has a ``Container'' element \\
+        & \textbullet ~ User can specify start parameters and commands \\ [1.2ex]
 
-      \textbf{Resource usage management}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item User can prioritize/demote activities and workflows
-            \item \ac{WfMS} enforces respective resource usage
-          \end{tabitemize} \end{minipage} \\
+      % \multicolumn{2}{l}{\textbf{Input and output validation} }\\
+      %   & \textbullet ~ User can specify validation schemata \\
+      %   & \textbullet ~ \ac{WfMS} performs validity checks \\ [1.2ex]
 
-      \textbf{Property-based scheduling of containers}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item Properties of servers can be described
-            \item Workflows and activities can require server properties
-            \item Containers are run on suitable servers
-          \end{tabitemize} \end{minipage} \\
+      \multicolumn{2}{l}{\textbf{Resource usage management ** not implemented**} }\\
+        & \textbullet ~ User can prioritize/demote activities and workflows \\
+        & \textbullet ~ \ac{WfMS} enforces respective resource usage \\ [1.2ex]
 
-      \textbf{Reduction of administrative work}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item Added servers are configured automatically
-            \item All execution related containers are started automatically
-            \item Saved/updated workflows and activities are deployed automatically
-          \end{tabitemize} \end{minipage} \\
+      \multicolumn{2}{l}{\textbf{Property-based scheduling of containers} }\\
+        & \textbullet ~ Properties of servers can be described \\
+        & \textbullet ~ Workflows and activities can require server properties \\
+        & \textbullet ~ Containers are run on suitable servers \\ [1.2ex]
+
+      \multicolumn{2}{l}{\textbf{Reduction of administrative work} }\\
+        & \textbullet ~ Added servers are configured automatically \\
+        & \textbullet ~ All execution related containers are started automatically \\
+        & \textbullet ~ Saved/updated workflows and activities are deployed automatically \\
       \bottomrule
     \end{tabular}
     \caption{Objectives and their respective requirements}
     \label{tab:data_objectives_and_requirements}
+  \end{table}
+
+
+  \begin{table}[!htbp]
+    \centering
+    \begin{tabular}{l l l}
+      \toprule
+      Data Source & Criterion Type & Examples \\
+      \midrule
+      Docker
+        & Node tags
+          & Name \\
+          && \ac{ID} \\
+          && Storage driver \\
+          && Execution driver \\
+          && Kernel version  \\
+          && Operating system \\ [1.2ex]
+        & Qualitative node properties
+          & Geographic location\\
+          && Custom grouping membership\\
+          && Ownership status\\ [1.2ex]
+        & Quantitative node properties
+          & Available memory \\
+          && Available storage \\
+          && Network speed \\ [1.2ex]
+        & Execution environment
+          & Existing containers \\
+          && Existing images \\
+          && Currently running containers \\ [1.4ex]
+      WfMS
+        & Live data
+          & Enactment status \\
+          & Activity input/output data \\
+          && Workflow input/output data \\ [1.2ex]
+        & Activity/workflow properties
+          & Expected data-intensity \\
+          && Compliance requirements\\
+          &&\\ [1.2ex]
+      \bottomrule
+    \end{tabular}
+    \label{tab:scheduling_criteria}
+    \caption{Scheduling Criteria}
   \end{table}
 
   \begin{table}[p!]
@@ -113,7 +141,7 @@
       the \ac{WfMS} should be structured in a way that allows the adaption to such changes with the least possible system downtime. \\
       Further, it should be possible to add servers to the system during execution time, which then should be usable with a minimum of manual configuration.
 
-      If an organization is unable to perform its business processes, it is likely to suffer from financial losses. The failure of a \ac{WfMS} which enables those business processes can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be able to be resilient towards failures, \ie provide as much functionality as possible if a part of it fails when and try to recover autonomously. This requires well separated modules.
+      If an organization is unable to perform its business processes, it is likely to suffer from financial losses. The failure of a \ac{WfMS} which enables those business processes can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be able to be resilient towards failures, \ie provide as much functionality as possible if a part of it fails and try to recover autonomously. This requires well separated modules.
 
       To enable workflows to be run in a specified environment of services, the execution environment of the \ac{WfMS} should have a mechanism that allows the specification of such services in form of containers which are made available to workflow components when they are being executed. It also should be able to ensure that these containers are restarted in case of a failure to ensure their presence in the execution environment.
 
@@ -125,7 +153,7 @@
       One benefit of Docker containers is, that full application stacks can be bundled with all their dependencies and pre-configured regarding their invocation \cite[p.~82]{Bernstein2014Containers}. The result can be considered as a black box, which provides some specific functionality that could be used without further configuration. In combination with the facilitated sharing of images through repositories, this provides a good foundation for modular reuse and combination \cite[p.~6]{Boettiger2015Introduction}.
       In order to reap this advantage, \ac{WfMS} should thus enable modeling developers to incorporate the invocation of third party images from within their workflows. This includes the specification of parameters, with which the image should be run.
 
-      To ensure the correctness of data along the execution, the modeler should be able to pass along information with both activities and workflows that makes the validation of their input and output data possible. The \ac{WfMS} should provide a mechanism which performs this validation in the course of the workflow enactment.
+      % To ensure the correctness of data along the execution, the modeler should be able to pass along information with both activities and workflows that makes the validation of their input and output data possible. The \ac{WfMS} should provide a mechanism which performs this validation in the course of the workflow enactment.
 
       % to: architecture --> Docker permits to pass restrictions to containers before running them.
       In case that an execution node is working to full capacity, a means should be provided to support the swift finalization of time-critical tasks before those that are not, \eg the temperature analysis of a cold storage with sensitive goods which is prioritized over the automated reorder of tacks for the office. The modeling environment should thus enable the user to put restrictions on the resource usage of specific activities in order to prioritize or demote them.

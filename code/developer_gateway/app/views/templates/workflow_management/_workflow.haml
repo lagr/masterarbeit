@@ -4,6 +4,7 @@
       %md-button{ui_sref: 'app.workflow_management.workflows'} Go Back
       %h2 {{wfCtrl.workflow.name}}
       %md-button.md-raised{ng_click: 'wfCtrl.saveWorkflow()'} Save
+      %md-button.md-secondary{ ng_click: 'wfCtrl.workflow.startInstance()' } Start
       %span{flex: true}
 
   = render partial: 'templates/process_designer/process_designer'

@@ -24,7 +24,5 @@ angular.module 'WFMS.ProcessDefinition'
       templateName: 'and_split'
     AndJoinActivity:
       templateName: 'and_join'
-    AutomaticActivity:
-      templateName: 'automatic'
     ContainerizedActivity:
       templateName: 'containerized'

@@ -43,8 +43,9 @@ module Workflow
       Docker::Container.create({
         'name' => "aci_#{@id}",
         'Labels' => {
-          "wfi_#{@instance_id}" => "",
-          "aci_#{@id}" => ""
+          "main_workflow_instance" => "#{config.main_workflow_instance_id}",
+          "workflow_instance" => "#{config.workflow_instance_id}",
+          "activity_instance" => "#{@id}",
         },
         'Image' => "#{config.image_registry}/activity:ac_#{@activity.id}",
         'Cmd' => [''],
@@ -52,18 +53,16 @@ module Workflow
         'Tty' => true,
         'Env' => [
           "MAIN_WORKFLOW_ID=#{config.main_workflow_id}",
+          "MAIN_WORKFLOW_INSTANCE_ID=#{config.main_workflow_instance_id}",
           "WORKFLOW_ID=#{config.workflow_id}",
           "WORKFLOW_INSTANCE_ID=#{config.workflow_instance_id}",
-          "WORKDIR=#{Workflow::FileHelper.activity_instance_workdir(self)}",
           "ACTIVITY_ID=#{@activity.id}",
-          "ACTIVITY_INSTANCE_ID=#{@id}"
+          "ACTIVITY_INSTANCE_ID=#{@id}",
+          "WORKDIR=#{Workflow::FileHelper.activity_instance_workdir(self)}"
         ],
         'HostConfig' => {
           'Binds' => ['/var/run/docker.sock:/var/run/docker.sock'],
-          'VolumesFrom' => [
-            config.workflow_relevant_data_container,
-            #config.gem_data_container
-          ],
+          'VolumesFrom' => [config.workflow_relevant_data_container],
         }
       })
     end

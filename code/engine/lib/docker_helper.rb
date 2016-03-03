@@ -18,6 +18,10 @@ module WorkflowEngine
     def image_name(type:, id: 'base')
       "#{SHORT_TYPES[type]}_#{id}"
     end
+
+    def local_conenction
+      Docker::Connection.new "unix:///var/run/docker.sock", {}
+    end
   end
 end
 
