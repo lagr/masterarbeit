@@ -31,8 +31,7 @@ docker-machine create -d virtualbox                        \
 	--engine-opt="cluster-store=$consul_url"               \
 	--engine-opt="cluster-advertise=eth1:2376"             \
 	--engine-label edu.proto.machine_env="internal"        \
-	--engine-label edu.proto.ram="big-ram"                 \
-	--engine-label edu.proto.cpu="big-cpu"                 \
+	--engine-label edu.proto.ram="1024"          	       \
 	--engine-insecure-registry $registry_url               \
 	--engine-insecure-registry registry_service_1:5000     \
 	development-machine
@@ -44,6 +43,7 @@ docker-machine create -d virtualbox                        \
 	--engine-opt="cluster-store=$consul_url"               \
 	--engine-opt="cluster-advertise=eth1:2376"             \
 	--engine-label edu.proto.machine_env="internal"        \
+	--engine-label edu.proto.ram="1024"          	       \
 	--engine-insecure-registry $registry_url               \
 	internal-machine
 
@@ -54,7 +54,7 @@ docker-machine create -d virtualbox                        \
 	--engine-opt="cluster-store=$consul_url"               \
 	--engine-opt="cluster-advertise=eth1:2376"             \
 	--engine-label edu.proto.machine_env="external"        \
-	--engine-label edu.proto.hdd="big-hdd"                 \
+	--engine-label edu.proto.ram="1024"                    \
 	--engine-insecure-registry $registry_url               \
 	cloud-machine
 
