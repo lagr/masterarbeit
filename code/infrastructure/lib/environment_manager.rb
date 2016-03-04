@@ -20,10 +20,15 @@ module EnvironmentManager
 
   def watch_for_new_nodes
     Thread.new do
-      Docker::Event.stream do |event|
-        return unless event.status == 'engine_connect'
-        server = Server.new(name: event.from.gsub('swarm node:', ''), ip: nil)
-        start_provisioner(server_name)
+      begin
+        Docker::Event.stream do |event|
+          if event.status == 'engine_connect'
+            server = Server.new(name: event.from.gsub('swarm node:', ''), ip: nil)
+            start_provisioner(server_name)
+          end
+        end
+      rescue
+        retry
       end
     end
   end

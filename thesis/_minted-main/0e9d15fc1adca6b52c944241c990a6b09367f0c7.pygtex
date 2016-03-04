@@ -217,4 +217,19 @@
       \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{frontend}
     \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
       \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
+
+  \PYG{l+lScalar+lScalarPlain}{provisioner}\PYG{p+pIndicator}{:}
+    \PYG{l+lScalar+lScalarPlain}{image}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{provisioner}
+    \PYG{l+lScalar+lScalarPlain}{build}\PYG{p+pIndicator}{:}
+      \PYG{l+lScalar+lScalarPlain}{context}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{./provisioner}
+      \PYG{l+lScalar+lScalarPlain}{args}\PYG{p+pIndicator}{:}
+        \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==cloud\PYGZhy{}machine\PYGZdq{}}
+    \PYG{l+lScalar+lScalarPlain}{restart}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{on\PYGZhy{}failure:3}
+    \PYG{l+lScalar+lScalarPlain}{volumes}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{/var/run/docker.sock:/var/run/docker.sock}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{\PYGZti{}/.docker/machine/certs/:/root/.docker}
+    \PYG{l+lScalar+lScalarPlain}{environment}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}SWARM\PYGZus{}MANAGER\PYGZus{}IP=192.168.99.101\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}SWARM\PYGZus{}MANAGER\PYGZus{}CERT\PYGZus{}PATH=/root/.docker\PYGZdq{}}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==cloud\PYGZhy{}machine\PYGZdq{}}
 \end{Verbatim}

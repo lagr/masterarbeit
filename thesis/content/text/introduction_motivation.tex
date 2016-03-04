@@ -1,64 +1,18 @@
 % -*- root: ../../main.tex -*- %
 
+Software containers provide a way of packaging and executing processes that isolates the application from the underlying \ac{OS} of a computer and other processes that run on it. They enable developers to supply their applications with specifically tailored runtime environments without having to worry about conflicting versions of dependencies. \cite{}
+The concept of software containers is no new notion: an early predecessor was the \texttt{chroot} command, which dates back to 1979, \emph{software jails} followed in 1998 \cite{Bernstein2014Containers}.
+In the second decade of the \nth{21} century, solutions like Rocket, LXD, and Docker emerged, which aim at the introduction of standardized, re-usable software containers, usually in combination with tools for their management. Among these solutions, Docker is very popular. In the beginning of 2016, it was the \nth{20} most ``starred'' repository on the source code management platform \emph{GitHub} -- ranking four positions behind the Linux kernel repository \cite{Github2016Repositories}. Docker comes with a set of utilities, which extend its main container-related functionality.
 
+With regards to the challenges that heterogenous and distributed \ac{IT} environments impose on \acp{WfMS}, \eg the distribution of workflows to their location of enactment, the requirement to be able to adapt to increasing workload, or manage the remote execution of tasks, it could be of interest to fathom possible benefits that may arise from the use of the Docker tool set in the context of these \acp{WfMS}. The primary objectives of the thesis at hand are thus to address the following questions and to derive artifacts from the findings that may serve as a foundation for the conceptualization and implementation of upcoming \acp{WfMS}:
 
-RQ1: How can Docker leverage the deployment and execution of workflows in a distributed system?
-RQ2: Which decisions in software architecture and software design of a WFMS are complemented by Docker's functionality?
+\begin{description}
+  \item[RQ1:] How can Docker leverage the deployment and execution of workflows in a distributed environment?
+  \item[RQ2:] Which decisions in software architecture and software design of a WFMS are complemented by Docker's functionality?
+\end{description}
 
-identify design decisions that may be affected by Docker and provide artifacts that support the decision making
+The structure of this thesis follows the design science research process suggested by Peffers et al. \cite[pp.~89-92]{Peffers2007Design}. The research problem is identified in this very chapter and the chapters \ref{cha:workflow_management_systems} and \ref{cha:docker}, in which the fundamental concepts of Docker and \acp{WfMS} are introduced.
 
+Based on considerations drawn from these concepts, the objectives of a solution are inferred and a prototype is designed in Chapter~\ref{cha:solution_design}. The implementation and usage of the prototype are described in Chapter~\ref{cha:implementation}. In Chapter~\ref{cha:evaluation}, the developed mechanism and the prototype are evaluated. Finally, the findings of this thesis are summarized and suggestions for subsequent research are presented in Chapter\ref{cha:conclusion}.
 
-  - wfms are relevant
-  - containers solve things
-  -
-  - what can be gained from combining them?
-
-
-% \section{Research Methodology} % (fold)
-%   \label{sec:research_methodology}
-
-%     \textbf{Methodology}
-%     \begin{enumerate}
-%       \item Design Science process \cite{Peffers2007Design}
-%       \begin{enumerate}
-%         \item problem identification and motivation
-%           \begin{enumerate}
-%             \item specific research problem definition
-%             \item Value of a solution
-%             \item research state of the problem
-%           \end{enumerate}
-%         \item definition of objectives
-%           \begin{enumerate}
-%             \item inferred from problem definition and knowledge of feasibility
-%           \end{enumerate}
-%         \item design and development
-%           \begin{enumerate}
-%             \item creation of artifacts
-%             \item constructs, models, methods, instantiations
-%             \item determine artifacts desired functionality and architecture
-%           \end{enumerate}
-%         \item demonstration / evaluation
-%           \begin{enumerate}
-%             \item demonstrate how artifact solves one or more instances of the problem
-%             \item compare actual artifact functionality with objectives
-%             \item perform surveys / gather client feedback
-%           \end{enumerate}
-%         \item communication
-%       \end{enumerate}
-%     \end{enumerate}
-
-%     a \& B
-
-  % section research_methodology (end)
-
-\section{Related Work} % (fold)
-  \label{sec:related_work}
-
-  % section related_work (end)
-
-
-
->> Nunamaker, Chen and Purdin
-
-
-% chapter motivation (end)
+** related work

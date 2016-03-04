@@ -58,7 +58,8 @@ module Workflow
           "WORKFLOW_INSTANCE_ID=#{config.workflow_instance_id}",
           "ACTIVITY_ID=#{@activity.id}",
           "ACTIVITY_INSTANCE_ID=#{@id}",
-          "WORKDIR=#{Workflow::FileHelper.activity_instance_workdir(self)}"
+          "WORKDIR=#{Workflow::FileHelper.activity_instance_workdir(self)}",
+          "DATA_CONTAINER=#{config.workflow_relevant_data_container}"
         ],
         'HostConfig' => {
           'Binds' => ['/var/run/docker.sock:/var/run/docker.sock'],

@@ -23,6 +23,7 @@ module Workflow
       process_instance.start
       instance_network.disconnect(container)
     ensure
+      instance_network.disconnect(container)
       instance_network.remove
     end
   end

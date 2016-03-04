@@ -53,5 +53,9 @@ module Activity
     def container_name
       "aci_#{Activity::Configuration.activity_instance_id}"
     end
+
+    def workflow_relevant_data_container
+      ENV['DATA_CONTAINER'] || "data_#{workflow_instance_id}"
+    end
   end
 end

@@ -69,6 +69,7 @@ module ImageBuilder
           'activity.info.json' => {
             image_name: image_name,
             type: activity.activity_type,
+            subworkflow_id: activity.subworkflow_id,
             configuration: activity.activity_configuration }.to_json
         }
       }

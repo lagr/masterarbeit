@@ -1,52 +1,29 @@
-require 'hutch'
 require 'docker-api'
 
-module Provisioner
-  def self.match_message(message)
-    /wfms\.(\w+)\.(\w+)(?:\.([\w-]+))?/.match(message.routing_key).captures.to_a.compact.map(&:to_sym)
-  end
+cert_path = "#{ENV['SWARM_MANAGER_CERT_PATH']}"
+swarm_manager_url = URI.parse('tcp://' + ENV['SWARM_MANAGER_IP'])
+swarm_manager_url.port = 3376
 
-  class ServerConsumer
-    include Hutch::Consumer
-    consume 'wfms.server.#'
+Docker.url = swarm_manager_url.to_s
+Docker.options = {
+  client_cert: File.join(cert_path, 'cert.pem'),
+  client_key: File.join(cert_path, 'key.pem'),
+  ssl_ca_file: File.join(cert_path, 'ca.pem'),
+  scheme: 'https'
+}
 
-    def process(message)
-      case message.routing_key.remove('wfms.server.')
-      when 'update'
-        reconfigure_environment(message[:server])
-      end
-    end
+def local_conenction
+  @conn ||= Docker::Connection.new "unix:///var/run/docker.sock", {}
+end
 
-    def reconfigure_environment(server)
-      server[:required_images].each do |image|
-        Docker::Image.create 'Image' => "#{image[:tag]}:latest"
-      end
-      server[:enviroment_containers].each do |cont|
-        Docker::Container.create(cont['configuration'])
-      end
+begin
+  Docker::Event.stream do |event|
+    if event.status == 'push' && !event.id.match(/sha\:/)
+      puts "pulling #{event.id}"
+      Docker::Image.create({fromImage: event.id}, local_conenction)
     end
   end
-
-  class ImageConsumer
-    include Hutch::Consumer
-    consume 'wfms.image.#'
-
-    def process(message)
-      subject, action, subject_id = Provisioner.match_message(message)
-      case action
-      when :add
-        update_image_if_assigned(message[:image])
-      end
-    end
-
-    def update_image_if_assigned(image)
-      if assigned?(image)
-        Docker::Image.create 'fromImage' => image
-      end
-    end
-
-    def assigned?(image)
-      true
-    end
-  end
+rescue Exception => e
+  puts e
+  retry
 end

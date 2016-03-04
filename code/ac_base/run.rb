@@ -37,7 +37,7 @@ module Activity
 
     def start_subworkflow
       require_relative 'subworkflow_invocation'
-      invocation = Activity::SubworkflowInvocation.new(@activity_configuration)
+      invocation = Activity::SubworkflowInvocation.new(@activity_info)
       invocation.start
       log_result(invocation.result)
     end

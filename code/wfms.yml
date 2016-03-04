@@ -216,3 +216,18 @@ services:
       - frontend
     environment:
       - "constraint:node==development-machine"
+
+  provisioner:
+    image: provisioner
+    build:
+      context: ./provisioner
+      args:
+        - "constraint:node==cloud-machine"
+    restart: on-failure:3
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    environment:
+      - "SWARM_MANAGER_IP=192.168.99.101"
+      - "SWARM_MANAGER_CERT_PATH=/root/.docker"
+      - "constraint:node==cloud-machine"

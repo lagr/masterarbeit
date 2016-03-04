@@ -6,10 +6,6 @@
       %h3 {{processDesigner.selected[0].activityType}}
   %md-content{ layout_padding: true}
     %form
-      %md-input-container
-        %label Test input
-        %input{ md_autofocus: true }
-
       %md-input-container.md-block{ flex_gt_sm: true, ng_show: 'processDesigner.selected[0].activityType == "subworkflow"' }
         %label Subworkflow
         %md-select{ ng_model: "processDesigner.selected[0].subworkflowId" }

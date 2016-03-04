@@ -3,18 +3,22 @@ require 'docker-api'
 module Activity
   class SubworkflowInvocation
     def initialize(config)
-      @config = config
-      @registry = Activity::Configuration.image_registry
-      @image_tag = "#{config['image']}:#{config['image_version']}"
-      @container_name = "#{Activity::Configuration.container_name}_#{config['image']}"
-      @container = create_container
-
       @instance_id = SecureRandom.uuid
+      @subworkflow_id = config['subworkflow_id']
+
+      @container_workdir = prepare_workdir
+      @container = create_container
+      @container.archive_in [Activity::FileHelper.input_data], "/workflow"
     end
 
     def start
+      Docker::Network.get('wfms_enactment').connect(@container.id)
       @container.start
-      @container.wait(60 * 60)
+      begin
+        @container.wait(60 * 60)
+      rescue TimeoutError => e
+        retry
+      end
     end
 
     def result
@@ -32,6 +36,10 @@ module Activity
       cluster_store.select(:host,:port).join(':')
     end
 
+    def prepare_workdir
+      Activity::FileHelper.create_subworkflow_workdir @instance_id
+    end
+
     def create_container
 
       Docker::Container.create({
@@ -40,7 +48,7 @@ module Activity
           "main_workflow_instance" => "#{Activity::Configuration.main_workflow_instance_id}",
           "workflow_instance" => "wfi_#{@instance_id}",
         },
-        'Image' => "#{registry_address}/workflow:wf_#{@subworkflow_id)}",
+        'Image' => "#{registry_address}/workflow:wf_#{@subworkflow_id}",
         'Cmd' => ['bash'],
         'WorkingDir' => '/workflow',
         'Tty' => true,
@@ -49,12 +57,12 @@ module Activity
           'VolumesFrom' => [Activity::Configuration.workflow_relevant_data_container],
         },
         'Env' => [
-          "affinity:container==#{@data_container.id}",
           "MAIN_WORKFLOW_ID=#{@workflow_id}",
           "MAIN_WORKFLOW_INSTANCE_ID=#{@instance_id}",
           "WORKFLOW_ID=#{@workflow_id}",
           "INSTANCE_ID=#{@instance_id}",
-          "WORKDIR=#{Activity::FileHelper.activity_instance_workdir(self)}"
+          "WORKDIR=#{@container_workdir}",
+          "DATA_CONTAINER=#{Activity::Configuration.workflow_relevant_data_container}"
         ]
       })
     end

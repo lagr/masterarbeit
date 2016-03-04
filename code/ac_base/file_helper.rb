@@ -25,5 +25,14 @@ module Activity
     def output_data
       "#{output_dir}/input.data.json"
     end
+
+    def subworkflow_workdir(workflow_instance_id)
+      "#{workdir}/#{workflow_instance_id}"
+    end
+
+    def create_subworkflow_workdir(workflow_instance_id)
+      FileUtils.mkdir subworkflow_workdir(workflow_instance_id)
+      subworkflow_workdir(workflow_instance_id)
+    end
   end
 end

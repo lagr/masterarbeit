@@ -89,9 +89,9 @@
 
 \subsection{Components} % (fold)
   \label{sub:components}
-  As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that it is crucial to determine suitable service boundaries. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted. In case of \acp{WfMS}, the identification of system components by the \ac{WFMC} for their reference model can be interpreted as such an analysis. Based on those components further micro-services for the prototype are then identified.
+  As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that it is crucial to determine suitable service boundaries. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted. In case of \acp{WfMS}, the identification of system components by the \ac{WfMC} for their reference model can be interpreted as such an analysis. Based on those components further micro-services for the prototype are then identified.
 
-  As presented in \ref{sub:system_components}, the \ac{WFMC} identified the following components \cite[p.~13]{Hollingsworth1995Wfmc}:
+  As presented in \ref{sub:system_components}, the \ac{WfMC} identified the following components \cite[p.~13]{Hollingsworth1995WfMC}:
     \begin{itemize}[nosep]
       \item Software Components
         \begin{itemize}[nosep]
@@ -113,7 +113,7 @@
 
     ** draw communication diagram here **
 
-  According to the \ac{WFMC}'s description, the definition tool, the worklists handler and the organization modeling tool each utilize a respective data component. Together with its respective datastore, each of them can be considered as an autonomous micro-service, since each would theoretically be able to provide its functionality without any further service.
+  According to the \ac{WfMC}'s description, the definition tool, the worklists handler and the organization modeling tool each utilize a respective data component. Together with its respective datastore, each of them can be considered as an autonomous micro-service, since each would theoretically be able to provide its functionality without any further service.
 
   The workflow control data component can be considered as part of a workflow engine service.
   Depending on the chosen mode for the enactment, workflow relevant data is either managed by the workflow engine service, too, or accounted for by a data volume ($*_{*}^{DV}$). Only in the $*_{*}^{SER}$ variant, a dedicated service for its management and storage is needed.
@@ -121,13 +121,12 @@
   According to the decision to use the \ac{API} gateway pattern (\ref{sub:user_interaction_with_the_system}) to hide the internal system structure from its users, the two concact points -- one for administrative work and one for end-user work -- are realized using an appropriate gateway. The \emph{developer gateway} enables requests to the definition service, the infrastructure service and the organization management service through a \ac{GUI}. The \emph{user gateway} emits requests to the worklists service, wich are also issued through a \ac{GUI}.
 
   ** TODO: add deductions from objectives **
-  In addition to the services derived above, the need for some additional services originates from considerations in \ref{sec:docker_for_wf_execution} and the objectives that were stated in \ref{sec:determination_of_objectives}.
+  In addition to the services derived above, the need for some additional services originates from considerations in Section~\ref{sec:docker_for_wf_execution} and the objectives that were stated in \ref{sec:determination_of_objectives}.
   A Docker image registry was suggested to be used for the distribution of images to all nodes. Unless an external service such as Docker Hub is is used, an own registry service should be part of the \ac{WfMS}.
   The decision made in \ref{sub:application_level_communication} to use \ac{MOM} for the communication between services creates the need for a service which acts as such a middleware.
   To meet the requirement of automatically distributed images, a provisioning service should be introduced, which performs the appropriate actions. An infrastructure management service could be used to monitor the status and properties of the available nodes in the swarm.
 
   Besides the major components, independent functionalities which are frequently used could be singled out to separate services.
-  %To demonstrate this exemplarily, a service which deals with the validation of input and output data is extracted for this prototype.
   One micro-service that might be extracted could for example address the validation of input and output data. Given a dataset and a set of rules on how to validate this dataset, such a service would be able to perform its task autonomously. As validation is a frequently recurring action in the execution of workflows -- before and after each activity and workflow -- it could thus be beneficial to be able to scale the execution of this task independently. **out of scope!**
 
   In the following, the resulting set of services is presented.
@@ -135,13 +134,13 @@
   \subsubsection{Workflow Definition Service} % (fold)
     \label{subs:workflow_definition_service}
 
-    The workflow definition service encompasses the functions envisioned by the \ac{WFMC} as \emph{process definition tools}, \ie it is concerned with the analysis, modeling, description and documentation of business processes in form of workflow models and their process definitions. It further manages the assignment of activities to roles.
+    The workflow definition service encompasses the functions envisioned by the \ac{WfMC} as \emph{process definition tools}, \ie it is concerned with the analysis, modeling, description and documentation of business processes in form of workflow models and their process definitions. It further manages the assignment of activities to roles.
 
     With regards to its functional scope, the workflow definition service is also the service that should handle the transformation of workflows into their distributable format, \eg a self-contained description file or Docker images. In case of the latter, the workflow definition service would require access to a Docker daemon in order to perform the export. Once a workflow is transformed, the service should publish it. The transformations of workflows is performed by the \texttt{ImageBuilder} class, which relies on the \texttt{ProcessDefinitionImageSerializer} for the serialization of the process definition. The logic required for publishing the images is defined in the \texttt{ImageManager} class.
 
     The service should have \texttt{Workflow}, \texttt{Activity}, \texttt{ProcessDefinition}, and \texttt{ControlFlow} model classes, which provide the object-relational mapping for the respective objects. The roles assigned to activities have only to be dealt with in the form of unique identifiers, relying on the assumption that components which have to use them may resolve these identiefiers themselves.
 
-    As a user interface is provided by the developer gateway service, the workflow definition service does not offer its own user interface, but rather exposes its functionality via the \ac{MOM}. This allows workflow definitions to be created and altered by arbitrary other services, \eg an conversion service which translates other process definition formats or some feedback mechanism that alters workflows based on their execution performance -- or a gateway service that provides an user interface.
+    As a user interface is provided by the developer gateway service, the workflow definition service does not offer its own user interface, but rather exposes its functionality via the \ac{MOM}. This allows workflow definitions to be created and altered by arbitrary other services, \eg an conversion service which translates other process definition formats or some feedback mechanism that alters workflows based on their execution performance -- or a gateway service that provides a user interface.
 
     \begin{figure}[htbp]
       \centering
@@ -179,13 +178,13 @@
 
   \subsubsection{Worklist Service} % (fold)
     \label{subs:worklist_service}
-    The sole responsibility of this service is the management of users' worklists. It should create, update and delete worklist items on request and publish the data submitted to it by users to the other services. If an user is deleted, it should remove the worklist item or reassign it to another user. The former tasks are performed by the \texttt{WorklistConsumer}, which reacts on related events. The latter task is in the responsibility of the \texttt{UserConsumer}, which reacts to the deletion of an user. The worklist items' object-relational mapping is performed by the \texttt{WorklistItem} model class.
+    The sole responsibility of this service is the management of users' worklists. It should create, update and delete worklist items on request and publish the data submitted to it by users to the other services. If a user is deleted, it should remove the worklist item or reassign it to another user. The former tasks are performed by the \texttt{WorklistConsumer}, which reacts on related events. The latter task is in the responsibility of the \texttt{UserConsumer}, which reacts to the deletion of a user. The worklist items' object-relational mapping is performed by the \texttt{WorklistItem} model class.
     % subsubsection worklist_service (end)
 
   \subsubsection{Workflow Engine Service} % (fold)
     \label{subs:workflow_engine_service}
     ** TODO: incomplete **
-    In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WFMC} in terms of functionality, which is described in \ref{par:workflow_engine}. The way to utilize Docker for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has, though. ** like, how
+    In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WfMC} in terms of functionality, which is described in \ref{par:workflow_engine}. The way to utilize Docker for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has, though. ** like, how
 
     - choose participants
     - add to execution networks

@@ -59,7 +59,8 @@
         \PYG{l+s+s2}{\PYGZdq{}WORKFLOW\PYGZus{}INSTANCE\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
         \PYG{l+s+s2}{\PYGZdq{}ACTIVITY\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@activity}\PYG{o}{.}\PYG{n}{id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
         \PYG{l+s+s2}{\PYGZdq{}ACTIVITY\PYGZus{}INSTANCE\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
-        \PYG{l+s+s2}{\PYGZdq{}WORKDIR=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{activity\PYGZus{}instance\PYGZus{}workdir}\PYG{p}{(}\PYG{n+nb}{self}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+        \PYG{l+s+s2}{\PYGZdq{}WORKDIR=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{activity\PYGZus{}instance\PYGZus{}workdir}\PYG{p}{(}\PYG{n+nb}{self}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}DATA\PYGZus{}CONTAINER=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}relevant\PYGZus{}data\PYGZus{}container}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
       \PYG{o}{]}\PYG{p}{,}
       \PYG{l+s+s1}{\PYGZsq{}HostConfig\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}
         \PYG{l+s+s1}{\PYGZsq{}Binds\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}/var/run/docker.sock:/var/run/docker.sock\PYGZsq{}}\PYG{o}{]}\PYG{p}{,}

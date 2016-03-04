@@ -3,10 +3,9 @@
 \subsection{Functional Objectives} % (fold)
   \label{sub:functional_objectives}
 
-  In the following, expectations towards the functionality of the resulting \ac{WfMS} are motivated in a structured manner. These functionalities are grouped by the aspects and tasks of a \ac{WfMS}, which are described in \ref{sub:functional_areas} and \ref{sub:system_components}. The resulting objectives and the requirements that need to be met in order to fulfill them are summarized in Table~\ref{tab:objectives_and_requirements}.
+  In the following, expectations towards the functionality of the resulting \ac{WfMS} are established in a structured manner. These functionalities are grouped by the aspects and tasks of a \ac{WfMS}, which are described in \ref{sub:functional_areas} and \ref{sub:system_components}. The resulting objectives and the requirements that need to be met in order to fulfill them are summarized in Table~\ref{tab:objectives_and_requirements}.
 
-
-  <-><-> split to typicla wfms feature subsection?
+  ** TODO: abgleichen
 
   \begin{table}[p!]
     \centering
@@ -26,20 +25,16 @@
         & \textbullet ~ Suitable servers are discovered \\
         & \textbullet ~ User can add servers during execution time \\ [1.2ex]
 
-      \multicolumn{2}{l}{\textbf{Environment of arbitrary services ** WAS OMMITTED! **} }\\
-        & \textbullet ~ Required services for a workflow can be selected \\
-        & \textbullet ~ Required services are started on respective nodes \\
-        & \textbullet ~ Workflows are connected to their required services \\
-        & \textbullet ~ Services are restarted if necessary \\ [1.2ex]
+      % \multicolumn{2}{l}{\textbf{Environment of arbitrary services ** WAS OMMITTED! **} }\\
+      %   & \textbullet ~ Required services for a workflow can be selected \\
+      %   & \textbullet ~ Required services are started on respective nodes \\
+      %   & \textbullet ~ Workflows are connected to their required services \\
+      %   & \textbullet ~ Services are restarted if necessary \\ [1.2ex]
 
       \multicolumn{2}{l}{\textbf{Third-party containers as workflow components} }\\
         & \textbullet ~ \ac{GUI} for browsing Docker Hub images exists \\
-        & \textbullet ~ Modeling \ac{GUI} has a ``Container'' element \\
+        & \textbullet ~ Modeling \ac{GUI} has a ``container'' element \\
         & \textbullet ~ User can specify start parameters and commands \\ [1.2ex]
-
-      % \multicolumn{2}{l}{\textbf{Input and output validation} }\\
-      %   & \textbullet ~ User can specify validation schemata \\
-      %   & \textbullet ~ \ac{WfMS} performs validity checks \\ [1.2ex]
 
       \multicolumn{2}{l}{\textbf{Resource usage management ** not implemented**} }\\
         & \textbullet ~ User can prioritize/demote activities and workflows \\
@@ -141,17 +136,17 @@
       the \ac{WfMS} should be structured in a way that allows the adaption to such changes with the least possible system downtime. \\
       Further, it should be possible to add servers to the system during execution time, which then should be usable with a minimum of manual configuration.
 
-      If an organization is unable to perform its business processes, it is likely to suffer from financial losses. The failure of a \ac{WfMS} which enables those business processes can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be able to be resilient towards failures, \ie provide as much functionality as possible if a part of it fails and try to recover autonomously. This requires well separated modules.
+      If an organization is unable to perform its business processes, it is likely to suffer from financial losses. Any failure of a business critical \ac{WfMS} can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be resilient towards failures, \ie provide as much functionality as possible if a part of it fails and try to recover autonomously. This requires well separated modules.
 
-      To enable workflows to be run in a specified environment of services, the execution environment of the \ac{WfMS} should have a mechanism that allows the specification of such services in form of containers which are made available to workflow components when they are being executed. It also should be able to ensure that these containers are restarted in case of a failure to ensure their presence in the execution environment.
+      % To enable workflows to be run in a specified environment of services, the execution environment of the \ac{WfMS} should have a mechanism that allows the specification of such services in form of containers which are made available to workflow components when they are being executed. It also should be able to ensure that these containers are restarted in case of a failure to ensure their presence in the execution environment.
 
     % subsubsection infrastructure_management (end)
 
   \subsubsection{Workflow Modeling} % (fold)
     \label{ssub:workflow_modeling}
 
-      One benefit of Docker containers is, that full application stacks can be bundled with all their dependencies and pre-configured regarding their invocation \cite[p.~82]{Bernstein2014Containers}. The result can be considered as a black box, which provides some specific functionality that could be used without further configuration. In combination with the facilitated sharing of images through repositories, this provides a good foundation for modular reuse and combination \cite[p.~6]{Boettiger2015Introduction}.
-      In order to reap this advantage, \ac{WfMS} should thus enable modeling developers to incorporate the invocation of third party images from within their workflows. This includes the specification of parameters, with which the image should be run.
+      One benefit of Docker containers is, that full application stacks can be bundled with all their dependencies and pre-configured regarding their invocation \cite[p.~82]{Bernstein2014Containers}. The result can be considered as a black box that provides some specific functionality and that could be used without further configuration. In combination with the facilitated sharing of images through repositories, this provides a foundation for modular reuse and combination \cite[p.~6]{Boettiger2015Introduction}.
+      In order to reap this advantage, \ac{WfMS} should enable modeling developers to incorporate the invocation of third party images from within their workflows. This includes the specification of parameters, with which the image should be run.
 
       % To ensure the correctness of data along the execution, the modeler should be able to pass along information with both activities and workflows that makes the validation of their input and output data possible. The \ac{WfMS} should provide a mechanism which performs this validation in the course of the workflow enactment.
 
@@ -162,7 +157,7 @@
 
   \subsubsection{Workflow Distribution} % (fold)
     \label{ssub:workflow_distribution}
-      In the course of an \ac{WfMS}'s life cycle, many workflows are modeled and many activities are created, and both are likely to be updated once in a while. In order to reduce administrative work, workflows and their activities should be distributed to their correct execution servers after these events in an automated way.
+      In the course of a \ac{WfMS}'s life cycle, many workflows are modeled and many activities are created, and both are likely to be updated occasionally. In order to reduce administrative work, workflows and their activities should be distributed to their correct execution servers after these events in an automated way.
   % - produced workflows should be as portable/environment independent as possible
 
     % subsubsection workflow_distribution (end)
@@ -171,9 +166,10 @@
     \label{ssub:workflow_execution}
         All containers that are related to the execution of workflows should be started by the \ac{WfMS} without user interaction.
 
-        The IT infrastructure in an organization may be heterogeneous in terms of machine capabilities and environment, \eg (among many others) the amount of memory that is available or the geographic location of the machine. These factors may be of interest when it comes to performance objectives or legal regulations. The scheduling of workflows or activities to nodes for execution should thus be possible based on a structured description of said properties.
+        The IT infrastructure in an organization may be heterogeneous in terms of machine capabilities and environment, \eg the amount of memory that is available or the geographic location of the machine. These factors may be of interest when it comes to performance objectives or legal regulations. The scheduling of workflows or activities to nodes for execution should thus be possible based on a structured description of said properties.
 
-        In \ref{sub:workflow_data}, various forms of data visibility and interaction were presented. Russel et al examined the capabilities of various workflow engines with regards to these characteristics \cite{Russell2005Workflow}. In order to obtain a \ac{WfMS} with useful functionality, it should support at least those forms of data visibility and interaction that are common among existing solutions. As a rough estimation for this, each capability shall be deemed as required if a majority of solutions examined in that study supports it.
+        In \ref{sub:workflow_data}, various forms of data visibility and interaction were presented. Russel et al. examined the capabilities of various workflow engines with regards to these characteristics \cite{Russell2005Workflow}. The should support at least those forms of data visibility and interaction that are common among existing solutions. As a rough estimation for this, each capability shall be deemed as required if a majority of solutions examined in that study supports it.
+        ** list them
 
     % subsubsection workflow_execution (end)
 % subsection functional_objectives (end)
@@ -181,13 +177,10 @@
 \subsection{Intangible Objectives} % (fold)
   \label{sub:intangible_objectives}
 
-  Besides the rigid functional objectives there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the value of the produced artifacts. The functionalities that were fleshed out in \ref{sub:functional_objectives} lose value if using them is cumbersome.
-
-  While some complications may be tolerable during the setup of the solution, as it (hopefully) is a one-time procedure for an organization, recurring interactions should be facilitated by an appropriate graphical user interface.
-
-  - browsing docker hub images
-  - modeling workflows
-  - adding servers
-  - accessing audit data
-
+  Besides the rigid functional objectives there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the value of the produced artifacts. The functionalities that were fleshed out in \ref{sub:functional_objectives} lose value if using them is cumbersome and they are avoided in consequence. Concerning the scope of this thesis, the functionalities that should be facilitated
+  \begin{itemize}
+    \item the modeling of workflows;
+    \item the export and distribution of workflows;
+    \item the selection of images from Docker Hub for the use in a workflow;
+  \end{itemize}
   % subsection intangible_objectives (end)

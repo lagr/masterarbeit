@@ -27,16 +27,16 @@ class Activity < ActiveRecord::Base
 
   def required_images
     case activity_type
-    when :container
+    when 'container'
       image_with_version
-    when :subworkflow
+    when 'subworkflow'
       subworkflow.required_images
     else nil
     end
   end
 
   def child_elements
-    return nil unless activity_type == :subworkflow
+    return nil unless activity_type == 'subworkflow'
     [subworkflow] + subworkflow.child_elements
   end
 
