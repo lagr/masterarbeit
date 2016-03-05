@@ -12,7 +12,7 @@ Docker.options = {
   scheme: 'https'
 }
 
-def local_conenction
+def local_connection
   @conn ||= Docker::Connection.new "unix:///var/run/docker.sock", {}
 end
 
@@ -20,7 +20,7 @@ begin
   Docker::Event.stream do |event|
     if event.status == 'push' && !event.id.match(/sha\:/)
       puts "pulling #{event.id}"
-      Docker::Image.create({fromImage: event.id}, local_conenction)
+      Docker::Image.create({fromImage: event.id}, local_connection)
     end
   end
 rescue Exception => e

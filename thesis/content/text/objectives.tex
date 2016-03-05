@@ -1,9 +1,9 @@
 % -*- root: ../../main.tex -*- %
 
-\subsection{Functional Objectives} % (fold)
+\subsection{Functional objectives} % (fold)
   \label{sub:functional_objectives}
 
-  In the following, expectations towards the functionality of the resulting \ac{WfMS} are established in a structured manner. These functionalities are grouped by the aspects and tasks of a \ac{WfMS}, which are described in \ref{sub:functional_areas} and \ref{sub:system_components}. The resulting objectives and the requirements that need to be met in order to fulfill them are summarized in Table~\ref{tab:objectives_and_requirements}.
+  In the following, expectations towards the functionality of the resulting \ac{WfMS} are established in a structured manner. These functionalities are grouped by the component groups of a \ac{WfMS}, which are described in \ref{sub:system_components}. The resulting objectives and the requirements that need to be met in order to fulfill them are summarized in Table~\ref{tab:objectives_and_requirements}.
 
   ** TODO: abgleichen
 
@@ -102,7 +102,7 @@
     \renewcommand{\arraystretch}{1.75}
     \begin{tabular}[t]{>{\raggedleft}p{0.3\customtabwidth} p{0.7\customtabwidth}}
       \toprule
-      \textbf{Objective} & \textbf{~~~~Requirements} \\
+      \textbf{Requirements} & \textbf{~~~~Feature} \\
       \midrule
 
       \textbf{Support of data visibility}
@@ -125,8 +125,8 @@
 
       \bottomrule
     \end{tabular}
-    \caption{Objectives and their respective requirements}
-    \label{tab:objectives_and_requirements}
+    \caption{Required data visibility and data interaction types}
+    \label{tab:required_data_visibility_and_data_interaction_types}
   \end{table}
 
   \subsubsection{Infrastructure and Infrastructure Management} % (fold)
@@ -168,17 +168,17 @@
 
         The IT infrastructure in an organization may be heterogeneous in terms of machine capabilities and environment, \eg the amount of memory that is available or the geographic location of the machine. These factors may be of interest when it comes to performance objectives or legal regulations. The scheduling of workflows or activities to nodes for execution should thus be possible based on a structured description of said properties.
 
-        In \ref{sub:workflow_data}, various forms of data visibility and interaction were presented. Russel et al. examined the capabilities of various workflow engines with regards to these characteristics \cite{Russell2005Workflow}. The should support at least those forms of data visibility and interaction that are common among existing solutions. As a rough estimation for this, each capability shall be deemed as required if a majority of solutions examined in that study supports it.
-        ** list them
+        In \ref{sub:workflow_data}, various forms of data visibility and interaction were presented. Russel et al. examined the capabilities of various workflow engines with regards to these characteristics \cite{Russell2005Workflow}. The should support at least those forms of data visibility and interaction that are common among existing solutions. As a rough estimation for this, each capability shall be deemed as required if a majority of solutions examined in that study supports it. The resulting capabilities are presented in Table~\ref{tab:required_data_visibility_and_data_interaction_types}.
 
     % subsubsection workflow_execution (end)
 % subsection functional_objectives (end)
 
-\subsection{Intangible Objectives} % (fold)
+\subsection{Intangible objectives} % (fold)
   \label{sub:intangible_objectives}
+  ** extra section notwendig?
 
-  Besides the rigid functional objectives there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the value of the produced artifacts. The functionalities that were fleshed out in \ref{sub:functional_objectives} lose value if using them is cumbersome and they are avoided in consequence. Concerning the scope of this thesis, the functionalities that should be facilitated
-  \begin{itemize}
+  Besides the rigid functional objectives there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the value of the produced artifacts. The functionalities that were worked out in \ref{sub:functional_objectives} lose value if using them is cumbersome and they are avoided in consequence. Concerning the scope of this thesis, the functionalities that should be facilitated are
+  \begin{itemize}[nosep]
     \item the modeling of workflows;
     \item the export and distribution of workflows;
     \item the selection of images from Docker Hub for the use in a workflow;

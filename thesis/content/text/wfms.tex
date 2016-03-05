@@ -12,13 +12,13 @@
     % go into backgrounds of activities, concept: atomic piece of work -> later: analogy to docker container
   % subsection workflow (end)
 
-  \subsection{Process Definition} % (fold)
+  \subsection{Process definition} % (fold)
   \label{sub:process_definition}
       In order to be able to execute workflows, the underlying business processes must be machine processable and thus have to be formalized to an abstracted model \cite{Hollingsworth1995WfMC}. This model is usually called \emph{process definition} and stored in form of some high-level programming language construct \cite{Hollingsworth1995WfMC,Wutke2008Model}.
       The process definitions typically consist of a collection of activities with additional metadata such as associated applications or participants, and a set of rules which determine the execution order of these activities \cite{Hollingsworth1995WfMC}. They further may contain references to other processes, which are treated as a single activity in the process definition \cite{Hollingsworth1995WfMC,Casati1999Specification}.
   % subsection process_definition (end)
 
-  \subsection{Process Instance} % (fold)
+  \subsection{Process instance} % (fold)
   \label{sub:process_instance}
     A \emph{process instance} is an enactment of a process definition. A process definition may be instantiated multiple times, even at the same time. \cite{Casati1999Specification}. If only the automated parts of such an instance are meant, the \ac{WfMC} advocates the term \emph{workflow instance} \cite{Hollingsworth1995WfMC}.
 
@@ -26,12 +26,12 @@
 
   % subsection process_instance (end)
 
-  \subsection{Activity Instance} % (fold)
+  \subsection{Activity instance} % (fold)
   \label{sub:activity_instance}
     Like processes, activities are instanciated during workflow execution and have a set of states that they may be in. When an activity instance is created, it is in the \emph{inactive} state. From this state, it may enter the \emph{suspended} state, in which it will neither be activated nor assigned a worklist item. If the activity instance is not suspended, it is activated once its entry conditions are fulfilled. It then is in the \emph{active} state. When the execution of the activity has finished, it enters the \emph{completed} state \cite{Hollingsworth1995WfMC}. The possible transitions between the activity instance's states can be seen in Figure~\ref{key}.
   % subsection activity_instance (end)
 
-  \subsection{Workflow Data} % (fold)
+  \subsection{Workflow data} % (fold)
   \label{sub:workflow_data}
     In a \ac{WfMS}, several forms of data are distinguished, as they serve different purposes. The \ac{WfMC} differentiates between three types of data: workflow relevant data, workflow application data, and workflow control data \cite{Hollingsworth1995WfMC}.
 
@@ -73,10 +73,10 @@
         Data is passed from one instance of a workflow during its execution to another workflow instance that is being executed in parallel.
     \end{itemize}
 
-    Workflow data may either be made available from a common data store, get passed along with the control flow of a workflow, or be explicitly passed to the receiving component \cite[pp.~16-21]{Russell2005Workflow}.
+    Workflow data may either be made available from a common datastore, get passed along with the control flow of a workflow, or be explicitly passed to the receiving component \cite[pp.~16-21]{Russell2005Workflow}.
   % subsection workflow_data (end)
 
-  \subsection{Workflow Participant and Worklist} % (fold)
+  \subsection{Workflow participant and worklist} % (fold)
   \label{sub:workflow_participants}
     There are workflows that contain activities which require user interaction. A \ac{WfMS} thus provides the functionality to assign workflows and activities to workflow participants. The assignment can either be a specific one, targeting an individual person, or be more general, targeting a set of users from which the \ac{WfMS} may choose during execution time. These sets are usually based on an organizational structure that manifests itself in roles, of which a user may have one or more \cite{Hollingsworth1995WfMC,Casati1999Specification}.
 
@@ -85,7 +85,7 @@
 
 % section concepts (end)
 
-\section{Typical Architecture} % (fold)
+\section{Typical architecture} % (fold)
 \label{sec:typical_architecture}
   For large and complex organizations, the need arises to manage the creation, distribution and execution of workflows in a structured manner. An information system is a \ac{WfMS} if
   \begin{itemize}[nosep]
@@ -95,11 +95,14 @@
     \item it may invoke external applications \cite{Lawrence1997Workflow}.
   \end{itemize}
 
-  According to the \ac{WfMC}, a workflow management system is ``a system that defines, manages and executes workflows through the execution of software whose order of execution is driven by a computer representation of the workflow logic'' \cite{Hollingsworth1995WfMC}.
+  According to the \ac{WfMC}, a workflow management system is ``a system that defines, manages and executes workflows through the execution of software whose order of execution is driven by a computer representation of the workflow logic'' \cite{Hollingsworth1995WfMC}. The components of this system interlock in order to provide the overall functionality of a \ac{WfMS}. As visible in \ref{key}, the workflow enactment service plays a central role in wiring the components together.
 
+  ** add this
   In the following, the typical foundations of \acp{WfMS} architectures identified by the \ac{WfMC} are presented and related to the concepts introduced in Section \ref{sec:concepts}.
 
-  \subsection{Functional Areas} % (fold)
+
+
+  \subsection{Functional areas} % (fold)
   \label{sub:functional_areas}
     The \ac{WfMC} divides the responsibilities of a \ac{WfMS} in three functional areas: \emph{build-time} functions, \emph{run-time process control} functions and \emph{run-time activity interaction} functions \cite{Hollingsworth1995WfMC, Alonso1997Functionality}.
 
@@ -108,7 +111,7 @@
     Some activites require users to enter data or applications to perform a specific task. The \emph{run-time activity interaction} functions of a \ac{WfMS} provide the possibilities to do so. They make forms available to users, instruct other applications, and collect any resulting outcomes \cite{Hollingsworth1995WfMC}.
   % subsection functional_areas (end)
 
-  \subsection{System Components} % (fold)
+  \subsection{System components} % (fold)
   \label{sub:system_components}
 
     ** TODO: Low-level
@@ -126,12 +129,4 @@
 
     The \textbf{workflow enactment service} groups one or more workflow engines into one logical component that exposes a single coherent external interface to other software \cite{Hollingsworth1995WfMC}.
   % subsection system_components (end)
-
-  \subsection{WFMS Implementation Structure} % (fold)
-  \label{sub:wfms_implementation_structure}
-    According to the \ac{WfMC}, the components described in \ref{sub:system_components} interlock in order to provide the overall functionality of a \ac{WfMS}. As visible in \ref{key}, the workflow enactment service plays a central role in wiring the components together.
-
-    ** add this
-
-  % subsection wfms_implementation_structure (end)
 % section typical_architecture (end)

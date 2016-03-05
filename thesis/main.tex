@@ -3,7 +3,7 @@
 
 \usepackage{wiwwubildertabellen}
 \usepackage{wiwwumathe}
-\usepackage{wiwwulistings}
+%\usepackage{wiwwulistings}
 \usepackage{wiwwuabkuerzungen}
 \usepackage{etoolbox}
 \usepackage{blindtext}
@@ -21,6 +21,9 @@
 \usetikzlibrary{trees, arrows,shadows, positioning,chains,fit,shapes,calc, math, automata}
 \usepackage{pgf-umlsd}
 
+%\renewcommand\listoflistingscaption{List of source codes}
+% \renewcommand\listingscaption{Lis.}
+% \captionsetup[listing]{labelformat=simple}
 
 \usepackage{adjustbox}
 
@@ -86,7 +89,7 @@
 
 \newcommand{\tabitem}{~~\llap{--}~~}
 
-  \setThema{Prototypical Development of a\\Docker-based Workflow Management System}
+  \setThema{Prototypical Development of a \\Docker-based Workflow Management System}
   \setTyp{Masterthesis}
   \setFachgebiet{}
   \setLehrstuhl{Department of Information Systems --- Chair for Practical Computer Science}
@@ -112,6 +115,7 @@
   \tableofcontents
   \listoffigures
   \listoftables
+  \listoflistings
 
   \input{content/util/acro}
   %\input{content/util/symbols}
@@ -121,12 +125,12 @@
 
   \pagenumbering{arabic} % Seitennummerierung durch arabische Ziffern
 
-  \chapter{Introduction and Motivation} % (fold)
+  \chapter{Introduction and motivation} % (fold)
     \label{cha:introduction_and_motivation}
     \input{content/text/introduction_motivation}
     % chapter introduction_and_motivation (end)
 
-  \chapter{Workflow Management Systems} % (fold)
+  \chapter{Workflow management systems} % (fold)
     \label{cha:workflow_management_systems}
     In this chapter, the concepts of workflows and workflow management systems will be introduced briefly and related to each other.
     There is a plethora of term definitions and deviating understandings of workflows and the concepts related to them \cite{Casati1999Specification}. This
@@ -136,7 +140,7 @@
     \input{content/text/wfms}
     % chapter workflow_management_systems (end)
 
-  \chapter{Docker} % (fold)
+  \chapter{Software containers and Docker} % (fold)
     \label{cha:docker}
 
     When multiple applications or application instances are intended to run on one physical machine without interfering with each other, they are usually isolated in terms of execution environments and provided with a controllable share of system resources \cite{Felter2014Updated}. These goals can be fulfilled by both virtual machines and software containers \cite{Ruiz2015Performance}. The difference between these two options and the basic principles of software containers are shown in \ref{sub:virtualization_and_software_containers} to give an understanding of the technology.
@@ -146,38 +150,38 @@
     \input{content/text/docker}
     % chapter docker (end)
 
-  \chapter{Conceptual Development of the WFMS} % (fold)
+  \chapter{Conceptual development of the \ac{WfMS}} % (fold)
     \label{cha:solution_design}
 
-    In order to make sound decisions in the design process, the intended outcome has to be outlined first. Bearing in mind the concepts presented in Chapter \ref{cha:workflow_management_systems} and \ref{cha:docker}, objectives that together form the intended outcome are thus compiled in Section \ref{sec:determination_of_objectives}.
+    In order to make sound decisions in the design process for a Docker-based \ac{WfMS}, the intended outcome has to be outlined first. Bearing in mind the concepts presented in Chapter \ref{cha:workflow_management_systems} and \ref{cha:docker}, objectives that together form the intended outcome are thus compiled in Section \ref{sec:determination_of_objectives}.
 
     The potential benefit \acp{WfMS} could obtain from using the Docker ecosystem is twofold.
     On the one hand, the distribution and execution of workflows and their components can be enhanced, which is addressed in Section~\ref{sec:docker_for_wf_execution}.
     On the other hand, the mode of operation of the \ac{WfMS} itself might be improved by the use of Docker.
     Based on the determined objectives, the architecture of a Docker-based \ac{WfMS} is thus shaped in Section~\ref{sec:architecture} and subsequently its design in Section~\ref{sec:design}.
 
-    \section{Determination of Objectives} % (fold)
+    \section{Determination of objectives} % (fold)
       \label{sec:determination_of_objectives}
 
-      In this section, the overall objectives are inferred from both requirements imposed on the functionalities of Docker based \ac{WfMS} as well as intangible ones.
+      In this section, the objectives for the design and implementation are inferred from considerations regarding the desired functionalities of a Docker-based \ac{WfMS} as well as its intangible properties.
 
       \input{content/text/objectives}
       % section determination_of_objectives (end)
 
-    \section{Docker in Workflow Execution} % (fold)
+    \section{Docker in workflow execution} % (fold)
       \label{sec:docker_for_wf_execution}
       \input{content/text/docker_for_wf_execution}
       % section docker_for_wf_execution (end)
 
-    \section{System Architecture} % (fold)
+    \section{System architecture} % (fold)
       \label{sec:architecture}
 
-      With the objectives determined in Section \ref{sec:determination_of_objectives} in mind, a Docker-based architecture is developed in this section. First, possible architecture styles are presented in \ref{sub:application_structure}, of which one is then chosen with regards to potential benefits in combination with Docker. Subsequently, the manner users interact with the system is chosen in \ref{sub:user_interaction_with_the_system} and the high-level mode of communication between containers in \ref{sub:inter_component_communication}.
+      With the objectives determined in Section \ref{sec:determination_of_objectives} in mind, a Docker-based architecture is developed in this section. First, possible architecture styles are presented in \ref{sub:application_structure}, of which one is then chosen with regards to potential benefits in combination with Docker. Subsequently, the way how users interact with the system is chosen in \ref{sub:user_interaction_with_the_system} and the high-level mode of communication between containers in \ref{sub:inter_component_communication}.
 
       \input{content/text/architecture}
       % section architecture (end)
 
-    \section{System Design} % (fold)
+    \section{System design} % (fold)
       \label{sec:design}
 
       While high-level decisions are made in Section~\ref{sec:architecture}, this section is concerned with the more detailed view on the system design.
@@ -189,7 +193,7 @@
     % section docker_in_workflow_management (end)
   % chapter solution_design (end)
 
-  \chapter{Prototypical Implementation} % (fold)
+  \chapter{Prototypical implementation} % (fold)
     \label{cha:implementation}
 
     Based on the considerations in the previos chapter, a Docker-based \ac{WfMS} prototype was implemented.
@@ -201,7 +205,7 @@
     \input{content/text/implementation}
     % chapter implementation (end)
 
-  \chapter{Evaluation and Discussion} % (fold)
+  \chapter{Evaluation and discussion} % (fold)
     \label{cha:evaluation}
     \input{content/text/evaluation_discussion}
     % chapter evaluation (end)
@@ -216,6 +220,10 @@
   % \bibliography{Remote}
 
   \appendix
+
+  \renewcommand\listingscaption{Lis.}
+  \captionsetup[listing]{labelformat=simple}
+
   \AnhChapter{Architecture and design}
 
     \begin{figure}[htbp]
@@ -230,53 +238,55 @@
 
   % \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/ac_base/run.rb}
 
-  \begin{figure}[htbp]
+  \begin{listing}[htbp]
     \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{json}{./content/snippets/process_definition.json}
     \caption{Exported process definition in JSON format}
-    \label{fig:exported_process_definition_in_json_format}
-  \end{figure}
+    \label{lst:exported_process_definition_in_json_format}
+  \end{listing}
 
-  \begin{figure}[htbp]
+  \begin{listing}[htbp]
     \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{Dockerfile}{../code/ac_base/Dockerfile}
     \caption{Dockerfile for activity base image}
-    \label{fig:dockerfile_for_activity_base_image}
-  \end{figure}
+    \label{lst:dockerfile_for_activity_base_image}
+  \end{listing}
 
-  \begin{figure}[htbp]
+  \begin{listing}[htbp]
     \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{Dockerfile}{../code/wf_base/Dockerfile}
     \caption{Dockerfile for workflow base image}
-    \label{fig:dockerfile_for_workflow_base_image}
-  \end{figure}
+    \label{lst:dockerfile_for_workflow_base_image}
+  \end{listing}
 
-  \begin{figure}[!htbp]
+  \begin{listing}[!htbp]
     \inputminted[lastline=50,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
     \caption{The whole Docker Compose file of the \ac{WfMS} (1/5)}
-    \label{fig:the_whole_docker_compose_file_1}
-  \end{figure}
+    \label{lst:the_whole_docker_compose_file_1}
+  \end{listing}
 
-  \begin{figure}[!htbp]
+  \begin{listing}[!htbp]
     \inputminted[firstline=51,lastline=98,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
     \caption{The whole Docker Compose file of the \ac{WfMS} (2/5)}
-    \label{fig:the_whole_docker_compose_file_2}
-  \end{figure}
+    \label{lst:the_whole_docker_compose_file_2}
+  \end{listing}
 
-  \begin{figure}[!htbp]
+  \begin{listing}[!htbp]
     \inputminted[firstline=99,lastline=145,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
     \caption{The whole Docker Compose file of the \ac{WfMS} (3/5)}
-    \label{fig:the_whole_docker_compose_file_3}
-  \end{figure}
+    \label{lst:the_whole_docker_compose_file_3}
+  \end{listing}
 
-  \begin{figure}[!htbp]
+  \begin{listing}[!htbp]
     \inputminted[firstline=146,lastline=197,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
     \caption{The whole Docker Compose file of the \ac{WfMS} (4/5)}
-    \label{fig:the_whole_docker_compose_file_4}
-  \end{figure}
+    \label{lst:the_whole_docker_compose_file_4}
+  \end{listing}
 
-  \begin{figure}[!htbp]
+  \begin{listing}[!htbp]
     \inputminted[firstline=198,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
     \caption{The whole Docker Compose file of the \ac{WfMS} (5/5)}
-    \label{fig:the_whole_docker_compose_file_5}
-  \end{figure}
+    \label{lst:the_whole_docker_compose_file_5}
+  \end{listing}
+
+  ** fix listings
 
   \AnhSection{Unterkapitel}
 

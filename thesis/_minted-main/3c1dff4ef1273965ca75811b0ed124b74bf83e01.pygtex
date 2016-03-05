@@ -1,0 +1,31 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}docker\PYGZhy{}api\PYGZsq{}}
+
+\PYG{n}{cert\PYGZus{}path} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{ENV}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}SWARM\PYGZus{}MANAGER\PYGZus{}CERT\PYGZus{}PATH\PYGZsq{}}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+\PYG{n}{swarm\PYGZus{}manager\PYGZus{}url} \PYG{o}{=} \PYG{n+no}{URI}\PYG{o}{.}\PYG{n}{parse}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}tcp://\PYGZsq{}} \PYG{o}{+} \PYG{n+no}{ENV}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}SWARM\PYGZus{}MANAGER\PYGZus{}IP\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+\PYG{n}{swarm\PYGZus{}manager\PYGZus{}url}\PYG{o}{.}\PYG{n}{port} \PYG{o}{=} \PYG{l+m+mi}{3376}
+
+\PYG{n+no}{Docker}\PYG{o}{.}\PYG{n}{url} \PYG{o}{=} \PYG{n}{swarm\PYGZus{}manager\PYGZus{}url}\PYG{o}{.}\PYG{n}{to\PYGZus{}s}
+\PYG{n+no}{Docker}\PYG{o}{.}\PYG{n}{options} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+  \PYG{l+s+ss}{client\PYGZus{}cert}\PYG{p}{:} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{cert\PYGZus{}path}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}cert.pem\PYGZsq{}}\PYG{p}{),}
+  \PYG{l+s+ss}{client\PYGZus{}key}\PYG{p}{:} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{cert\PYGZus{}path}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}key.pem\PYGZsq{}}\PYG{p}{),}
+  \PYG{l+s+ss}{ssl\PYGZus{}ca\PYGZus{}file}\PYG{p}{:} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{cert\PYGZus{}path}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}ca.pem\PYGZsq{}}\PYG{p}{),}
+  \PYG{l+s+ss}{scheme}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}https\PYGZsq{}}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k}{def} \PYG{n+nf}{local\PYGZus{}connection}
+  \PYG{n+nv+vi}{@conn} \PYG{o}{||=} \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Connection}\PYG{o}{.}\PYG{n}{new} \PYG{l+s+s2}{\PYGZdq{}unix:///var/run/docker.sock\PYGZdq{}}\PYG{p}{,} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{k}{end}
+
+\PYG{k}{begin}
+  \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Event}\PYG{o}{.}\PYG{n}{stream} \PYG{k}{do} \PYG{o}{|}\PYG{n}{event}\PYG{o}{|}
+    \PYG{k}{if} \PYG{n}{event}\PYG{o}{.}\PYG{n}{status} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}push\PYGZsq{}} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{o}{!}\PYG{n}{event}\PYG{o}{.}\PYG{n}{id}\PYG{o}{.}\PYG{n}{match}\PYG{p}{(}\PYG{l+s+sr}{/sha\PYGZbs{}:/}\PYG{p}{)}
+      \PYG{n+nb}{puts} \PYG{l+s+s2}{\PYGZdq{}pulling }\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{event}\PYG{o}{.}\PYG{n}{id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Image}\PYG{o}{.}\PYG{n}{create}\PYG{p}{(\PYGZob{}}\PYG{l+s+ss}{fromImage}\PYG{p}{:} \PYG{n}{event}\PYG{o}{.}\PYG{n}{id}\PYG{p}{\PYGZcb{},} \PYG{n}{local\PYGZus{}connection}\PYG{p}{)}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{rescue} \PYG{n+no}{Exception} \PYG{o}{=\PYGZgt{}} \PYG{n}{e}
+  \PYG{n+nb}{puts} \PYG{n}{e}
+  \PYG{k}{retry}
+\PYG{k}{end}
+\end{Verbatim}

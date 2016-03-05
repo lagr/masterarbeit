@@ -16,22 +16,54 @@
     It utilizes functions of the host kernel which allow the execution of several isolated userspace instances that share the same kernel, but may differ in terms of their runtime environment, \eg file system or system libraries. These isolated userspace instances are usually called \emph{software containers} or just \emph{containers}. This type of virtualization is therefore also referred to as \emph{container-based virtualization} \cite{Ruiz2015Performance}.
 
     The isolation and resource management in container-based virtualization on Linux systems are mainly achieved by two mechanisms, \emph{\ac{cgroups}} and \emph{namespaces}. While the former allows to group processes and manage their resource usage, the latter can be used on many system components. Namespaces may be introduced for example on network interfaces, the file system, users and user groups, \acp{PID}, and other components, in order to achieve a fine grained control over the respective isolation \cite{Ruiz2015Performance}.
-    Besides Docker, there are several solutions that are based on the aforementioned kernel features, \eg LXC, LXD, lmctfy, systemd-nspawn, etc \cite{Ruiz2015Performance}. There are ongoing efforts to create a common container standard \cite{Initiative????Open}.
+    Besides Docker, there are several solutions that are based on the aforementioned kernel features, \eg LXC, LXD, lmctfy, systemd-nspawn, etc. \cite{Ruiz2015Performance}. There are ongoing efforts to create a common container standard \cite{Initiative????Open}.
+    ** warum docker? -> popular, ecosystem
 
-    Many container solutions rely on a mechanism called \emph{\ac{CoW}} to provide a runtime enviroment, which on the one hand lets the containers reuse system libraries and the like while on the other hand limits the container in affecting its surroundings \cite{Docker????Dockera,Pahl2015Containerization}. This mechanism is explained in more detail in \ref{sub:docker_images_and_containers}.
+    Many container solutions rely on a mechanism called \emph{\ac{CoW}} to provide a runtime enviroment, which on the one hand lets the containers reuse system libraries and the like while on the other hand limits the container in affecting its surroundings \cite{Docker????Dockera,Pahl2015Containerization}.
+    \ac{CoW} is an optimization strategy that makes use of the benefits of both sharing files for read access and copying them to a local version previous to changing them. Processes that require access to a file share the same instance of that file. As soon as one process needs to alter the file, the operating system creates a copy that only the process has access to. All other processes still use the original file \cite{Pahl2015Containerization,Docker????Dockera}.
   % subsection virtualization_and_software_containers (end)
 
   \subsection{Docker Images and Containers} % (fold)
   \label{sub:docker_images_and_containers}
-    \ac{CoW} is an optimization strategy that makes use of the benefits of both sharing files for read access and copying them to a local version previous to changing them. Processes that require access to a file share the same instance of that file. As soon as one process needs to alter the file, the operating system creates a copy that only the process has access to. All other processes still use the original file \cite{Pahl2015Containerization,Docker????Dockera}.
-
     Docker images (referred to as \emph{images} from here on) are the basis for Docker containers. Each image consists of a sequence of layers, where each layer summarizes one \ac{CoW} step, \ie the alterations to the file system that one command causes compared to the previous layer. Each layer is uniquely identifiable, which allows the same layer to be used by several images.
 
     Docker containers are runtime instances of images.
-    In the context of storage, a Docker container can be considered as an image, \ie a set of read-only layers, with a writable layer on top of it -- the \emph{container layer}. Write operations within a container trigger a \ac{CoW} operation which copies the targeted file to the container layer, where the write operation is then performed. \\
+    In the context of storage, a Docker container can be considered as an image, \ie a set of read-only layers, with a writable layer on top of it -- the \emph{container layer}. Write operations within a container trigger a \ac{CoW} operation which copies the targeted file to the container layer, where the write operation is then performed.
     Besides reducing the amount of space consumed by containers, the \ac{CoW} strategy also reduces the time required to start a container. This is because Docker only has to create the container layer instead of providing a copy of all the files contained in the respective image \cite{Docker????Dockera}.
 
-    - *lifecycle of a docker container here*
+    \begin{figure}[htbp]
+      \centering
+      \begin{tikzpicture}[scale=0.8,->,>=stealth',shorten >=1pt,auto,node distance=5cm, semithick]
+        \sffamily\fontsize{10}{10}\selectfont
+        \node (cr){};
+        \node (run){};
+        \node[state] (A)     [right =3cm of cr]         {created};
+        \node[state]         (B) [right =2.5cm of A] {running};
+        \node[state]         (C) [below right of=B] {stopped};
+        \node[state]         (D) [above =2cm of B] {paused};
+        \node[state]         (E) [below =2cm of A] {deleted};
+
+        \path (cr) edge [] node {create} (A)
+            (run) edge [out=45,in=150]                     node {run} (B)
+              (A) edge []                              node {start} (B)
+                  edge [bend right]                    node {rm}    (E)
+              (B) edge [out=230, in=200, distance=4cm] node {kill}  (C)
+                  edge [out=250,in=175, distance=2.5cm]node {stop}  (C)
+                  edge [bend left]                     node {pause}  (D)
+                  edge [in=30, out=45, loop]           node {restart}  (D)
+                  edge [out=10, in=90, distance=2cm]   node {\textit{container process exited}}  (C)
+              (C) edge [bend right]                    node {start}  (B)
+                  edge [bend left]                     node {rm}  (E)
+              (D) edge [bend left]                     node {unpause} (B)
+              ;
+      \end{tikzpicture}
+      \caption*{Simplified version. Commands should be understood prefixed with \texttt{docker}. \newline \scriptsize Based on https://docs.docker.com/engine/reference/api/docker\_remote\_api/\#docker-events }
+      \caption[Docker Container Life Cycle]{Docker Container Life Cycle \cite{Docker2016Docker}}
+      \label{fig:docker_container_lifecycle}
+    \end{figure}
+
+    ** lifecycle and commands
+
   % subsection docker_images_and_containers (end)
 
   \subsection{Data Volumes} % (fold)
@@ -56,12 +88,22 @@
 
   % subsection registries_and_repositories (end)
 
+
+  \subsection{Docker Engine} % (fold)
+  \label{sub:docker_engine}
+
+  ** enables the previously mentioned features
+   The Docker Engine forms the core of Docker.
+   Docker uses a client-server architecture: it features a daemon, \ie a background process not directly controlled by the user, which provides the functionality and a client that controls said daemon \cite{Docker????DockerCom}. Together, they enable the user to work with Docker containers. Both the client and the daemon may run on the same system, or be connected remotely via sockets or through a \ac{REST} \ac{API} \cite{Docker????Dockera}.
+  % subsection docker_engine (end)
+
+
   \subsection{Docker Networking} % (fold)
   \label{sub:docker_networks}
     Since version 1.9, which was released in November 2015, Docker features virtual networks in order to isolate containers concerning their network connections, but at the same time allow containers to communicate with the host, each other, and the outside world. These networks are based on virtual interfaces and are managed by the Docker daemon. Containers may be connected to multiple networks at the same time \cite{Docker????Dockera}.
 
     By default, Docker installs three networks: a \emph{bridge} network, a \emph{host} network, and a \emph{none} network.
-    The \emph{bridge} network, titled \emph{docker0}, is a subnetwork that is connected to the host's networks. Docker connects containers to this network if not instructed otherwise. Containers that are membsers of this network can communicate with each other by using their respective \ac{IP} addresses. They also may expose ports that can be mapped to the host's network, which makes the applications that run in them accessible from the outside.
+    The \emph{bridge} network, titled \emph{docker0}, is a subnetwork that is connected to the host's networks. Docker connects containers to this network if not instructed otherwise. Containers that are members of this network can communicate with each other by using their respective \ac{IP} addresses. They also may expose ports that can be mapped to the host's network, which makes the applications that run in them accessible from the outside.
     The \emph{host} network represents the actual host's network. If containers are assigned to this network, they will be placed in the host's network stack, \ie all network interfaces defined on the host are available to the container \cite{Docker????Dockera}.
     The \emph{none} network provides containers with their own network stack. Containers that are only members of the \emph{none} network are completely isolated in regards to network communication, unless futher configuration is undertaken \cite{Docker????Dockera}.
 
@@ -80,31 +122,21 @@
     % Service discovery is one component of in an overall strategy aimed at making container deployments scalable and flexible. Service discovery is used so that containers can find out about the environment they have been introduced to without administrator intervention. They can find connection information for the components they must interact with, and they can register themselves so that other tools know that they are available. These tools also typically function as globally distributed configuration stores where arbitrary config settings can be set for the services operating in your infrastructure. https://www.digitalocean.com/community/tutorials/the-docker-ecosystem-an-introduction-to-common-components
 
   % subsection docker_networks (end)
-
-
-  \subsection{Docker Engine} % (fold)
-  \label{sub:docker_engine}
-
-  ** enables the previously mentioned features
-   The Docker Engine forms the core of Docker.
-   Docker uses a client-server architecture: it features a daemon which provides the functionality and a client that controls said daemon \cite{Docker????DockerCom}. Together, they enable the user to work with Docker containers. Both the client and the daemon may run on the same system, or be connected remotely via sockets or through a \ac{REST} \ac{API} \cite{Docker????Dockera}.
-  % subsection docker_engine (end)
-
 % section concepts (end)
 
 
-\section{Docker Ecosystem} % (fold)
+\section{Docker ecosystem} % (fold)
 \label{sec:docker_ecosystem}
 
    Around the Docker Engine, several other solutions have been developed to cope with different specialized tasks that are asscociated with building and running containers. In the following, a selection of these solutions will be introduced briefly.
 
   \subsection{Docker Swarm} % (fold)
   \label{sub:docker_swarm}
-    Docker Swarm allows applications which rely on several Docker containers to be run on a cluster of machines. It provides an abstraction that lets a set of Docker Engines behave like a single Docker Engine. Further it features a mechanism that automatically assigns container to a specific host based on given rules \cite{Docker????Dockerb}.
+    Docker Swarm allows applications which rely on several Docker containers to be run on a cluster of machines. It provides an abstraction that lets a set of Docker Engines behave like a single Docker Engine. Further it assigns containers to a specific host for executiion based on given rules \cite{Docker????Dockerb}.
 
     A swarm setup typically consists of one or more \emph{swarm managers}, multiple Docker hosts, and, in case that no remote discovery service is used, a local discovery service. By default, every new container is assigned to a swarm-specific overlay network \cite{Docker????Dockera}.
 
-    Docker Swarm provides two kinds of mechanisms for the assignment of containers to Docker hosts, \emph{filters} and \emph{strategies}. Strategies tell Docker how to rank hosts for assignment by some specified criteria, \eg resource usage or number of deployed containers. \\
+    Docker Swarm provides two kinds of mechanisms for the assignment of containers to Docker hosts, \emph{strategies} and \emph{filters}. Strategies tell Docker how to rank hosts for assignment by some specified criteria, \eg resource usage or number of deployed containers. \\
     Filters allow to specify rules, which Docker tries to apply when searching for an assignment target. Possible rules could for example be matchers for the host's name or identifier, its \ac{OS}, or for custom tags, which may describe the host's role or properties like size of attached storage. It is also possible to declare the affinity of certain containers or images for being deployed on the same host \cite{Docker????Dockera}.
 
   % subsection docker_swarm (end)
@@ -116,7 +148,7 @@
 
   \subsection{Docker Compose} % (fold)
   \label{sub:docker_compose}
-    Docker Compose is a tool that enables the user to specify and run applications that consist of many containers. Similar to the way an image is described in a Dockerfile, the user lists the required containers and their respective run configuration in a YAML (?) file. Docker Compose interprets this file and sets the containers up accordingly \cite{Docker????Dockerb}.
+    Docker Compose is a tool that enables the user to specify and run applications that consist of many containers. Similar to the way an image is described in a Dockerfile, the user lists the required containers and their respective run configuration descriptive file. Docker Compose interprets this file and sets the containers up accordingly \cite{Docker????Dockerb}.
 
 
     **  - build w/ image name
