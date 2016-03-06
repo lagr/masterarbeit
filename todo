@@ -1,2 +1,7 @@
-- communication entwickeln
 - UMLs
+- fix:
+	- user/role in manual activity
+	- image name / repository instead of tag abuse
+	- image: decision tree
+- add:
+	- conversion of docker events to MOM events

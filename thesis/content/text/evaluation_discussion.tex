@@ -3,7 +3,7 @@
 
   % Using the prototype, a developer is able to model an organization hierarchy, create workflows and define their processes graphically. These workflows can be exported to Docker containers and are then distributed to all nodes. The developer can start workflows, and -- if a manual activity is present -- a user can enter data. The developer can pause and unpause the workflow.
 
-  One of the objectives was that components of the \ac{WfMS} should be alterable without a full system restart. In order to deploy a new version of a micro-service, that new version may simply be started in parallel to the old version -- as long as the externally perceived behavior of the currently used functions of that service has not changed. This is made possible through the loose coupling of the micro-services via the message queue and the deployment of these services in separate containers. The two versions of the service will work on incoming requests in round robin, as they are subscribed to the same queue. If the new version of the service is deemed stable, the old version may be shut down.
+  In \ref{sub:application_level_communication} is explained how the loose coupling of micro-services via \ac{MOM} and the encapsulation of these services in separate containers can enable alterations to components of the \ac{WfMS} at runtime.
 
   Regarding the requirements that concern the failure resilience of a service, the prototype is able to let all parts of the system that do not rely on failed services continue to offer their functionality. If, for example, the organization service failed, it would still be possible to model and execute a workflow. Also, the possibility to instruct Docker to restart failed containers can help to keep the system available. In case of a micro-service failure, the unanswered requests to it remain in the queue and can be processed as soon as the service is available again. The prototype's ability to cope with failure can thus mainly be attributed to the combination of Docker with a \ac{MSA}.
 
@@ -21,8 +21,6 @@
   Likewise, a solution for the priorization of activities and workflows was presented in \ref{} ** show it**, but it was not implemented in the prototype.
 
   An objective that was disregarded in the implementation to keep the *what? thesis short?* is the management of permanently running services which are provided for specific workflows or activities. While it is theoretically described in \ref{}, there is no corresponding functionality in the prototype.
-
-  ** monitoring/analysis left out
 
   **
   - considering similar functionality /w subworkflow instantiation /validation / etc.    - probably different concept of workflows better as suggested by \cite[119]{Schulze1998Services}

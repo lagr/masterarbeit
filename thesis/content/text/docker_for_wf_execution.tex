@@ -12,8 +12,6 @@ Third, it is important to define the way data is exchanged between containers. O
 
 Finally, rather independent from the previous variants and hence discussed in isolation, the mechanism that decides which containers are run on which machines, \ie the execution scheduling, can be chosen.
 
-\textcolor{red}{**TODO: table consistent with text?**}
-
 \begin{table}[!htbp]
   \centering
   \begin{tabular}{C{4cm}|C{3cm}|C{3cm}|C{3cm}}
@@ -75,7 +73,7 @@ Finally, rather independent from the previous variants and hence discussed in is
     The general idea behind this set of concepts is that activities and workflows can be represented by images, whereas containers can represent activity instances and workflow instances.
 
     As described in \ref{sec:concepts}, activities can be perceived as self-contained units of work, that is, they contain the information on how to autonomously perform a task on a given set of data.
-    Analogously, Docker images contain the information on how to run processes in an instance of themselves -- a container -- given a set of parameters. If the work that an activity performs can be manifested in  program code, this code and its required runtime environment could be contained in a Docker image. An instance of that image that is created with a specific set of data would then be the counterpart of an activity instance. This notion is the foundation for the $*_{AC}^{*}$ and $*_{SEPC}^{*}$ variants.
+    Analogously, Docker images contain the information on how to run processes in an instance of themselves -- a container -- given a set of parameters. If the work that an activity performs can be manifested in  program code, this code and its required runtime environment could be contained in a Docker image. An instance of that image that is created with a specific set of data would then be the counterpart of an activity instance. This notion is the foundation for the $*_{AC}^{*}$ and $*_{SEPC}^{*}$ variants which resemble the ``container-in-worker'' approach presented in the paper by Zheng and Thain to some extent \cite{Zheng2015Integrating}.
 
     A similar conception can be applied to workflows: they contain the information that is necessary to perform sequences of tasks in an automated way. The sequence order is usually given in a formalized fashion by a process definition. In the given mindset, this process definition would be a list of Docker images in combination with a formal description of the control flow and data flow between these images. A workflow can thus be seen as a set of appropriate images and a corresponding process definition.
     A workflow instance, in turn, would consist of the relevant containers, the data that is used and created by these containers, and the enactment state of the workflow. These conceptual mappings are summarized in Figure~\ref{fig:conceptual_correspondence_between_wfms_and_docker_entities}.
@@ -103,12 +101,10 @@ Finally, rather independent from the previous variants and hence discussed in is
 
     The layering principle behind Docker images makes updates to activity and workflow images lightweight -- as long as only the uppermost layers are changed, the lower ones do not have to be up- and downloaded again. This allows to distribute a complete runtime environment to new nodes while updating only specific layers on existing nodes using one and the same image.
 
-    Containers can be paused and unpaused, \ie all processes within them are suspended. This is useful to save processor capacity for suspended activities or workflows until they are resumed.
+    Containers can be paused and unpaused, \ie all processes within them are suspended. When applied to activity instance or workflow instance containers, this is useful to save processor capacity for suspended activities or workflows until they are resumed.
 
-    ** Second, $*_{*}^{SEPC}$ leverages the already existing communication between a container, the local daemon and the swarm master to communicate the status of workflow instances and activity instances, as the creation of a container
-
-    **more benefits here**
-
+    $*_{*}^{SEPC}$ permits to leverage the already existing communication between a container, the local daemon and the swarm master to communicate the status of workflow instances and activity instances, as changes to their container's status are published on an event stream of the swarm master. These events can be transformed and published via the \ac{MOM}.
+%    **more benefits here**
 
     One possible variation on $G_{1C}^{DV}$ and $G_{SEPC}^{DV}$ would be the inclusion of engine logic in the workflow instance container. While the scheduling of this container and preparations on the targeted node would still be in the responsiblity of the main \acp{WfMS}' workflow engine, the control over the started activity instances would be handed to a smaller, workflow instance specific engine.
     This setup facilitates the management of the required directory structure, since the container that issues the commands has direct access to the data volume -- no information on the upcoming element instances has to be transferred.
@@ -464,7 +460,7 @@ Finally, rather independent from the previous variants and hence discussed in is
     \\ [0.5ex]
     In contrast to other examples given in this thesis, \texttt{\$data-intensity} should not be understood as a placeholder, as it is the actual Dockerfile syntax for the interpolation of a passed build argument with the respective name.
 
-    The workflow engine could then use the image's labels to take the stored properties into account for scheduling. For complex properties, labels containing serialized JSON objects could be used \cite{Docker????Docker}.
+    The workflow engine could then use the image's labels to take the stored properties into account for scheduling. For complex properties, labels containing serialized JSON objects could be used \cite{Docker2016Docker}.
   % subsubsection approaches_for_scheduling_criteria (end)
 
   \subsubsection{Implications of other design decisions} % (fold)

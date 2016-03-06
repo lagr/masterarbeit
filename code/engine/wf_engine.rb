@@ -43,4 +43,3 @@ module WorkflowEngine
     Docker::Container.all({all: 1, filters: filters})
   end
 end
-

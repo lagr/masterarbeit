@@ -114,7 +114,7 @@
 }
 
 @misc{Initiative????Open,
-	author = {Open Containers Initiative},
+	author = {Open Container Initiative},
 	title = {Open Containers Initative},
 	url = {https://www.opencontainers.org}
 }
@@ -288,8 +288,8 @@
 
 @misc{Docker2016Docker,
 	author = {Docker, Inc.},
-	title = {The Docker user guide},
-	url = {https://docs.docker.com/engine/userguide/},
+	title = {Docker Orchestration Product Brief},
+	url = {https://www.docker.com/sites/default/files/products/PB\_Orchestration\_03.06.2015.pdf},
 	year = 2016
 }
 
@@ -371,7 +371,7 @@
 @misc{Kiki2009Yaml,
 	author = {Ben-Kiki, Oren and Evans, Clark},
 	journal = {yaml.org},
-	title = {YAML Ain’t Markup Language Version 1.2},
+	title = {YAML Ain’t Markup Language (YAML™) Version 1.2},
 	url = {http://www.yaml.org/spec/1.2/spec.html\#id2759572},
 	year = 2009
 }
@@ -439,50 +439,4 @@
 	url = {http://www.sciencedirect.com/science/article/pii/S0167739X08001957},
 	volume = 25,
 	year = 2009
-}
-
-@article{Vinoski2006Advanced,
-	author = {Vinoski, S.},
-	doi = {10.1109/MIC.2006.116},
-	issn = {1089-7801},
-	journal = {IEEE Internet Computing},
-	number = 6,
-	pages = {87-89},
-	title = {Advanced Message Queuing Protocol},
-	volume = 10,
-	year = 2006
-}
-
-@article{Fielding2002Principled,
-	author = {Fielding, Roy T. and Taylor, Richard N.},
-	doi = {10.1145/514183.514185},
-	issn = {1533-5399},
-	journal = {ACM Trans. Internet Technol.},
-	number = 2,
-	pages = {115-150},
-	title = {Principled Design of the Modern Web Architecture},
-	url = {http://doi.acm.org/10.1145/514183.514185},
-	volume = 2,
-	year = 2002
-}
-
-@misc{Richardson2015Service,
-	author = {Richardson, Chris},
-	journal = {NGINX},
-	title = {Service Discovery in a Microservices Architecture},
-	url = {https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/},
-	year = 2015
-}
-
-@inproceedings{Zheng2015Integrating,
-	author = {Zheng, Charles and Thain, Douglas},
-	doi = {10.1145/2755979.2755984},
-	isbn = {978-1-4503-3573-7},
-	language = {en},
-	pages = {31-38},
-	publisher = {ACM Press},
-	shorttitle = {Integrating Containers into Workflows},
-	title = {Integrating Containers into Workflows: A Case Study Using Makeflow, Work Queue, and Docker},
-	url = {http://dl.acm.org/citation.cfm?doid=2755979.2755984},
-	year = 2015
 }

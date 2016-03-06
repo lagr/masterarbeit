@@ -90,6 +90,8 @@
 \label{sec:components_implementation}
     In the following, the implementation of the prototype's system components according to the design from  \ref{sub:components} is described.
 
+    Since the principle of event-driven service invocation is already demonstrated in the definition service, a detailed documentation of the organization and worklist services would not contribute further relevant insights. They are thus only described regarding their realization with Docker containers and the network configuration of these containers.
+
   \subsection{Workflow definition service} % (fold)
     \label{sub:workflow_definition_service}
 
@@ -226,9 +228,18 @@
   To recover from service failures, all containers are configured with the option \texttt{restart: on-failure:3}. That is, in case that a container terminates through an error, Docker tries to restart it up to three times.
 
   The deployment of all services is performed using Docker Compose, as this tool provides some conveniences for deployment-related tasks.
-  First, Docker Compose enables the automatic building, starting, stopping and removal of the services' images, as described in \ref{sub:docker_compose}. ** describe it there **
-  Second, the configuration of all services and the required networks that connect them may be specified in a single \emph{YAML} file. \ac{YAML} is designed with a focus on human readability \cite{Kiki2009Yaml}. The configuration file, which is depicted in Figures~\ref{lst:the_whole_docker_compose_file_1}-\ref{lst:the_whole_docker_compose_file_5} may thus serve as a textual documentation of the system's architecture.
-  For comparison, a graphical visualization of the deployment is presented in Figure~\ref{fig:deployment_diagram_of_the_architecture}.
+  First, Docker Compose enables the automatic building, starting, stopping and removal of the services' images, as described in \ref{sub:docker_compose}.
+  Second, the configuration of all services and the required networks that connect them may be specified in a single \emph{YAML} file. \ac{YAML} is designed with a focus on human readability \cite{Kiki2009Yaml}.
+  The configuration file, which is depicted in Listing~\ref{lst:the_whole_docker_compose_file_1}-\ref{lst:the_whole_docker_compose_file_5} may thus serve as a textual documentation of the system's architecture.
+  For example, the existence of the three overlay networks determined in \ref{sub:inter_component_communication} is expressed by the lines
+
+  \inputminted[firstline=3,lastline=9,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
+
+  and the connection of a container (in this case the workflow engine application container) to these networks is declared as
+
+  \inputminted[firstline=43,lastline=45,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
+
+  A graphical visualization of the exemplary deployment described by the Docker Compose configuration file is presented in Figure~\ref{fig:deployment_diagram_of_the_architecture}.
 
   \begin{figure}[htbp]
     \centering

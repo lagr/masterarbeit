@@ -51,46 +51,33 @@
 
 \subsection{Communication} % (fold)
   \label{sub:application_level_communication}
-  While the considerations in \ref{sub:inter_component_communication} were targeted at finding a model for the low-level communication, a way how the services communicate with each other
+  The considerations in \ref{sub:inter_component_communication} are directed at finding a model for low-level communication, \ie the communication between containers. In the following, an application-level solution for the inter-service communication is chosen. To harmonize with the objectives worked out in \ref{sec:determination_of_objectives}, the solution should  support the exchange of service versions on a running system, it should be able to handle service failures, and it should allow the dynamic addition of servers.
 
-  - message queue between services
-  - jeweilige protokolle via docker networks network between
-  services publish/subscribe
+  \ac{MSA} advocates the use of messaging on a general-purpose channel which does not incorporate any application logic \cite[pp.~20]{Strimbei2015Software}. Such messaging could be either be performed directly between services using \ac{REST} calls over \ac{HTTP} or via \ac{MOM} \cite[pp.~23-24, p.~30]{Newman2015Building}.
+
+  The principle of \ac{REST} is the abstraction of a services' functionalities into \emph{resources}, nameable pieces of information, whose state and value can be exposed in the form of a \emph{representation} and altered using a specific set of actions \cite[p.~3]{Fielding2002Principled}.
+
+  A common protocol used by \ac{MOM} is \ac{AMQP}. Central elements of \ac{AMQP} are \emph{exchanges} and \emph{message queues}. An exchange receives messages and forwards them to specific queues based on a set of rules or criteria \cite[p.~88]{Vinoski2006Advanced}. These rules are called \emph{bindings}.
+  Message queues store messages and send them to those consumers which have signaled an interest in these queues \cite[p.~88]{Vinoski2006Advanced}. Multiple clients, called \emph{consumers}, may be subscribed to a queue.
+
+  Servers can be added dynamically in both variants. In the \ac{REST} variant, services on new servers can register at a service discovery tool, which is then queried by client services prior to sending requests \cite{Richardson2015Service}. If \ac{MOM} is used, services on added servers may subscribe to relevant message queues, given that the middleware's network location is known to the service.
+
+  \ac{REST} based communication takes place between two components, whereas the actual target of a request may be determined by an intermediate proxy server \cite[p.~6]{Fielding2002Principled}. However, in the end both parties involved have to be present and available for communication.
+  In contrast to that, \ac{MOM} that implements \ac{AMQP} permits to store messages until they are delivered. In case of service failure, the messages will remain on the queue and can be received by the restarted service or another instance of that service. This makes \ac{MOM} more favorable than \ac{REST} calls over \ac{HTTP} in terms of failure resilience.
+
+  Another objective determined in \ref{sec:determination_of_objectives} is that components of the \ac{WfMS} should be alterable without a full system restart.
+  In a setup that uses \ac{REST} calls, this can be accomplished by starting an instance of the new version and instructing the service discovery tool to forward upcoming requests to the address of that service version.
+  \ac{AMQP} allows the consumers of multiple instances of a service to be subscribed to the same queue, which enables the creation of worker pools that can be scaled to suit the workload.
+  In order to deploy a new version of a service this new version can be started in parallel to the old version -- as long as the externally perceived behavior of the currently used functions of that service has not changed. The two versions of the service will work on incoming requests in round robin if they are subscribed to the same queue. If the new version of the service is deemed stable, the old version may be shut down.
+
+  With regards to the above considerations, a communication structure based on \ac{MOM} that implements \ac{AMQP} is chosen for the prototype.
 % subsection application_level_communication (end)
-
-  % \begin{sequencediagram}
-    % \newinst{u}{Developer Gateway}
-    % \newinst[1]{d}{Definition Service}
-    % \newinst[1]{m}{MOM}
-    % \newinst[1]{p}{Provisioner}
-
-    % \mess{u}{subscribe}{m}
-    % \mess{d}{subscribe}{m}
-    % \mess{p}{subscribe}{m}
-
-    % \mess{u}{wfms.wf.create}{m}
-    % \mess{m}{wfms.wf.create}{d}
-    % \mess{d}{wfms.wf.created}{m}
-    % \mess{m}{wfms.wf.created}{u}
-    % \mess{u}{wfms.pd.update}{m}
-    % \mess{m}{wfms.pd.update}{d}
-    % \mess{d}{wfms.pd.updated}{m}
-    % \mess{m}{wfms.pd.updated}{u}
-    % \mess{u}{wfms.wf.export}{m}
-    % \mess{m}{wfms.wf.export}{d}
-    % \mess{d}{wfms.wf.exported}{m}
-    % \mess{m}{wfms.wf.exported}{p}
-    % \mess{m}{wfms.wf.exported}{u}
-
-  % \end{sequencediagram}
-
-% subsection inter_component_communication (end)
 
 \subsection{Components} % (fold)
   \label{sub:components}
   As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that it is crucial to determine suitable service boundaries. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted ** sources **. In case of \acp{WfMS}, the identification of system components by the \ac{WfMC} for their reference model can be interpreted as such an analysis. Based on those components further micro-services for the prototype are identified.
 
-  As presented in \ref{sub:system_components}, the \ac{WfMC} identified the following components \cite[p.~13]{Hollingsworth1995WfMC}:
+  As presented in \ref{sub:system_components}, the \ac{WfMC} identified the following components \cite[p.~13]{Hollingsworth1995Wfmc}:
     \begin{itemize}[nosep]
       \item Software Components
         \begin{itemize}[nosep]
@@ -110,8 +97,6 @@
         \end{itemize}
     \end{itemize}
 
-    ** monitoring and analysis?
-
     ** draw communication diagram here **
 
   According to the \ac{WfMC}'s description, the definition tool, the worklists handler and the organization modeling tool each utilize one data component respectively. Combined with its respective datastore, each of them can be considered an autonomous micro-service since each would be able to provide its functionality without any further service.
@@ -121,14 +106,12 @@
 
   According to the decision to use the \ac{API} gateway pattern (\ref{sub:user_interaction_with_the_system}) to hide the internal system structure from its users, the two contact points -- one for administrative work and one for end-user work -- are realized using an appropriate gateway. The \emph{developer gateway} enables requests to the definition service, the infrastructure service and the organization management service through a \ac{GUI}. The \emph{user gateway} emits requests to the worklists service which are also issued through a \ac{GUI}.
 
-  ** TODO: add deductions from objectives **
   In addition to the services derived above, the need for some additional services originates from considerations regarding the use of Docker for workflow execution in Section~\ref{sec:docker_for_wf_execution} and the objectives that were stated in \ref{sec:determination_of_objectives}.
-  A Docker image registry was suggested to be used for the distribution of images to all nodes. Unless an external service such as Docker Hub is used, an own registry service should be part of the \ac{WfMS}.
+  One of these objectives is that the distribution of images can be performed in an automated way. A Docker image registry in combination with a service that uses it can be used for the distribution of images to all nodes. Unless an external service such as Docker Hub is used, an own registry service should be a component of the \ac{WfMS}.
   The decision made in \ref{sub:application_level_communication} to use \ac{MOM} for the communication between services creates the need for a service which acts as such middleware.
   To meet the requirement of automatically distributed images, a provisioning service should be introduced, which performs the appropriate actions. An infrastructure management service could be used to monitor the status and properties of the available nodes in the swarm.
 
-  Besides the major components, independent functionalities which are frequently used could be singled out to separate services.
-  One micro-service that might be extracted could address the validation of input and output data. Given a dataset and a set of rules on how to validate this dataset, such a service would be able to perform its task autonomously. As validation is a frequently recurring action in the execution of workflows -- before and after each activity and workflow -- it is beneficial to be able to scale the execution of this task independently. **out of scope!**
+  Besides the major components, independent functionalities which are frequently used could be singled out to separate services. For example, a micro-service that addresses the validation of input and output data might be extracted. Given a dataset and a schema, such a service would be able to perform its task autonomously. As validation is a frequently recurring action in the execution of workflows -- before and after each activity and workflow -- it is beneficial to be able to scale the execution of this task independently.
 
   In the following, the resulting set of services is presented.
 
@@ -145,15 +128,12 @@
 
     As a user interface is provided by the developer gateway service; the workflow definition service thus does not offer its own user interface, but rather exposes its functionality via the \ac{MOM}. This allows workflow definitions to be created and altered by other services, \eg an conversion service which translates other process definition formats or some feedback mechanism that alters workflows based on their execution performance -- or a gateway service that provides a user interface.
 
-    \begin{figure}[htbp]
+    \begin{figure}[tbp]
       \centering
       \includegraphics[width=0.95\textwidth]{content/images/class_diagram_definition-crop.pdf}
       \caption{UML Class Diagram for the Workflow Definition Service}
       \label{fig:uml_class_diagram_for_the_definition_service}
     \end{figure}
-
-    ** remove methods
-    ** remove automatic activity
 
     In order react to requests of other services, the workflow definition service features consumer classes, which perform the required actions and publish a response, if required. \texttt{WorkflowConsumer}, \texttt{ActivityConsumer}, \texttt{ProcessDefinitionConsumer}, and \texttt{ControlFlowConsumer} response to \ac{CRUD} and index requests. The \texttt{WorkflowConsumer} additionally provides the means to react to requests for the export of a workflow.
 
@@ -162,8 +142,7 @@
 
     Since one of the previously determined requirements for the prototype is that developers should be supported to use third-party images, the workflow definition service further reacts to relevant requests in the \texttt{DockerConsumer} by initiating a search for images with a specified name on Docker Hub.
 
-    In order to be able to communicate with the \ac{MOM}, the workflow definition service is connected to the \texttt{wmfs\_backend} network.
-    % ** As it is not actively involved in the enactment, it is not member of the \texttt{wfms\_enactment} network.
+    In order to be able to communicate with the \ac{MOM}, the workflow definition service is connected to the \texttt{wmfs\_backend} network. As it is not involved in the enactment and is not intended to be available to external applications, it is neither member of the \texttt{enactment} not the \texttt{frontend} network.
     % subsubsection workflow_definition_service (end)
 
   \subsubsection{Organization Management Service} % (fold)
@@ -191,7 +170,6 @@
 
   \subsubsection{Workflow Engine Service} % (fold)
     \label{subs:workflow_engine_service}
-    ** TODO: incomplete **
     In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WfMC} in terms of functionality, which is described in \ref{par:workflow_engine}. The way to utilize Docker for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has, though. ** like, how
 
     - choose participants
@@ -213,11 +191,11 @@
 
     The only task of the backend is forwarding the user's requests to the message queue and the corresponding responses back to the user. The controller classes that are responsible for this (\texttt{ActivitesController}, \texttt{ControlFlowsController}, \texttt{DockerController}, \texttt{ProcessDefinitionsController}, \texttt{RolesController}, \texttt{ServersController}, \texttt{UsersController}, \texttt{WorkflowsController}) are thus very lean -- they only contain the logic to forward requests to suitable routing keys. Each of them inherits from the \texttt{ApplicationController}, which manages the messaging logic and gives access to a shared single connection to the \ac{MOM}.
 
+    %API Gateway in this case features message endpoint pattern \cite[pp.~95-97]{Hohpe2004Enterprise}
+
     The \texttt{TemplatesController} is different from the other controller classes, as is not involved in forwarding requests, but serves the purpose to render and deliver the \ac{HTML} fragments required by the frontend.
 
     Following the API gateway pattern that is chosen in \ref{sub:user_interaction_with_the_system}, this service and the user gateway service are the only services that can be reached from outside of the \ac{WfMS}.
-    ** API GATEWAY DEFINED?
-
     % subsubsection developer_gateway (end)
 
   \subsubsection{User Gateway} % (fold)

@@ -25,12 +25,6 @@
         & \textbullet ~ Suitable servers are discovered \\
         & \textbullet ~ User can add servers during execution time \\ [1.2ex]
 
-      % \multicolumn{2}{l}{\textbf{Environment of arbitrary services ** WAS OMMITTED! **} }\\
-      %   & \textbullet ~ Required services for a workflow can be selected \\
-      %   & \textbullet ~ Required services are started on respective nodes \\
-      %   & \textbullet ~ Workflows are connected to their required services \\
-      %   & \textbullet ~ Services are restarted if necessary \\ [1.2ex]
-
       \multicolumn{2}{l}{\textbf{Third-party containers as workflow components} }\\
         & \textbullet ~ \ac{GUI} for browsing Docker Hub images exists \\
         & \textbullet ~ Modeling \ac{GUI} has a ``container'' element \\
@@ -138,8 +132,6 @@
 
       If an organization is unable to perform its business processes, it is likely to suffer from financial losses. Any failure of a business critical \ac{WfMS} can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be resilient towards failures, \ie provide as much functionality as possible if a part of it fails and try to recover autonomously. This requires well separated modules.
 
-      % To enable workflows to be run in a specified environment of services, the execution environment of the \ac{WfMS} should have a mechanism that allows the specification of such services in form of containers which are made available to workflow components when they are being executed. It also should be able to ensure that these containers are restarted in case of a failure to ensure their presence in the execution environment.
-
     % subsubsection infrastructure_management (end)
 
   \subsubsection{Workflow Modeling} % (fold)
@@ -148,9 +140,6 @@
       One benefit of Docker containers is, that full application stacks can be bundled with all their dependencies and pre-configured regarding their invocation \cite[p.~82]{Bernstein2014Containers}. The result can be considered as a black box that provides some specific functionality and that could be used without further configuration. In combination with the facilitated sharing of images through repositories, this provides a foundation for modular reuse and combination \cite[p.~6]{Boettiger2015Introduction}.
       In order to reap this advantage, \ac{WfMS} should enable modeling developers to incorporate the invocation of third party images from within their workflows. This includes the specification of parameters, with which the image should be run.
 
-      % To ensure the correctness of data along the execution, the modeler should be able to pass along information with both activities and workflows that makes the validation of their input and output data possible. The \ac{WfMS} should provide a mechanism which performs this validation in the course of the workflow enactment.
-
-      % to: architecture --> Docker permits to pass restrictions to containers before running them.
       In case that an execution node is working to full capacity, a means should be provided to support the swift finalization of time-critical tasks before those that are not, \eg the temperature analysis of a cold storage with sensitive goods which is prioritized over the automated reorder of tacks for the office. The modeling environment should thus enable the user to put restrictions on the resource usage of specific activities in order to prioritize or demote them.
 
     % subsubsection workflow_modeling (end)
