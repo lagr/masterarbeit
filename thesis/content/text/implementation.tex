@@ -32,19 +32,15 @@
   \label{sub:workflow_container}
     The workflow image is implemented as designed in \ref{sub:workflow_activity_images}. The runtime-environment layers are provided by inheriting all layers of the \texttt{ruby:2.2} image. On top of these, common layers are created, in which the required gems are installed. Then, the \texttt{/workflow} directory is created, into which the required Ruby files are copied. The file \texttt{run.rb} is set as the default command.
 
-    The workflow instance is structured as depicted in ** \ref{fig:uml_class_diagram_wf_base}. It contains the classes \texttt{ProcessInstance} and \texttt{ActivityInstance} which coordinate the enactment of the workflow instance, and the utility classes \texttt{ProcessDefinition}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, which provide auxiliary functionality.
-    \texttt{ProcessDefinition} parses the process definition file \texttt{process\_definition.json} and creates objects for the process definition itself and its contained activities to facilitate accessing their respective properties.
-    \texttt{Configuration} wraps the access to relevant environment variables in methods, which may provide defaults for missing values. Everything that is related to file system access, \eg constructing paths, linking and creating directories etc, is performed by the \texttt{FileHelper} class. The \texttt{Validator}, is used to validate the workflow instance's input data against the provided \ac{JSON} schema.
+    The code and the workflow configuration files reside in the \texttt{/workflow} directory. \texttt{pro\-cess\_de\-fi\-ni\-tion.json} contains the exported process definition (Lst.~\ref{lst:exported_process_definition_in_json_format}), \texttt{ workflow.info.json} contains metadata on the workflow (\eg the image name), and \texttt{input.schema.json} contains the \ac{JSON} schema used to validate the workflow instance's input (Lst.~\ref{lst:input_schema_in_json_format}). The instance specific files are copied to \texttt{/workflow} before the container is started.
 
-    The code and the workflow configuration files reside in the \texttt{/workflow} directory. \texttt{pro\-cess\_de\-fi\-ni\-tion.json} contains the exported process definition, \texttt{workflow.info.json} contains meta data on the workflow, and \texttt{input.schema.json} contains the \ac{JSON} schema used to validate the workflow instance's input. The instance specific files are copied to \texttt{/workflow} before the container is started.
+    As decided in \ref{sec:design_decisions}, the workflow instance features some functionality that one would usually find in a workflow engine. This functionality resides in the \texttt{ProcessInstance} class. On instantiation, the \texttt{ProcessInstance} obtains an instance of the helper classes \texttt{ProcessDefinition} and \texttt{Validator} and instructs the latter to check the validity of the provided input data against the provided \ac{JSON} schema (Lst.~\ref{lst:wf_image_process_instance}~\#4-13). \texttt{ProcessDefinition} parses the process definition file \texttt{process\_definition.json} and makes the contents available as an object (Lst.~\ref{lst:wf_image_process_definition}).
 
-    As decided in \ref{sec:design_decisions}, the workflow instance features some functionality that one would usually find in a workflow engine. This functionality resides in the \texttt{ProcessInstance} class. On instantiation, the \texttt{ProcessInstance} obtains an instance of the helper classes \texttt{ProcessDefinition} and \texttt{Validator} and instructs the latter to check the validity of the provided input data.
+    The \texttt{run} script loads the required dependencies and ensures, that the container is connected to the \texttt{enactment} network. Then, it initiates the enactment by creating an instance of the \texttt{ProcessInstance} class and calling its start method (Lst.~\ref{lst:wf_image_run}).
+    When started, \texttt{ProcessInstance} creates a new \texttt{ActivityInstance} for the start activity, creates a symbolic link to the workflow instance's input data, and adds the \texttt{ActivityInstance} to a queue for incomplete activity instances(Lst.~\ref{lst:wf_image_process_instance}~\#16-26). Then, it enters a loop in which it carries out the workflow enactment. It leaves this loop, which calls the method depicted in Listing~\ref{fig:the_processing_loop_of_process_instance} on each iteration, if no more activities are queued for processing.
 
-    The \texttt{run} script loads the required dependencies and ensures, that the container is connected to the \texttt{enactment} network. Then, it initiates the enactment by creating an instance of the \texttt{ProcessInstance} class and calling its start method.
-    When started, \texttt{ProcessInstance} creates a new \texttt{ActivityInstance} for the start activity, creates a symbolic link to the workflow instance's input data, and adds the \texttt{ActivityInstance} to a queue for incomplete activity instances. Then, it enters a loop in which it carries out the workflow enactment. It leaves this loop which calls the method depicted in Figure~\ref{fig:the_processing_loop_of_process_instance} on each iteration, if no more activities are queued for processing.
-
-    \begin{figure}[h]
-      \inputminted[firstline=26,lastline=43,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1,gobble=2]{ruby}{../code/wf_base/process_instance.rb}
+    \begin{figure}[th]
+      \inputminted[firstline=28,lastline=45,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1,gobble=2]{ruby}{../code/wf_base/process_instance.rb}
       \caption[The processing loop of ProcessInstance]{The processing loop of \texttt{ProcessInstance}}
       \label{fig:the_processing_loop_of_process_instance}
     \end{figure}
@@ -63,16 +59,14 @@
 
   \subsection{Activity image} % (fold)
   \label{sub:activity_containers}
-    Analogous to the workflow image, the activity image is implemented as it is designed in \ref{sub:workflow_activity_images}. Instead of a \texttt{/workflow} directory, the \texttt{/activity} directory is created which contains the necessary code for the activity instance. The file \texttt{run.rb} is set as the default command.
+    Analogous to the workflow image, the activity image is implemented according to its design in \ref{sub:workflow_activity_images}. Instead of a \texttt{/workflow} directory, the \texttt{/activity} directory is created which contains the necessary code for the activity instance. The file \texttt{run.rb} is set as the default command for the container.
 
-    The activity image contains the classes \texttt{ActivityInstance}, \texttt{WorklistClient}, \texttt{ContainerInvocation}, \texttt{SubworkflowInvocation}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, as depicted in \ref{fig:uml_class_diagram_activity_image}.
-    \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator} have the same functionalities as their counterparts in the workflow image.
+    %The activity image contains the classes \texttt{ActivityInstance}, \texttt{WorklistClient}, \texttt{ContainerInvocation}, \texttt{SubworkflowInvocation}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, as depicted in \ref{fig:uml_class_diagram_activity_image}.
+    %\texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator} have the same functionalities as their counterparts in the workflow image.
 
-    The code and the activity configuration files reside in the \texttt{/activity} directory. These files are \texttt{activity.info.json} and \texttt{input.schema.json}. \texttt{activity.info.json} contains configuration data of the activity, \eg name, version and parameters for a third-party container for a container-type image, or the assigned role for a manual-type image. \texttt{input.schema.json} contains the \ac{JSON} schema that is used to validate the activity instance's input.
+    The code and the activity configuration files reside in the \texttt{/activity} directory. These files are \texttt{activity.info.json} and \texttt{input.schema.json}. \texttt{activity.info.json} contains configuration data of the activity, \eg name, version and parameters for a third-party container for a container-type image, or the assigned role for a manual-type image (Lst.~\ref{}~#). \texttt{input.schema.json} contains the \ac{JSON} schema that is used to validate the activity instance's input.
 
     Depending on the activity type, the activity instance either starts a specified third-party container (container activity), a workflow instance container (sub-workflow activity), or issues a worklist item for manual data input (manual activity), by using the \texttt{ContainerInvocation}, \texttt{SubworkflowInvocation}, or \texttt{WorklistClient} classes respectively. The outcome of these actions is then stored in the output data file. For this prototype all other activities, \ie the control flow activities, log the activity and activity instance \acp{ID} to that data file as a proof of their invocation.
-
-    ** other code?
 
     \begin{figure}[htbp]
       \inputminted[firstline=18,lastline=27,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1,gobble=2]{ruby}{../code/ac_base/run.rb}
@@ -80,8 +74,8 @@
       \label{fig:main_logic_of_ac_instance}
     \end{figure}
 
-    The invocation of another container is performed in the \texttt{ContainerInvocation} class. The container created based on the specified image and is labeled with the \acp{ID} of the overall superordinate workflow instance, the directly superordinate workflow instance, and the activity instance.
-    Once the container's execution has finished, its standard output stream and error output stream can be accessed with the \texttt{results} method. \texttt{SubworkflowInvocation} acts similar to \texttt{ContainerInvocation}, but it uses another configuration for the container. ** lots of difference in configuration here **
+    The invocation of another container is performed in the \texttt{ContainerInvocation} class. The container is created based on the specified image and is labeled with the \acp{ID} of the overall superordinate workflow instance, the directly superordinate workflow instance, and the activity instance.
+    Once the container's execution has finished, its standard output stream and error output stream can be accessed with the \texttt{results} method. \texttt{SubworkflowInvocation} acts similar to \texttt{ContainerInvocation}, but it uses another configuration for the container, as visible in \ref. ** lots of difference in configuration here **
 
   % subsection activity_containers (end)
 % section execution_images (end)
@@ -109,9 +103,7 @@
     The \texttt{ProcessDefinitionImageSerializer} provides the means to create the consolidated JSON representation of a process definition with all information that is necessary to execute the corresponding workflow. An example for the serialized output can be seen in Figure~\ref{lst:exported_process_definition_in_json_format}.
 
     Whenever the user requests the export of a workflow, the request is forwarded to the \texttt{ImageManager}.
-    In order to export a workflow, the first step is to identify all of its elements that require to be wrapped in an image. Obviously, one of them is the workflow itself. The other required images are determined by traversing the workflow's process definition recursively. Each of the workflow's activities has to be exported. Each sub-workflow has a method that exposes the Docker images it requires beyond that. It does so by passing the call for required images on to the referenced workflow -- which collects its required images analogously -- and returning the result.
-
-    The \texttt{ImageBuilder} then iterates over all these elements and creates a correspondent image for each. Starting with the respective base image -- \texttt{ac\_base} or \texttt{wf\_base} -- it adds additional layers to do so. The \texttt{ImageBuilder} creates the files which are specific to the current element from the activity's or workflow's configuration, \ie the input/output validation  schemas, the element's description file, and in case of a workflow the serialized process definition, in a temporary directory. The \texttt{ImageBuilder} then copies these files to the image and names it after the workflow element that it represents.
+    In order to export a workflow, the first step is to identify all of its elements that require to be wrapped in an image. Obviously, one of them is the workflow itself. The other required images are determined by traversing the workflow's process definition recursively. Each of the workflow's activities has to be exported. Each sub-workflow has a method that exposes the Docker images it requires beyond that. It does so by passing the call for required images on to the referenced workflow -- which collects its required images analogously -- and returning the result. The \texttt{ImageBuilder} then iterates over all these elements and creates a correspondent image for each. Starting with the respective base image -- \texttt{ac\_base} or \texttt{wf\_base} -- it adds additional layers to do so. The \texttt{ImageBuilder} creates the files which are specific to the current element from the activity's or workflow's configuration, \ie the input/output validation  schemas, the element's description file, and in case of a workflow the serialized process definition, in a temporary directory. The \texttt{ImageBuilder} then copies these files to the image and names it after the workflow element that it represents.
 
     The \texttt{ImageManager} then uploads all images that were successfully built to the private repository and publishes a notification of the successful build via the message broker.
     % subsection workflow_definition_service (end)
@@ -129,9 +121,12 @@
     The \texttt{WorkflowEngine} pauses, unpauses or terminates a workflow instance, by querying the swarm master for all containers which bear a label with the workflow instance's \ac{ID}, and then calling the  \texttt{pause}, \texttt{unpause}, or both \texttt{kill} and \texttt{delete}.
 
     \texttt{WorkflowInstance} begins with the enactment of a workflow by creating the data container, which is used later to store the workflow data. The data container is based on the image \texttt{cogniteev/echo}, a small image that provides a single executable -- \texttt{echo} -- because Docker expects one executable to be present in a container \cite{Cogniteev2015Docker}. The container's name is configured to equal the workflow instance's \ac{ID} with the prefix \texttt{data\_} and the \ac{ID} is also passed to the container as value for a \texttt{main\_workflow\_instance} label.
-    By passing the constraint
-    \mint{ruby}|"constraint:node==#{@target_node}"|
-    the data container is scheduled on the node with the specified name. Each node on which workflows are executed obtains a directory \texttt{/workflow\_relevant\_data}, in which the working directories for the various workflow instances are kept. \texttt{WorkflowInstance} passes the instruction
+    To show some of the scheduling possibilities, a randomly drawn constraint of the following
+    %** constraint has changed! ram + external
+    %\mint{ruby}|"constraint:node==#{@target_node}"|
+    \mint{ruby}{"constraint:edu.proto.machine_env==external"}
+    \mint{ruby}{"constraint:edu.proto.ram==/(\d\d\d\d+|[7-9]\d\d|[6][5-9]\d)/"}
+    is passed, such that the data container is either scheduled on a external node or a node with at least 650MB of memory. Each node on which workflows are executed obtains a directory \texttt{/workflow\_relevant\_data}, in which the working directories for the various workflow instances are kept. \texttt{WorkflowInstance} passes the instruction
     \mint{ruby}|"/workflow_relevant_data/#{@instance_id}:/workflow_relevant_data"|
     to create a such a working directory under the name of the workflow instance \ac{ID} and to make it available in the data container at the path \texttt{/workflow\_relevant\_data}.
 
@@ -184,7 +179,7 @@
 
     The registry is configured to be restarted automatically in case that itself or the node it runs on fails. Further, it is exposed on the host's network to make it reachable for all nodes in the swarm. This is necessary as their daemons are not containers and thus cannot be connected to the overlay network. This configuration is reflected in the \ac{WfMS}' Docker Compose file as follows:
 
-    \begin{listing}[!htbp]
+    \begin{listing}[!b]
       \inputminted[firstline=12,lastline=21,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
       \caption{Configuration of the registry service in the Docker Compose file}
       \label{lst:configuration_of_the_registry_service_in_the_docker_compose_file}
@@ -195,27 +190,27 @@
     \label{sub:provisioning_service}
       The provisioning service is implemented in a simple way -- it consists of a single script that listens to the events published to the swarm master. If a named image is pushed by one of the nodes, the provisioner pulls its own node, as visible in Listing~\ref{lst:provisioner_loop}.
 
-      \begin{listing}[!htbp]
+      \begin{listing}[!t]
         \inputminted[firstline=19,lastline=29,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/provisioner/provisioner.rb}
         \caption*{Configuration ommitted for brevity}
-        \caption{Provisioning service pulling new images}
+        \caption{Provisioning service loop for pulling images}
         \label{lst:provisioner_loop}
       \end{listing}
     % subsection provisioning_service (end)
 % section components (end)
 
 
-\section{Exemplary deployment} % (fold)
+\section{Exemplary deployment and use case} % (fold)
 \label{sec:exemplary_deployment}
-  To show the feasibility of the developed solution, the prototype is deployed exemplarily. This process is supported by Docker Machine, which provides the means to create virtual machines which are provisioned with a Docker Engine and may be connected to a swarm at startup. Four machines are created to simulate an organization setup. The first machine that is started will serve as host for the image registry and the key-value store that Docker Swarm uses. It is thus named \texttt{coordination-machine}. To account for the increased need for memory of the registry, this machine receives twice the amount of memory that the other machines will be granted. Three other machines are created, which are equal in their available resources: \texttt{development-machine}, \texttt{internal-machine}, and \texttt{cloud-machine}. The latter is not actually located on a remote location, its daemon is labeled with
+  To show the feasibility of the developed solution, the prototype is deployed exemplarily. This process is supported by Docker Machine, Docker Swarm, and Docker Compose. Four machines are created to simulate an organization setup. The first machine that is started will serve as host for the image registry and the key-value store that Docker Swarm uses. It is thus named \texttt{coordination-machine}. To account for the increased need for memory of the registry, this machine receives twice the amount of memory that the other machines will be granted. Three other machines are created, which are equal in their available resources: \texttt{development-machine}, \texttt{internal-machine}, and \texttt{cloud-machine}. The latter is not actually located on a remote location, but its daemon is labeled with
   \\ [0.5ex]
   \centerline{\texttt{edu.proto.machine\_env=external}}
   \\ [0.5ex]
-  while the other nodes receive the value \texttt{internal}, to show how such a node could be distinguished for scheduling. Each of the nodes is also labeled with its respective amount of memory, \eg for latter three machines:
+  while the other nodes receive the value \texttt{internal}, to show how such a node could be distinguished for scheduling. Each of the nodes is also labeled with a fictional amount of available memory, \eg
   \\ [0.5ex]
   \centerline{\texttt{edu.proto.ram=1024}}
   \\ [0.5ex]
-  While the allocation of services to specific nodes would not matter in practice, it is done in a static manner for this prototype to facilitate the examination and documentation.
+  While the allocation of services to specific nodes would not matter in practice, it is done in a static manner for this prototype to facilitate referencing to them during examination and documentation.
   The services are assigned to the nodes as follows: the registry is started on \texttt{coordination-machine}; the \ac{MOM}, worklist, and user gateway services reside on \texttt{internal-machine}; all other services are allocated on \texttt{development-machine}. Creating the registry on the \texttt{coordination-machine} is a good practice, as every Docker daemon that is part of a swarm knows the \ac{IP} address of this machine if the key-value store is also hosted there. Its address can thus be resolved by accessing the daemon's configuration. Further, it may be used to distribute the \ac{WfMS}' images during the installation of the system.
 
   To recover from service failures, all containers are configured with the option \texttt{restart: on-failure:3}. That is, in case that a container terminates through an error, Docker tries to restart it up to three times.
@@ -247,7 +242,7 @@
   \label{sec:implementation_issues}
   The requests that are sent from the frontends to the gateways are implemented in a synchronous fashion, \ie, the frontend sends the requests and blocks the execution until a response is received. This is also imposed on the onward communication to the other services in this prototype by the way the gateways' consumers are implemented -- a blocking queue listens to the response to a specific request. In cases where multiple independent requests are made, an asynchronous implementation would enable performance gains, as these requests could be performed in parallel. However, this would raise the complexity of both frontend and gateway, as they have to account for the unknown order of incoming responses.
 
-  While a worklist item should be rescheduled in a real-world scenario if its assigned user is deleted, it is simply deleted by the \texttt{UserConsumer} in the prototype as this is a less complex way to handle this case.
+  While a worklist item should be rescheduled in a real-world scenario if its assigned role is deleted, it is simply deleted by the \texttt{RoleConsumer} in the prototype as this is a less complex way to handle this case.
 
   Since Ruby code is interpreted rather than compiled to executables and run, it requires the runtime environment to be served as part of the images, which are thus considerably larger as images that container only contain a self-sufficient executable. Due to the previously presented benefits that come along with the layer structure, this is only relevant for image transfers for the first time that an image is up- or downloaded, though.
 

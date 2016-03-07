@@ -2,7 +2,7 @@
 
 \subsection{Workflow and activity images} % (fold)
 \label{sub:workflow_activity_images}
-  To reap the benefits of the layer mechanism, the structure of the images should be chosen with care. Layers should be created in a way that enables reusability among the different use cases and they should be ordered by the frequency that they are likely to be changed by.
+  To reap the benefits of the layering mechanism, the structure of the images should be chosen with care. Layers should be created in a way that enables reusability among the different use cases and they should be ordered by the frequency that they are likely to be changed by.
 
   The proposed structure of workflow and activity images, which is depicted in Figure~\ref{fig:layers_for_element_wrapping_containers} and reflected in the respective Dockerfiles \ref{lst:dockerfile_for_activity_base_image} and \ref{lst:dockerfile_for_workflow_base_image}, is thus as follows.
 
@@ -36,17 +36,13 @@
   \\ [0.5ex]
   Analogously, this is done with workflow images. Since it implies losing the internal image versioning mechanism, this solution should only be used as a workaround until cross-repository sharing of layers is possible.
 
+  The workflow instance is structured as depicted in ** \ref{fig:uml_class_diagram_wf_base}. It contains the classes \texttt{ProcessInstance} and \texttt{ActivityInstance} which coordinate the enactment of the workflow instance, and the utility classes \texttt{ProcessDefinition}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, which provide auxiliary functionality.
+  \texttt{ProcessDefinition} parses the process definition file and creates objects for the process definition itself and its contained activities to facilitate accessing their respective properties.
+  \texttt{Configuration} wraps the access to relevant environment variables in methods, which may provide defaults for missing values. Everything that is related to file system access, \eg constructing paths, linking and creating directories etc, is performed by the \texttt{FileHelper} class. The \texttt{Validator} is used to validate the workflow instance's input data.
 
-\textcolor{red}{
-  supported functions:
-    - activity images
-      - start subworkflow
-      - start third-party container
-      - initiate user input
-    - workflow images
-      - ggf wf engine
-      - manage workdirectory (DV approaches)
-}
+  The activity image contains the classes \texttt{ActivityInstance}, \texttt{WorklistClient}, \texttt{ContainerInvocation}, \texttt{SubworkflowInvocation}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, as depicted in \ref{fig:uml_class_diagram_activity_image}.
+  \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator} have the same functionalities as their counterparts in the workflow image. The image should be able to start a subworkflow or a third-party container, or create a worklist item and wait for its completion. The classes \texttt{SubworkflowInvocation}, \texttt{ContainerInvocation}, and \texttt{WorklistClient} encompass these functionalities respectively. The decision as to which class is invoked for the actual functionality is made by the \texttt{Instance} class.
+
 % subsection workflow_activity_images (end)
 
 \subsection{Communication} % (fold)
@@ -142,7 +138,7 @@
 
     Since one of the previously determined requirements for the prototype is that developers should be supported to use third-party images, the workflow definition service further reacts to relevant requests in the \texttt{DockerConsumer} by initiating a search for images with a specified name on Docker Hub.
 
-    In order to be able to communicate with the \ac{MOM}, the workflow definition service is connected to the \texttt{wmfs\_backend} network. As it is not involved in the enactment and is not intended to be available to external applications, it is neither member of the \texttt{enactment} not the \texttt{frontend} network.
+    In order to be able to communicate with the \ac{MOM}, the workflow definition service is connected to the \texttt{wmfs\_backend} network. As it is not involved in the enactment and is not intended to be available to external applications, it is neither member of the \texttt{enactment} nor the \texttt{frontend} network.
     % subsubsection workflow_definition_service (end)
 
   \subsubsection{Organization Management Service} % (fold)
@@ -165,29 +161,16 @@
 
   \subsubsection{Worklist Service} % (fold)
     \label{subs:worklist_service}
-    The sole responsibility of this service is the management of users' worklists. It handles \ac{CRUD} requests for worklist items and publishes the data submitted to it by users to the other services. If a user is deleted, it should remove the worklist item or reassign it to another user. The former tasks are performed by the \texttt{WorklistConsumer}, which reacts to related events. The latter task is in the responsibility of the \texttt{UserConsumer}, which reacts to the deletion of a user. The worklist items' object-relational mapping is performed by the \texttt{WorklistItem} model class.
+    The sole responsibility of this service is the management of users' worklists. It handles \ac{CRUD} requests for worklist items and publishes the data submitted to it by users to the other services. If a role is deleted, it should remove the worklist item or reassign it to another role. The former tasks are performed by the \texttt{WorklistConsumer}, which reacts to related events. The latter task is in the responsibility of the \texttt{RoleConsumer}, which reacts to the deletion of a role. The worklist items' object-relational mapping is performed by the \texttt{WorklistItem} model class.
     % subsubsection worklist_service (end)
 
   \subsubsection{Workflow Engine Service} % (fold)
     \label{subs:workflow_engine_service}
-    In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WfMC} in terms of functionality, which is described in \ref{par:workflow_engine}.
+    % In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WfMC} in terms of functionality, which is described in \ref{par:workflow_engine}.
+    The way how Docker is utilized for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has. In case of the selected $G_{SEPC}^{DV}$ variant, the engine is responsible for the creation of a workflow instance container from the appropriate workflow image on a suitable node. It further pauses, unpauses or terminates the enactment of a workflow.
 
+    The \texttt{WorkflowEngine} class is notified by the \texttt{WorkflowConsumer} and \texttt{WorkflowInstanceConsumer} on incoming messages. To alter the state of a running workflow instance, it contacts the swarm master directly. The more complex instantiation of a workflow is handled by the \texttt{WorkflowInstance} class.
 
-    ****
-
-    The way to utilize Docker for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has, though. ** like, how
-
-    - choose participants
-    - add to execution networks
-
-    WorkflowConsumer
-    WorkflowInstanceConsumer
-    ServerConsumer
-    WorkflowInstance
-    WorkflowScheduler
-
-
-    The extent to which the workflow engine service controls the instanciation of workflow components depends on ***
     % subsubsection workflow_engine_service (end)
 
   \subsubsection{Developer Gateway} % (fold)

@@ -3,9 +3,8 @@
 \PYG{k}{module} \PYG{n+nn}{WorkflowEngine}
   \PYG{k}{class} \PYG{n+nc}{WorkflowInstance}
     \PYG{k+kp}{attr\PYGZus{}accessor} \PYG{l+s+ss}{:instance\PYGZus{}container}\PYG{p}{,} \PYG{l+s+ss}{:data\PYGZus{}container}\PYG{p}{,} \PYG{l+s+ss}{:instance\PYGZus{}id}
-    \PYG{k}{def} \PYG{n+nf}{initialize}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}id}\PYG{p}{,} \PYG{n}{input\PYGZus{}data}\PYG{p}{,} \PYG{n}{target\PYGZus{}node} \PYG{p}{)}
+    \PYG{k}{def} \PYG{n+nf}{initialize}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}id}\PYG{p}{,} \PYG{n}{input\PYGZus{}data}\PYG{p}{)}
       \PYG{n+nv+vi}{@workflow\PYGZus{}id} \PYG{o}{=} \PYG{n}{workflow\PYGZus{}id}
-      \PYG{n+nv+vi}{@target\PYGZus{}node} \PYG{o}{=} \PYG{n}{target\PYGZus{}node}
       \PYG{n+nv+vi}{@input\PYGZus{}data}  \PYG{o}{=} \PYG{n}{input\PYGZus{}data}
       \PYG{n+nv+vi}{@instance\PYGZus{}id} \PYG{o}{=} \PYG{n+no}{SecureRandom}\PYG{o}{.}\PYG{n}{uuid}
 
@@ -27,12 +26,17 @@
         \PYG{k}{retry}
       \PYG{k}{end}
       \PYG{n}{copy\PYGZus{}output\PYGZus{}data\PYGZus{}from\PYGZus{}container}
-
-      \PYG{c+c1}{\PYGZsh{} deactivated for the prototype}
-      \PYG{c+c1}{\PYGZsh{} @instance\PYGZus{}container.delete(:force =\PYGZgt{} true)}
+      \PYG{c+c1}{\PYGZsh{} @instance\PYGZus{}container.delete(:force =\PYGZgt{} true) \PYGZsh{} deactivated for the prototype}
     \PYG{k}{end}
 
     \PYG{k+kp}{private}
+
+    \PYG{k}{def} \PYG{n+nf}{random\PYGZus{}constraint}
+      \PYG{o}{[}
+        \PYG{l+s+s2}{\PYGZdq{}constraint:edu.proto.machine\PYGZus{}env==external\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}constraint:edu.proto.ram==/(}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d+|[7\PYGZhy{}9]}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d|[6][5\PYGZhy{}9]}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d)/\PYGZdq{}}
+      \PYG{o}{].}\PYG{n}{sample}
+    \PYG{k}{end}
 
     \PYG{k}{def} \PYG{n+nf}{create\PYGZus{}data\PYGZus{}container}
       \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Container}\PYG{o}{.}\PYG{n}{create}\PYG{p}{(\PYGZob{}}
@@ -43,10 +47,7 @@
         \PYG{l+s+s1}{\PYGZsq{}Image\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s1}{\PYGZsq{}cogniteev/echo\PYGZsq{}}\PYG{p}{,}
         \PYG{l+s+s1}{\PYGZsq{}Cmd\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}echo\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}Data container for }\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]}\PYG{p}{,}
         \PYG{l+s+s1}{\PYGZsq{}HostConfig\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}Binds\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}/workflow\PYGZus{}relevant\PYGZus{}data/}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:/workflow\PYGZus{}relevant\PYGZus{}data\PYGZdq{}}\PYG{o}{]}\PYG{p}{\PYGZcb{},}
-        \PYG{l+s+s1}{\PYGZsq{}Env\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}
-          \PYG{l+s+s2}{\PYGZdq{}constraint:edu.proto.machine\PYGZus{}env==external\PYGZdq{}}\PYG{p}{,}
-          \PYG{l+s+s2}{\PYGZdq{}constraint:edu.proto.ram==/(}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d+|[7\PYGZhy{}9]}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d|[6][5\PYGZhy{}9]}\PYG{l+s+se}{\PYGZbs{}\PYGZbs{}}\PYG{l+s+s2}{d)/\PYGZdq{}}
-        \PYG{o}{]}
+        \PYG{l+s+s1}{\PYGZsq{}Env\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[} \PYG{n}{random\PYGZus{}constraint} \PYG{o}{]}
       \PYG{p}{\PYGZcb{})}\PYG{o}{.}\PYG{n}{refresh!}\PYG{o}{.}\PYG{n}{tap}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:start}\PYG{p}{)}
     \PYG{k}{end}
 

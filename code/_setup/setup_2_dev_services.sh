@@ -16,7 +16,7 @@ step "Start services.."
 eval "$(docker-machine env --swarm development-machine)"
 docker-compose -p wfms -f ../wfms.yml up -d
 
-sleep 5
+sleep 10 # wait for the databases to be started
 docker exec wfms_organization_1 rake wfms:setup_db
 docker exec wfms_definition_1 rake wfms:setup_db
 docker exec wfms_worklist_1 rake wfms:setup_db

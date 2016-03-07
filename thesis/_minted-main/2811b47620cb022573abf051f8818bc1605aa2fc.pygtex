@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{\PYGZob{}}
+  \PYG{n+nt}{\PYGZdq{}type\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}object\PYGZdq{}}\PYG{p}{,}
+  \PYG{n+nt}{\PYGZdq{}required\PYGZdq{}}\PYG{p}{:} \PYG{p}{[}
+    \PYG{l+s+s2}{\PYGZdq{}this\PYGZdq{}}
+  \PYG{p}{],}
+  \PYG{n+nt}{\PYGZdq{}properties\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+    \PYG{n+nt}{\PYGZdq{}this\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+      \PYG{n+nt}{\PYGZdq{}type\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}string\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

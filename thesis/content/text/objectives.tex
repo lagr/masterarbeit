@@ -32,7 +32,7 @@ The resulting objectives and the requirements that need to be met in order to fu
       & \textbullet ~ Modeling \ac{GUI} has a ``container'' element \\
       & \textbullet ~ User can specify start parameters and commands \\ [1.2ex]
 
-    \multicolumn{2}{l}{\textbf{Resource usage management ** not implemented**} }\\
+    \multicolumn{2}{l}{\textbf{Resource usage management} }\\
       & \textbullet ~ User can prioritize/demote activities and workflows \\
       & \textbullet ~ \ac{WfMS} enforces respective resource usage \\ [1.2ex]
 
@@ -49,48 +49,6 @@ The resulting objectives and the requirements that need to be met in order to fu
   \end{tabular}
   \caption{Objectives and their respective requirements}
   \label{tab:data_objectives_and_requirements}
-\end{table}
-
-
-\begin{table}[!htbp]
-  \centering
-  \begin{tabular}{l l l}
-    \toprule
-    Data Source & Criterion Type & Examples \\
-    \midrule
-    Docker
-      & Node tags
-        & Name \\
-        && \ac{ID} \\
-        && Storage driver \\
-        && Execution driver \\
-        && Kernel version  \\
-        && Operating system \\ [1.2ex]
-      & Qualitative node properties
-        & Geographic location\\
-        && Custom grouping membership\\
-        && Ownership status\\ [1.2ex]
-      & Quantitative node properties
-        & Available memory \\
-        && Available storage \\
-        && Network speed \\ [1.2ex]
-      & Execution environment
-        & Existing containers \\
-        && Existing images \\
-        && Currently running containers \\ [1.4ex]
-    WfMS
-      & Live data
-        & Enactment status \\
-        & Activity input/output data \\
-        && Workflow input/output data \\ [1.2ex]
-      & Activity/workflow properties
-        & Expected data-intensity \\
-        && Compliance requirements\\
-        &&\\ [1.2ex]
-    \bottomrule
-  \end{tabular}
-  \label{tab:scheduling_criteria}
-  \caption{Scheduling Criteria}
 \end{table}
 
 \begin{table}[p!]

@@ -5,6 +5,6 @@ angular.module 'WFMS.Workflow'
   vm.createWorkflow = ->
     wf = new Workflow(name: 'unnamed')
     wf.create().then ->
-      wf.get().then ->
-        $state.go 'app.workflow_management.workflow', workflow_id: wf.id
+      wf.get().then (newWf) ->
+        $state.go 'app.workflow_management.workflow', { workflow_id: newWf.id }, reload: true
   vm

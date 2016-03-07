@@ -14,7 +14,7 @@ module WorkflowEngine
   end
 
   def instanciate(workflow_id, input_data)
-    wfi = WorkflowEngine::WorkflowInstance.new(workflow_id, input_data, 'cloud-machine')
+    wfi = WorkflowEngine::WorkflowInstance.new(workflow_id, input_data)
     begin
       result = wfi.start
       Hutch.publish "wfms.workflow_instance.finished", workflow_instance: wfi.instance_id, result: result

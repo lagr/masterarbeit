@@ -2,9 +2,8 @@ require 'pry'
 module WorkflowEngine
   class WorkflowInstance
     attr_accessor :instance_container, :data_container, :instance_id
-    def initialize(workflow_id, input_data, target_node )
+    def initialize(workflow_id, input_data)
       @workflow_id = workflow_id
-      @target_node = target_node
       @input_data  = input_data
       @instance_id = SecureRandom.uuid
 
@@ -26,12 +25,17 @@ module WorkflowEngine
         retry
       end
       copy_output_data_from_container
-
-      # deactivated for the prototype
-      # @instance_container.delete(:force => true)
+      # @instance_container.delete(:force => true) # deactivated for the prototype
     end
 
     private
+
+    def random_constraint
+      [
+        "constraint:edu.proto.machine_env==external",
+        "constraint:edu.proto.ram==/(\\d\\d\\d\\d+|[7-9]\\d\\d|[6][5-9]\\d)/"
+      ].sample
+    end
 
     def create_data_container
       Docker::Container.create({
@@ -42,10 +46,7 @@ module WorkflowEngine
         'Image' => 'cogniteev/echo',
         'Cmd' => ['echo', "Data container for #{@instance_id}"],
         'HostConfig' => {'Binds' => ["/workflow_relevant_data/#{@instance_id}:/workflow_relevant_data"]},
-        'Env' => [
-          "constraint:edu.proto.machine_env==external",
-          "constraint:edu.proto.ram==/(\\d\\d\\d\\d+|[7-9]\\d\\d|[6][5-9]\\d)/"
-        ]
+        'Env' => [ random_constraint ]
       }).refresh!.tap(&:start)
     end
 

@@ -362,14 +362,13 @@ Finally, rather independent from the previous variants and hence discussed in is
   \subsubsection{Identification of possible scheduling criteria} % (fold)
   \label{ssub:identification_of_desired_scheduling_criteria}
 
-    ** move intro + types to objectives chapter?!
-    In order to examine scheduling solutions, goals should be specified to which they can be evaluated against -- but an exhaustive list of these goals is not in the scope of this thesis. Thus, two groups of exemplary scheduling criteria are considered, which are depicted in Table~\ref{tab:scheduling_criteria}.
+    In order to examine scheduling solutions, it must first be determined what types of scheduling criteria are required. A set of possible scheduling criteria types is compiled in the following which is depicted in Table~\ref{tab:scheduling_criteria}. Then, mechanisms are developed that permit the scheduling of containers with regards to these criteria types.
 
     Scheduling may be performed based on the properties of the nodes, which can be of qualitative or quantitative nature, their tags or the execution environment they have to offer. Examples for qualitative node properties could be its name, present containers or images, geographical location, the nature of its storage device, or its membership in some arbitrary groups. Quantitative properties of interest might be the amount of available memory or storage, the number of currently running containers or the node's network speed.
 
-    As an alternative to the above methodology, containers may be assigned to nodes based on \ac{WfMS}-specific data. This could be for example properties of the underlying activities and workflows, the status and data of their instances or the state of a custom scheduling mechanism of the \ac{WfMS}. For example, if a user specifies his/her current location in the course of a workflow enactment, all subsequent containers could be scheduled to run on nodes that suit the laws of that country.
+    Additionally to the above methodology, containers may be assigned to nodes based on \ac{WfMS}-specific data. This could be for example properties of the underlying activities and workflows, the status and data of their instances or the state of a custom scheduling mechanism of the \ac{WfMS}. For example, if a user specifies his/her current location in the course of a workflow enactment, all subsequent containers could be scheduled to run on nodes that suit the laws of that country.
 
-    \begin{table}[!htbp]
+    \begin{table}[!tbp]
       \centering
       \begin{tabular}{l l l}
         \toprule
@@ -406,8 +405,8 @@ Finally, rather independent from the previous variants and hence discussed in is
             &&\\ [1.2ex]
         \bottomrule
       \end{tabular}
+      \caption{Possible Scheduling Criteria}
       \label{tab:scheduling_criteria}
-      \caption{Scheduling Criteria}
     \end{table}
 
     Both qualitative and quantitative properties of a node can be stored in custom labels on that node.
@@ -442,7 +441,7 @@ Finally, rather independent from the previous variants and hence discussed in is
     \\ [0.5ex]
     At the current development state of Docker Swarm, it is not possible to verify that the containers are not only present but also running. If required, this criterion has to be addressed by some custom mechanism of the \ac{WfMS}, \eg a method that queries the swarm master's \ac{API}, selects a suitable node with running instances of the required container and constructs an according node constraint.
 
-    Since updating labels and tags of containers and nodes after their creation is not possible at the time of writing, all \ac{WfMS} related data created during enactment has to be sent to the system and managed internally by it.
+    Since updating labels and tags of containers and nodes after their creation is not possible at the time of writing, all \ac{WfMS} related data created during enactment has to be sent to the system and managed internally by it. The node that is chosen based on live enactment data can then be passed to new container instances using a node name constraint.
 
     Properties of activities and workflows that have been defined at build time may be stored in the form of labels when they are created. This is possible by using the \texttt{LABEL} command for desired labels in the respective Dockerfile in combination with passing their value as an argument for the build command:
 
@@ -459,7 +458,7 @@ Finally, rather independent from the previous variants and hence discussed in is
     The workflow engine could then use the image's labels to take the stored properties into account for scheduling. For complex properties, labels containing serialized JSON objects could be used \cite{Docker2016Docker}.
   % subsubsection approaches_for_scheduling_criteria (end)
 
-  \subsubsection{Implications of other design decisions} % (fold)
+  \subsection{Implications of other design decisions} % (fold)
   \label{ssub:implications_of_other_design_decisions}
     \acp{WfMS} may let workflow modeling developers take influence on the scheduling of workflow containers by letting them define constraints or affinities on them at build time. This could be beneficial because of the user's potential a priori knowledge on these elements, \eg whether they are data-intensive and thus require some large storage, or because it enables meeting compliance rules, \eg concerning the geographical location of data storage and processing.
 

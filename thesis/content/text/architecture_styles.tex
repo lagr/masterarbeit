@@ -1,5 +1,5 @@
 % -*- root: ../../main.tex -*- %
-Developers of software systems have to cope with challenging factors such as high complexity within their systems, an increased need for integration of internal and external functionality and evolving technologies. Several architectural approaches emerged from the attempt to cope with these challenges. Strîmbei et al. consider \emph{monolithic architecture}, \emph{\ac{SOA}} and \emph{Micro-services} to be the most relevant \cite[p.~13]{Strimbei2015Software}.
+Developers of software systems have to cope with challenging factors such as high complexity within their systems, an increased need for integration of internal and external functionality and evolving technologies. Several architectural approaches emerged from the attempt to cope with these challenges. Strîmbei et al. consider \emph{monolithic architecture}, \emph{\ac{SOA}} and \emph{\ac{MSA}} to be the most relevant ones \cite[p.~13]{Strimbei2015Software}. In \ref{sub:choice_of_an_achitecture_model}, an architecture for the prototype is chosen based on the properties of the different architectures that are presented in this chapter.
 
 \paragraph{Monolithic Architecture} % (fold)
 \label{par:monolithic_architecture}
@@ -43,7 +43,7 @@ The narrow focus of each service makes it less specialized to certain uses, whic
 Another positive aspect is the \emph{resilience} of micro-services when it comes to service failures, that is, a single failing service does not render the whole system incapable of working \cite[p.~5]{Newman2015Building}.
 Due to the properties of the \ac{MSA}, micro-services may be deployed, upgraded and scaled individually \cite[p.~116]{Thones2015Microservices}.
 
-Researchers also see disadvantages and problems that may go hand in hand with the use of \ac{MSA}.
+There are also disadvantages that can emerge with the use of \ac{MSA}.
 While \ac{MSA} facilitates deploying parts of an application individually, the overall amount of work required for the deployment of all services is higher and the coordination of the deployments is complexer than the deployment of a monolithic application \cite[p.~35]{Stubbs2015Distributed}.
 As services may be unavailable at times, a mechanism has to be in place that allows the discovery of services \cite[p.~35]{Stubbs2015Distributed}.
 Unless a dedicated logging service is introduced and used, there is no central access to the services' logs. Aggregation and analysis of errors and fixing them is thus more complicated in comparison to monolithic architecture \cite[p.~35]{Stubbs2015Distributed}.

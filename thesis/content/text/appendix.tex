@@ -1,5 +1,38 @@
 % -*- root: ../../main.tex -*- %
 
+\AnhChapter{Theoretical Background}
+  \AnhSection{Docker}
+    \begin{figure}[htbp]
+      \centering
+      \begin{tikzpicture}[scale=0.8,->,>=stealth',shorten >=1pt,auto,node distance=5cm, semithick]
+        \sffamily\fontsize{10}{10}\selectfont
+        \node (cr){};
+        \node (run){};
+        \node[state] (A)     [right =3cm of cr]         {created};
+        \node[state]         (B) [right =2.5cm of A] {running};
+        \node[state]         (C) [below right of=B] {stopped};
+        \node[state]         (D) [above =2cm of B] {paused};
+        \node[state]         (E) [below =2cm of A] {deleted};
+
+        \path (cr) edge [] node {create} (A)
+            (run) edge [out=45,in=150]                     node {run} (B)
+              (A) edge []                              node {start} (B)
+                  edge [bend right]                    node {rm}    (E)
+              (B) edge [out=230, in=200, distance=4cm] node {kill}  (C)
+                  edge [out=250,in=175, distance=2.5cm]node {stop}  (C)
+                  edge [bend left]                     node {pause}  (D)
+                  edge [in=30, out=45, loop]           node {restart}  (D)
+                  edge [out=10, in=90, distance=2cm]   node {\textit{container process exited}}  (C)
+              (C) edge [bend right]                    node {start}  (B)
+                  edge [bend left]                     node {rm}  (E)
+              (D) edge [bend left]                     node {unpause} (B)
+              ;
+      \end{tikzpicture}
+      \caption*{Simplified version. Commands should be understood prefixed with \texttt{docker}. \newline \scriptsize Based on https://docs.docker.com/engine/reference/api/docker\_remote\_api/\#docker-events }
+      \caption[Docker Container Life Cycle]{Docker Container Life Cycle \cite{Docker2016Docker}}
+      \label{fig:docker_container_lifecycle}
+    \end{figure}
+
 \AnhChapter{Architecture and design}
 
   \begin{figure}[htbp]
@@ -9,6 +42,7 @@
   \label{fig:uml_class_diagram_organization}
   \end{figure}
 
+ \clearpage
 \AnhChapter{Implementation}
   \AnhSection{Workflow image}
 
@@ -16,6 +50,13 @@
       \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{json}{./content/snippets/process_definition.json}
       \caption{Exported process definition in JSON format}
     \label{lst:exported_process_definition_in_json_format}
+    \end{listing}
+
+    \begin{listing}[!h]
+      \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{json}{./content/snippets/wf_image/input.schema.json}
+      \caption*{ \mintinline{json}| {"this":"is a test"} | would be considered valid input data with the depicted schema }
+      \caption{JSON schema used for input validation}
+    \label{lst:input_schema_in_json_format}
     \end{listing}
 
     \begin{listing}[!h]
@@ -63,7 +104,7 @@
 
     \begin{listing}[!h]
       \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/wf_base/run.rb}
-      \caption{Workflow image run script(2/2)}
+      \caption{Workflow image run script}
     \label{lst:wf_image_run}
     \end{listing}
 

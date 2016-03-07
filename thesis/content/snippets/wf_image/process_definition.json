@@ -1,0 +1,20 @@
+{
+  "activities": [
+    {
+      "id": "c62d82c1-88e1-4042-850d-5aa60202837f",
+      "type": "start",
+      "successors": [
+        "0e798644-8ae8-423c-ba3a-de1e70561602"
+      ],
+      "predecessors": []
+    },
+    {
+      "id": "0e798644-8ae8-423c-ba3a-de1e70561602",
+      "type": "end",
+      "successors": [],
+      "predecessors": [
+        "c62d82c1-88e1-4042-850d-5aa60202837f"
+      ]
+    }
+  ]
+}

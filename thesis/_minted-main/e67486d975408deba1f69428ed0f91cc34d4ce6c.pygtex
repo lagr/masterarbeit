@@ -15,7 +15,7 @@
   \PYG{k}{end}
 
   \PYG{k}{def} \PYG{n+nf}{instanciate}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}id}\PYG{p}{,} \PYG{n}{input\PYGZus{}data}\PYG{p}{)}
-    \PYG{n}{wfi} \PYG{o}{=} \PYG{n+no}{WorkflowEngine}\PYG{o}{::}\PYG{n+no}{WorkflowInstance}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}id}\PYG{p}{,} \PYG{n}{input\PYGZus{}data}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}cloud\PYGZhy{}machine\PYGZsq{}}\PYG{p}{)}
+    \PYG{n}{wfi} \PYG{o}{=} \PYG{n+no}{WorkflowEngine}\PYG{o}{::}\PYG{n+no}{WorkflowInstance}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}id}\PYG{p}{,} \PYG{n}{input\PYGZus{}data}\PYG{p}{)}
     \PYG{k}{begin}
       \PYG{n}{result} \PYG{o}{=} \PYG{n}{wfi}\PYG{o}{.}\PYG{n}{start}
       \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.workflow\PYGZus{}instance.finished\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{workflow\PYGZus{}instance}\PYG{p}{:} \PYG{n}{wfi}\PYG{o}{.}\PYG{n}{instance\PYGZus{}id}\PYG{p}{,} \PYG{l+s+ss}{result}\PYG{p}{:} \PYG{n}{result}

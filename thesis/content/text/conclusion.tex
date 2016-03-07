@@ -1,19 +1,14 @@
 % -*- root: ../../main.tex -*- %
 
-In the thesis at hand, mechanisms and implementation issues that arise from the utilization of Docker and its related tools in the context of \acp{WfMS} were proposed and discussed. Two general application areas for Docker were identified: Docker may influence the architecture and design of \acp{WfMS} as well as provide new ways to distribute and execute workflows.
+In the thesis at hand, mechanisms and implementation possibilities that Docker and its related tools can provide for \acp{WfMS} were proposed and discussed. In particular, the focus lay on figuring out how Docker can support the deployment and execution of workflows in a distributed environment, as well as on which decisions in software architecture and software design of a WFMS are complemented by Docker's functionality.
+\\\underline{Note by the author:} With hindsight, the chosen scope would appear too wide for a master thesis with a 70-pages-limitation, leading to shortcuts at places where more in-depth research documentation would have been warranted. Still, the eventual outcome of the paper, i.e. the ultimate decisions on software architecture and -design are founded on solid examination of the available alternatives.
 
-After introducing the concepts of \ac{WfMS}, Docker and prevalent architecture styles, possibilities for the utilization of Docker for the enactment of workflows were explored. One of them which features the encapsulation of all workflow elements in separate images and a shared data volume, was chosen to be implemented. The attention was then centered on how Docker can be used to create a flexible, failure resilient \ac{WfMS}.
+After introducing the concepts of \acp{WfMS}, Docker and its related tools, as well as prevalent architecture styles, variants for the utilization of Docker to enact workflows were explored. One such variant that features the encapsulation of all workflow elements in separate images as well as a shared data volume for the resulting containers was selected for implementation.
 
-The outcome of these considerations was manifested in the design and implementation of a prototype in which the feasibility of a selection of these mechanisms was demonstrated. In the course of both design and implementation of the prototype, artifacts were created that can be used by succeeding researchers or \ac{WfMS} developers.
+Thereafter, the attention was directed to the question as to how Docker can be used to create a flexible, failure resilient \ac{WfMS}. Given the choice between monolithic architecture, \ac{SOA}, and \ac{MSA}, it was found that the benefits which Docker has to offer can be reaped best in combination with a \ac{MSA} and inter-service communication using \ac{MOM}. Consequently, service boundaries for the micro-services were derived from the \ac{WfMS} reference model by the \ac{WfMC}.
 
-results:
-  - three promising combinations for execution
-  - capability table
-  - WfMC model translated to docker-enabled microservices
-  - statically compiled activity/workflow would be faster
+The outcome of these considerations was manifested in the design and implementation of a prototype. In the course of both design and implementation of the prototype, artifacts were created that can be the starting point for both future research and \ac{WfMS} development.
 
-outlook:
-  - pause + move containers: http://blog.circleci.com/checkpoint-and-restore-docker-container-with-criu/
-  - evaluate supported patterns?  http://www.workflowpatterns.com/documentation/documents/BPM-06-22.pdf
-  - implement resource management
+With regards to the variants that were deemed promising in \ref{sub:promising_combinations_of_characteristics}, follow-up research could be done on how these variants compare to each other as regards performance. Possible performance gains through the use of a compiled language instead of the used language Ruby could also be of interest. Further, the utilization of checkpoint and restore techniques to enable the migration of paused containers across nodes could be investigated \cite{Kim2015Checkpoint,Merker2015How}.
 
+To conclude, it could be demonstrated that Docker and its ecosystem offers useful functionality for both \acp{WfMS} themselves as well as for the enactment of workflows – and is thus to be considered a fitting option for software architects that are charged with building \acp{WfMS} for enterprises that are confronted with the various challenges of the digital revolution.

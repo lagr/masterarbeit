@@ -30,37 +30,6 @@
     In the context of storage, a Docker container can be considered as an image, \ie a set of read-only layers, with a writable layer on top of it -- the \emph{container layer}. Write operations within a container trigger a \ac{CoW} operation which copies the targeted file to the container layer, where the write operation is then performed.
     Besides reducing the amount of space consumed by containers, the \ac{CoW} strategy also reduces the time required to start a container. This is because Docker only has to create the container layer instead of providing a copy of all the files contained in the respective image \cite{Docker2016Docker}. The lifecycle of a container and the set of Docker commands that may influence it are depicted in Figure~\ref{fig:docker_container_lifecycle}.
 
-    \begin{figure}[htbp]
-      \centering
-      \begin{tikzpicture}[scale=0.8,->,>=stealth',shorten >=1pt,auto,node distance=5cm, semithick]
-        \sffamily\fontsize{10}{10}\selectfont
-        \node (cr){};
-        \node (run){};
-        \node[state] (A)     [right =3cm of cr]         {created};
-        \node[state]         (B) [right =2.5cm of A] {running};
-        \node[state]         (C) [below right of=B] {stopped};
-        \node[state]         (D) [above =2cm of B] {paused};
-        \node[state]         (E) [below =2cm of A] {deleted};
-
-        \path (cr) edge [] node {create} (A)
-            (run) edge [out=45,in=150]                     node {run} (B)
-              (A) edge []                              node {start} (B)
-                  edge [bend right]                    node {rm}    (E)
-              (B) edge [out=230, in=200, distance=4cm] node {kill}  (C)
-                  edge [out=250,in=175, distance=2.5cm]node {stop}  (C)
-                  edge [bend left]                     node {pause}  (D)
-                  edge [in=30, out=45, loop]           node {restart}  (D)
-                  edge [out=10, in=90, distance=2cm]   node {\textit{container process exited}}  (C)
-              (C) edge [bend right]                    node {start}  (B)
-                  edge [bend left]                     node {rm}  (E)
-              (D) edge [bend left]                     node {unpause} (B)
-              ;
-      \end{tikzpicture}
-      \caption*{Simplified version. Commands should be understood prefixed with \texttt{docker}. \newline \scriptsize Based on https://docs.docker.com/engine/reference/api/docker\_remote\_api/\#docker-events }
-      \caption[Docker Container Life Cycle]{Docker Container Life Cycle \cite{Docker2016Docker}}
-      \label{fig:docker_container_lifecycle}
-    \end{figure}
-
   % subsection docker_images_and_containers (end)
 
   \subsection{Data volumes} % (fold)
@@ -145,6 +114,7 @@
 
   \subsection{Docker Hub} % (fold)
   \label{sub:docker_hub}
+    Docker Hub is a service that allows to store, browse and distribute Docker images. The service is free of charge for public repositories and offers paid private repositories. Using the Docker Engine client or the web interface, users can search for public images and download them \cite[p.~4]{Boettiger2015Introduction}. GitHub repositories that contain a build context and an appropriate Dockerfile can be linked to a Docker Hub repository to let Docker Hub perform automated image builds if code is updated on these repositories \cite{Docker2016Docker}.
 
   % subsection docker_hub (end)
 
