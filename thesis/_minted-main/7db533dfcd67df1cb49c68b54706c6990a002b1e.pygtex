@@ -1,0 +1,83 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}fileutils\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}json\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}resolv\PYGZsq{}}
+
+\PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}configuration\PYGZsq{}}
+\PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}file\PYGZus{}helper\PYGZsq{}}
+
+\PYG{k}{module} \PYG{n+nn}{Activity}
+  \PYG{k}{class} \PYG{n+nc}{Instance}
+    \PYG{k}{def} \PYG{n+nf}{initialize}
+      \PYG{n+nv+vi}{@activity\PYGZus{}id} \PYG{o}{=} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{activity\PYGZus{}id}
+      \PYG{n+nv+vi}{@activity\PYGZus{}instance\PYGZus{}id} \PYG{o}{=} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{activity\PYGZus{}instance\PYGZus{}id}
+      \PYG{n+nv+vi}{@data} \PYG{o}{=} \PYG{n+no}{JSON}\PYG{o}{.}\PYG{n}{parse} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{read}\PYG{p}{(}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{input\PYGZus{}data}\PYG{p}{)}
+      \PYG{n+nv+vi}{@activity\PYGZus{}info} \PYG{o}{=} \PYG{n+no}{JSON}\PYG{o}{.}\PYG{n}{parse} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{read}\PYG{p}{(}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{info\PYGZus{}data}\PYG{p}{)}
+      \PYG{n+nv+vi}{@activity\PYGZus{}configuration} \PYG{o}{=} \PYG{n+nv+vi}{@activity\PYGZus{}info}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}configuration\PYGZsq{}}\PYG{o}{]}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{start}
+      \PYG{k}{case} \PYG{n+nv+vi}{@activity\PYGZus{}info}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}type\PYGZsq{}}\PYG{o}{]}
+      \PYG{k}{when} \PYG{l+s+s1}{\PYGZsq{}manual\PYGZsq{}}       \PYG{k}{then} \PYG{n}{start\PYGZus{}user\PYGZus{}input}
+      \PYG{k}{when} \PYG{l+s+s1}{\PYGZsq{}container\PYGZsq{}}    \PYG{k}{then} \PYG{n}{start\PYGZus{}container}
+      \PYG{k}{when} \PYG{l+s+s1}{\PYGZsq{}subworkflow\PYGZsq{}}  \PYG{k}{then} \PYG{n}{start\PYGZus{}subworkflow}
+      \PYG{k}{else} \PYG{n}{log\PYGZus{}self\PYGZus{}to\PYGZus{}data}
+      \PYG{k}{end}
+
+      \PYG{n}{write\PYGZus{}output}
+    \PYG{k}{end}
+
+    \PYG{k+kp}{private}
+
+    \PYG{k}{def} \PYG{n+nf}{start\PYGZus{}container}
+      \PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}container\PYGZus{}invocation\PYGZsq{}}
+      \PYG{n}{invocation} \PYG{o}{=} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{ContainerInvocation}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n+nv+vi}{@activity\PYGZus{}configuration}\PYG{p}{)}
+      \PYG{n}{invocation}\PYG{o}{.}\PYG{n}{start}
+      \PYG{n}{log\PYGZus{}result}\PYG{p}{(}\PYG{n}{invocation}\PYG{o}{.}\PYG{n}{result}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{start\PYGZus{}subworkflow}
+      \PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}subworkflow\PYGZus{}invocation\PYGZsq{}}
+      \PYG{n}{invocation} \PYG{o}{=} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{SubworkflowInvocation}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n+nv+vi}{@activity\PYGZus{}info}\PYG{p}{)}
+      \PYG{n}{invocation}\PYG{o}{.}\PYG{n}{start}
+      \PYG{n}{log\PYGZus{}result}\PYG{p}{(}\PYG{n}{invocation}\PYG{o}{.}\PYG{n}{result}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{start\PYGZus{}user\PYGZus{}input}
+      \PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}client\PYGZsq{}}
+      \PYG{n}{worklist\PYGZus{}client} \PYG{o}{=} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{WorklistClient}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n+nv+vi}{@activity\PYGZus{}info}\PYG{p}{)}
+      \PYG{n}{worklist\PYGZus{}client}\PYG{o}{.}\PYG{n}{request\PYGZus{}user\PYGZus{}input}
+      \PYG{n}{log\PYGZus{}result}\PYG{p}{(}\PYG{n}{worklist\PYGZus{}client}\PYG{o}{.}\PYG{n}{result}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{log\PYGZus{}self\PYGZus{}to\PYGZus{}data}
+      \PYG{n}{log\PYGZus{}result}\PYG{p}{(\PYGZob{}}
+        \PYG{l+s+ss}{activity}\PYG{p}{:} \PYG{n+nv+vi}{@activity\PYGZus{}id}\PYG{p}{,}
+        \PYG{l+s+ss}{activity\PYGZus{}instance}\PYG{p}{:} \PYG{n+nv+vi}{@activity\PYGZus{}instance\PYGZus{}id}
+      \PYG{p}{\PYGZcb{})}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{log\PYGZus{}result}\PYG{p}{(}\PYG{n}{result}\PYG{p}{)}
+      \PYG{n+nv+vi}{@data}\PYG{o}{[}\PYG{n+nv+vi}{@activity\PYGZus{}instance\PYGZus{}id}\PYG{o}{]} \PYG{o}{=} \PYG{n}{result}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{write\PYGZus{}output}
+      \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{open}\PYG{p}{(}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{output\PYGZus{}data}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{)} \PYG{k}{do} \PYG{o}{|}\PYG{n}{file}\PYG{o}{|}
+        \PYG{n}{file}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n+nv+vi}{@data}\PYG{o}{.}\PYG{n}{to\PYGZus{}json}\PYG{p}{)}
+      \PYG{k}{end}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+
+
+\PYG{c+c1}{\PYGZsh{} ensure the container is connected to the networks before starting processing}
+\PYG{k}{begin}
+  \PYG{n+no}{Resolv}\PYG{o}{.}\PYG{n}{getaddress} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{container\PYGZus{}name}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{.wfms\PYGZus{}enactment\PYGZdq{}}
+\PYG{k}{rescue}
+  \PYG{n+nb}{sleep} \PYG{l+m+mi}{0}\PYG{o}{.}\PYG{l+m+mi}{1}
+  \PYG{k}{retry}
+\PYG{k}{else}
+  \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Instance}\PYG{o}{.}\PYG{n}{new}\PYG{o}{.}\PYG{n}{start}
+\PYG{k}{end}
+\PYG{n+nb}{exit}
+\end{Verbatim}

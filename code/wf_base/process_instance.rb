@@ -15,7 +15,9 @@ module Workflow
 
     def start
       start_activity_instance = find_or_create_activity_instance(start_activity)
-      Workflow::FileHelper.link_workflow_input_to_start_activity_instance_input(start_activity_instance)
+      Workflow::FileHelper.link_workflow_input_to_start_activity_instance_input(
+        start_activity_instance
+      )
 
       loop do
         break if @queue.compact.empty?

@@ -10,7 +10,7 @@ class WorkflowFullSerializer < ActiveModel::Serializer
     class ActivitySerializer < ActiveModel::Serializer
       attributes :id, :name, :activity_type, :input_schema, :output_schema,
                  :activity_configuration, :representation,
-                 :process_definition_id, :subworkflow_id
+                 :process_definition_id, :subworkflow_id, :participant_role_id
       has_many :outgoing_control_flows, key: :successors
       has_many :incoming_control_flows, key: :predecessors
 

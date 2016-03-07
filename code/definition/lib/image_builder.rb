@@ -70,6 +70,7 @@ module ImageBuilder
             image_name: image_name,
             type: activity.activity_type,
             subworkflow_id: activity.subworkflow_id,
+            participant_role_id: activity.participant_role_id,
             configuration: activity.activity_configuration }.to_json
         }
       }

@@ -44,7 +44,7 @@ module Activity
 
     def start_user_input
       require_relative 'worklist_client'
-      worklist_client = Activity::WorklistClient.new(@activity_configuration)
+      worklist_client = Activity::WorklistClient.new(@activity_info)
       worklist_client.request_user_input
       log_result(worklist_client.result)
     end

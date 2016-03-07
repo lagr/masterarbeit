@@ -1,0 +1,52 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{ApplicationController} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActionController}\PYG{o}{::}\PYG{n+no}{Base}
+  \PYG{n}{protect\PYGZus{}from\PYGZus{}forgery} \PYG{l+s+ss}{with}\PYG{p}{:} \PYG{l+s+ss}{:exception}
+  \PYG{n}{layout} \PYG{k+kp}{false}
+
+  \PYG{k}{def} \PYG{n+nf}{initialize}
+    \PYG{n+no}{ApplicationController}\PYG{o}{.}\PYG{n}{initialize\PYGZus{}rabbitmq}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nc}{self}\PYG{o}{.}\PYG{n+nf}{initialize\PYGZus{}rabbitmq}
+    \PYG{n+nv+vi}{@rabbit\PYGZus{}connection} \PYG{o}{=} \PYG{n+no}{Bunny}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{l+s+ss}{host}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}mom\PYGZus{}1\PYGZsq{}}\PYG{p}{)}
+    \PYG{n+nv+vi}{@rabbit\PYGZus{}connection}\PYG{o}{.}\PYG{n}{start}
+    \PYG{n+nv+vi}{@channel} \PYG{o}{=} \PYG{n+nv+vi}{@rabbit\PYGZus{}connection}\PYG{o}{.}\PYG{n}{create\PYGZus{}channel}
+    \PYG{n+nv+vi}{@topic} \PYG{o}{=} \PYG{n+nv+vi}{@channel}\PYG{o}{.}\PYG{n}{topic}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}wfms\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{durable}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nc}{self}\PYG{o}{.}\PYG{n+nf}{channel}
+    \PYG{n+nv+vi}{@channel}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nc}{self}\PYG{o}{.}\PYG{n+nf}{topic}
+    \PYG{n+nv+vi}{@topic}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{mq\PYGZus{}request}\PYG{p}{(}\PYG{n}{key}\PYG{p}{,} \PYG{n}{response\PYGZus{}key}\PYG{p}{,} \PYG{n}{payload}\PYG{p}{)}
+    \PYG{n}{rq} \PYG{o}{=} \PYG{n}{new\PYGZus{}response\PYGZus{}queue}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}wfms.}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{response\PYGZus{}key}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{key}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{payload}
+    \PYG{n}{get\PYGZus{}response}\PYG{p}{(}\PYG{n}{rq}\PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{new\PYGZus{}response\PYGZus{}queue}\PYG{p}{(}\PYG{n}{key}\PYG{p}{)}
+    \PYG{n}{response\PYGZus{}queue} \PYG{o}{=} \PYG{n+no}{ApplicationController}\PYG{o}{.}\PYG{n}{channel}\PYG{o}{.}\PYG{n}{queue}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{:exclusive} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{true}\PYG{p}{)}
+    \PYG{n}{response\PYGZus{}queue}\PYG{o}{.}\PYG{n}{bind}\PYG{p}{(}\PYG{n+no}{ApplicationController}\PYG{o}{.}\PYG{n}{topic}\PYG{p}{,} \PYG{l+s+ss}{routing\PYGZus{}key}\PYG{p}{:} \PYG{n}{key}\PYG{p}{)}
+    \PYG{n}{response\PYGZus{}queue}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{get\PYGZus{}response}\PYG{p}{(}\PYG{n}{queue}\PYG{p}{,} \PYG{n}{timeout}\PYG{o}{=}\PYG{l+m+mi}{10}\PYG{p}{)}
+    \PYG{n+nv+vi}{@response\PYGZus{}object} \PYG{o}{=} \PYG{k+kp}{nil}
+    \PYG{k}{begin}
+      \PYG{n+no}{Timeout}\PYG{o}{::}\PYG{n}{timeout}\PYG{p}{(}\PYG{n}{timeout}\PYG{p}{)} \PYG{k}{do}
+        \PYG{n}{queue}\PYG{o}{.}\PYG{n}{subscribe}\PYG{p}{(}\PYG{l+s+ss}{:block} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{true}\PYG{p}{)} \PYG{k}{do} \PYG{o}{|}\PYG{n}{delivery\PYGZus{}info}\PYG{p}{,} \PYG{n}{properties}\PYG{p}{,} \PYG{n}{body}\PYG{o}{|}
+          \PYG{n+nv+vi}{@response\PYGZus{}object} \PYG{o}{=} \PYG{n+no}{JSON}\PYG{o}{.}\PYG{n}{parse}\PYG{p}{(}\PYG{n}{body}\PYG{p}{)}
+          \PYG{n}{delivery\PYGZus{}info}\PYG{o}{.}\PYG{n}{consumer}\PYG{o}{.}\PYG{n}{cancel}
+        \PYG{k}{end}
+      \PYG{k}{end}
+    \PYG{k}{ensure}
+      \PYG{n}{queue}\PYG{o}{.}\PYG{n}{delete}
+    \PYG{k}{end}
+    \PYG{n+nv+vi}{@response\PYGZus{}object}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

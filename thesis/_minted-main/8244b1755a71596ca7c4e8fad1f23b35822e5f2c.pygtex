@@ -1,0 +1,35 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{module} \PYG{n+nn}{Worklist}
+  \PYG{k}{class} \PYG{n+nc}{WorklistItemConsumer}
+    \PYG{k+kp}{include} \PYG{n+no}{Hutch}\PYG{o}{::}\PYG{n+no}{Consumer}
+    \PYG{n}{consume} \PYG{l+s+s1}{\PYGZsq{}wfms.worklist\PYGZus{}item.\PYGZsh{}\PYGZsq{}}
+
+    \PYG{k}{def} \PYG{n+nf}{process}\PYG{p}{(}\PYG{n}{message}\PYG{p}{)}
+      \PYG{n}{subject}\PYG{p}{,} \PYG{n}{action}\PYG{p}{,} \PYG{n}{subject\PYGZus{}id} \PYG{o}{=} \PYG{l+s+sr}{/wfms\PYGZbs{}.(\PYGZbs{}w+)\PYGZbs{}.(\PYGZbs{}w+)(?:\PYGZbs{}.([\PYGZbs{}w\PYGZhy{}]+))?/}\PYG{o}{.}\PYG{n}{match}\PYG{p}{(}\PYG{n}{message}\PYG{o}{.}\PYG{n}{routing\PYGZus{}key}\PYG{p}{)}\PYG{o}{.}\PYG{n}{captures}\PYG{o}{.}\PYG{n}{to\PYGZus{}a}\PYG{o}{.}\PYG{n}{compact}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:to\PYGZus{}sym}\PYG{p}{)}
+      \PYG{k}{case} \PYG{n}{action}
+
+      \PYG{k}{when} \PYG{l+s+ss}{:index}
+        \PYG{n}{worklist\PYGZus{}items} \PYG{o}{=} \PYG{n+no}{WorklistItem}\PYG{o}{.}\PYG{n}{where}\PYG{p}{(}\PYG{l+s+ss}{role\PYGZus{}id}\PYG{p}{:} \PYG{n}{message}\PYG{o}{[}\PYG{l+s+ss}{:role\PYGZus{}id}\PYG{o}{]}\PYG{p}{)}
+        \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.indexed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{worklist}\PYG{p}{:} \PYG{n}{worklist\PYGZus{}items}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+
+      \PYG{k}{when} \PYG{l+s+ss}{:show}
+        \PYG{n}{worklist\PYGZus{}item} \PYG{o}{=} \PYG{n+no}{WorklistItem}\PYG{o}{.}\PYG{n}{find}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}\PYG{p}{)}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+        \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.showed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{worklist\PYGZus{}item}\PYG{p}{:} \PYG{n}{worklist\PYGZus{}item}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+
+      \PYG{k}{when} \PYG{l+s+ss}{:create}
+        \PYG{n}{worklist\PYGZus{}item} \PYG{o}{=} \PYG{n+no}{WorklistItem}\PYG{o}{.}\PYG{n}{create}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}item\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+        \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.created\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{worklist\PYGZus{}item}\PYG{p}{:} \PYG{n}{worklist\PYGZus{}item}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+
+      \PYG{k}{when} \PYG{l+s+ss}{:update}
+        \PYG{n}{worklist\PYGZus{}item} \PYG{o}{=} \PYG{n+no}{WorklistItem}\PYG{o}{.}\PYG{n}{find}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}id\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+        \PYG{n}{worklist\PYGZus{}item}\PYG{o}{.}\PYG{n}{update\PYGZus{}attributes}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}item\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+        \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.updated\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{worklist\PYGZus{}item}\PYG{p}{:} \PYG{n}{worklist\PYGZus{}item}\PYG{o}{.}\PYG{n}{reload}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+
+      \PYG{k}{when} \PYG{l+s+ss}{:destroy}
+        \PYG{n}{worklist\PYGZus{}item} \PYG{o}{=} \PYG{n+no}{WorklistItem}\PYG{o}{.}\PYG{n}{find}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}id\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}\PYG{o}{.}\PYG{n}{destroy}
+        \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.destroyed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{worklist\PYGZus{}item}\PYG{p}{:} \PYG{n}{worklist\PYGZus{}item}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+      \PYG{k}{end}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

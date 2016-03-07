@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{module} \PYG{n+nn}{DockerHelper}
+  \PYG{k+kp}{extend} \PYG{n+nb}{self}
+  \PYG{n+no}{DEFAULT\PYGZus{}DOCKER\PYGZus{}PORT} \PYG{o}{=} \PYG{l+m+mi}{2376}
+  \PYG{n+no}{CERT\PYGZus{}PATH} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{ENV}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}SWARM\PYGZus{}MANAGER\PYGZus{}CERT\PYGZus{}PATH\PYGZsq{}}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+
+  \PYG{k}{def} \PYG{n+nf}{tls\PYGZus{}options}
+    \PYG{p}{\PYGZob{}}
+      \PYG{l+s+ss}{client\PYGZus{}cert}\PYG{p}{:} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n+no}{CERT\PYGZus{}PATH}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}cert.pem\PYGZsq{}}\PYG{p}{),}
+      \PYG{l+s+ss}{client\PYGZus{}key}\PYG{p}{:} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n+no}{CERT\PYGZus{}PATH}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}key.pem\PYGZsq{}}\PYG{p}{),}
+      \PYG{l+s+ss}{ssl\PYGZus{}ca\PYGZus{}file}\PYG{p}{:} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n+no}{CERT\PYGZus{}PATH}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}ca.pem\PYGZsq{}}\PYG{p}{),}
+      \PYG{l+s+ss}{scheme}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}https\PYGZsq{}}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{swarm\PYGZus{}manager\PYGZus{}connection}
+    \PYG{n}{swarm\PYGZus{}manager\PYGZus{}url} \PYG{o}{=} \PYG{n+no}{URI}\PYG{o}{.}\PYG{n}{parse}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}tcp://\PYGZsq{}} \PYG{o}{+} \PYG{n+no}{Docker}\PYG{o}{.}\PYG{n}{info}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}ClusterAdvertise\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+    \PYG{n}{swarm\PYGZus{}manager\PYGZus{}url}\PYG{o}{.}\PYG{n}{port} \PYG{o}{=} \PYG{l+m+mi}{3376}
+    \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Connection}\PYG{o}{.}\PYG{n}{new} \PYG{n}{swarm\PYGZus{}manager\PYGZus{}url}\PYG{o}{.}\PYG{n}{to\PYGZus{}s}\PYG{p}{,} \PYG{n}{tls\PYGZus{}options}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{docker\PYGZus{}connection}\PYG{p}{(}\PYG{n}{server}\PYG{p}{)}
+    \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Connection}\PYG{o}{.}\PYG{n}{new} \PYG{l+s+s2}{\PYGZdq{}tcp://}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{server}\PYG{o}{.}\PYG{n}{ip}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{DEFAULT\PYGZus{}DOCKER\PYGZus{}PORT}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{tls\PYGZus{}options}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

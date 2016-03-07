@@ -56,8 +56,7 @@ Finally, rather independent from the previous variants and hence discussed in is
 
 \subsection{Properties and mode of operation of the utilization variants} % (fold)
 \label{sub:mode_of_operation_of_the_aspects}
-\textcolor{red}{  **mehr einleitung hier**}
-  In the following, the concepts are explained in more detail and some variants on them are given. Further, special interrelations among these variants are highlighted.
+  In order to advocate for combination of variants, their characteristics are presented first. In the following, the concepts are explained in more detail and some sub-variants of them are introduced. In the course of this examination, special interrelations among the different characteristics are highlighted.
 
   \subsubsection{Grouped or spread execution} % (fold)
   \label{ssub:grouped_or_spread_execution}
@@ -104,7 +103,6 @@ Finally, rather independent from the previous variants and hence discussed in is
     Containers can be paused and unpaused, \ie all processes within them are suspended. When applied to activity instance or workflow instance containers, this is useful to save processor capacity for suspended activities or workflows until they are resumed.
 
     $*_{*}^{SEPC}$ permits to leverage the already existing communication between a container, the local daemon and the swarm master to communicate the status of workflow instances and activity instances, as changes to their container's status are published on an event stream of the swarm master. These events can be transformed and published via the \ac{MOM}.
-%    **more benefits here**
 
     One possible variation on $G_{1C}^{DV}$ and $G_{SEPC}^{DV}$ would be the inclusion of engine logic in the workflow instance container. While the scheduling of this container and preparations on the targeted node would still be in the responsiblity of the main \acp{WfMS}' workflow engine, the control over the started activity instances would be handed to a smaller, workflow instance specific engine.
     This setup facilitates the management of the required directory structure, since the container that issues the commands has direct access to the data volume -- no information on the upcoming element instances has to be transferred.
@@ -131,8 +129,7 @@ Finally, rather independent from the previous variants and hence discussed in is
     % - data volume mountable via -v option
     % - arbitrary name and location in container
 
-    In its simplest form the working directory could be a simple shared directory which is managed cooperatively by all related containers. Activity instances could then read and write files to that directory.
-    \textcolor{red}{**PRO/CON?**}
+    In its simplest form the working directory could be a simple shared directory which is managed cooperatively by all related containers. Activity instances could then read and write files to that directory. While this reduces the required complexity of the logic, it can lead to problems, too, \eg if activities overwrite each other's output because it bears the same file name.
 
     A more elaborate structure could be imposed on the working directory, too. In order to support the data visibility and data interaction types that are chosen in \ref{ssub:workflow_execution}, the following directory structure could be used, which is depicted in Figure~\ref{fig:dv_dir_structure}.
     Data defined at build time, \ie environment data, workflow data and activity data, could each be stored in a separate subdirectory of the main working directory \texttt{workflow\_relevant\_data}. The directories for workflow data and activity data should have uniquely identifyiable names that can be inferred from the respective workflow element, \eg \texttt{wf\_\$workflow\_id} and \texttt{ac\_\$activity\_id}. Data that is shared among multiple instances of one activity could be stored in a subdirectory \texttt{shared} of the respective activity data directory.
@@ -309,10 +306,9 @@ Finally, rather independent from the previous variants and hence discussed in is
         \draw (E) -- (G) node [left,pos=0.5] {seldom}(A);
     \end{tikzpicture}
     \caption*{\scriptsize Note: `Large' and `small' are rather vague terms. In the end, the suitability is left to be determined based on the size of the data in relation to the achievable transfer rates.}
-    \caption{Choice of the right utilization of Docker for workflow enactment}
+    \caption{Proposed choice of a suitable utilization of Docker for workflow enactment}
     \label{fig:choosing_docker_utilization}
   \end{figure}
-  ** figure broken!
 % subsection promising_combinations_of_characteristics (end)
 
 \subsection{Utilization of third-party images} % (fold)
@@ -335,6 +331,8 @@ Finally, rather independent from the previous variants and hence discussed in is
   \subsubsection{Scheduling abilities of Docker Swarm} % (fold)
     \label{ssub:abilities_of_docker_swarm}
     As described in \ref{sub:docker_swarm}, Docker Swarm offers two kinds of scheduling mechanisms: filters and strategies.
+
+    Docker supports three types of strategies \texttt{spread}, \texttt{binpack}, and \texttt{random}, of which one can be passed to the swarm manager when it is started. \texttt{random}, which assigns containers randomly to nodes, is usually used for debugging purposes only. The \texttt{spread} strategy makes Docker choose the node with the least number of containers. The \texttt{binpack} strategy makes Docker fill up a node with containers prior to assigning to other nodes. The default strategy is \texttt{spread}, which Docker advises for failure risk mitigation as a failing node affects fewer containers if they are distributed across nodes. As this suits the `resilience' objective, it is the chosen strategy for Docker-based \acp{WfMS}.
 
     Filters can be passed on instantiation as an environment variable parameter with the format \texttt{<filter-type>:<key><operator><value>}. The value of \texttt{filter-type} can either be ``constraint'' or ``affinity'' -- the two types of filters supported by Swarm.
     \texttt{<key>} can take the values \emph{node} or \emph{container} (which signals a comparison to the respective name or \ac{ID}), one of the default node tags, or the name of some custom label which can refer to both node labels and container labels. By default, nodes get tagged by Docker with a name, their \ac{ID}, their storage driver, their execution driver, the kernel version they use and the name of their operating system.
@@ -359,8 +357,6 @@ Finally, rather independent from the previous variants and hence discussed in is
     \end{enumerate}
 
     Further, there are some implicit forms of scheduling. First, containers will not be executed on nodes that Docker Swarm considers \emph{unhealthy}, \ie that do not respond or otherwise exhibit faulty behavior. Second, some Docker features imply scheduling rules. If the container requires an exposed port, it will not be scheduled on nodes where this port is already occupied. Mounted volumes of, a shared network stack with or a link to another container imply an affinity to that container, which will prohibit the execution if it is not met.
-
-    ** strategies
   % subsubsection abilities_of_docker_swarm (end)
 
   \subsubsection{Identification of possible scheduling criteria} % (fold)

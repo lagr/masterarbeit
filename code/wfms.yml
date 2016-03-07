@@ -231,3 +231,17 @@ services:
       - "SWARM_MANAGER_IP=192.168.99.101"
       - "SWARM_MANAGER_CERT_PATH=/root/.docker"
       - "constraint:node==cloud-machine"
+
+  event_converter:
+    image: event_converter
+    build:
+      context: ./event_converter
+      args:
+        - "constraint:node==development-machine"
+    restart: on-failure:3
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    environment:
+      - "SWARM_MANAGER_CERT_PATH=/root/.docker"
+      - "constraint:node==development-machine"

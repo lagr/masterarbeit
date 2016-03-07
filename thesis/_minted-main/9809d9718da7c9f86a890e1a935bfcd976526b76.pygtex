@@ -1,0 +1,94 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}hutch\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}securerandom\PYGZsq{}}
+
+\PYG{k}{module} \PYG{n+nn}{Activity}
+  \PYG{k}{class} \PYG{n+nc}{WorklistClient}
+    \PYG{k+kp}{attr\PYGZus{}accessor} \PYG{l+s+ss}{:data}
+
+    \PYG{k}{def} \PYG{n+nf}{initialize}\PYG{p}{(}\PYG{n}{configuration}\PYG{p}{)}
+      \PYG{n+no}{Hutch}\PYG{o}{::}\PYG{n+no}{Config}\PYG{o}{.}\PYG{n}{tap} \PYG{k}{do} \PYG{o}{|}\PYG{n}{c}\PYG{o}{|}
+        \PYG{n}{c}\PYG{o}{.}\PYG{n}{set} \PYG{l+s+ss}{:mq\PYGZus{}host}\PYG{p}{,}     \PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}mom\PYGZus{}1\PYGZsq{}}
+        \PYG{n}{c}\PYG{o}{.}\PYG{n}{set} \PYG{l+s+ss}{:mq\PYGZus{}api\PYGZus{}host}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}mom\PYGZus{}1\PYGZsq{}}
+        \PYG{n}{c}\PYG{o}{.}\PYG{n}{set} \PYG{l+s+ss}{:mq\PYGZus{}exchange}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}wfms\PYGZsq{}}
+      \PYG{k}{end}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{connect}
+
+      \PYG{n+nv+vi}{@rabbit\PYGZus{}connection} \PYG{o}{=} \PYG{n+no}{Bunny}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{l+s+ss}{host}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}mom\PYGZus{}1\PYGZsq{}}\PYG{p}{)}
+      \PYG{n+nv+vi}{@rabbit\PYGZus{}connection}\PYG{o}{.}\PYG{n}{start}
+      \PYG{n+nv+vi}{@channel} \PYG{o}{=} \PYG{n+nv+vi}{@rabbit\PYGZus{}connection}\PYG{o}{.}\PYG{n}{create\PYGZus{}channel}
+      \PYG{n+nv+vi}{@topic} \PYG{o}{=} \PYG{n+nv+vi}{@channel}\PYG{o}{.}\PYG{n}{topic}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}wfms\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{durable}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{)}
+      \PYG{n+nv+vi}{@configuration} \PYG{o}{=} \PYG{n}{configuration}
+      \PYG{n+nv+vi}{@item} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{request\PYGZus{}user\PYGZus{}input}
+      \PYG{n+nv+vi}{@item} \PYG{o}{=} \PYG{n}{create\PYGZus{}worklist\PYGZus{}item}
+      \PYG{n}{wait\PYGZus{}for\PYGZus{}completion}
+      \PYG{n}{delete\PYGZus{}worklist\PYGZus{}item}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{result}
+      \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{data}\PYG{p}{:} \PYG{n+nv+vi}{@item}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}data\PYGZsq{}}\PYG{o}{]} \PYG{p}{\PYGZcb{}}
+    \PYG{k}{end}
+
+    \PYG{k+kp}{private}
+    \PYG{k}{def} \PYG{n+nf}{create\PYGZus{}worklist\PYGZus{}item}
+      \PYG{n+nb}{id} \PYG{o}{=} \PYG{n+no}{SecureRandom}\PYG{o}{.}\PYG{n}{uuid}
+      \PYG{n+nv+vi}{@item} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+        \PYG{n+nb}{id}\PYG{p}{:} \PYG{n+nb}{id}\PYG{p}{,}
+        \PYG{l+s+ss}{worklist\PYGZus{}item}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+          \PYG{n+nb}{id}\PYG{p}{:} \PYG{n+nb}{id}\PYG{p}{,}
+          \PYG{l+s+ss}{role\PYGZus{}id}\PYG{p}{:} \PYG{n+nv+vi}{@configuration}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}participant\PYGZus{}role\PYGZus{}id\PYGZsq{}}\PYG{o}{]}\PYG{p}{,}
+          \PYG{l+s+ss}{config}\PYG{p}{:} \PYG{n+nv+vi}{@configuration}\PYG{p}{,}
+          \PYG{l+s+ss}{activity\PYGZus{}instance\PYGZus{}id}\PYG{p}{:} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{activity\PYGZus{}instance\PYGZus{}id}\PYG{p}{,}
+          \PYG{l+s+ss}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{:} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}
+        \PYG{p}{\PYGZcb{}}
+      \PYG{p}{\PYGZcb{}}
+
+      \PYG{n}{created\PYGZus{}queue} \PYG{o}{=} \PYG{n}{new\PYGZus{}response\PYGZus{}queue}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.created\PYGZdq{}}\PYG{p}{)}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.create\PYGZdq{}}\PYG{p}{,} \PYG{n+nv+vi}{@item}
+      \PYG{n}{get\PYGZus{}response}\PYG{p}{(}\PYG{n}{created\PYGZus{}queue}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{wait\PYGZus{}for\PYGZus{}completion}
+      \PYG{n}{finished\PYGZus{}queue} \PYG{o}{=} \PYG{n}{new\PYGZus{}response\PYGZus{}queue}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.updated\PYGZdq{}}\PYG{p}{)}
+      \PYG{n+nv+vi}{@item} \PYG{o}{=} \PYG{n}{get\PYGZus{}response}\PYG{p}{(}\PYG{n}{finished\PYGZus{}queue}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{delete\PYGZus{}worklist\PYGZus{}item}
+      \PYG{n}{deleted\PYGZus{}queue} \PYG{o}{=} \PYG{n}{new\PYGZus{}response\PYGZus{}queue}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.destroyed\PYGZdq{}}\PYG{p}{)}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.destroy\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n+nv+vi}{@item}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}id\PYGZsq{}}\PYG{o}{]}
+      \PYG{n}{get\PYGZus{}response}\PYG{p}{(}\PYG{n}{deleted\PYGZus{}queue}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{new\PYGZus{}response\PYGZus{}queue}\PYG{p}{(}\PYG{n}{key}\PYG{p}{)}
+      \PYG{n}{response\PYGZus{}queue} \PYG{o}{=} \PYG{n+nv+vi}{@channel}\PYG{o}{.}\PYG{n}{queue}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{:exclusive} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{true}\PYG{p}{)}
+      \PYG{n}{response\PYGZus{}queue}\PYG{o}{.}\PYG{n}{bind}\PYG{p}{(}\PYG{n+nv+vi}{@topic}\PYG{p}{,} \PYG{l+s+ss}{routing\PYGZus{}key}\PYG{p}{:} \PYG{n}{key}\PYG{p}{)}
+      \PYG{n}{response\PYGZus{}queue}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{is\PYGZus{}relevant\PYGZus{}item?}\PYG{p}{(}\PYG{n}{object}\PYG{p}{)}
+      \PYG{o}{!}\PYG{n}{object}\PYG{o}{.}\PYG{n}{nil?} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n+nv+vi}{@item}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}id\PYGZsq{}}\PYG{o}{]} \PYG{o}{==} \PYG{n}{object}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}id\PYGZsq{}}\PYG{o}{]}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{get\PYGZus{}response}\PYG{p}{(}\PYG{n}{queue}\PYG{p}{)}
+      \PYG{n}{response\PYGZus{}value} \PYG{o}{=} \PYG{k+kp}{nil}
+
+      \PYG{k}{begin}
+        \PYG{n}{queue}\PYG{o}{.}\PYG{n}{subscribe}\PYG{p}{(}\PYG{l+s+ss}{:block} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{true}\PYG{p}{)} \PYG{k}{do} \PYG{o}{|}\PYG{n}{delivery\PYGZus{}info}\PYG{p}{,} \PYG{n}{properties}\PYG{p}{,} \PYG{n}{body}\PYG{o}{|}
+          \PYG{n}{response\PYGZus{}object} \PYG{o}{=} \PYG{n+no}{JSON}\PYG{o}{.}\PYG{n}{parse}\PYG{p}{(}\PYG{n}{body}\PYG{p}{)}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}item\PYGZsq{}}\PYG{o}{]}
+          \PYG{k}{if} \PYG{n}{is\PYGZus{}relevant\PYGZus{}item?}\PYG{p}{(}\PYG{n}{response\PYGZus{}object}\PYG{p}{)}
+            \PYG{n}{response\PYGZus{}value} \PYG{o}{=} \PYG{n}{response\PYGZus{}object}
+            \PYG{n}{delivery\PYGZus{}info}\PYG{o}{.}\PYG{n}{consumer}\PYG{o}{.}\PYG{n}{cancel}
+          \PYG{k}{end}
+        \PYG{k}{end}
+      \PYG{k}{ensure}
+        \PYG{n}{queue}\PYG{o}{.}\PYG{n}{delete}
+      \PYG{k}{end}
+
+      \PYG{n}{response\PYGZus{}value}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

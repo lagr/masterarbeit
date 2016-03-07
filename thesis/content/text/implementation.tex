@@ -147,16 +147,9 @@
     \label{sub:developer_gateway}
     The developer gateway does not require any database, as it merely forwards requests to the services via the \ac{MOM}. Hence, it consists of a single Docker container that contains a \ac{RoR} application. To be reachable by the users, this container needs to expose the port that the \ac{RoR} application is listening on to the host's network.
 
+    The \ac{RoR} application serves a web interface that offers the means for the inspection of the available nodes, the management of users and roles, and for the modeling of workflows. It does so by sending requests to the application's controllers and presenting the outcome.
+    In order to request data from the micro-services, a controller class creates a response queue to which it subscribes. Then it publishes a message on an appropriate queue, in which it declares the need for a specific information. One of the services instances that are subscribed to this queue receives the request and publishes the answer to the respective response queue. The result is then returned to the frontend, where it can be displayed.
 
-    \subsubsection{Frontend} % (fold)
-      \label{ssub:frontend}
-        ** - forms for data manipulation
-        - visual workflow modeling
-        - infrastructure:
-          - display available nodes + ip
-          - display installed images and running containers
-
-      % subsubsection frontend (end)
     % subsection developer_gateway (end)
 
   \subsection{User gateway} % (fold)

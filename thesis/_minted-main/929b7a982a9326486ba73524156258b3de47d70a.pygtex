@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{ControlFlow} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveRecord}\PYG{o}{::}\PYG{n+no}{Base}
+  \PYG{n}{belongs\PYGZus{}to} \PYG{l+s+ss}{:successor}\PYG{p}{,}    \PYG{l+s+ss}{class\PYGZus{}name}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}Activity\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{inverse\PYGZus{}of}\PYG{p}{:} \PYG{l+s+ss}{:incoming\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{validate}\PYG{p}{:} \PYG{k+kp}{true}
+  \PYG{n}{belongs\PYGZus{}to} \PYG{l+s+ss}{:predecessor}\PYG{p}{,}  \PYG{l+s+ss}{class\PYGZus{}name}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}Activity\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{inverse\PYGZus{}of}\PYG{p}{:} \PYG{l+s+ss}{:outgoing\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{validate}\PYG{p}{:} \PYG{k+kp}{true}
+  \PYG{n}{belongs\PYGZus{}to} \PYG{l+s+ss}{:process\PYGZus{}definition}
+
+  \PYG{n}{default\PYGZus{}scope} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZob{}} \PYG{n}{order}\PYG{p}{(}\PYG{l+s+ss}{:created\PYGZus{}at}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+
+  \PYG{n}{validates\PYGZus{}presence\PYGZus{}of} \PYG{l+s+ss}{:successor}\PYG{p}{,} \PYG{l+s+ss}{:predecessor}
+\PYG{k}{end}
+\end{Verbatim}

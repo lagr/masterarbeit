@@ -1,175 +1,164 @@
 % -*- root: ../../main.tex -*- %
 
-\subsection{Functional objectives} % (fold)
-  \label{sub:functional_objectives}
+In the following, expectations towards the functionality of the resulting \ac{WfMS} are established in a structured manner. These functionalities are grouped by the component groups of a \ac{WfMS}, which are described in \ref{sub:system_components}.
+% Besides the rigid functional objectives there are also less tangible ones. Although they are harder to quantify, they are likely to have an impact on the value of the produced artifacts. The functionalities that are worked out in this c lose value if using them is cumbersome and they are avoided in consequence. Concerning the scope of this thesis, the functionalities that should be facilitated are
+% \begin{itemize}[nosep]
+%   \item the modeling of workflows;
+%   \item the export and distribution of workflows; and
+%   \item the selection of images from Docker Hub for the use in a workflow;
+% \end{itemize}
+The resulting objectives and the requirements that need to be met in order to fulfill them are summarized in Table~\ref{tab:objectives_and_requirements}.
 
-  In the following, expectations towards the functionality of the resulting \ac{WfMS} are established in a structured manner. These functionalities are grouped by the component groups of a \ac{WfMS}, which are described in \ref{sub:system_components}. The resulting objectives and the requirements that need to be met in order to fulfill them are summarized in Table~\ref{tab:objectives_and_requirements}.
+\begin{table}[p!]
+  \centering
+  \begin{tabular}[t]{l l}
+    \toprule
+    \textbf{Objective} & \textbf{~~~~Requirements} \\
+    \midrule
 
-  ** TODO: abgleichen
+    \multicolumn{2}{l}{\textbf{Ability to alter components} }\\
+      & \textbullet ~ Components can be altered on a running system \\ [1.2ex]
 
-  \begin{table}[p!]
-    \centering
-    \begin{tabular}[t]{l l}
-      \toprule
-      \textbf{Objective} & \textbf{~~~~Requirements} \\
-      \midrule
+    \multicolumn{2}{l}{\textbf{Resilience in case of failures} }\\
+      & \textbullet ~ Non-failed components continue to provide their functionality \\
+      & \textbullet ~ Failed components are restarted \\ [1.2ex]
 
-      \multicolumn{2}{l}{\textbf{Ability to alter components} }\\
-        & \textbullet ~ Components can be altered on a running system \\ [1.2ex]
+    \multicolumn{2}{l}{\textbf{Dynamic addition of enactment servers} }\\
+      & \textbullet ~ Suitable servers are discovered \\
+      & \textbullet ~ User can add servers during execution time \\ [1.2ex]
 
-      \multicolumn{2}{l}{\textbf{Resilience in case of failures} }\\
-        & \textbullet ~ Non-failed components continue to provide their functionality \\
-        & \textbullet ~ Failed components are restarted \\ [1.2ex]
+    \multicolumn{2}{l}{\textbf{Third-party containers as workflow components} }\\
+      & \textbullet ~ \ac{GUI} for browsing Docker Hub images exists \\
+      & \textbullet ~ Modeling \ac{GUI} has a ``container'' element \\
+      & \textbullet ~ User can specify start parameters and commands \\ [1.2ex]
 
-      \multicolumn{2}{l}{\textbf{Dynamic addition of enactment servers} }\\
-        & \textbullet ~ Suitable servers are discovered \\
-        & \textbullet ~ User can add servers during execution time \\ [1.2ex]
+    \multicolumn{2}{l}{\textbf{Resource usage management ** not implemented**} }\\
+      & \textbullet ~ User can prioritize/demote activities and workflows \\
+      & \textbullet ~ \ac{WfMS} enforces respective resource usage \\ [1.2ex]
 
-      \multicolumn{2}{l}{\textbf{Third-party containers as workflow components} }\\
-        & \textbullet ~ \ac{GUI} for browsing Docker Hub images exists \\
-        & \textbullet ~ Modeling \ac{GUI} has a ``container'' element \\
-        & \textbullet ~ User can specify start parameters and commands \\ [1.2ex]
+    \multicolumn{2}{l}{\textbf{Property-based scheduling of containers} }\\
+      & \textbullet ~ Properties of servers can be described \\
+      & \textbullet ~ Workflows and activities can require server properties \\
+      & \textbullet ~ Containers are run on suitable servers \\ [1.2ex]
 
-      \multicolumn{2}{l}{\textbf{Resource usage management ** not implemented**} }\\
-        & \textbullet ~ User can prioritize/demote activities and workflows \\
-        & \textbullet ~ \ac{WfMS} enforces respective resource usage \\ [1.2ex]
-
-      \multicolumn{2}{l}{\textbf{Property-based scheduling of containers} }\\
-        & \textbullet ~ Properties of servers can be described \\
-        & \textbullet ~ Workflows and activities can require server properties \\
-        & \textbullet ~ Containers are run on suitable servers \\ [1.2ex]
-
-      \multicolumn{2}{l}{\textbf{Reduction of administrative work} }\\
-        & \textbullet ~ Added servers are configured automatically \\
-        & \textbullet ~ All execution related containers are started automatically \\
-        & \textbullet ~ Saved/updated workflows and activities are deployed automatically \\
-      \bottomrule
-    \end{tabular}
-    \caption{Objectives and their respective requirements}
-    \label{tab:data_objectives_and_requirements}
-  \end{table}
+    \multicolumn{2}{l}{\textbf{Reduction of administrative work} }\\
+      & \textbullet ~ Added servers are configured automatically \\
+      & \textbullet ~ All execution related containers are started automatically \\
+      & \textbullet ~ Saved/updated workflows and activities are deployed automatically \\
+    \bottomrule
+  \end{tabular}
+  \caption{Objectives and their respective requirements}
+  \label{tab:data_objectives_and_requirements}
+\end{table}
 
 
-  \begin{table}[!htbp]
-    \centering
-    \begin{tabular}{l l l}
-      \toprule
-      Data Source & Criterion Type & Examples \\
-      \midrule
-      Docker
-        & Node tags
-          & Name \\
-          && \ac{ID} \\
-          && Storage driver \\
-          && Execution driver \\
-          && Kernel version  \\
-          && Operating system \\ [1.2ex]
-        & Qualitative node properties
-          & Geographic location\\
-          && Custom grouping membership\\
-          && Ownership status\\ [1.2ex]
-        & Quantitative node properties
-          & Available memory \\
-          && Available storage \\
-          && Network speed \\ [1.2ex]
-        & Execution environment
-          & Existing containers \\
-          && Existing images \\
-          && Currently running containers \\ [1.4ex]
-      WfMS
-        & Live data
-          & Enactment status \\
-          & Activity input/output data \\
-          && Workflow input/output data \\ [1.2ex]
-        & Activity/workflow properties
-          & Expected data-intensity \\
-          && Compliance requirements\\
-          &&\\ [1.2ex]
-      \bottomrule
-    \end{tabular}
-    \label{tab:scheduling_criteria}
-    \caption{Scheduling Criteria}
-  \end{table}
+\begin{table}[!htbp]
+  \centering
+  \begin{tabular}{l l l}
+    \toprule
+    Data Source & Criterion Type & Examples \\
+    \midrule
+    Docker
+      & Node tags
+        & Name \\
+        && \ac{ID} \\
+        && Storage driver \\
+        && Execution driver \\
+        && Kernel version  \\
+        && Operating system \\ [1.2ex]
+      & Qualitative node properties
+        & Geographic location\\
+        && Custom grouping membership\\
+        && Ownership status\\ [1.2ex]
+      & Quantitative node properties
+        & Available memory \\
+        && Available storage \\
+        && Network speed \\ [1.2ex]
+      & Execution environment
+        & Existing containers \\
+        && Existing images \\
+        && Currently running containers \\ [1.4ex]
+    WfMS
+      & Live data
+        & Enactment status \\
+        & Activity input/output data \\
+        && Workflow input/output data \\ [1.2ex]
+      & Activity/workflow properties
+        & Expected data-intensity \\
+        && Compliance requirements\\
+        &&\\ [1.2ex]
+    \bottomrule
+  \end{tabular}
+  \label{tab:scheduling_criteria}
+  \caption{Scheduling Criteria}
+\end{table}
 
-  \begin{table}[p!]
-    \centering
-    \renewcommand{\arraystretch}{1.75}
-    \begin{tabular}[t]{>{\raggedleft}p{0.3\customtabwidth} p{0.7\customtabwidth}}
-      \toprule
-      \textbf{Requirements} & \textbf{~~~~Feature} \\
-      \midrule
+\begin{table}[p!]
+  \centering
+  \renewcommand{\arraystretch}{1.75}
+  \begin{tabular}[t]{>{\raggedleft}p{0.3\customtabwidth} p{0.7\customtabwidth}}
+    \toprule
+    \textbf{Requirements} & \textbf{~~~~Feature} \\
+    \midrule
 
-      \textbf{Support of data visibility}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item Activity Data
-            \item Sub-workflow Activity Data
-            \item Multiple Instance Activity Data
-            \item Workflow Instance Data
-            \item Workflow Data
-            \item Environment Data
-          \end{tabitemize} \end{minipage} \\
+    \textbf{Support of data visibility}
+      & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+          \item Activity Data
+          \item Sub-workflow Activity Data
+          \item Multiple Instance Activity Data
+          \item Workflow Instance Data
+          \item Workflow Data
+          \item Environment Data
+        \end{tabitemize} \end{minipage} \\
 
-      \textbf{Support of data interactions}
-        & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
-            \item Activity $\rightarrow$ activity
-            \item Sub-workflow activity $\rightarrow$ sub-workflow
-            \item Sub-workflow $\rightarrow$ sub-workflow activity
-            \item Workflow instance $\rightarrow$ workflow instance
-          \end{tabitemize} \end{minipage} \\
+    \textbf{Support of data interactions}
+      & \begin{minipage}[t]{\linewidth} \begin{tabitemize}
+          \item Activity $\rightarrow$ activity
+          \item Sub-workflow activity $\rightarrow$ sub-workflow
+          \item Sub-workflow $\rightarrow$ sub-workflow activity
+          \item Workflow instance $\rightarrow$ workflow instance
+        \end{tabitemize} \end{minipage} \\
 
-      \bottomrule
-    \end{tabular}
-    \caption{Required data visibility and data interaction types}
-    \label{tab:required_data_visibility_and_data_interaction_types}
-  \end{table}
+    \bottomrule
+  \end{tabular}
+  \caption{Required data visibility and data interaction types}
+  \label{tab:required_data_visibility_and_data_interaction_types}
+\end{table}
 
-  \subsubsection{Infrastructure and Infrastructure Management} % (fold)
-    \label{ssub:infrastructure_management}
+\subsection*{Infrastructure and Infrastructure Management} % (fold)
+  \label{ssub:infrastructure_management}
 
-      As the IT environment of an organization changes over time, %claim?
-      the \ac{WfMS} should be structured in a way that allows the adaption to such changes with the least possible system downtime. \\
-      Further, it should be possible to add servers to the system during execution time, which then should be usable with a minimum of manual configuration.
+    As the IT environment of an organization changes over time, %claim?
+    the \ac{WfMS} should be structured in a way that allows the adaption to such changes with the least possible system downtime. \\
+    Further, it should be possible to add servers to the system during execution time, which then should be usable with a minimum of manual configuration.
 
-      If an organization is unable to perform its business processes, it is likely to suffer from financial losses. Any failure of a business critical \ac{WfMS} can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be resilient towards failures, \ie provide as much functionality as possible if a part of it fails and try to recover autonomously. This requires well separated modules.
+    If an organization is unable to perform its business processes, it is likely to suffer from financial losses. Any failure of a business critical \ac{WfMS} can thus cause severe problems for an organization. The \ac{WfMS} developed in this thesis should thus be resilient towards failures, \ie provide as much functionality as possible if a part of it fails and try to recover autonomously. This requires well separated modules.
 
-    % subsubsection infrastructure_management (end)
+  % subsection infrastructure_management (end)
 
-  \subsubsection{Workflow Modeling} % (fold)
-    \label{ssub:workflow_modeling}
+\subsection*{Workflow Modeling} % (fold)
+  \label{ssub:workflow_modeling}
 
-      One benefit of Docker containers is, that full application stacks can be bundled with all their dependencies and pre-configured regarding their invocation \cite[p.~82]{Bernstein2014Containers}. The result can be considered as a black box that provides some specific functionality and that could be used without further configuration. In combination with the facilitated sharing of images through repositories, this provides a foundation for modular reuse and combination \cite[p.~6]{Boettiger2015Introduction}.
-      In order to reap this advantage, \ac{WfMS} should enable modeling developers to incorporate the invocation of third party images from within their workflows. This includes the specification of parameters, with which the image should be run.
+    One benefit of Docker containers is, that full application stacks can be bundled with all their dependencies and pre-configured regarding their invocation \cite[p.~82]{Bernstein2014Containers}. The result can be considered as a black box that provides some specific functionality and that could be used without further configuration. In combination with the facilitated sharing of images through repositories, this provides a foundation for modular reuse and combination \cite[p.~6]{Boettiger2015Introduction}.
+    In order to reap this advantage, \ac{WfMS} should enable modeling developers to incorporate the invocation of third party images from within their workflows. This includes the specification of parameters, with which the image should be run.
 
-      In case that an execution node is working to full capacity, a means should be provided to support the swift finalization of time-critical tasks before those that are not, \eg the temperature analysis of a cold storage with sensitive goods which is prioritized over the automated reorder of tacks for the office. The modeling environment should thus enable the user to put restrictions on the resource usage of specific activities in order to prioritize or demote them.
+    In case that an execution node is working to full capacity, a means should be provided to support the swift finalization of time-critical tasks before those that are not, \eg the temperature analysis of a cold storage with sensitive goods which is prioritized over the automated reorder of tacks for the office. The modeling environment should thus enable the user to put restrictions on the resource usage of specific activities in order to prioritize or demote them.
 
-    % subsubsection workflow_modeling (end)
+  % subsection workflow_modeling (end)
 
-  \subsubsection{Workflow Distribution} % (fold)
-    \label{ssub:workflow_distribution}
-      In the course of a \ac{WfMS}'s life cycle, many workflows are modeled and many activities are created, and both are likely to be updated occasionally. In order to reduce administrative work, workflows and their activities should be distributed to their correct execution servers after these events in an automated way.
-  % - produced workflows should be as portable/environment independent as possible
+\subsection*{Workflow Distribution} % (fold)
+  \label{ssub:workflow_distribution}
+    In the course of a \ac{WfMS}'s life cycle, many workflows are modeled and many activities are created, and both are likely to be updated occasionally. In order to reduce administrative work, workflows and their activities should be distributed to their correct execution servers after these events in an automated way.
+% - produced workflows should be as portable/environment independent as possible
 
-    % subsubsection workflow_distribution (end)
+  % subsection workflow_distribution (end)
 
-  \subsubsection{Workflow Execution} % (fold)
-    \label{ssub:workflow_execution}
-        All containers that are related to the execution of workflows should be started by the \ac{WfMS} without user interaction.
+\subsection*{Workflow Execution} % (fold)
+  \label{ssub:workflow_execution}
+      All containers that are related to the execution of workflows should be started by the \ac{WfMS} without user interaction.
 
-        The IT infrastructure in an organization may be heterogeneous in terms of machine capabilities and environment, \eg the amount of memory that is available or the geographic location of the machine. These factors may be of interest when it comes to performance objectives or legal regulations. The scheduling of workflows or activities to nodes for execution should thus be possible based on a structured description of said properties.
+      The IT infrastructure in an organization may be heterogeneous in terms of machine capabilities and environment, \eg the amount of memory that is available or the geographic location of the machine. These factors may be of interest when it comes to performance objectives or legal regulations. The scheduling of workflows or activities to nodes for execution should thus be possible based on a structured description of said properties.
 
-        In \ref{sub:workflow_data}, various forms of data visibility and interaction were presented. Russel et al. examined the capabilities of various workflow engines with regards to these characteristics \cite{Russell2005Workflow}. The should support at least those forms of data visibility and interaction that are common among existing solutions. As a rough estimation for this, each capability shall be deemed as required if a majority of solutions examined in that study supports it. The resulting capabilities are presented in Table~\ref{tab:required_data_visibility_and_data_interaction_types}.
+      In \ref{sub:workflow_data}, various forms of data visibility and interaction were presented. Russel et al. examined the capabilities of various workflow engines with regards to these characteristics \cite{Russell2005Workflow}. The should support at least those forms of data visibility and interaction that are common among existing solutions. As a rough estimation for this, each capability shall be deemed as required if a majority of solutions examined in that study supports it. The resulting capabilities are presented in Table~\ref{tab:required_data_visibility_and_data_interaction_types}.
 
-    % subsubsection workflow_execution (end)
-% subsection functional_objectives (end)
-
-\subsection{Intangible objectives} % (fold)
-  \label{sub:intangible_objectives}
-  ** extra section notwendig?
-
-  Besides the rigid functional objectives there are also less palpable ones. Although they are harder to quantify, they are likely to have an impact on the value of the produced artifacts. The functionalities that were worked out in \ref{sub:functional_objectives} lose value if using them is cumbersome and they are avoided in consequence. Concerning the scope of this thesis, the functionalities that should be facilitated are
-  \begin{itemize}[nosep]
-    \item the modeling of workflows;
-    \item the export and distribution of workflows;
-    \item the selection of images from Docker Hub for the use in a workflow;
-  \end{itemize}
-  % subsection intangible_objectives (end)
+  % subsection workflow_execution (end)

@@ -45,7 +45,7 @@
 
   \PYG{k}{def} \PYG{n+nf}{start\PYGZus{}user\PYGZus{}input}
     \PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}client\PYGZsq{}}
-    \PYG{n}{worklist\PYGZus{}client} \PYG{o}{=} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{WorklistClient}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n+nv+vi}{@activity\PYGZus{}configuration}\PYG{p}{)}
+    \PYG{n}{worklist\PYGZus{}client} \PYG{o}{=} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{WorklistClient}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n+nv+vi}{@activity\PYGZus{}info}\PYG{p}{)}
     \PYG{n}{worklist\PYGZus{}client}\PYG{o}{.}\PYG{n}{request\PYGZus{}user\PYGZus{}input}
     \PYG{n}{log\PYGZus{}result}\PYG{p}{(}\PYG{n}{worklist\PYGZus{}client}\PYG{o}{.}\PYG{n}{result}\PYG{p}{)}
   \PYG{k}{end}

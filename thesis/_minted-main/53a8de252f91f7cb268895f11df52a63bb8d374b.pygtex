@@ -1,0 +1,28 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{module} \PYG{n+nn}{WorkflowEngine}
+  \PYG{k}{module} \PYG{n+nn}{DockerHelper}
+    \PYG{k+kp}{extend} \PYG{n+nb}{self}
+    \PYG{n+no}{SHORT\PYGZus{}TYPES} \PYG{o}{=} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{activity}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}ac\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{workflow}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}wf\PYGZsq{}} \PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{freeze}
+
+    \PYG{n}{cert\PYGZus{}path} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{ENV}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}SWARM\PYGZus{}MANAGER\PYGZus{}CERT\PYGZus{}PATH\PYGZsq{}}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+    \PYG{n}{swarm\PYGZus{}manager\PYGZus{}url} \PYG{o}{=} \PYG{n+no}{URI}\PYG{o}{.}\PYG{n}{parse}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}tcp://\PYGZsq{}} \PYG{o}{+} \PYG{n+no}{Docker}\PYG{o}{.}\PYG{n}{info}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}ClusterAdvertise\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+    \PYG{n}{swarm\PYGZus{}manager\PYGZus{}url}\PYG{o}{.}\PYG{n}{port} \PYG{o}{=} \PYG{l+m+mi}{3376}
+
+    \PYG{n+no}{Docker}\PYG{o}{.}\PYG{n}{url} \PYG{o}{=} \PYG{n}{swarm\PYGZus{}manager\PYGZus{}url}\PYG{o}{.}\PYG{n}{to\PYGZus{}s}
+    \PYG{n+no}{Docker}\PYG{o}{.}\PYG{n}{options} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+      \PYG{l+s+ss}{client\PYGZus{}cert}\PYG{p}{:} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{cert\PYGZus{}path}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}cert.pem\PYGZsq{}}\PYG{p}{),}
+      \PYG{l+s+ss}{client\PYGZus{}key}\PYG{p}{:} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{cert\PYGZus{}path}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}key.pem\PYGZsq{}}\PYG{p}{),}
+      \PYG{l+s+ss}{ssl\PYGZus{}ca\PYGZus{}file}\PYG{p}{:} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{n}{cert\PYGZus{}path}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}ca.pem\PYGZsq{}}\PYG{p}{),}
+      \PYG{l+s+ss}{scheme}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}https\PYGZsq{}}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k}{def} \PYG{n+nf}{image\PYGZus{}name}\PYG{p}{(}\PYG{l+s+ss}{type}\PYG{p}{:,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}base\PYGZsq{}}\PYG{p}{)}
+      \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{SHORT\PYGZus{}TYPES}\PYG{o}{[}\PYG{n}{type}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nb}{id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{local\PYGZus{}conenction}
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Connection}\PYG{o}{.}\PYG{n}{new} \PYG{l+s+s2}{\PYGZdq{}unix:///var/run/docker.sock\PYGZdq{}}\PYG{p}{,} \PYG{p}{\PYGZob{}\PYGZcb{}}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

@@ -1,0 +1,47 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}hutch\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}docker\PYGZhy{}api\PYGZsq{}}
+
+\PYG{n+no}{Hutch}\PYG{o}{::}\PYG{n+no}{Config}\PYG{o}{.}\PYG{n}{load\PYGZus{}from\PYGZus{}file} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{expand\PYGZus{}path}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}config.yml\PYGZsq{}}\PYG{p}{)}
+\PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{connect}
+
+\PYG{n+no}{Dir}\PYG{o}{.}\PYG{n}{glob}\PYG{p}{(}\PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}./\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZob{}lib,consumers\PYGZcb{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}**\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}*.rb\PYGZsq{}}\PYG{p}{),} \PYG{o}{\PYGZam{}}\PYG{n+nb}{method}\PYG{p}{(}\PYG{l+s+ss}{:require}\PYG{p}{))}
+
+\PYG{k}{module} \PYG{n+nn}{WorkflowEngine}
+  \PYG{k+kp}{extend} \PYG{n+nb}{self}
+
+  \PYG{k}{def} \PYG{n+nf}{match\PYGZus{}message}\PYG{p}{(}\PYG{n}{message}\PYG{p}{)}
+    \PYG{l+s+sr}{/wfms\PYGZbs{}.(\PYGZbs{}w+)\PYGZbs{}.(\PYGZbs{}w+)(?:\PYGZbs{}.([\PYGZbs{}w\PYGZhy{}]+))?/}\PYG{o}{.}\PYG{n}{match}\PYG{p}{(}\PYG{n}{message}\PYG{o}{.}\PYG{n}{routing\PYGZus{}key}\PYG{p}{)}\PYG{o}{.}\PYG{n}{captures}\PYG{o}{.}\PYG{n}{to\PYGZus{}a}\PYG{o}{.}\PYG{n}{compact}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:to\PYGZus{}sym}\PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{instanciate}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}id}\PYG{p}{,} \PYG{n}{input\PYGZus{}data}\PYG{p}{)}
+    \PYG{n}{wfi} \PYG{o}{=} \PYG{n+no}{WorkflowEngine}\PYG{o}{::}\PYG{n+no}{WorkflowInstance}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}id}\PYG{p}{,} \PYG{n}{input\PYGZus{}data}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}cloud\PYGZhy{}machine\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{begin}
+      \PYG{n}{result} \PYG{o}{=} \PYG{n}{wfi}\PYG{o}{.}\PYG{n}{start}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.workflow\PYGZus{}instance.finished\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{workflow\PYGZus{}instance}\PYG{p}{:} \PYG{n}{wfi}\PYG{o}{.}\PYG{n}{instance\PYGZus{}id}\PYG{p}{,} \PYG{l+s+ss}{result}\PYG{p}{:} \PYG{n}{result}
+    \PYG{k}{rescue} \PYG{n+no}{Exception} \PYG{o}{=\PYGZgt{}} \PYG{n}{e}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.workflow\PYGZus{}instance.failed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{workflow\PYGZus{}instance}\PYG{p}{:} \PYG{n}{wfi}\PYG{o}{.}\PYG{n}{instance\PYGZus{}id}\PYG{p}{,} \PYG{l+s+ss}{exception}\PYG{p}{:} \PYG{n}{e}
+    \PYG{k}{end}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{pause}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{)}
+    \PYG{n}{workflow\PYGZus{}instance\PYGZus{}containers}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{)}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:pause}\PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{unpause}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{)}
+    \PYG{n}{workflow\PYGZus{}instance\PYGZus{}containers}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{)}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:unpause}\PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{terminate}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{)}
+    \PYG{n}{workflow\PYGZus{}instance\PYGZus{}containers}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{)}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:kill}\PYG{p}{)}
+    \PYG{n}{workflow\PYGZus{}instance\PYGZus{}containers}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{)}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:delete}\PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k+kp}{private}
+
+  \PYG{k}{def} \PYG{n+nf}{workflow\PYGZus{}instance\PYGZus{}containers}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{)}
+    \PYG{n}{filters} \PYG{o}{=}  \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{label}\PYG{p}{:} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}workflow\PYGZus{}instance=wfi\PYGZus{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]} \PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{to\PYGZus{}json}
+    \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Container}\PYG{o}{.}\PYG{n}{all}\PYG{p}{(\PYGZob{}}\PYG{l+s+ss}{all}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+s+ss}{filters}\PYG{p}{:} \PYG{n}{filters}\PYG{p}{\PYGZcb{})}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

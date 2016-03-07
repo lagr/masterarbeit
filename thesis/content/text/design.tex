@@ -75,17 +75,15 @@
 
 \subsection{Components} % (fold)
   \label{sub:components}
-  As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that it is crucial to determine suitable service boundaries. Some sources advise to first build a monolithic application and then analyze the result to single out services that can be extracted ** sources **. In case of \acp{WfMS}, the identification of system components by the \ac{WfMC} for their reference model can be interpreted as such an analysis. Based on those components further micro-services for the prototype are identified.
-
-  As presented in \ref{sub:system_components}, the \ac{WfMC} identified the following components \cite[p.~13]{Hollingsworth1995Wfmc}:
+  As noted in \ref{par:micro_services_architecture}, one of the downsides of \ac{MSA} is that it is crucial to determine suitable service boundaries. In case of \acp{WfMS}, the identification of system components by the \ac{WfMC} for their reference model is interpreted as such an analysis for this thesis. Based on those components further micro-services for the prototype are identified. As presented in \ref{sub:system_components}, the \ac{WfMC} identified the following components \cite[p.~13]{Hollingsworth1995Wfmc}:
     \begin{itemize}[nosep]
       \item Software Components
         \begin{itemize}[nosep]
           \item Definition Tool %
-          \item Organization Modeling Tool %
           \item User Interface
           \item Workflow Engine(s)
           \item Worklists Handler %
+          \item (Administration and Monitoring Tool) %
         \end{itemize}
       \item Data Components
         \begin{itemize}[nosep]
@@ -99,7 +97,9 @@
 
     ** draw communication diagram here **
 
-  According to the \ac{WfMC}'s description, the definition tool, the worklists handler and the organization modeling tool each utilize one data component respectively. Combined with its respective datastore, each of them can be considered an autonomous micro-service since each would be able to provide its functionality without any further service.
+  The administration and monitoring component can be subdivided in an organization management service and an infrastructure management service, as these functionalities are completely independent from each other.
+
+  According to the \ac{WfMC}'s description, the definition tool, the worklists handler and the organization management tool each utilize one data component respectively. Combined with its respective datastore, each of them can be considered an autonomous micro-service since each would be able to provide its functionality without any further service.
 
   The workflow control data component can be considered to be part of a workflow engine service.
   Depending on the chosen mode for the enactment, workflow relevant data is either managed by the workflow engine service, too, or accounted for by a data volume ($*_{*}^{DV}$). Only in the $*_{*}^{SER}$ variant, a dedicated service for its management and storage is needed.
@@ -170,7 +170,12 @@
 
   \subsubsection{Workflow Engine Service} % (fold)
     \label{subs:workflow_engine_service}
-    In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WfMC} in terms of functionality, which is described in \ref{par:workflow_engine}. The way to utilize Docker for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has, though. ** like, how
+    In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WfMC} in terms of functionality, which is described in \ref{par:workflow_engine}.
+
+
+    ****
+
+    The way to utilize Docker for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has, though. ** like, how
 
     - choose participants
     - add to execution networks

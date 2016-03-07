@@ -1,0 +1,56 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{Activity} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveRecord}\PYG{o}{::}\PYG{n+no}{Base}
+  \PYG{n+no}{ACTIVITY\PYGZus{}TYPES} \PYG{o}{=} \PYG{o}{[}\PYG{l+s+ss}{:start}\PYG{p}{,} \PYG{l+s+ss}{:end}\PYG{p}{,} \PYG{l+s+ss}{:orsplit}\PYG{p}{,} \PYG{l+s+ss}{:orjoin}\PYG{p}{,} \PYG{l+s+ss}{:andsplit}\PYG{p}{,} \PYG{l+s+ss}{:andjoin}\PYG{p}{,} \PYG{l+s+ss}{:manual}\PYG{p}{,} \PYG{l+s+ss}{:container}\PYG{p}{,} \PYG{l+s+ss}{:subworkflow}\PYG{o}{].}\PYG{n}{freeze}
+  \PYG{n+no}{ELEMENTS\PYGZus{}WITH\PYGZus{}ONE\PYGZus{}SUCCESSOR}   \PYG{o}{=} \PYG{o}{[}\PYG{l+s+ss}{:start}\PYG{p}{,} \PYG{l+s+ss}{:andjoin}\PYG{p}{,} \PYG{l+s+ss}{:orjoin}\PYG{p}{,} \PYG{l+s+ss}{:manual}\PYG{p}{,} \PYG{l+s+ss}{:container}\PYG{p}{,} \PYG{l+s+ss}{:subworkflow}\PYG{o}{].}\PYG{n}{freeze}
+  \PYG{n+no}{ELEMENTS\PYGZus{}WITHOUT\PYGZus{}SUCCESSOR}    \PYG{o}{=} \PYG{o}{[}\PYG{l+s+ss}{:end}\PYG{o}{].}\PYG{n}{freeze}
+  \PYG{n+no}{ELEMENTS\PYGZus{}WITH\PYGZus{}ONE\PYGZus{}PREDECESSOR} \PYG{o}{=} \PYG{o}{[}\PYG{l+s+ss}{:end}\PYG{p}{,} \PYG{l+s+ss}{:manual}\PYG{p}{,} \PYG{l+s+ss}{:container}\PYG{p}{,} \PYG{l+s+ss}{:subworkflow}\PYG{o}{].}\PYG{n}{freeze}
+  \PYG{n+no}{ELEMENTS\PYGZus{}WITHOUT\PYGZus{}PREDECESSOR}  \PYG{o}{=} \PYG{o}{[}\PYG{l+s+ss}{:start}\PYG{o}{].}\PYG{n}{freeze}
+
+  \PYG{n}{belongs\PYGZus{}to} \PYG{l+s+ss}{:process\PYGZus{}definition}
+  \PYG{n}{belongs\PYGZus{}to} \PYG{l+s+ss}{:subworkflow}\PYG{p}{,} \PYG{l+s+ss}{class\PYGZus{}name}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}Workflow\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{foreign\PYGZus{}key}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}subworkflow\PYGZus{}id\PYGZsq{}}
+  \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:assignments}
+
+  \PYG{n}{store\PYGZus{}accessor} \PYG{l+s+ss}{:input\PYGZus{}schema}
+  \PYG{n}{store\PYGZus{}accessor} \PYG{l+s+ss}{:output\PYGZus{}schema}
+  \PYG{n}{store\PYGZus{}accessor} \PYG{l+s+ss}{:activity\PYGZus{}configuration}
+  \PYG{n}{store\PYGZus{}accessor} \PYG{l+s+ss}{:representation}
+
+  \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:incoming\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{foreign\PYGZus{}key}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}successor\PYGZus{}id\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{class\PYGZus{}name}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}ControlFlow\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{dependent}\PYG{p}{:} \PYG{l+s+ss}{:destroy}
+  \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:outgoing\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{foreign\PYGZus{}key}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}predecessor\PYGZus{}id\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{class\PYGZus{}name}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}ControlFlow\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{dependent}\PYG{p}{:} \PYG{l+s+ss}{:destroy}
+
+  \PYG{n}{validates} \PYG{l+s+ss}{:activity\PYGZus{}type}\PYG{p}{,} \PYG{l+s+ss}{inclusion}\PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{k}{in}\PYG{p}{:} \PYG{n+no}{ACTIVITY\PYGZus{}TYPES}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:to\PYGZus{}s}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+  \PYG{n}{validates\PYGZus{}length\PYGZus{}of} \PYG{l+s+ss}{:incoming\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{maximum}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{k}{if}\PYG{p}{:} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZob{}} \PYG{n}{activity\PYGZus{}type}\PYG{o}{.}\PYG{n}{in?} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{ELEMENTS\PYGZus{}WITH\PYGZus{}ONE\PYGZus{}PREDECESSOR} \PYG{p}{\PYGZcb{}}
+  \PYG{n}{validates\PYGZus{}length\PYGZus{}of} \PYG{l+s+ss}{:outgoing\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{maximum}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{k}{if}\PYG{p}{:} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZob{}} \PYG{n}{activity\PYGZus{}type}\PYG{o}{.}\PYG{n}{in?} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{ELEMENTS\PYGZus{}WITH\PYGZus{}ONE\PYGZus{}SUCCESSOR}   \PYG{p}{\PYGZcb{}}
+  \PYG{n}{validates\PYGZus{}length\PYGZus{}of} \PYG{l+s+ss}{:incoming\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{is}\PYG{p}{:} \PYG{l+m+mi}{0}\PYG{p}{,}      \PYG{k}{if}\PYG{p}{:} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZob{}} \PYG{n}{activity\PYGZus{}type}\PYG{o}{.}\PYG{n}{in?} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{ELEMENTS\PYGZus{}WITHOUT\PYGZus{}PREDECESSOR}  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{validates\PYGZus{}length\PYGZus{}of} \PYG{l+s+ss}{:outgoing\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{is}\PYG{p}{:} \PYG{l+m+mi}{0}\PYG{p}{,}      \PYG{k}{if}\PYG{p}{:} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZob{}} \PYG{n}{activity\PYGZus{}type}\PYG{o}{.}\PYG{n}{in?} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{ELEMENTS\PYGZus{}WITHOUT\PYGZus{}SUCCESSOR}    \PYG{p}{\PYGZcb{}}
+
+  \PYG{n+no}{ACTIVITY\PYGZus{}TYPES}\PYG{o}{.}\PYG{n}{each} \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{type}\PYG{o}{|} \PYG{n}{scope} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{type}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}activities\PYGZdq{}}\PYG{p}{,} \PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{p}{\PYGZob{}} \PYG{n}{where}\PYG{p}{(}\PYG{l+s+ss}{activity\PYGZus{}type}\PYG{p}{:} \PYG{n}{type}\PYG{p}{)} \PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZcb{}}
+
+  \PYG{k}{def} \PYG{n+nf}{required\PYGZus{}images}
+    \PYG{k}{case} \PYG{n}{activity\PYGZus{}type}
+    \PYG{k}{when} \PYG{l+s+s1}{\PYGZsq{}container\PYGZsq{}}
+      \PYG{n}{image\PYGZus{}with\PYGZus{}version}
+    \PYG{k}{when} \PYG{l+s+s1}{\PYGZsq{}subworkflow\PYGZsq{}}
+      \PYG{n}{subworkflow}\PYG{o}{.}\PYG{n}{required\PYGZus{}images}
+    \PYG{k}{else} \PYG{k+kp}{nil}
+    \PYG{k}{end}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{child\PYGZus{}elements}
+    \PYG{k}{return} \PYG{k+kp}{nil} \PYG{k}{unless} \PYG{n}{activity\PYGZus{}type} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}subworkflow\PYGZsq{}}
+    \PYG{o}{[}\PYG{n}{subworkflow}\PYG{o}{]} \PYG{o}{+} \PYG{n}{subworkflow}\PYG{o}{.}\PYG{n}{child\PYGZus{}elements}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{image\PYGZus{}with\PYGZus{}version}
+    \PYG{p}{\PYGZob{}} \PYG{n+nb}{name}\PYG{p}{:} \PYG{n}{activity\PYGZus{}configuration}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}image\PYGZsq{}}\PYG{o}{]}\PYG{p}{,} \PYG{l+s+ss}{version}\PYG{p}{:} \PYG{n}{activity\PYGZus{}configuration}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}image\PYGZus{}version\PYGZsq{}}\PYG{o}{]} \PYG{p}{\PYGZcb{}}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{predecessors}
+    \PYG{n}{incoming\PYGZus{}control\PYGZus{}flows}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:predecessor}\PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{successors}
+    \PYG{n}{outgoing\PYGZus{}control\PYGZus{}flows}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:succesor}\PYG{p}{)}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

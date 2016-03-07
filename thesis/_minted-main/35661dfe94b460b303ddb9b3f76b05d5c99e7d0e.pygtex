@@ -1,0 +1,28 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{WorklistItemsController} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ApplicationController}
+  \PYG{k}{def} \PYG{n+nf}{index}
+    \PYG{n+nv+vi}{@worklist\PYGZus{}items} \PYG{o}{=} \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}item.index\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}item.indexed\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{role\PYGZus{}id}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:role\PYGZus{}id}\PYG{o}{]}
+    \PYG{n+nv+vi}{@worklist\PYGZus{}items} \PYG{o}{=} \PYG{n+nv+vi}{@worklist\PYGZus{}items}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}worklist\PYGZsq{}}\PYG{o}{]}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{edit}
+    \PYG{n+nv+vi}{@worklist\PYGZus{}item} \PYG{o}{=} \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}item.show\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}item.showed\PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{update}
+    \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}item.update\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}worklist\PYGZus{}item.updated\PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}\PYG{p}{,} \PYG{l+s+ss}{worklist\PYGZus{}item}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:worklist\PYGZus{}item}\PYG{o}{]}
+    \PYG{n}{redirect\PYGZus{}to} \PYG{n}{worklist\PYGZus{}items\PYGZus{}url}\PYG{p}{,} \PYG{l+s+ss}{notice}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}Worklist item was successfully submitted.\PYGZsq{}}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{destroy}
+    \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}wfms.user.destroy\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}wfms.user.destroyed\PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}
+    \PYG{n}{redirect\PYGZus{}to} \PYG{n}{worklist\PYGZus{}items\PYGZus{}url}\PYG{p}{,} \PYG{l+s+ss}{notice}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}Worklist item was successfully destroyed.\PYGZsq{}}
+  \PYG{k}{end}
+
+  \PYG{k+kp}{private}
+
+  \PYG{k}{def} \PYG{n+nf}{worklist\PYGZus{}item\PYGZus{}params}
+    \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:worklist\PYGZus{}item}\PYG{o}{]}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

@@ -1,0 +1,70 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{module} \PYG{n+nn}{Workflow}
+  \PYG{k}{module} \PYG{n+nn}{FileHelper}
+    \PYG{k+kp}{extend} \PYG{n+nb}{self}
+
+    \PYG{k}{def} \PYG{n+nf}{workflow\PYGZus{}input\PYGZus{}dir}
+      \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workdir}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/input\PYGZdq{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{workflow\PYGZus{}output\PYGZus{}dir}
+      \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workdir}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/output\PYGZdq{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{activity\PYGZus{}instance\PYGZus{}workdir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workdir}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{instance}\PYG{o}{.}\PYG{n}{id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{activity\PYGZus{}instance\PYGZus{}input\PYGZus{}dir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{activity\PYGZus{}instance\PYGZus{}workdir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/input\PYGZdq{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{activity\PYGZus{}instance\PYGZus{}output\PYGZus{}dir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{activity\PYGZus{}instance\PYGZus{}workdir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/output\PYGZdq{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{create\PYGZus{}activity\PYGZus{}instance\PYGZus{}workdir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{n+no}{FileUtils}\PYG{o}{.}\PYG{n}{mkdir} \PYG{n}{activity\PYGZus{}instance\PYGZus{}workdir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{n+no}{FileUtils}\PYG{o}{.}\PYG{n}{mkdir} \PYG{n}{activity\PYGZus{}instance\PYGZus{}output\PYGZus{}dir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{ensure\PYGZus{}workflow\PYGZus{}input\PYGZus{}dir}
+      \PYG{n+no}{FileUtils}\PYG{o}{.}\PYG{n}{mkdir\PYGZus{}p}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}input\PYGZus{}dir}\PYG{p}{)} \PYG{k}{unless} \PYG{n+no}{Dir}\PYG{o}{.}\PYG{n}{exist?}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}input\PYGZus{}dir}\PYG{p}{)}
+      \PYG{k}{if} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{exist?} \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{input\PYGZus{}data}
+        \PYG{n+no}{FileUtils}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{(}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{input\PYGZus{}data}\PYG{p}{,} \PYG{n}{workflow\PYGZus{}input\PYGZus{}dir}\PYG{p}{)}
+      \PYG{k}{end}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{link\PYGZus{}workflow\PYGZus{}input\PYGZus{}to\PYGZus{}start\PYGZus{}activity\PYGZus{}instance\PYGZus{}input}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{n+no}{FileUtils}\PYG{o}{.}\PYG{n}{ln\PYGZus{}s}\PYG{p}{(}
+        \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workdir}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/input/\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{activity\PYGZus{}instance\PYGZus{}input\PYGZus{}dir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+      \PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{link\PYGZus{}instance\PYGZus{}output\PYGZus{}to\PYGZus{}successor\PYGZus{}input}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{,} \PYG{n}{successor\PYGZus{}instance}\PYG{p}{)}
+      \PYG{k}{return} \PYG{k}{unless} \PYG{n+no}{Dir}\PYG{o}{.}\PYG{n}{exist?}\PYG{p}{(}\PYG{n}{activity\PYGZus{}instance\PYGZus{}output\PYGZus{}dir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{))}
+      \PYG{k}{return} \PYG{k}{if} \PYG{n+no}{Dir}\PYG{o}{.}\PYG{n}{exist?}\PYG{p}{(}\PYG{n}{activity\PYGZus{}instance\PYGZus{}input\PYGZus{}dir}\PYG{p}{(}\PYG{n}{successor\PYGZus{}instance}\PYG{p}{))}
+
+      \PYG{n+no}{FileUtils}\PYG{o}{.}\PYG{n}{ln\PYGZus{}s}\PYG{p}{(}\PYG{n}{activity\PYGZus{}instance\PYGZus{}output\PYGZus{}dir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{),} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{activity\PYGZus{}instance\PYGZus{}input\PYGZus{}dir}\PYG{p}{(}\PYG{n}{successor\PYGZus{}instance}\PYG{p}{)}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+
+      \PYG{c+c1}{\PYGZsh{}successor\PYGZus{}predecessors = successor\PYGZus{}instance.activity.predecessors}
+      \PYG{c+c1}{\PYGZsh{} if successor\PYGZus{}predecessors.nil? || successor\PYGZus{}predecessors.length \PYGZlt{} 2}
+      \PYG{c+c1}{\PYGZsh{}   FileUtils.ln\PYGZus{}s(activity\PYGZus{}instance\PYGZus{}output\PYGZus{}dir(instance), \PYGZdq{}\PYGZsh{}\PYGZob{}activity\PYGZus{}instance\PYGZus{}input\PYGZus{}dir(successor\PYGZus{}instance)\PYGZcb{}\PYGZdq{})}
+      \PYG{c+c1}{\PYGZsh{} else}
+      \PYG{c+c1}{\PYGZsh{}   successor\PYGZus{}input\PYGZus{}dir = create\PYGZus{}activity\PYGZus{}instance\PYGZus{}input\PYGZus{}dir(instance)}
+      \PYG{c+c1}{\PYGZsh{}   FileUtils.ln\PYGZus{}s(activity\PYGZus{}instance\PYGZus{}output\PYGZus{}dir(instance), \PYGZdq{}\PYGZsh{}\PYGZob{}successor\PYGZus{}input\PYGZus{}dir\PYGZcb{}/\PYGZsh{}\PYGZob{}instance.id\PYGZcb{}\PYGZdq{})}
+      \PYG{c+c1}{\PYGZsh{} end}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{link\PYGZus{}instance\PYGZus{}output\PYGZus{}to\PYGZus{}workflow\PYGZus{}output}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{n}{output\PYGZus{}dir} \PYG{o}{=} \PYG{n}{activity\PYGZus{}instance\PYGZus{}output\PYGZus{}dir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{k}{if} \PYG{n+no}{Dir}\PYG{o}{.}\PYG{n}{exist?}\PYG{p}{(}\PYG{n}{output\PYGZus{}dir}\PYG{p}{)}
+        \PYG{n+no}{FileUtils}\PYG{o}{.}\PYG{n}{ln\PYGZus{}s}\PYG{p}{(}\PYG{n}{output\PYGZus{}dir}\PYG{p}{,} \PYG{n}{workflow\PYGZus{}output\PYGZus{}dir}\PYG{p}{)}
+      \PYG{k}{else}
+        \PYG{n+no}{FileUtils}\PYG{o}{.}\PYG{n}{mkdir}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}output\PYGZus{}dir}\PYG{p}{)} \PYG{k}{unless} \PYG{n+no}{Dir}\PYG{o}{.}\PYG{n}{exist?}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}output\PYGZus{}dir}\PYG{p}{)}
+      \PYG{k}{end}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

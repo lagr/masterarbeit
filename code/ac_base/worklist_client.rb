@@ -33,12 +33,16 @@ module Activity
 
     private
     def create_worklist_item
+      id = SecureRandom.uuid
       @item = {
-        id: SecureRandom.uuid,
-        user_id: @configuration['user_id'],
-        config: @configuration,
-        activity_instance_id: Activity::Configuration.activity_instance_id,
-        workflow_instance_id: Activity::Configuration.workflow_instance_id
+        id: id,
+        worklist_item: {
+          id: id,
+          role_id: @configuration['participant_role_id'],
+          config: @configuration,
+          activity_instance_id: Activity::Configuration.activity_instance_id,
+          workflow_instance_id: Activity::Configuration.workflow_instance_id
+        }
       }
 
       created_queue = new_response_queue("wfms.worklist_item.created")

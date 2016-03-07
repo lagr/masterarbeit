@@ -7,7 +7,6 @@
 \usepackage{wiwwuabkuerzungen}
 \usepackage{etoolbox}
 \usepackage{blindtext}
-\usepackage{minted}
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage[numbers]{natbib}
@@ -22,9 +21,11 @@
 \usetikzlibrary{trees, arrows,shadows, positioning,chains,fit,shapes,calc, math, automata}
 \usepackage{pgf-umlsd}
 
+\usepackage[newfloat]{minted}
 %\renewcommand\listoflistingscaption{List of source codes}
-\renewcommand\listingscaption{Lis.}
-\captionsetup[listing]{labelformat=simple}
+% \renewcommand\listingscaption{List.}
+% \renewcommand{\cftlistingpresnum}{List.~}
+% \captionsetup[listing]{labelformat=simple}
 
 \usepackage{adjustbox}
 
@@ -108,6 +109,8 @@
   \setlength{\customtabwidth}{\textwidth}
   \addtolength{\customtabwidth}{-\tabcolsep}
   \captionsetup{justification=centering}
+% \captionsetup[listing]{labelformat=simple}
+
 
   \EinfTitelseite
 
@@ -175,7 +178,7 @@
       \input{content/text/objectives}
       % section determination_of_objectives (end)
 
-    \section{Docker in workflow execution} % (fold)
+    \section{Docker in workflow enactment} % (fold)
       \label{sec:docker_for_wf_execution}
       \input{content/text/docker_for_wf_execution}
       % section docker_for_wf_execution (end)
@@ -221,75 +224,11 @@
   %\Literaturverzeichnisse{Literatur}
 
   \appendix
+  \input{content/text/appendix}
 
-  \renewcommand\listingscaption{Lis.}
-  \captionsetup[listing]{labelformat=simple}
+  % \renewcommand\listingscaption{List.}
+  % \captionsetup[listing]{labelformat=simple}
 
-  \AnhChapter{Architecture and design}
-
-    \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=0.65\textwidth]{content/images/class_diagram_organization-crop.pdf}
-      \caption*{\scriptsize Note: Controllers omitted for the sake of simplicity. User and Role both have a controller with the respective pluralized name plus a `Controller' suffix.}
-      \caption{UML Class Diagram for the Organization Service}
-      \label{fig:uml_class_diagram_organization}
-    \end{figure}
-
-  \AnhChapter{Implementation}
-
-  % \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/ac_base/run.rb}
-
-  \begin{listing}[htbp]
-    \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{json}{./content/snippets/process_definition.json}
-    \caption{Exported process definition in JSON format}
-    \label{lst:exported_process_definition_in_json_format}
-  \end{listing}
-
-  \begin{listing}[htbp]
-    \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{Dockerfile}{../code/ac_base/Dockerfile}
-    \caption{Dockerfile for activity base image}
-    \label{lst:dockerfile_for_activity_base_image}
-  \end{listing}
-
-  \begin{listing}[htbp]
-    \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{Dockerfile}{../code/wf_base/Dockerfile}
-    \caption{Dockerfile for workflow base image}
-    \label{lst:dockerfile_for_workflow_base_image}
-  \end{listing}
-
-  \begin{listing}[!htbp]
-    \inputminted[lastline=50,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (1/5)}
-    \label{lst:the_whole_docker_compose_file_1}
-  \end{listing}
-
-  \begin{listing}[!htbp]
-    \inputminted[firstline=51,lastline=98,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (2/5)}
-    \label{lst:the_whole_docker_compose_file_2}
-  \end{listing}
-
-  \begin{listing}[!htbp]
-    \inputminted[firstline=99,lastline=145,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (3/5)}
-    \label{lst:the_whole_docker_compose_file_3}
-  \end{listing}
-
-  \begin{listing}[!htbp]
-    \inputminted[firstline=146,lastline=197,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (4/5)}
-    \label{lst:the_whole_docker_compose_file_4}
-  \end{listing}
-
-  \begin{listing}[!htbp]
-    \inputminted[firstline=198,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
-    \caption{The whole Docker Compose file of the \ac{WfMS} (5/5)}
-    \label{lst:the_whole_docker_compose_file_5}
-  \end{listing}
-
-  ** fix listings
-
-  \AnhSection{Unterkapitel}
 
 \AbschlErklaerung{03-08-2016}
 \end{document}

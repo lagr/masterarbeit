@@ -1,7 +1,7 @@
 class WorklistItemsController < ApplicationController
   def index
-    @worklist_items = mq_request 'worklist_item.index', 'worklist_item.indexed', user_id: params[:user_id]
-    @worklist_items = @worklist_items['worklist_items']
+    @worklist_items = mq_request 'worklist_item.index', 'worklist_item.indexed', role_id: params[:role_id]
+    @worklist_items = @worklist_items['worklist']
   end
 
   def edit

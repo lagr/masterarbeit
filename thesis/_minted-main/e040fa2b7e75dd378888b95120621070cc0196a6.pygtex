@@ -1,0 +1,47 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{module} \PYG{n+nn}{ImageManager}
+  \PYG{k+kp}{extend} \PYG{n+nb}{self}
+  \PYG{n+no}{SHORT\PYGZus{}TYPES} \PYG{o}{=} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{activity}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}ac\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{workflow}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}wf\PYGZsq{}} \PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{freeze}
+
+  \PYG{k}{def} \PYG{n+nf}{export\PYGZus{}workflow}\PYG{p}{(}\PYG{n}{workflow}\PYG{p}{)}
+    \PYG{n}{elements} \PYG{o}{=} \PYG{o}{[}\PYG{n}{workflow}\PYG{o}{]} \PYG{o}{+} \PYG{n}{workflow}\PYG{o}{.}\PYG{n}{child\PYGZus{}elements}\PYG{o}{.}\PYG{n}{flatten}\PYG{o}{.}\PYG{n}{compact}
+    \PYG{n}{publish\PYGZus{}third\PYGZus{}party\PYGZus{}images}\PYG{p}{(}\PYG{n}{workflow}\PYG{o}{.}\PYG{n}{required\PYGZus{}images}\PYG{o}{.}\PYG{n}{flatten}\PYG{o}{.}\PYG{n}{compact}\PYG{p}{)}
+
+    \PYG{n}{images} \PYG{o}{=} \PYG{n+no}{ImageBuilder}\PYG{o}{.}\PYG{n}{build\PYGZus{}images}\PYG{p}{(}\PYG{n}{elements}\PYG{p}{)}
+    \PYG{n}{images}\PYG{o}{[}\PYG{l+s+ss}{:successful}\PYG{o}{].}\PYG{n}{each} \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{built\PYGZus{}image}\PYG{o}{|} \PYG{n}{publish\PYGZus{}image}\PYG{p}{(}\PYG{n}{built\PYGZus{}image}\PYG{o}{[}\PYG{l+s+ss}{:subject}\PYG{o}{]}\PYG{p}{,} \PYG{n}{built\PYGZus{}image}\PYG{o}{[}\PYG{l+s+ss}{:image}\PYG{o}{]}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+    \PYG{n}{images}\PYG{o}{[}\PYG{l+s+ss}{:failed}\PYG{o}{].}\PYG{n}{empty?}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{image\PYGZus{}name}\PYG{p}{(}\PYG{l+s+ss}{type}\PYG{p}{:,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}base\PYGZsq{}}\PYG{p}{)}
+    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{SHORT\PYGZus{}TYPES}\PYG{o}{[}\PYG{n}{type}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nb}{id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+  \PYG{k}{end}
+
+  \PYG{k+kp}{private}
+
+  \PYG{k}{def} \PYG{n+nf}{publish\PYGZus{}third\PYGZus{}party\PYGZus{}images}\PYG{p}{(}\PYG{n}{images}\PYG{p}{)}
+    \PYG{n}{images}\PYG{o}{.}\PYG{n}{each} \PYG{k}{do} \PYG{o}{|}\PYG{n}{img}\PYG{o}{|}
+      \PYG{n}{image} \PYG{o}{=} \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Image}\PYG{o}{.}\PYG{n}{create} \PYG{l+s+ss}{fromImage}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{img}\PYG{o}{[}\PYG{l+s+ss}{:name}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{img}\PYG{o}{[}\PYG{l+s+ss}{:version}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+      \PYG{n}{repo\PYGZus{}tag} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{registry\PYGZus{}address}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{img}\PYG{o}{[}\PYG{l+s+ss}{:name}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+      \PYG{n}{image}\PYG{o}{.}\PYG{n}{tag}\PYG{p}{(}\PYG{l+s+ss}{repo}\PYG{p}{:} \PYG{n}{repo\PYGZus{}tag}\PYG{p}{,} \PYG{l+s+ss}{tag}\PYG{p}{:} \PYG{n}{img}\PYG{o}{[}\PYG{l+s+ss}{:version}\PYG{o}{]}\PYG{p}{,} \PYG{l+s+ss}{force}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{)}
+      \PYG{n}{image}\PYG{o}{.}\PYG{n}{push}\PYG{p}{(}\PYG{k+kp}{nil}\PYG{p}{,} \PYG{l+s+ss}{repo\PYGZus{}tag}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{repo\PYGZus{}tag}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{img}\PYG{o}{[}\PYG{l+s+ss}{:version}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)} \PYG{p}{\PYGZob{}}\PYG{o}{|}\PYG{n}{status}\PYG{o}{|} \PYG{n+nb}{puts} \PYG{n}{status} \PYG{p}{\PYGZcb{}}
+    \PYG{k}{end}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{registry\PYGZus{}address}
+    \PYG{n}{cluster\PYGZus{}store} \PYG{o}{=} \PYG{n+no}{URI}\PYG{o}{.}\PYG{n}{parse}\PYG{p}{(}\PYG{n+no}{Docker}\PYG{o}{.}\PYG{n}{info}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}ClusterStore\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+    \PYG{n}{cluster\PYGZus{}store}\PYG{o}{.}\PYG{n}{port} \PYG{o}{=} \PYG{l+m+mi}{5000}
+    \PYG{n}{cluster\PYGZus{}store}\PYG{o}{.}\PYG{n}{select}\PYG{p}{(}\PYG{l+s+ss}{:host}\PYG{p}{,}\PYG{l+s+ss}{:port}\PYG{p}{)}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}:\PYGZsq{}}\PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{publish\PYGZus{}image}\PYG{p}{(}\PYG{n}{subject}\PYG{p}{,} \PYG{n}{image}\PYG{p}{)}
+    \PYG{n}{type} \PYG{o}{=} \PYG{n}{subject}\PYG{o}{.}\PYG{n}{class}\PYG{o}{.}\PYG{n}{name}\PYG{o}{.}\PYG{n}{underscore}\PYG{o}{.}\PYG{n}{to\PYGZus{}sym}
+    \PYG{n}{image\PYGZus{}name} \PYG{o}{=} \PYG{n}{image\PYGZus{}name}\PYG{p}{(}\PYG{l+s+ss}{type}\PYG{p}{:} \PYG{n}{type}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{subject}\PYG{o}{.}\PYG{n}{id}\PYG{p}{)}
+    \PYG{n}{repo\PYGZus{}tag} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{registry\PYGZus{}address}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{type}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+
+    \PYG{n}{image}\PYG{o}{.}\PYG{n}{tag}\PYG{p}{(}\PYG{l+s+ss}{repo}\PYG{p}{:} \PYG{n}{repo\PYGZus{}tag}\PYG{p}{,} \PYG{l+s+ss}{tag}\PYG{p}{:} \PYG{n}{image\PYGZus{}name}\PYG{p}{,} \PYG{l+s+ss}{force}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{)}
+    \PYG{n}{image}\PYG{o}{.}\PYG{n}{push}\PYG{p}{(}\PYG{k+kp}{nil}\PYG{p}{,} \PYG{l+s+ss}{repo\PYGZus{}tag}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{repo\PYGZus{}tag}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{image\PYGZus{}name}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)} \PYG{p}{\PYGZob{}}\PYG{o}{|}\PYG{n}{status}\PYG{o}{|} \PYG{n+nb}{puts} \PYG{n}{status} \PYG{p}{\PYGZcb{}}
+
+    \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s1}{\PYGZsq{}wfms.image.pushed\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{image}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{repo\PYGZus{}tag}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{image\PYGZus{}name}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}hutch\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}docker\PYGZhy{}api\PYGZsq{}}
+
+\PYG{k}{begin}
+  \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Event}\PYG{o}{.}\PYG{n}{stream} \PYG{k}{do} \PYG{o}{|}\PYG{n}{event}\PYG{o}{|}
+    \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.docker.}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{event}\PYG{o}{.}\PYG{n}{status}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{event}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+  \PYG{k}{end}
+\PYG{k}{rescue}
+  \PYG{k}{retry}
+\PYG{k}{end}
+\end{Verbatim}

@@ -9,5 +9,5 @@ WORKDIR /app
 ADD ["Gemfile", "Gemfile.lock", "/app/"]
 RUN bundle install
 ADD . /app
-RUN chmod +x /app/start
-ENTRYPOINT /app/start
+RUN chmod +x /app/event_converter.rb
+ENTRYPOINT ruby /app/event_converter.rb

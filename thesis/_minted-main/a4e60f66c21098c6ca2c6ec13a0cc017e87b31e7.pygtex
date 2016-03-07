@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{ServerConsumer}
+  \PYG{k+kp}{include} \PYG{n+no}{Hutch}\PYG{o}{::}\PYG{n+no}{Consumer}
+  \PYG{n}{consume} \PYG{l+s+s1}{\PYGZsq{}wfms.server.\PYGZsh{}\PYGZsq{}}
+
+  \PYG{k}{def} \PYG{n+nf}{process}\PYG{p}{(}\PYG{n}{message}\PYG{p}{)}
+    \PYG{n}{subject}\PYG{p}{,} \PYG{n}{action}\PYG{p}{,} \PYG{n}{subject\PYGZus{}id} \PYG{o}{=} \PYG{l+s+sr}{/wfms\PYGZbs{}.(\PYGZbs{}w+)\PYGZbs{}.(\PYGZbs{}w+)(?:\PYGZbs{}.([\PYGZbs{}w\PYGZhy{}]+))?/}\PYG{o}{.}\PYG{n}{match}\PYG{p}{(}\PYG{n}{message}\PYG{o}{.}\PYG{n}{routing\PYGZus{}key}\PYG{p}{)}\PYG{o}{.}\PYG{n}{captures}\PYG{o}{.}\PYG{n}{to\PYGZus{}a}\PYG{o}{.}\PYG{n}{compact}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:to\PYGZus{}sym}\PYG{p}{)}
+    \PYG{k}{case} \PYG{n}{action}
+
+    \PYG{k}{when} \PYG{l+s+ss}{:index}
+      \PYG{n}{servers} \PYG{o}{=} \PYG{n+no}{EnvironmentManager}\PYG{o}{.}\PYG{n}{all\PYGZus{}servers}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.server.indexed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{servers}\PYG{p}{:} \PYG{n}{servers}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+
+    \PYG{k}{when} \PYG{l+s+ss}{:show}
+      \PYG{n}{server} \PYG{o}{=} \PYG{n+no}{EnvironmentManager}\PYG{o}{.}\PYG{n}{all\PYGZus{}servers}\PYG{o}{.}\PYG{n}{detect} \PYG{p}{\PYGZob{}}\PYG{o}{|}\PYG{n}{s}\PYG{o}{|} \PYG{n}{s}\PYG{o}{.}\PYG{n}{name} \PYG{o}{==} \PYG{n}{message}\PYG{o}{[}\PYG{l+s+ss}{:name}\PYG{o}{]} \PYG{p}{\PYGZcb{}}
+      \PYG{n}{server}\PYG{o}{.}\PYG{n}{containers} \PYG{o}{=} \PYG{n+no}{EnvironmentManager}\PYG{o}{.}\PYG{n}{containers}\PYG{p}{(}\PYG{n}{server}\PYG{p}{)}
+      \PYG{n}{server}\PYG{o}{.}\PYG{n}{images} \PYG{o}{=} \PYG{n+no}{EnvironmentManager}\PYG{o}{.}\PYG{n}{images}\PYG{p}{(}\PYG{n}{server}\PYG{p}{)}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.server.showed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{server}\PYG{p}{:} \PYG{n}{server}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

@@ -1,0 +1,98 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}fileutils\PYGZsq{}}
+
+\PYG{k}{module} \PYG{n+nn}{ImageBuilder}
+  \PYG{k+kp}{extend} \PYG{n+nb}{self}
+
+  \PYG{k}{def} \PYG{n+nf}{build\PYGZus{}images}\PYG{p}{(}\PYG{n}{subjects}\PYG{p}{)}
+    \PYG{n}{built\PYGZus{}images} \PYG{o}{=} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{successful}\PYG{p}{:} \PYG{o}{[]}\PYG{p}{,} \PYG{l+s+ss}{failed}\PYG{p}{:} \PYG{o}{[]} \PYG{p}{\PYGZcb{}}
+
+    \PYG{n}{subjects}\PYG{o}{.}\PYG{n}{each} \PYG{k}{do} \PYG{o}{|}\PYG{n}{subject}\PYG{o}{|}
+      \PYG{k}{begin}
+        \PYG{n}{image} \PYG{o}{=} \PYG{n}{build\PYGZus{}image}\PYG{p}{(}\PYG{n}{subject}\PYG{p}{)}
+        \PYG{n}{built\PYGZus{}images}\PYG{o}{[}\PYG{l+s+ss}{:successful}\PYG{o}{]} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{image}\PYG{p}{:} \PYG{n}{image}\PYG{p}{,} \PYG{l+s+ss}{subject}\PYG{p}{:} \PYG{n}{subject} \PYG{p}{\PYGZcb{}}
+      \PYG{k}{rescue} \PYG{n+no}{Exception} \PYG{o}{=\PYGZgt{}} \PYG{n}{e}
+        \PYG{n}{built\PYGZus{}images}\PYG{o}{[}\PYG{l+s+ss}{:failed}\PYG{o}{]} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{image}\PYG{p}{:} \PYG{n}{image}\PYG{p}{,} \PYG{l+s+ss}{exception}\PYG{p}{:} \PYG{n}{e} \PYG{p}{\PYGZcb{}}
+      \PYG{k}{end}
+    \PYG{k}{end}
+
+    \PYG{n}{built\PYGZus{}images}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{build\PYGZus{}image}\PYG{p}{(}\PYG{n}{subject}\PYG{p}{)}
+    \PYG{k}{case} \PYG{n}{subject}
+    \PYG{k}{when} \PYG{n+no}{Workflow}
+      \PYG{n}{build\PYGZus{}image\PYGZus{}from\PYGZus{}config}\PYG{p}{(}\PYG{n}{workflow\PYGZus{}build\PYGZus{}config}\PYG{p}{(}\PYG{n}{subject}\PYG{p}{))}
+    \PYG{k}{when} \PYG{n+no}{Activity}
+      \PYG{n}{build\PYGZus{}image\PYGZus{}from\PYGZus{}config}\PYG{p}{(}\PYG{n}{activity\PYGZus{}build\PYGZus{}config}\PYG{p}{(}\PYG{n}{subject}\PYG{p}{))}
+    \PYG{k}{end}
+  \PYG{k}{end}
+
+  \PYG{k+kp}{private}
+
+  \PYG{k}{def} \PYG{n+nf}{build\PYGZus{}image\PYGZus{}from\PYGZus{}config}\PYG{p}{(}\PYG{n}{build\PYGZus{}config}\PYG{p}{)}
+    \PYG{n}{image} \PYG{o}{=} \PYG{k+kp}{nil}
+    \PYG{n}{type} \PYG{o}{=} \PYG{n}{build\PYGZus{}config}\PYG{o}{[}\PYG{l+s+ss}{:type}\PYG{o}{]}
+    \PYG{n}{base\PYGZus{}name}  \PYG{o}{=} \PYG{n+no}{ImageManager}\PYG{o}{.}\PYG{n}{image\PYGZus{}name}\PYG{p}{(}\PYG{l+s+ss}{type}\PYG{p}{:} \PYG{n}{type}\PYG{p}{)}
+    \PYG{n}{base\PYGZus{}image} \PYG{o}{=} \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Image}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{base\PYGZus{}name}\PYG{p}{)}
+
+    \PYG{n+no}{Dir}\PYG{o}{.}\PYG{n}{mktmpdir} \PYG{k}{do} \PYG{o}{|}\PYG{n}{tmpdir}\PYG{o}{|}
+      \PYG{n}{prepare\PYGZus{}build\PYGZus{}enviroment}\PYG{p}{(}\PYG{n}{tmpdir}\PYG{p}{,} \PYG{n}{build\PYGZus{}config}\PYG{o}{[}\PYG{l+s+ss}{:build\PYGZus{}environment}\PYG{o}{]}\PYG{p}{)}
+      \PYG{n}{image} \PYG{o}{=} \PYG{n}{base\PYGZus{}image}\PYG{o}{.}\PYG{n}{insert\PYGZus{}local}\PYG{p}{(}
+        \PYG{l+s+s1}{\PYGZsq{}localPath\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{n+no}{Dir}\PYG{o}{.}\PYG{n}{glob}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{tmpdir}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/*\PYGZdq{}}\PYG{p}{),}
+        \PYG{l+s+s1}{\PYGZsq{}outputPath\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}/}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{build\PYGZus{}config}\PYG{o}{[}\PYG{l+s+ss}{:type}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}rm\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{true}\PYG{p}{)}
+      \PYG{n}{image}\PYG{o}{.}\PYG{n}{tag}\PYG{p}{(}\PYG{l+s+ss}{repo}\PYG{p}{:} \PYG{n}{build\PYGZus{}config}\PYG{o}{[}\PYG{l+s+ss}{:name}\PYG{o}{]}\PYG{p}{,} \PYG{l+s+ss}{tag}\PYG{p}{:} \PYG{l+s+ss}{:latest}\PYG{p}{,} \PYG{l+s+ss}{force}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{n}{image}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{prepare\PYGZus{}build\PYGZus{}enviroment}\PYG{p}{(}\PYG{n}{tmpdir}\PYG{p}{,} \PYG{n}{config}\PYG{p}{)}
+    \PYG{n}{config}\PYG{o}{[}\PYG{l+s+ss}{:files\PYGZus{}to\PYGZus{}write}\PYG{o}{].}\PYG{n}{each\PYGZus{}pair} \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{path}\PYG{p}{,} \PYG{n}{content}\PYG{o}{|} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{tmpdir}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{path}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}w\PYGZsq{}}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{a}\PYG{o}{|} \PYG{n}{a}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{content}\PYG{p}{)} \PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZcb{}}
+    \PYG{n}{config}\PYG{o}{[}\PYG{l+s+ss}{:files\PYGZus{}to\PYGZus{}copy}\PYG{o}{].}\PYG{n}{each\PYGZus{}pair}  \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{source}\PYG{p}{,} \PYG{n}{target}\PYG{o}{|} \PYG{n+no}{FileUtils}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{(}\PYG{n}{source}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{tmpdir}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{target}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{serialize\PYGZus{}process\PYGZus{}definition}\PYG{p}{(}\PYG{n}{workflow}\PYG{p}{)}
+    \PYG{n+no}{ActiveModel}\PYG{o}{::}\PYG{n+no}{SerializableResource}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n}{workflow}\PYG{o}{.}\PYG{n}{process\PYGZus{}definition}\PYG{p}{,} \PYG{l+s+ss}{serializer}\PYG{p}{:} \PYG{n+no}{ProcessDefinitionImageSerializer}\PYG{p}{,} \PYG{k+kp}{include}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}**\PYGZsq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{serializable\PYGZus{}hash}\PYG{o}{.}\PYG{n}{to\PYGZus{}json}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{activity\PYGZus{}build\PYGZus{}config}\PYG{p}{(}\PYG{n}{activity}\PYG{p}{)}
+    \PYG{n}{image\PYGZus{}name} \PYG{o}{=} \PYG{n+no}{ImageManager}\PYG{o}{.}\PYG{n}{image\PYGZus{}name}\PYG{p}{(}\PYG{l+s+ss}{type}\PYG{p}{:} \PYG{l+s+ss}{:activity}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{activity}\PYG{o}{.}\PYG{n}{id}\PYG{p}{)}
+    \PYG{p}{\PYGZob{}}
+      \PYG{l+s+ss}{type}\PYG{p}{:} \PYG{l+s+ss}{:activity}\PYG{p}{,}
+      \PYG{n+nb}{name}\PYG{p}{:} \PYG{n}{image\PYGZus{}name}\PYG{p}{,}
+      \PYG{l+s+ss}{tag}\PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{repo}\PYG{p}{:} \PYG{n}{image\PYGZus{}name}\PYG{p}{,} \PYG{l+s+ss}{tag}\PYG{p}{:} \PYG{l+s+ss}{:latest}\PYG{p}{,} \PYG{l+s+ss}{force}\PYG{p}{:} \PYG{k+kp}{true} \PYG{p}{\PYGZcb{},}
+      \PYG{l+s+ss}{build\PYGZus{}environment}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+        \PYG{l+s+ss}{files\PYGZus{}to\PYGZus{}copy}\PYG{p}{:} \PYG{p}{\PYGZob{}\PYGZcb{},}
+        \PYG{l+s+ss}{files\PYGZus{}to\PYGZus{}write}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+          \PYG{l+s+s1}{\PYGZsq{}input.schema.json\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}\PYG{l+s+ss}{type}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}object\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{required}\PYG{p}{:} \PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}this\PYGZsq{}}\PYG{o}{]}\PYG{p}{,} \PYG{l+s+ss}{properties}\PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{this}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+ss}{type}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}string\PYGZsq{}}\PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{to\PYGZus{}json}\PYG{p}{,}
+          \PYG{l+s+s1}{\PYGZsq{}activity.info.json\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}
+            \PYG{l+s+ss}{image\PYGZus{}name}\PYG{p}{:} \PYG{n}{image\PYGZus{}name}\PYG{p}{,}
+            \PYG{l+s+ss}{type}\PYG{p}{:} \PYG{n}{activity}\PYG{o}{.}\PYG{n}{activity\PYGZus{}type}\PYG{p}{,}
+            \PYG{l+s+ss}{subworkflow\PYGZus{}id}\PYG{p}{:} \PYG{n}{activity}\PYG{o}{.}\PYG{n}{subworkflow\PYGZus{}id}\PYG{p}{,}
+            \PYG{l+s+ss}{participant\PYGZus{}role\PYGZus{}id}\PYG{p}{:} \PYG{n}{activity}\PYG{o}{.}\PYG{n}{participant\PYGZus{}role\PYGZus{}id}\PYG{p}{,}
+            \PYG{l+s+ss}{configuration}\PYG{p}{:} \PYG{n}{activity}\PYG{o}{.}\PYG{n}{activity\PYGZus{}configuration} \PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{to\PYGZus{}json}
+        \PYG{p}{\PYGZcb{}}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{workflow\PYGZus{}build\PYGZus{}config}\PYG{p}{(}\PYG{n}{workflow}\PYG{p}{)}
+    \PYG{n}{image\PYGZus{}name} \PYG{o}{=} \PYG{n+no}{ImageManager}\PYG{o}{.}\PYG{n}{image\PYGZus{}name}\PYG{p}{(}\PYG{l+s+ss}{type}\PYG{p}{:} \PYG{l+s+ss}{:workflow}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{workflow}\PYG{o}{.}\PYG{n}{id}\PYG{p}{)}
+    \PYG{p}{\PYGZob{}}
+      \PYG{l+s+ss}{type}\PYG{p}{:} \PYG{l+s+ss}{:workflow}\PYG{p}{,}
+      \PYG{n+nb}{name}\PYG{p}{:} \PYG{n}{image\PYGZus{}name}\PYG{p}{,}
+      \PYG{l+s+ss}{tag}\PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{repo}\PYG{p}{:} \PYG{n}{image\PYGZus{}name}\PYG{p}{,} \PYG{l+s+ss}{tag}\PYG{p}{:} \PYG{l+s+ss}{:latest}\PYG{p}{,} \PYG{l+s+ss}{force}\PYG{p}{:} \PYG{k+kp}{true} \PYG{p}{\PYGZcb{},}
+      \PYG{l+s+ss}{build\PYGZus{}environment}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+        \PYG{l+s+ss}{files\PYGZus{}to\PYGZus{}copy}\PYG{p}{:} \PYG{p}{\PYGZob{}\PYGZcb{},}
+        \PYG{l+s+ss}{files\PYGZus{}to\PYGZus{}write}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+          \PYG{l+s+s1}{\PYGZsq{}process\PYGZus{}definition.json\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{n}{serialize\PYGZus{}process\PYGZus{}definition}\PYG{p}{(}\PYG{n}{workflow}\PYG{p}{),}
+          \PYG{l+s+s1}{\PYGZsq{}input.schema.json\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{type}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}object\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{required}\PYG{p}{:} \PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}this\PYGZsq{}}\PYG{o}{]}\PYG{p}{,} \PYG{l+s+ss}{properties}\PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{this}\PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{type}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}string\PYGZsq{}} \PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{to\PYGZus{}json}\PYG{p}{,}
+          \PYG{l+s+s1}{\PYGZsq{}workflow.info.json\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{image\PYGZus{}name}\PYG{p}{:} \PYG{n}{image\PYGZus{}name} \PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{to\PYGZus{}json}
+        \PYG{p}{\PYGZcb{}}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

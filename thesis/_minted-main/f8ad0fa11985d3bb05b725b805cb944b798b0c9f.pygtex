@@ -1,0 +1,47 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{WorkflowsController} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ApplicationController}
+  \PYG{k}{def} \PYG{n+nf}{index}
+    \PYG{n+nv+vi}{@workflows} \PYG{o}{=} \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}workflow.index\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}workflow.indexed\PYGZsq{}}\PYG{p}{,} \PYG{p}{\PYGZob{}\PYGZcb{}}
+    \PYG{n}{render} \PYG{l+s+ss}{json}\PYG{p}{:} \PYG{n+nv+vi}{@workflows}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{show}
+    \PYG{n+nv+vi}{@workflow} \PYG{o}{=} \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}workflow.show\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}workflow.showed\PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}
+    \PYG{n}{render} \PYG{l+s+ss}{json}\PYG{p}{:} \PYG{n+nv+vi}{@workflow}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{create}
+    \PYG{n+nv+vi}{@workflow} \PYG{o}{=} \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}workflow.create\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}workflow.created\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{workflow}\PYG{p}{:} \PYG{n}{workflow\PYGZus{}params}
+    \PYG{n}{render} \PYG{l+s+ss}{json}\PYG{p}{:} \PYG{n+nv+vi}{@workflow}\PYG{p}{,} \PYG{l+s+ss}{status}\PYG{p}{:} \PYG{l+s+ss}{:created}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{update}
+    \PYG{n+nv+vi}{@workflow} \PYG{o}{=} \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}workflow.update\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}workflow.updated\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{workflow}\PYG{p}{:} \PYG{n}{workflow\PYGZus{}params}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}
+    \PYG{n+nv+vi}{@workflow} \PYG{o}{=} \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}workflow.export\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}workflow.exported\PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}
+    \PYG{n}{render} \PYG{l+s+ss}{json}\PYG{p}{:} \PYG{n+nv+vi}{@workflow}\PYG{p}{,} \PYG{l+s+ss}{status}\PYG{p}{:} \PYG{l+s+ss}{:created}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{destroy}
+    \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}wfms.workflow.destroy\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}wfms.workflow.destroyed\PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}
+    \PYG{n}{head} \PYG{l+s+ss}{:no\PYGZus{}content}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{export}
+    \PYG{n}{rq} \PYG{o}{=} \PYG{n}{new\PYGZus{}response\PYGZus{}queue}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}wfms.workflow.exported\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{)}
+    \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.workflow.export\PYGZdq{}}\PYG{p}{,} \PYG{n}{payload}
+    \PYG{n}{get\PYGZus{}response}\PYG{p}{(}\PYG{n}{rq}\PYG{p}{)}
+    \PYG{n}{head} \PYG{l+s+ss}{:no\PYGZus{}content}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{start\PYGZus{}instance}
+    \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.workflow.start\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{params}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}\PYG{p}{,} \PYG{l+s+ss}{input\PYGZus{}data}\PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{this}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}is a test\PYGZsq{}} \PYG{p}{\PYGZcb{}}
+    \PYG{n}{head} \PYG{l+s+ss}{:no\PYGZus{}content}
+  \PYG{k}{end}
+
+  \PYG{k+kp}{private}
+
+  \PYG{k}{def} \PYG{n+nf}{workflow\PYGZus{}params}
+    \PYG{n}{params}\PYG{o}{.}\PYG{n}{require}\PYG{p}{(}\PYG{l+s+ss}{:workflow}\PYG{p}{)}\PYG{o}{.}\PYG{n}{permit}\PYG{p}{(}\PYG{l+s+ss}{:name}\PYG{p}{,} \PYG{l+s+ss}{:user\PYGZus{}id}\PYG{p}{)}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

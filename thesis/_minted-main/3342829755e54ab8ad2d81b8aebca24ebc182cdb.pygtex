@@ -1,0 +1,75 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{module} \PYG{n+nn}{Workflow}
+  \PYG{k}{class} \PYG{n+nc}{ProcessInstance}
+    \PYG{k}{def} \PYG{n+nf}{initialize}
+      \PYG{n+nv+vi}{@process\PYGZus{}definition} \PYG{o}{=} \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{ProcessDefinition}\PYG{o}{.}\PYG{n}{new}
+      \PYG{n+nv+vi}{@queue} \PYG{o}{=} \PYG{o}{[]}
+      \PYG{n+nv+vi}{@activity\PYGZus{}instances} \PYG{o}{=} \PYG{p}{\PYGZob{}\PYGZcb{}}
+
+      \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{ensure\PYGZus{}workflow\PYGZus{}input\PYGZus{}dir}
+
+      \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Validator}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}
+        \PYG{l+s+ss}{schema}\PYG{p}{:} \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{input\PYGZus{}schema}\PYG{p}{,}
+        \PYG{l+s+ss}{data}\PYG{p}{:} \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{input\PYGZus{}data}
+      \PYG{p}{)}\PYG{o}{.}\PYG{n}{validate}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{start}
+      \PYG{n}{start\PYGZus{}activity\PYGZus{}instance} \PYG{o}{=} \PYG{n}{find\PYGZus{}or\PYGZus{}create\PYGZus{}activity\PYGZus{}instance}\PYG{p}{(}\PYG{n}{start\PYGZus{}activity}\PYG{p}{)}
+      \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{link\PYGZus{}workflow\PYGZus{}input\PYGZus{}to\PYGZus{}start\PYGZus{}activity\PYGZus{}instance\PYGZus{}input}\PYG{p}{(}
+        \PYG{n}{start\PYGZus{}activity\PYGZus{}instance}
+      \PYG{p}{)}
+
+      \PYG{k+kp}{loop} \PYG{k}{do}
+        \PYG{k}{break} \PYG{k}{if} \PYG{n+nv+vi}{@queue}\PYG{o}{.}\PYG{n}{compact}\PYG{o}{.}\PYG{n}{empty?}
+        \PYG{n}{process\PYGZus{}queued\PYGZus{}activity\PYGZus{}instances}
+      \PYG{k}{end}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{process\PYGZus{}queued\PYGZus{}activity\PYGZus{}instances}
+      \PYG{n}{uncompleted\PYGZus{}instances}\PYG{o}{.}\PYG{n}{each} \PYG{k}{do} \PYG{o}{|}\PYG{n}{instance}\PYG{o}{|}
+        \PYG{k}{next} \PYG{k}{unless} \PYG{n}{instance}\PYG{o}{.}\PYG{n}{required\PYGZus{}predecessors\PYGZus{}completed?}
+
+        \PYG{n}{instance}\PYG{o}{.}\PYG{n}{run}
+
+        \PYG{n}{instance}\PYG{o}{.}\PYG{n}{activity}\PYG{o}{.}\PYG{n}{successors}\PYG{o}{.}\PYG{n}{each} \PYG{k}{do} \PYG{o}{|}\PYG{n}{successor}\PYG{o}{|}
+          \PYG{n}{successor\PYGZus{}instance} \PYG{o}{=} \PYG{n}{find\PYGZus{}or\PYGZus{}create\PYGZus{}activity\PYGZus{}instance}\PYG{p}{(}\PYG{n}{successor}\PYG{p}{)}
+          \PYG{n}{successor\PYGZus{}instance}\PYG{o}{.}\PYG{n}{completed\PYGZus{}predecessors} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{instance}
+          \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{link\PYGZus{}instance\PYGZus{}output\PYGZus{}to\PYGZus{}successor\PYGZus{}input}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{,} \PYG{n}{successor\PYGZus{}instance}\PYG{p}{)}
+        \PYG{k}{end}
+
+        \PYG{k}{if} \PYG{n}{instance}\PYG{o}{.}\PYG{n}{activity}\PYG{o}{.}\PYG{n}{type} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}end\PYGZsq{}}
+          \PYG{n+nv+vi}{@queue}\PYG{o}{.}\PYG{n}{clear}
+          \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{link\PYGZus{}instance\PYGZus{}output\PYGZus{}to\PYGZus{}workflow\PYGZus{}output}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+        \PYG{k}{end}
+      \PYG{k}{end}
+    \PYG{k}{end}
+
+    \PYG{k+kp}{private}
+
+    \PYG{k}{def} \PYG{n+nf}{uncompleted\PYGZus{}instances}
+      \PYG{n+nv+vi}{@queue}\PYG{o}{.}\PYG{n}{reject}\PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{ai}\PYG{o}{|} \PYG{n}{ai}\PYG{o}{.}\PYG{n}{completed?} \PYG{p}{\PYGZcb{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{start\PYGZus{}activity}
+      \PYG{n}{start\PYGZus{}activity} \PYG{o}{=} \PYG{n+nv+vi}{@process\PYGZus{}definition}\PYG{o}{.}\PYG{n}{activities}\PYG{o}{.}\PYG{n}{find} \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{a}\PYG{o}{|} \PYG{n}{a}\PYG{o}{.}\PYG{n}{type} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}start\PYGZsq{}} \PYG{p}{\PYGZcb{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{queue\PYGZus{}activity\PYGZus{}instance}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{n+nv+vi}{@queue} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{instance}
+      \PYG{n+nv+vi}{@activity\PYGZus{}instances}\PYG{o}{[}\PYG{n}{instance}\PYG{o}{.}\PYG{n}{activity}\PYG{o}{.}\PYG{n}{id}\PYG{o}{]} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{instance}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{find\PYGZus{}or\PYGZus{}create\PYGZus{}activity\PYGZus{}instance}\PYG{p}{(}\PYG{n}{activity}\PYG{p}{)}
+      \PYG{n+nv+vi}{@activity\PYGZus{}instances}\PYG{o}{[}\PYG{n}{activity}\PYG{o}{.}\PYG{n}{id}\PYG{o}{]} \PYG{o}{||=} \PYG{o}{[]}
+      \PYG{n}{instance} \PYG{o}{=} \PYG{n+nv+vi}{@activity\PYGZus{}instances}\PYG{o}{[}\PYG{n}{activity}\PYG{o}{.}\PYG{n}{id}\PYG{o}{].}\PYG{n}{find} \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{ai}\PYG{o}{|} \PYG{o}{!}\PYG{n}{ai}\PYG{o}{.}\PYG{n}{completed?} \PYG{p}{\PYGZcb{}}
+      \PYG{k}{if} \PYG{n}{instance}\PYG{o}{.}\PYG{n}{nil?}
+        \PYG{n}{instance} \PYG{o}{=} \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{ActivityInstance}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n}{activity}\PYG{p}{)}
+        \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{create\PYGZus{}activity\PYGZus{}instance\PYGZus{}workdir}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+        \PYG{n}{queue\PYGZus{}activity\PYGZus{}instance}\PYG{p}{(}\PYG{n}{instance}\PYG{p}{)}
+      \PYG{k}{end}
+      \PYG{n}{instance}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

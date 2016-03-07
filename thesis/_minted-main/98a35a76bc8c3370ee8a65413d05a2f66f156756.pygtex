@@ -1,0 +1,68 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{module} \PYG{n+nn}{EnvironmentManager}
+  \PYG{k+kp}{extend} \PYG{n+nb}{self}
+
+  \PYG{k}{def} \PYG{n+nf}{all\PYGZus{}servers}
+    \PYG{n}{swarm\PYGZus{}info} \PYG{o}{=} \PYG{n+no}{Docker}\PYG{o}{.}\PYG{n}{info}\PYG{p}{(}\PYG{n+no}{DockerHelper}\PYG{o}{.}\PYG{n}{swarm\PYGZus{}manager\PYGZus{}connection}\PYG{p}{)}
+    \PYG{n}{raw\PYGZus{}servers} \PYG{o}{=} \PYG{n}{swarm\PYGZus{}info}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}DriverStatus\PYGZsq{}}\PYG{o}{].}\PYG{n}{select} \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{pairs}\PYG{o}{|} \PYG{n}{ip?}\PYG{p}{(}\PYG{n}{pairs}\PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{]}\PYG{p}{)} \PYG{p}{\PYGZcb{}}
+    \PYG{n}{servers} \PYG{o}{=} \PYG{n}{raw\PYGZus{}servers}\PYG{o}{.}\PYG{n}{collect} \PYG{k}{do} \PYG{o}{|}\PYG{n}{raw}\PYG{o}{|}
+      \PYG{n+no}{Server}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{l+s+ss}{ip}\PYG{p}{:} \PYG{n}{remove\PYGZus{}port}\PYG{p}{(}\PYG{n}{raw}\PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{]}\PYG{p}{),} \PYG{n+nb}{name}\PYG{p}{:} \PYG{n}{raw}\PYG{o}{[}\PYG{l+m+mi}{0}\PYG{o}{]}\PYG{p}{)}
+    \PYG{k}{end}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{containers}\PYG{p}{(}\PYG{n}{server}\PYG{p}{,} \PYG{n}{status} \PYG{o}{=} \PYG{l+s+ss}{:all}\PYG{p}{)}
+    \PYG{n}{filters} \PYG{o}{=} \PYG{n}{status} \PYG{o}{==} \PYG{l+s+ss}{:all} \PYG{p}{?} \PYG{p}{\PYGZob{}\PYGZcb{}} \PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{status}\PYG{p}{:} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{status}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]} \PYG{p}{\PYGZcb{}}
+    \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Container}\PYG{o}{.}\PYG{n}{all}\PYG{p}{(}
+      \PYG{p}{\PYGZob{}}\PYG{l+s+ss}{all}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{,} \PYG{l+s+ss}{filters}\PYG{p}{:} \PYG{n}{filters}\PYG{o}{.}\PYG{n}{to\PYGZus{}json}\PYG{p}{\PYGZcb{},}
+      \PYG{n+no}{DockerHelper}\PYG{o}{.}\PYG{n}{docker\PYGZus{}connection}\PYG{p}{(}\PYG{n}{server}\PYG{p}{)}
+    \PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{images}\PYG{p}{(}\PYG{n}{server}\PYG{p}{)}
+    \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Image}\PYG{o}{.}\PYG{n}{all}\PYG{p}{(}
+      \PYG{p}{\PYGZob{}}\PYG{l+s+ss}{all}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{,} \PYG{l+s+ss}{filters}\PYG{p}{:} \PYG{p}{\PYGZob{}} \PYG{l+s+ss}{dangling}\PYG{p}{:} \PYG{o}{[}\PYG{k+kp}{false}\PYG{o}{]} \PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{to\PYGZus{}json}\PYG{p}{,}
+      \PYG{n+no}{DockerHelper}\PYG{o}{.}\PYG{n}{docker\PYGZus{}connection}\PYG{p}{(}\PYG{n}{server}\PYG{p}{)}
+    \PYG{p}{)}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{watch\PYGZus{}for\PYGZus{}new\PYGZus{}nodes}
+    \PYG{k}{begin}
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Event}\PYG{o}{.}\PYG{n}{stream} \PYG{k}{do} \PYG{o}{|}\PYG{n}{event}\PYG{o}{|}
+        \PYG{k}{if} \PYG{n}{event}\PYG{o}{.}\PYG{n}{status} \PYG{o}{==} \PYG{l+s+s1}{\PYGZsq{}engine\PYGZus{}connect\PYGZsq{}}
+          \PYG{n}{server} \PYG{o}{=} \PYG{n+no}{Server}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n+nb}{name}\PYG{p}{:} \PYG{n}{event}\PYG{o}{.}\PYG{n}{from}\PYG{o}{.}\PYG{n}{gsub}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}swarm node:\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}\PYG{p}{),} \PYG{l+s+ss}{ip}\PYG{p}{:} \PYG{k+kp}{nil}\PYG{p}{)}
+          \PYG{n}{start\PYGZus{}provisioner}\PYG{p}{(}\PYG{n}{server\PYGZus{}name}\PYG{p}{)}
+        \PYG{k}{end}
+      \PYG{k}{end}
+    \PYG{k}{rescue}
+      \PYG{k}{retry}
+    \PYG{k}{end}
+  \PYG{k}{end}
+
+  \PYG{k+kp}{private}
+
+  \PYG{k}{def} \PYG{n+nf}{start\PYGZus{}provisioner}\PYG{p}{(}\PYG{n}{server}\PYG{p}{)}
+    \PYG{n}{provisioner} \PYG{o}{=} \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Container}\PYG{o}{.}\PYG{n}{create}\PYG{p}{(\PYGZob{}}
+      \PYG{l+s+s1}{\PYGZsq{}name\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}provisioner\PYGZhy{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{server}\PYG{o}{.}\PYG{n}{name}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}Image\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}provisioner\PYGZdq{}}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}Cmd\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}\PYG{o}{]}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}HostConfig\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}Binds\PYGZsq{}}\PYG{o}{=\PYGZgt{}[}\PYG{l+s+s1}{\PYGZsq{}/var/run/docker.sock:/var/run/docker.sock\PYGZsq{}}\PYG{o}{]}\PYG{p}{\PYGZcb{},}
+      \PYG{l+s+s1}{\PYGZsq{}Env\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}constraint:node==}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{server}\PYG{o}{.}\PYG{n}{name}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}AttachStdin\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{false}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}AttachStdout\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{false}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}AttachStderr\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{false}\PYG{p}{,}
+      \PYG{l+s+s1}{\PYGZsq{}Tty\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{true}
+    \PYG{p}{\PYGZcb{},} \PYG{n+no}{DockerHelper}\PYG{o}{.}\PYG{n}{swarm\PYGZus{}manager\PYGZus{}connection}\PYG{p}{)}
+
+    \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Network}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}enactment\PYGZsq{}}\PYG{p}{,} \PYG{n+no}{DockerHelper}\PYG{o}{.}\PYG{n}{swarm\PYGZus{}manager\PYGZus{}connection}\PYG{p}{)}
+      \PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}provisioner\PYGZhy{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{server}\PYG{o}{.}\PYG{n}{name}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+
+    \PYG{n}{provisioner}\PYG{o}{.}\PYG{n}{start}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{ip?}\PYG{p}{(}\PYG{n}{string}\PYG{p}{)}
+    \PYG{n}{remove\PYGZus{}port}\PYG{p}{(}\PYG{n}{string}\PYG{p}{)} \PYG{o}{=\PYGZti{}} \PYG{n+no}{Resolv}\PYG{o}{::}\PYG{n+no}{IPv4}\PYG{o}{::}\PYG{n+no}{Regex}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{remove\PYGZus{}port}\PYG{p}{(}\PYG{n}{ip}\PYG{p}{)}
+    \PYG{n}{ip}\PYG{o}{.}\PYG{n}{gsub}\PYG{p}{(}\PYG{l+s+sr}{/:\PYGZbs{}d+\PYGZdl{}/}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}\PYG{p}{)}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

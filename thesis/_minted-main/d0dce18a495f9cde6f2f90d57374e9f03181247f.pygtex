@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{ProcessDefinitionImageSerializer} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveModel}\PYG{o}{::}\PYG{n+no}{Serializer}
+  \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:activities}
+
+  \PYG{k}{class} \PYG{n+nc}{ActivitySerializer} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveModel}\PYG{o}{::}\PYG{n+no}{Serializer}
+    \PYG{n}{attribute} \PYG{l+s+ss}{:id}
+    \PYG{n}{attribute} \PYG{l+s+ss}{:activity\PYGZus{}type}\PYG{p}{,} \PYG{l+s+ss}{key}\PYG{p}{:} \PYG{l+s+ss}{:type}
+    \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:outgoing\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{key}\PYG{p}{:} \PYG{l+s+ss}{:successors}
+    \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:incoming\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{key}\PYG{p}{:} \PYG{l+s+ss}{:predecessors}
+
+    \PYG{k}{def} \PYG{n+nf}{outgoing\PYGZus{}control\PYGZus{}flows}
+      \PYG{n}{object}\PYG{o}{.}\PYG{n}{outgoing\PYGZus{}control\PYGZus{}flows}\PYG{o}{.}\PYG{n}{collect}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:successor\PYGZus{}id}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{incoming\PYGZus{}control\PYGZus{}flows}
+      \PYG{n}{object}\PYG{o}{.}\PYG{n}{incoming\PYGZus{}control\PYGZus{}flows}\PYG{o}{.}\PYG{n}{collect}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:predecessor\PYGZus{}id}\PYG{p}{)}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

@@ -1,8 +1,11 @@
 angular.module 'WFMS.ProcessDefinition'
 .directive 'processDesigner', (processDesignerConfig, ProcessDefinition, ControlFlow, Activity, $mdSidenav) ->
-  controller = ($scope, $element) ->
+  controller = ($scope, $element, Role) ->
     vm = @
     vm.config = processDesignerConfig
+
+    Role.query().then (roles) ->
+      vm.roles = roles
 
     vm.svg = $element.find("svg")[0]
     vm.activitiesContainer = $element.find("svg").find('.activities')[0]

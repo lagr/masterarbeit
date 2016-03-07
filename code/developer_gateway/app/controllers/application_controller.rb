@@ -45,7 +45,6 @@ class ApplicationController < ActionController::Base
     ensure
       queue.delete
     end
-    puts @response_object
     @response_object
   end
 end

@@ -16,7 +16,9 @@
 
   \PYG{k}{def} \PYG{n+nf}{start}
     \PYG{n}{start\PYGZus{}activity\PYGZus{}instance} \PYG{o}{=} \PYG{n}{find\PYGZus{}or\PYGZus{}create\PYGZus{}activity\PYGZus{}instance}\PYG{p}{(}\PYG{n}{start\PYGZus{}activity}\PYG{p}{)}
-    \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{link\PYGZus{}workflow\PYGZus{}input\PYGZus{}to\PYGZus{}start\PYGZus{}activity\PYGZus{}instance\PYGZus{}input}\PYG{p}{(}\PYG{n}{start\PYGZus{}activity\PYGZus{}instance}\PYG{p}{)}
+    \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{link\PYGZus{}workflow\PYGZus{}input\PYGZus{}to\PYGZus{}start\PYGZus{}activity\PYGZus{}instance\PYGZus{}input}\PYG{p}{(}
+      \PYG{n}{start\PYGZus{}activity\PYGZus{}instance}
+    \PYG{p}{)}
 
     \PYG{k+kp}{loop} \PYG{k}{do}
       \PYG{k}{break} \PYG{k}{if} \PYG{n+nv+vi}{@queue}\PYG{o}{.}\PYG{n}{compact}\PYG{o}{.}\PYG{n}{empty?}

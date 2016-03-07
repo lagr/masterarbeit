@@ -1,0 +1,29 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{module} \PYG{n+nn}{Workflow}
+  \PYG{k}{class} \PYG{n+nc}{ProcessDefinition}
+    \PYG{k+kp}{attr\PYGZus{}accessor} \PYG{l+s+ss}{:activities}
+
+    \PYG{n+no}{Activity} \PYG{o}{=} \PYG{n+no}{Struct}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{l+s+ss}{:id}\PYG{p}{,} \PYG{l+s+ss}{:type}\PYG{p}{,} \PYG{l+s+ss}{:successors}\PYG{p}{,} \PYG{l+s+ss}{:predecessors}\PYG{p}{)}
+
+    \PYG{k}{def} \PYG{n+nf}{initialize}
+      \PYG{n}{file} \PYG{o}{=} \PYG{n+no}{File}\PYG{o}{.}\PYG{n}{read}\PYG{p}{(}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{process\PYGZus{}definition}\PYG{p}{)}
+      \PYG{n+nv+vi}{@definition} \PYG{o}{=} \PYG{n+no}{JSON}\PYG{o}{.}\PYG{n}{parse}\PYG{p}{(}\PYG{n}{file}\PYG{p}{)}
+
+      \PYG{n+nv+vi}{@activities} \PYG{o}{=} \PYG{n+nv+vi}{@definition}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}activities\PYGZsq{}}\PYG{o}{].}\PYG{n}{map} \PYG{k}{do} \PYG{o}{|}\PYG{n}{a}\PYG{o}{|}
+        \PYG{n+no}{Activity}\PYG{o}{.}\PYG{n}{new}\PYG{p}{(}\PYG{n}{a}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}id\PYGZsq{}}\PYG{o}{]}\PYG{p}{,} \PYG{n}{a}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}type\PYGZsq{}}\PYG{o}{]}\PYG{p}{,} \PYG{n}{a}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}successors\PYGZsq{}}\PYG{o}{]}\PYG{p}{,} \PYG{n}{a}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}predecessors\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+      \PYG{k}{end}
+
+      \PYG{c+c1}{\PYGZsh{} replace list of ids with references to objects}
+      \PYG{n+nv+vi}{@activities}\PYG{o}{.}\PYG{n}{each} \PYG{k}{do} \PYG{o}{|}\PYG{n}{activity}\PYG{o}{|}
+        \PYG{n}{activity}\PYG{o}{.}\PYG{n}{successors} \PYG{o}{=} \PYG{n}{activity}\PYG{o}{.}\PYG{n}{successors}\PYG{o}{.}\PYG{n}{map} \PYG{k}{do} \PYG{o}{|}\PYG{n}{successor\PYGZus{}id}\PYG{o}{|}
+          \PYG{n+nv+vi}{@activities}\PYG{o}{.}\PYG{n}{find} \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{a}\PYG{o}{|} \PYG{n}{a}\PYG{o}{.}\PYG{n}{id} \PYG{o}{==} \PYG{n}{successor\PYGZus{}id} \PYG{p}{\PYGZcb{}}
+        \PYG{k}{end}
+
+        \PYG{n}{activity}\PYG{o}{.}\PYG{n}{predecessors} \PYG{o}{=} \PYG{n}{activity}\PYG{o}{.}\PYG{n}{predecessors}\PYG{o}{.}\PYG{n}{map} \PYG{k}{do} \PYG{o}{|}\PYG{n}{predecessor\PYGZus{}id}\PYG{o}{|}
+          \PYG{n+nv+vi}{@activities}\PYG{o}{.}\PYG{n}{find} \PYG{p}{\PYGZob{}} \PYG{o}{|}\PYG{n}{a}\PYG{o}{|} \PYG{n}{a}\PYG{o}{.}\PYG{n}{id} \PYG{o}{==} \PYG{n}{predecessor\PYGZus{}id} \PYG{p}{\PYGZcb{}}
+        \PYG{k}{end}
+      \PYG{k}{end}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

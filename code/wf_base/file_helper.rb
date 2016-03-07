@@ -35,7 +35,10 @@ module Workflow
     end
 
     def link_workflow_input_to_start_activity_instance_input(instance)
-      FileUtils.ln_s("#{Workflow::Configuration.workdir}/input/", "#{activity_instance_input_dir(instance)}")
+      FileUtils.ln_s(
+        "#{Workflow::Configuration.workdir}/input/",
+        "#{activity_instance_input_dir(instance)}"
+      )
     end
 
     def link_instance_output_to_successor_input(instance, successor_instance)

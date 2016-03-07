@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{Workflow} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveRecord}\PYG{o}{::}\PYG{n+no}{Base}
+  \PYG{n}{has\PYGZus{}one} \PYG{l+s+ss}{:process\PYGZus{}definition}
+  \PYG{n}{before\PYGZus{}create} \PYG{l+s+ss}{:build\PYGZus{}process\PYGZus{}definition}
+  \PYG{n}{belongs\PYGZus{}to} \PYG{l+s+ss}{:author}\PYG{p}{,} \PYG{l+s+ss}{class\PYGZus{}name}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}User\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{foreign\PYGZus{}key}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}user\PYGZus{}id\PYGZsq{}}
+  \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:activities}\PYG{p}{,} \PYG{l+s+ss}{through}\PYG{p}{:} \PYG{l+s+ss}{:process\PYGZus{}definition}
+
+  \PYG{k}{def} \PYG{n+nf}{required\PYGZus{}images}
+    \PYG{n}{activities}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:required\PYGZus{}images}\PYG{p}{)}\PYG{o}{.}\PYG{n}{flatten}
+  \PYG{k}{end}
+
+  \PYG{k}{def} \PYG{n+nf}{child\PYGZus{}elements}
+    \PYG{n}{activities} \PYG{o}{+} \PYG{n}{activities}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:child\PYGZus{}elements}\PYG{p}{)}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

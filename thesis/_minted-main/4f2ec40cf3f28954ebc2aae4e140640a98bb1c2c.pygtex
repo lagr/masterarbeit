@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{module} \PYG{n+nn}{WorkflowEngine}
+  \PYG{k}{class} \PYG{n+nc}{WorkflowInstanceConsumer}
+    \PYG{k+kp}{include} \PYG{n+no}{Hutch}\PYG{o}{::}\PYG{n+no}{Consumer}
+    \PYG{n}{consume} \PYG{l+s+s1}{\PYGZsq{}wfms.workflow\PYGZus{}instance.\PYGZsh{}\PYGZsq{}}
+
+    \PYG{k}{def} \PYG{n+nf}{process}\PYG{p}{(}\PYG{n}{message}\PYG{p}{)}
+      \PYG{n}{subject}\PYG{p}{,} \PYG{n}{action}\PYG{p}{,} \PYG{n}{subject\PYGZus{}id} \PYG{o}{=} \PYG{n+no}{WorkflowEngine}\PYG{o}{.}\PYG{n}{match\PYGZus{}message}\PYG{p}{(}\PYG{n}{message}\PYG{p}{)}
+      \PYG{k}{return} \PYG{k}{unless} \PYG{o}{[}\PYG{l+s+ss}{:pause}\PYG{p}{,} \PYG{l+s+ss}{:unpause}\PYG{p}{,} \PYG{l+s+ss}{:terminate}\PYG{o}{].}\PYG{n}{include?}\PYG{p}{(}\PYG{n}{action}\PYG{p}{)}
+
+      \PYG{n+no}{WorkflowEngine}\PYG{o}{.}\PYG{n}{send}\PYG{p}{(}\PYG{n}{action}\PYG{p}{,} \PYG{n}{message}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}\PYG{p}{)}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.workflow\PYGZus{}instance.}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{action}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{d\PYGZdq{}}\PYG{p}{,} \PYG{n+nb}{id}\PYG{p}{:} \PYG{n}{message}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

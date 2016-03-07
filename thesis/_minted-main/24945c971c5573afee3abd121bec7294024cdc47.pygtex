@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{WorklistsController} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ApplicationController}
+  \PYG{k}{def} \PYG{n+nf}{index}
+    \PYG{n+nv+vi}{@users} \PYG{o}{=} \PYG{n}{mq\PYGZus{}request} \PYG{l+s+s1}{\PYGZsq{}user.index\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}user.indexed\PYGZsq{}}\PYG{p}{,} \PYG{p}{\PYGZob{}\PYGZcb{}}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

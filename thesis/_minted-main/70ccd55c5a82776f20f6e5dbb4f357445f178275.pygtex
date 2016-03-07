@@ -1,0 +1,72 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}docker\PYGZhy{}api\PYGZsq{}}
+
+\PYG{k}{module} \PYG{n+nn}{Activity}
+  \PYG{k}{class} \PYG{n+nc}{SubworkflowInvocation}
+    \PYG{k}{def} \PYG{n+nf}{initialize}\PYG{p}{(}\PYG{n}{config}\PYG{p}{)}
+      \PYG{n+nv+vi}{@instance\PYGZus{}id} \PYG{o}{=} \PYG{n+no}{SecureRandom}\PYG{o}{.}\PYG{n}{uuid}
+      \PYG{n+nv+vi}{@subworkflow\PYGZus{}id} \PYG{o}{=} \PYG{n}{config}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}subworkflow\PYGZus{}id\PYGZsq{}}\PYG{o}{]}
+
+      \PYG{n+nv+vi}{@container\PYGZus{}workdir} \PYG{o}{=} \PYG{n}{prepare\PYGZus{}workdir}
+      \PYG{n+nv+vi}{@container} \PYG{o}{=} \PYG{n}{create\PYGZus{}container}
+      \PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{archive\PYGZus{}in} \PYG{o}{[}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{input\PYGZus{}data}\PYG{o}{]}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}/workflow\PYGZdq{}}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{start}
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Network}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}enactment\PYGZsq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{id}\PYG{p}{)}
+      \PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{start}
+      \PYG{k}{begin}
+        \PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{wait}\PYG{p}{(}\PYG{l+m+mi}{60} \PYG{o}{*} \PYG{l+m+mi}{60}\PYG{p}{)}
+      \PYG{k}{rescue} \PYG{n+no}{TimeoutError} \PYG{o}{=\PYGZgt{}} \PYG{n}{e}
+        \PYG{k}{retry}
+      \PYG{k}{end}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{result}
+      \PYG{p}{\PYGZob{}}
+        \PYG{l+s+ss}{container\PYGZus{}out}\PYG{p}{:} \PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{logs}\PYG{p}{(}\PYG{l+s+ss}{stdout}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{),}
+        \PYG{l+s+ss}{container\PYGZus{}err}\PYG{p}{:} \PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{logs}\PYG{p}{(}\PYG{l+s+ss}{stderr}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{)}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{k}{end}
+
+    \PYG{k+kp}{private}
+
+    \PYG{k}{def} \PYG{n+nf}{registry\PYGZus{}address}
+      \PYG{n}{cluster\PYGZus{}store} \PYG{o}{=} \PYG{n+no}{URI}\PYG{o}{.}\PYG{n}{parse}\PYG{p}{(}\PYG{n+no}{Docker}\PYG{o}{.}\PYG{n}{info}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}ClusterStore\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+      \PYG{n}{cluster\PYGZus{}store}\PYG{o}{.}\PYG{n}{port} \PYG{o}{=} \PYG{l+m+mi}{5000}
+      \PYG{n}{cluster\PYGZus{}store}\PYG{o}{.}\PYG{n}{select}\PYG{p}{(}\PYG{l+s+ss}{:host}\PYG{p}{,}\PYG{l+s+ss}{:port}\PYG{p}{)}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}:\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{prepare\PYGZus{}workdir}
+      \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{FileHelper}\PYG{o}{.}\PYG{n}{create\PYGZus{}subworkflow\PYGZus{}workdir} \PYG{n+nv+vi}{@instance\PYGZus{}id}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{create\PYGZus{}container}
+
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Container}\PYG{o}{.}\PYG{n}{create}\PYG{p}{(\PYGZob{}}
+        \PYG{l+s+s1}{\PYGZsq{}name\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}wfi\PYGZus{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}Labels\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}
+          \PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}workflow\PYGZus{}instance\PYGZdq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{main\PYGZus{}workflow\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+          \PYG{l+s+s2}{\PYGZdq{}workflow\PYGZus{}instance\PYGZdq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}wfi\PYGZus{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{p}{\PYGZcb{},}
+        \PYG{l+s+s1}{\PYGZsq{}Image\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{registry\PYGZus{}address}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/workflow:wf\PYGZus{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@subworkflow\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}Cmd\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}bash\PYGZsq{}}\PYG{o}{]}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}WorkingDir\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s1}{\PYGZsq{}/workflow\PYGZsq{}}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}Tty\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{k+kp}{true}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}HostConfig\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}
+          \PYG{l+s+s1}{\PYGZsq{}Binds\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}/var/run/docker.sock:/var/run/docker.sock\PYGZsq{}}\PYG{o}{]}\PYG{p}{,}
+          \PYG{l+s+s1}{\PYGZsq{}VolumesFrom\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}relevant\PYGZus{}data\PYGZus{}container}\PYG{o}{]}\PYG{p}{,}
+        \PYG{p}{\PYGZcb{},}
+        \PYG{l+s+s1}{\PYGZsq{}Env\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{o}{[}
+          \PYG{l+s+s2}{\PYGZdq{}MAIN\PYGZus{}WORKFLOW\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@workflow\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+          \PYG{l+s+s2}{\PYGZdq{}MAIN\PYGZus{}WORKFLOW\PYGZus{}INSTANCE\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+          \PYG{l+s+s2}{\PYGZdq{}WORKFLOW\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@workflow\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+          \PYG{l+s+s2}{\PYGZdq{}INSTANCE\PYGZus{}ID=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+          \PYG{l+s+s2}{\PYGZdq{}WORKDIR=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@container\PYGZus{}workdir}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+          \PYG{l+s+s2}{\PYGZdq{}DATA\PYGZus{}CONTAINER=}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}relevant\PYGZus{}data\PYGZus{}container}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+        \PYG{o}{]}
+      \PYG{p}{\PYGZcb{})}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

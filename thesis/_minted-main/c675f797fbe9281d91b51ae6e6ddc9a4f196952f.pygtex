@@ -1,0 +1,31 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{ControlFlowConsumer}
+  \PYG{k+kp}{include} \PYG{n+no}{Hutch}\PYG{o}{::}\PYG{n+no}{Consumer}
+  \PYG{n}{consume} \PYG{l+s+s1}{\PYGZsq{}wfms.control\PYGZus{}flow.\PYGZsh{}\PYGZsq{}}
+
+  \PYG{k}{def} \PYG{n+nf}{process}\PYG{p}{(}\PYG{n}{message}\PYG{p}{)}
+    \PYG{n}{subject}\PYG{p}{,} \PYG{n}{action}\PYG{p}{,} \PYG{n}{subject\PYGZus{}id} \PYG{o}{=} \PYG{l+s+sr}{/wfms\PYGZbs{}.(\PYGZbs{}w+)\PYGZbs{}.(\PYGZbs{}w+)(?:\PYGZbs{}.([\PYGZbs{}w\PYGZhy{}]+))?/}\PYG{o}{.}\PYG{n}{match}\PYG{p}{(}\PYG{n}{message}\PYG{o}{.}\PYG{n}{routing\PYGZus{}key}\PYG{p}{)}\PYG{o}{.}\PYG{n}{captures}\PYG{o}{.}\PYG{n}{to\PYGZus{}a}\PYG{o}{.}\PYG{n}{compact}\PYG{o}{.}\PYG{n}{map}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:to\PYGZus{}sym}\PYG{p}{)}
+    \PYG{k}{case} \PYG{n}{action}
+
+    \PYG{k}{when} \PYG{l+s+ss}{:index}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.control\PYGZus{}flow.indexed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{control\PYGZus{}flows}\PYG{p}{:} \PYG{n+no}{ControlFlow}\PYG{o}{.}\PYG{n}{all}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+
+    \PYG{k}{when} \PYG{l+s+ss}{:show}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.control\PYGZus{}flow.showed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{control\PYGZus{}flow}\PYG{p}{:} \PYG{n+no}{ControlFlow}\PYG{o}{.}\PYG{n}{find}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+ss}{:id}\PYG{o}{]}\PYG{p}{)}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+
+    \PYG{k}{when} \PYG{l+s+ss}{:create}
+      \PYG{n}{control\PYGZus{}flow} \PYG{o}{=} \PYG{n+no}{ControlFlow}\PYG{o}{.}\PYG{n}{create}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}control\PYGZus{}flow\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.control\PYGZus{}flow.created\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{control\PYGZus{}flow}\PYG{p}{:} \PYG{n}{control\PYGZus{}flow}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+
+    \PYG{k}{when} \PYG{l+s+ss}{:update}
+      \PYG{n}{control\PYGZus{}flow} \PYG{o}{=} \PYG{n+no}{ControlFlow}\PYG{o}{.}\PYG{n}{find}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}id\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+      \PYG{n}{control\PYGZus{}flow}\PYG{o}{.}\PYG{n}{update\PYGZus{}attributes}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}control\PYGZus{}flow\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.control\PYGZus{}flow.updated\PYGZdq{}}\PYG{p}{,} \PYG{l+s+ss}{control\PYGZus{}flow}\PYG{p}{:} \PYG{n}{control\PYGZus{}flow}\PYG{o}{.}\PYG{n}{as\PYGZus{}json}
+
+    \PYG{k}{when} \PYG{l+s+ss}{:destroy}
+      \PYG{n+no}{ControlFlow}\PYG{o}{.}\PYG{n}{find}\PYG{p}{(}\PYG{n}{message}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}id\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}\PYG{o}{.}\PYG{n}{destroy}
+      \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.control\PYGZus{}flow.destroyed\PYGZdq{}}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

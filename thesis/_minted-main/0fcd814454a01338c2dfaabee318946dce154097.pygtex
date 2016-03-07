@@ -1,0 +1,42 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}docker\PYGZhy{}api\PYGZsq{}}
+
+\PYG{k}{module} \PYG{n+nn}{Activity}
+  \PYG{k}{class} \PYG{n+nc}{ContainerInvocation}
+    \PYG{k}{def} \PYG{n+nf}{initialize}\PYG{p}{(}\PYG{n}{config}\PYG{p}{)}
+      \PYG{n+nv+vi}{@config} \PYG{o}{=} \PYG{n}{config}
+      \PYG{n+nv+vi}{@registry} \PYG{o}{=} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{image\PYGZus{}registry}
+      \PYG{n+nv+vi}{@image\PYGZus{}tag} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}image\PYGZsq{}}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{config}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}image\PYGZus{}version\PYGZsq{}}\PYG{o}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+      \PYG{n+nv+vi}{@container\PYGZus{}name} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{container\PYGZus{}name}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}container\PYGZdq{}}
+      \PYG{n+nv+vi}{@container} \PYG{o}{=} \PYG{n}{create\PYGZus{}container}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{start}
+      \PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{start}
+      \PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{wait}\PYG{p}{(}\PYG{l+m+mi}{60} \PYG{o}{*} \PYG{l+m+mi}{60}\PYG{p}{)}
+    \PYG{k}{end}
+
+    \PYG{k}{def} \PYG{n+nf}{result}
+      \PYG{p}{\PYGZob{}}
+        \PYG{l+s+ss}{container\PYGZus{}out}\PYG{p}{:} \PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{logs}\PYG{p}{(}\PYG{l+s+ss}{stdout}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{),}
+        \PYG{l+s+ss}{container\PYGZus{}err}\PYG{p}{:} \PYG{n+nv+vi}{@container}\PYG{o}{.}\PYG{n}{logs}\PYG{p}{(}\PYG{l+s+ss}{stderr}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{)}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{k}{end}
+
+    \PYG{k+kp}{private}
+
+    \PYG{k}{def} \PYG{n+nf}{create\PYGZus{}container}
+      \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Container}\PYG{o}{.}\PYG{n}{create}\PYG{p}{(\PYGZob{}}
+        \PYG{l+s+s1}{\PYGZsq{}name\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{n+nv+vi}{@container\PYGZus{}name}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}Image\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@registry}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{/}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+nv+vi}{@image\PYGZus{}tag}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s1}{\PYGZsq{}Cmd\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{n+nv+vi}{@config}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}cmd\PYGZsq{}}\PYG{o}{].}\PYG{n}{split}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{} \PYGZsq{}}\PYG{p}{),}
+        \PYG{l+s+s1}{\PYGZsq{}Labels\PYGZsq{}} \PYG{o}{=\PYGZgt{}} \PYG{p}{\PYGZob{}}
+          \PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}workflow\PYGZus{}instance\PYGZdq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{main\PYGZus{}workflow\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+          \PYG{l+s+s2}{\PYGZdq{}workflow\PYGZus{}instance\PYGZdq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+          \PYG{l+s+s2}{\PYGZdq{}activity\PYGZus{}instance\PYGZdq{}} \PYG{o}{=\PYGZgt{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{activity\PYGZus{}instance\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+        \PYG{p}{\PYGZcb{},}
+      \PYG{p}{\PYGZcb{})}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

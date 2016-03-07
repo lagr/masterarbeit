@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{Role} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveRecord}\PYG{o}{::}\PYG{n+no}{Base}
+  \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:users}
+  \PYG{n}{belongs\PYGZus{}to} \PYG{l+s+ss}{:parent\PYGZus{}role}\PYG{p}{,} \PYG{l+s+ss}{class\PYGZus{}name}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}Role\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{foreign\PYGZus{}key}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}parent\PYGZus{}role\PYGZus{}id\PYGZsq{}}
+  \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:child\PYGZus{}roles}\PYG{p}{,} \PYG{l+s+ss}{class\PYGZus{}name}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}Role\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{foreign\PYGZus{}key}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}parent\PYGZus{}role\PYGZus{}id\PYGZsq{}}
+
+  \PYG{k}{def} \PYG{n+nf}{ancestors}
+    \PYG{k}{return} \PYG{o}{[]} \PYG{k}{if} \PYG{n}{parent\PYGZus{}role}\PYG{o}{.}\PYG{n}{nil?}
+    \PYG{n}{subject}\PYG{p}{,} \PYG{n+nb}{ancestors} \PYG{o}{=} \PYG{n+nb}{self}\PYG{p}{,} \PYG{o}{[]}
+    \PYG{n+nb}{ancestors} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{subject} \PYG{o}{=} \PYG{n}{subject}\PYG{o}{.}\PYG{n}{parent\PYGZus{}role} \PYG{k}{while} \PYG{n}{subject}\PYG{o}{.}\PYG{n}{parent\PYGZus{}role}
+    \PYG{n+nb}{ancestors}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

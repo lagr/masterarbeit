@@ -27,7 +27,7 @@ class ActivitiesController < ApplicationController
   private
 
   def activity_params
-    params.require(:activity).permit(:id, :subactivity_id, :process_definition_id, :activity_type, :input_schema, :output_schema, :activity_configuration, :representation, :subworkflow_id ).tap do |whitelisted|
+    params.require(:activity).permit(:id, :subactivity_id, :process_definition_id, :activity_type, :input_schema, :output_schema, :activity_configuration, :representation, :subworkflow_id, :participant_role_id ).tap do |whitelisted|
       whitelisted[:representation] = params[:activity][:representation]
       whitelisted[:input_schema]   = params[:activity][:input_schema]
       whitelisted[:output_schema]  = params[:activity][:output_schema]

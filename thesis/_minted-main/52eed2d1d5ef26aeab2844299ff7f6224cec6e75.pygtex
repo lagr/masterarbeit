@@ -1,0 +1,32 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{WorkflowFullSerializer} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveModel}\PYG{o}{::}\PYG{n+no}{Serializer}
+  \PYG{n}{attributes} \PYG{l+s+ss}{:id}\PYG{p}{,} \PYG{l+s+ss}{:name}\PYG{p}{,} \PYG{l+s+ss}{:created\PYGZus{}at}\PYG{p}{,} \PYG{l+s+ss}{:updated\PYGZus{}at}
+  \PYG{n}{has\PYGZus{}one} \PYG{l+s+ss}{:process\PYGZus{}definition}
+
+  \PYG{k}{class} \PYG{n+nc}{ProcessDefinitionSerializer} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveModel}\PYG{o}{::}\PYG{n+no}{Serializer}
+    \PYG{n}{attributes} \PYG{l+s+ss}{:id}
+    \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:activities}
+    \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:control\PYGZus{}flows}
+
+    \PYG{k}{class} \PYG{n+nc}{ActivitySerializer} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveModel}\PYG{o}{::}\PYG{n+no}{Serializer}
+      \PYG{n}{attributes} \PYG{l+s+ss}{:id}\PYG{p}{,} \PYG{l+s+ss}{:name}\PYG{p}{,} \PYG{l+s+ss}{:activity\PYGZus{}type}\PYG{p}{,} \PYG{l+s+ss}{:input\PYGZus{}schema}\PYG{p}{,} \PYG{l+s+ss}{:output\PYGZus{}schema}\PYG{p}{,}
+                 \PYG{l+s+ss}{:activity\PYGZus{}configuration}\PYG{p}{,} \PYG{l+s+ss}{:representation}\PYG{p}{,}
+                 \PYG{l+s+ss}{:process\PYGZus{}definition\PYGZus{}id}\PYG{p}{,} \PYG{l+s+ss}{:subworkflow\PYGZus{}id}\PYG{p}{,} \PYG{l+s+ss}{:participant\PYGZus{}role\PYGZus{}id}
+      \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:outgoing\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{key}\PYG{p}{:} \PYG{l+s+ss}{:successors}
+      \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:incoming\PYGZus{}control\PYGZus{}flows}\PYG{p}{,} \PYG{l+s+ss}{key}\PYG{p}{:} \PYG{l+s+ss}{:predecessors}
+
+      \PYG{k}{def} \PYG{n+nf}{outgoing\PYGZus{}control\PYGZus{}flows}
+        \PYG{n}{object}\PYG{o}{.}\PYG{n}{outgoing\PYGZus{}control\PYGZus{}flows}\PYG{o}{.}\PYG{n}{collect}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:successor\PYGZus{}id}\PYG{p}{)}
+      \PYG{k}{end}
+
+      \PYG{k}{def} \PYG{n+nf}{incoming\PYGZus{}control\PYGZus{}flows}
+        \PYG{n}{object}\PYG{o}{.}\PYG{n}{incoming\PYGZus{}control\PYGZus{}flows}\PYG{o}{.}\PYG{n}{collect}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{l+s+ss}{:predecessor\PYGZus{}id}\PYG{p}{)}
+      \PYG{k}{end}
+    \PYG{k}{end}
+
+    \PYG{k}{class} \PYG{n+nc}{ControlFlowSerializer} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveModel}\PYG{o}{::}\PYG{n+no}{Serializer}
+      \PYG{n}{attributes} \PYG{l+s+ss}{:id}\PYG{p}{,} \PYG{l+s+ss}{:successor\PYGZus{}id}\PYG{p}{,} \PYG{l+s+ss}{:predecessor\PYGZus{}id}\PYG{p}{,} \PYG{l+s+ss}{:process\PYGZus{}definition\PYGZus{}id}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+\end{Verbatim}

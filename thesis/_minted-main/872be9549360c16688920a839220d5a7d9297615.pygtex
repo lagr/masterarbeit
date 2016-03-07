@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{WorklistItem} \PYG{o}{\PYGZlt{}} \PYG{n+no}{ActiveRecord}\PYG{o}{::}\PYG{n+no}{Base}
+  \PYG{n}{store\PYGZus{}accessor} \PYG{l+s+ss}{:data}
+  \PYG{n}{store\PYGZus{}accessor} \PYG{l+s+ss}{:config}
+\PYG{k}{end}
+\end{Verbatim}

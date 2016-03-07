@@ -1,0 +1,48 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}rubygems\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}json\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}resolv\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}fileutils\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}docker\PYGZhy{}api\PYGZsq{}}
+
+\PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}configuration\PYGZsq{}}
+\PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}file\PYGZus{}helper\PYGZsq{}}
+\PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}validator\PYGZsq{}}
+\PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}process\PYGZus{}definition\PYGZsq{}}
+\PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}process\PYGZus{}instance\PYGZsq{}}
+\PYG{n}{require\PYGZus{}relative} \PYG{l+s+s1}{\PYGZsq{}activity\PYGZus{}instance\PYGZsq{}}
+
+\PYG{k}{module} \PYG{n+nn}{Workflow}
+  \PYG{k+kp}{extend} \PYG{n+nb}{self}
+
+  \PYG{k}{def} \PYG{n+nf}{start}
+    \PYG{n}{container} \PYG{o}{=} \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}container}
+    \PYG{n}{instance\PYGZus{}network} \PYG{o}{=} \PYG{n+no}{Docker}\PYG{o}{::}\PYG{n+no}{Network}\PYG{o}{.}\PYG{n}{create}\PYG{p}{(}\PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{network}\PYG{p}{)}
+    \PYG{k}{begin}
+      \PYG{n}{process\PYGZus{}instance} \PYG{o}{=} \PYG{n+no}{Workflow}\PYG{o}{::}\PYG{n+no}{ProcessInstance}\PYG{o}{.}\PYG{n}{new}
+      \PYG{n}{instance\PYGZus{}network}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n}{container}\PYG{p}{)}
+      \PYG{n}{process\PYGZus{}instance}\PYG{o}{.}\PYG{n}{start}
+      \PYG{n}{instance\PYGZus{}network}\PYG{o}{.}\PYG{n}{disconnect}\PYG{p}{(}\PYG{n}{container}\PYG{p}{)}
+    \PYG{k}{ensure}
+      \PYG{n}{instance\PYGZus{}network}\PYG{o}{.}\PYG{n}{disconnect}\PYG{p}{(}\PYG{n}{container}\PYG{p}{)}
+      \PYG{n}{instance\PYGZus{}network}\PYG{o}{.}\PYG{n}{remove}
+    \PYG{k}{end}
+  \PYG{k}{end}
+\PYG{k}{end}
+
+
+\PYG{c+c1}{\PYGZsh{}ensure the container is connected to the required networks before starting processing}
+\PYG{n}{retries} \PYG{o}{=} \PYG{l+m+mi}{20}
+\PYG{k}{begin}
+  \PYG{n+no}{Resolv}\PYG{o}{.}\PYG{n}{getaddress}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}wfms\PYGZus{}engine\PYGZus{}1.wfms\PYGZus{}enactment\PYGZdq{}}\PYG{p}{)}
+\PYG{k}{rescue}
+  \PYG{n+nb}{sleep} \PYG{l+m+mi}{0}\PYG{o}{.}\PYG{l+m+mi}{1}
+  \PYG{n}{retries} \PYG{o}{\PYGZhy{}=} \PYG{l+m+mi}{1}
+  \PYG{k}{retry} \PYG{k}{if} \PYG{n}{retries} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}
+  \PYG{n+nb}{abort} \PYG{l+s+s2}{\PYGZdq{}no connection\PYGZdq{}}
+\PYG{k}{else}
+  \PYG{n+no}{Workflow}\PYG{o}{.}\PYG{n}{start}
+\PYG{k}{end}
+
+\PYG{n+nb}{exit}
+\end{Verbatim}

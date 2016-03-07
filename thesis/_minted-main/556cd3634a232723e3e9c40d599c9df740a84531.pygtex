@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}pg\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}pry\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}active\PYGZus{}model\PYGZus{}serializers\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}active\PYGZus{}record\PYGZus{}migrations\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}docker\PYGZhy{}api\PYGZsq{}}
+\PYG{n+nb}{require} \PYG{l+s+s1}{\PYGZsq{}hutch\PYGZsq{}}
+
+\PYG{n}{db\PYGZus{}config} \PYG{o}{=} \PYG{n+no}{YAML}\PYG{o}{::}\PYG{n+nb}{load}\PYG{p}{(}\PYG{n+no}{File}\PYG{o}{.}\PYG{n}{open}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}./db/config.yml\PYGZsq{}}\PYG{p}{))}
+\PYG{n+no}{ActiveRecord}\PYG{o}{::}\PYG{n+no}{Base}\PYG{o}{.}\PYG{n}{establish\PYGZus{}connection}\PYG{p}{(}\PYG{n}{db\PYGZus{}config}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}development\PYGZsq{}}\PYG{o}{]}\PYG{p}{)}
+
+\PYG{n+no}{Hutch}\PYG{o}{::}\PYG{n+no}{Config}\PYG{o}{.}\PYG{n}{tap} \PYG{k}{do} \PYG{o}{|}\PYG{n}{c}\PYG{o}{|}
+  \PYG{n}{c}\PYG{o}{.}\PYG{n}{set} \PYG{l+s+ss}{:mq\PYGZus{}host}\PYG{p}{,}     \PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}mom\PYGZus{}1\PYGZsq{}}
+  \PYG{n}{c}\PYG{o}{.}\PYG{n}{set} \PYG{l+s+ss}{:mq\PYGZus{}api\PYGZus{}host}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}wfms\PYGZus{}mom\PYGZus{}1\PYGZsq{}}
+  \PYG{n}{c}\PYG{o}{.}\PYG{n}{set} \PYG{l+s+ss}{:mq\PYGZus{}exchange}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}wfms\PYGZsq{}}
+\PYG{k}{end}
+
+\PYG{k}{begin}
+  \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{connect}
+\PYG{k}{rescue}
+  \PYG{n+nb}{sleep} \PYG{l+m+mi}{5}
+  \PYG{k}{retry}
+\PYG{k}{end}
+
+\PYG{n+no}{Dir}\PYG{o}{.}\PYG{n}{glob}\PYG{p}{(}\PYG{n+no}{File}\PYG{o}{.}\PYG{n}{join}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}./\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}\PYGZob{}models,lib,consumers,serializers\PYGZcb{}\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}**\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}*.rb\PYGZsq{}}\PYG{p}{),} \PYG{o}{\PYGZam{}}\PYG{n+nb}{method}\PYG{p}{(}\PYG{l+s+ss}{:require}\PYG{p}{))}
+\end{Verbatim}

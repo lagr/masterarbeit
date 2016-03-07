@@ -14,8 +14,13 @@ module Workflow
 
       # replace list of ids with references to objects
       @activities.each do |activity|
-        activity.successors = activity.successors.map { |s_id| @activities.find { |a| a.id == s_id } }
-        activity.predecessors = activity.predecessors.map { |p_id| @activities.find { |a| a.id == p_id } }
+        activity.successors = activity.successors.map do |successor_id|
+          @activities.find { |a| a.id == successor_id }
+        end
+
+        activity.predecessors = activity.predecessors.map do |predecessor_id|
+          @activities.find { |a| a.id == predecessor_id }
+        end
       end
     end
   end

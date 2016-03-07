@@ -10,4 +10,4 @@
   %tbody
     - @users['users'].each do |user|
       %tr
-        %td= link_to "#{user['first_name']} #{user['last_name']}", worklist_items_path(user_id: user['id'])
+        %td= link_to "#{user['first_name']} #{user['last_name']}", worklist_items_path(role_id: user['role_id'])
