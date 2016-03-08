@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{\PYGZob{}}
+  \PYG{n+nt}{\PYGZdq{}this\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}is a test\PYGZdq{}}\PYG{p}{,}
+  \PYG{n+nt}{\PYGZdq{}ff09e23a\PYGZhy{}ad67\PYGZhy{}4cc0\PYGZhy{}8bb6\PYGZhy{}1cbffc794da1\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+    \PYG{n+nt}{\PYGZdq{}activity\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}16986438\PYGZhy{}9609\PYGZhy{}48da\PYGZhy{}ae5d\PYGZhy{}ae5545fe33e7\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}activity\PYGZus{}instance\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}ff09e23a\PYGZhy{}ad67\PYGZhy{}4cc0\PYGZhy{}8bb6\PYGZhy{}1cbffc794da1\PYGZdq{}}
+  \PYG{p}{\PYGZcb{},}
+  \PYG{n+nt}{\PYGZdq{}a1c62dc9\PYGZhy{}eaa0\PYGZhy{}4287\PYGZhy{}a119\PYGZhy{}c113f90d8307\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+    \PYG{n+nt}{\PYGZdq{}data\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+      \PYG{n+nt}{\PYGZdq{}name\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}Ben Utzer\PYGZdq{}}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{},}
+  \PYG{n+nt}{\PYGZdq{}bde74ecb\PYGZhy{}826f\PYGZhy{}43a4\PYGZhy{}98f1\PYGZhy{}17852d6ad72d\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+    \PYG{n+nt}{\PYGZdq{}activity\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}b4d4d316\PYGZhy{}1cc3\PYGZhy{}463b\PYGZhy{}b459\PYGZhy{}823874aeef65\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}activity\PYGZus{}instance\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}bde74ecb\PYGZhy{}826f\PYGZhy{}43a4\PYGZhy{}98f1\PYGZhy{}17852d6ad72d\PYGZdq{}}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

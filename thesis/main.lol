@@ -82,3 +82,4 @@
 \contentsline {listing}{\numberline {D.6}{\ignorespaces The whole Docker Compose file of the \ac {WfMS} (3/5)\relax }}{122}{listing.caption.116}
 \contentsline {listing}{\numberline {D.7}{\ignorespaces The whole Docker Compose file of the \ac {WfMS} (4/5)\relax }}{123}{listing.caption.117}
 \contentsline {listing}{\numberline {D.8}{\ignorespaces The whole Docker Compose file of the \ac {WfMS} (5/5)\relax }}{124}{listing.caption.118}
+\contentsline {listing}{\numberline {E.1}{\ignorespaces Resulting data of the workflow enactment in the case study\relax }}{130}{listing.caption.131}
