@@ -240,6 +240,8 @@
       \PYG{l+lScalar+lScalarPlain}{args}\PYG{p+pIndicator}{:}
         \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+s}{\PYGZdq{}constraint:node==development\PYGZhy{}machine\PYGZdq{}}
     \PYG{l+lScalar+lScalarPlain}{restart}\PYG{p+pIndicator}{:} \PYG{l+lScalar+lScalarPlain}{on\PYGZhy{}failure:3}
+    \PYG{l+lScalar+lScalarPlain}{networks}\PYG{p+pIndicator}{:}
+      \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{backend}
     \PYG{l+lScalar+lScalarPlain}{volumes}\PYG{p+pIndicator}{:}
       \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{/var/run/docker.sock:/var/run/docker.sock}
       \PYG{p+pIndicator}{\PYGZhy{}} \PYG{l+lScalar+lScalarPlain}{\PYGZti{}/.docker/machine/certs/:/root/.docker}
