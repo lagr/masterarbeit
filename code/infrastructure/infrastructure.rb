@@ -16,4 +16,5 @@ rescue
 end
 
 Dir.glob(File.join('./', '{models,lib,consumers}', '**', '*.rb'), &method(:require))
-EnvironmentManager.watch_for_new_nodes
+extra_process = fork { EnvironmentManager.watch_for_new_nodes }
+Process.detach extra_process

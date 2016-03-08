@@ -50,7 +50,7 @@ module EnvironmentManager
       'Tty' => true
     }, DockerHelper.swarm_manager_connection)
 
-    Docker::Network.get('wfms_enactment', DockerHelper.swarm_manager_connection)
+    Docker::Network.get('wfms_backend', DockerHelper.swarm_manager_connection)
       .connect("provisioner-#{server.name}")
 
     provisioner.start

@@ -1,39 +1,27 @@
 % -*- root: ../../main.tex -*- %
 
-  - decision tree for wf containerization type -
-  - capability table -
-  - UML diagrams (classes/deployment) -
-  - actual code \& Compose configuration
+  In Chapter~\ref{cha:implementation}, the prototypical implementation of a Docker-based \ac{WfMS} is presented. This implementation is based on the design decisions that are made in Chapter~\ref{cha:solution_design}. In that chapter, objectives for the prototypical implementation were gathered, together with the requirements that must be met in order for these objectives to be considered fulfilled (see Table~\ref{tab:data_objectives_and_requirements}).
 
+  % Using the prototype, a developer is able to model an organization hierarchy, create workflows and define their processes graphically. The workflows can be exported to Docker images and distributed to all nodes. The developer can start workflows, and -- if a manual activity is present -- a user can enter data. The developer can pause and unpause the workflow by addressing the respective commands directly via RabbitMQ.
 
-  In Chapter~\ref{cha:implementation}, the prototypical implementation of a Docker-based \ac{WfMS} is presented. This implementation is based on the considerations that are made in Chapter~\ref{cha:solution_design}. In that chapter, objectives for the prototypical implementation were gathered, together with the requirements that must be met in order for these objectives to be considered fulfilled.
+  The first objective was that the solution supports updates of its components at runtime.
+  In \ref{sub:application_level_communication} is explained how the loose coupling of micro-services via \ac{MOM} and the encapsulation of these services in separate containers can enable such updates.
 
-  % Using the prototype, a developer is able to model an organization hierarchy, create workflows and define their processes graphically. These workflows can be exported to Docker containers and are then distributed to all nodes. The developer can start workflows, and -- if a manual activity is present -- a user can enter data. The developer can pause and unpause the workflow.
+  Regarding the requirements that concern the failure resilience of a service, the prototype is able to let all parts of the system that do not rely on failed services continue to offer their functionality. If, for example, the organization service failed, it would still be possible to model and execute a workflow (besides assigning participants to manual activities). This is achieved through the decoupling introduced by \ac{MSA}, which is in turn mainly enabled by the networking functionality of Docker and the maintenance with Docker Compose. Further, the possibility to instruct Docker to restart failing containers can help to keep the system available. In case of a micro-service failure, the unanswered requests to it remain in the queue and can be processed as soon as the service is available again. The prototype's ability to cope with failure can thus mainly be attributed to the combination of Docker with a \ac{MSA}.
 
-  In \ref{sub:application_level_communication} is explained how the loose coupling of micro-services via \ac{MOM} and the encapsulation of these services in separate containers can enable alterations to components of the \ac{WfMS} at runtime.
+  The management of nodes that are available for execution is mostly handled by Docker Swarm. By starting appropriately configured swarm agent containers on them, new nodes may be added to the swarm at any time. They can be equipped with the required images by starting the respective provisioning service and exporting the workflows again.
 
-  Regarding the requirements that concern the failure resilience of a service, the prototype is able to let all parts of the system that do not rely on failed services continue to offer their functionality. If, for example, the organization service failed, it would still be possible to model and execute a workflow. Also, the possibility to instruct Docker to restart failing containers can help to keep the system available. In case of a micro-service failure, the unanswered requests to it remain in the queue and can be processed as soon as the service is available again. The prototype's ability to cope with failure can thus mainly be attributed to the combination of Docker with a \ac{MSA}.
+  The prototype supports the user in using third-party images by providing the means to specify images that are available on the public Docker Hub registry. Further, the command that is passed to utilized third-party images can be set. The graphical modeling environment abstracts from the fact that the container is started by an intermediate activity container, which furthers the impression of using third-party images as workflow elements.
 
-  The management of nodes that are available for execution is mostly handled by Docker Swarm. By starting appropriately configured swarm agent containers on them, new nodes may be added to the swarm at any time. The infrastructure service notices the addition of new nodes and starts a provisioning service on them. This service in turn reacts to pushed images and instructs its respective node to pull them.
+  Some of the objectives were addressed in theory, but the according solutions were just partially implemented in the prototype -- or not at all.
+  As described in \ref{sub:execution_scheduling}, nodes can be labeled and these labels can be used to enforce required properties of nodes for certain workflows or activities.
+  The prototype applies this concept, but in a static way -- not on a dynamic, per-element level.
+  The $G_{SEPC}^{DV}$ approach was chosen as it was deemed well suited to demonstrate the scheduling criteria despite its inability to natively perform data interactions between workflow instances. This capability would have to be added to fulfill the goal to support all data visibility and -interaction types depicted in Table~\ref{tab:required_data_visibility_and_data_interaction_types}.
 
-  The prototype supports the user in using third-party images by providing the means to search for images on the public Docker Hub registry. Further, the invoked command can be specified for utilized third-party images. The graphical modeling environment abstracts from the fact that the container is started by an intermediate activity container.
+  Software developers in charge of creating a Docker-based \ac{WfMS} may use the decision tree depicted in Figure~\ref{fig:choosing_docker_utilization} and the overview in Table~\ref{tab:docker_variants_capabilities} to find a starting point for choosing the suitable use of Docker for the intended use case of their \ac{WfMS}. The UML models provided in this thesis can serve as a foundation for the design of such an \ac{WfMS}. Finally, the prototype's source code itself can provide inspiration for the realization of some functionalities that are specific to a Docker-based \ac{WfMS}.
 
-  % \textbullet ~ User can specify validation  schemas
-  % \textbullet ~ \ac{WfMS} performs validity checks
+  Considering the duplicate code among the workflow- and activity images, it could have been beneficial to use a different (recursive) definition of workflows rather than the workflow/activity concept defined by the \ac{WfMC}. This would have allowed the use of a single base image, which could be implemented to differ in behavior depending on whether subordinate workflows were given to it or not. A similar insight was had by Schulze et al. \cite[p.~119]{Schulze1998Services}.
 
-  Some of the objectives were addressed in theory only, but were not implemented in the prototype.
-  As described in \ref{sub:execution_scheduling}, nodes can be labeled and these labels can be used to enforce required properties of nodes for certain workflows or activities. ** for single entities?**
-  The prototype applies this principle, but in a static way -- not on a dynamic, per-element level.
+  The above assessments of the thesis' outcome are all of qualitative nature. If the presented mechanisms and design solutions perform poorly in comparison to other approaches that can be taken to reach the stated objectives, they are merely of interest as intellectual pastime. A quantitative evaluation of the outcome should thus be performed in future research to judge the overall usefulness of the solutions.
 
-  Likewise, a solution for the priorization of activities and workflows was presented in \ref{} ** show it**, but it was not implemented in the prototype.
-
-  % An objective that was disregarded in the implementation to keep the *what? thesis short?* is the management of permanently running services which are provided for specific workflows or activities. While it is theoretically described in \ref{}, there is no corresponding functionality in the prototype.
-
-  ** GDVSEPC does not support the exchange of data between workflow instances
-
-  **
-  - considering similar functionality /w subworkflow instantiation /validation / etc.    - probably different concept of workflows better as suggested by \cite[119]{Schulze1998Services}
-   - recursive structure
-   - only one base image
-
-\underline{Note by the author:} With hindsight, the chosen scope would appear too wide for a master thesis with a 70-pages-limitation, leading to shortcuts at places where more in-depth research documentation would have been warranted. Still, the eventual outcome of the paper, i.e. the ultimate decisions on software architecture and -design are founded on solid examination of the available alternatives.
+\underline{Note by the author:} With hindsight, the chosen scope would appear too wide for a master thesis with the given limitations, leading to shortcuts at places where more in-depth research documentation would have been warranted. Still, the eventual outcome of the paper, i.e. the ultimate decisions on software architecture and -design are founded on solid examination of the available alternatives. A preliminary decision to focus on either the architecture or the execution aspect could have been beneficial.

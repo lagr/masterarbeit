@@ -77,8 +77,8 @@
 \contentsline {listing}{\numberline {D.1}{\ignorespaces Setup of the machines for the exemplary deployment (1/2) \relax }}{118}{listing.caption.111}
 \contentsline {listing}{\numberline {D.2}{\ignorespaces Setup of the machines for the exemplary deployment (2/2) \relax }}{120}{listing.caption.112}
 \contentsline {listing}{\numberline {D.3}{\ignorespaces Setup of the services for the exemplary deployment \relax }}{120}{listing.caption.113}
-\contentsline {listing}{\numberline {D.4}{\ignorespaces The whole Docker Compose file of the \ac {WfMS} (1/5)\relax }}{121}{listing.caption.114}
-\contentsline {listing}{\numberline {D.5}{\ignorespaces The whole Docker Compose file of the \ac {WfMS} (2/5)\relax }}{122}{listing.caption.115}
-\contentsline {listing}{\numberline {D.6}{\ignorespaces The whole Docker Compose file of the \ac {WfMS} (3/5)\relax }}{123}{listing.caption.116}
-\contentsline {listing}{\numberline {D.7}{\ignorespaces The whole Docker Compose file of the \ac {WfMS} (4/5)\relax }}{124}{listing.caption.117}
-\contentsline {listing}{\numberline {D.8}{\ignorespaces The whole Docker Compose file of the \ac {WfMS} (5/5)\relax }}{125}{listing.caption.118}
+\contentsline {listing}{\numberline {D.4}{\ignorespaces Docker Compose file of the WfMS (1/5)\relax }}{121}{listing.caption.114}
+\contentsline {listing}{\numberline {D.5}{\ignorespaces Docker Compose file of the WfMS (2/5)\relax }}{122}{listing.caption.115}
+\contentsline {listing}{\numberline {D.6}{\ignorespaces Docker Compose file of the WfMS (3/5)\relax }}{123}{listing.caption.116}
+\contentsline {listing}{\numberline {D.7}{\ignorespaces Docker Compose file of the WfMS (4/5)\relax }}{124}{listing.caption.117}
+\contentsline {listing}{\numberline {D.8}{\ignorespaces Docker Compose file of the WfMS (5/5)\relax }}{125}{listing.caption.118}

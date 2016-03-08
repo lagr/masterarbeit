@@ -58,7 +58,6 @@
   \PYG{k}{end}
 
   \PYG{k}{def} \PYG{n+nf}{log\PYGZus{}result}\PYG{p}{(}\PYG{n}{result}\PYG{p}{)}
-    \PYG{n+nb}{puts} \PYG{n}{result}
     \PYG{n+nv+vi}{@data}\PYG{o}{[}\PYG{n+nv+vi}{@activity\PYGZus{}instance\PYGZus{}id}\PYG{o}{]} \PYG{o}{=} \PYG{n}{result}
   \PYG{k}{end}
 
