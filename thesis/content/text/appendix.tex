@@ -159,6 +159,12 @@
     \label{lst:worklist_client_class_2}
     \end{listing}
 
+    \begin{listing}[!h]
+      \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{json}{./content/snippets/ac_image/activity.info.json}
+      \caption{Activity information for the inclusion in the activity image}
+    \label{lst:activity_info_json}
+    \end{listing}
+
 
     ** get lines right everywhere
 
@@ -383,7 +389,33 @@
     \end{listing}
 
 \clearpage
-\AnhChapter{Deployment configuration}
+\AnhChapter{Deployment}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{content/images/Architecture-crop.pdf}
+    \caption*{\scriptsize Note: the depicted distribution of containers to nodes is just exemplarily. Most of them could run on any node in the swarm. The only mandatory assignments are the swarm agents, of which each node needs one, and the provisioners, of which each node that is intended to execute workflows on needs one. \\ Also, the databases and their respective data volumes were omitted for the sake of clarity. ** LAN WAN**}
+    \caption{UML deployment diagram of the architecture}
+    \label{fig:deployment_diagram_of_the_architecture}
+  \end{figure}
+
+  \begin{listing}[!htbp]
+    \inputminted[lastline=47,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{bash}{../code/_setup/setup_1_environment.sh}
+    \caption{Setup of the machines for the exemplary deployment (1/2) }
+  \label{lst:setup_exemplary_deployment_1}
+  \end{listing}
+
+  \begin{listing}[!htbp]
+    \inputminted[firstline=48,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{bash}{../code/_setup/setup_1_environment.sh}
+    \caption{Setup of the machines for the exemplary deployment (2/2) }
+  \label{lst:setup_exemplary_deployment_1_2}
+  \end{listing}
+
+  \begin{listing}[!htbp]
+    \inputminted[firstline=48,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{bash}{../code/_setup/setup_2_dev_services.sh}
+    \caption{Setup of the services for the exemplary deployment }
+  \label{lst:setup_exemplary_deployment_2}
+  \end{listing}
 
   \begin{listing}[!htbp]
     \inputminted[lastline=50,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{yaml}{../code/wfms.yml}
@@ -414,3 +446,55 @@
     \caption{The whole Docker Compose file of the \ac{WfMS} (5/5)}
   \label{lst:the_whole_docker_compose_file_5}
   \end{listing}
+
+\clearpage
+\AnhChapter{Case study}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{./content/images/usecase/case_study_6.png}
+    \caption{Dashboard of the prototype}
+    \label{fig:dashboard}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{./content/images/usecase/case_study_8.png}
+    \caption{Roles view of the prototype}
+    \label{fig:dev_role}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{./content/images/usecase/case_study_9.png}
+    \caption{Users view of the prototype}
+    \label{fig:dev_user}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{./content/images/usecase/case_study_10.png}
+    \caption{Modeling a third party container workflow}
+    \label{fig:tpc_wf}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{./content/images/usecase/case_study_10.png}
+    \caption{Created images for the third party container workflow}
+    \label{fig:tpc_images}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{./content/images/usecase/case_study_10.png}
+    \caption{Provisioner reacts to pushed image by initiating pull}
+    \label{fig:provisioner_pulls}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{./content/images/usecase/case_study_10.png}
+    \caption{Modeling a manual activity workflow}
+    \label{fig:manual_wf}
+  \end{figure}

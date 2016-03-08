@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{p}{\PYGZob{}}
+  \PYG{n+nt}{\PYGZdq{}image\PYGZus{}name\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}ac\PYGZus{}cd231dda\PYGZhy{}9e65\PYGZhy{}44a8\PYGZhy{}af5a\PYGZhy{}7cf5c23dfcf2\PYGZdq{}}\PYG{p}{,}
+  \PYG{n+nt}{\PYGZdq{}type\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}container\PYGZdq{}}\PYG{p}{,}
+  \PYG{n+nt}{\PYGZdq{}subworkflow\PYGZus{}id\PYGZdq{}}\PYG{p}{:} \PYG{k+kc}{null}\PYG{p}{,}
+  \PYG{n+nt}{\PYGZdq{}participant\PYGZus{}role\PYGZus{}id\PYGZdq{}}\PYG{p}{:} \PYG{k+kc}{null}\PYG{p}{,}
+  \PYG{n+nt}{\PYGZdq{}configuration\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}
+    \PYG{n+nt}{\PYGZdq{}cmd\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}echo \PYGZbs{}\PYGZdq{}esel\PYGZbs{}\PYGZdq{}\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}image\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}alpine\PYGZdq{}}\PYG{p}{,}
+    \PYG{n+nt}{\PYGZdq{}image\PYGZus{}version\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}latest\PYGZdq{}}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

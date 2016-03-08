@@ -5,8 +5,6 @@ step(){
 	echo "\n\n$@"
 }
 
-SWARM_MANAGER_IP=$(docker-machine ip development-machine)
-
 step "Build base images.."
 eval "$(docker-machine env development-machine)"
 docker build -t "wf_base" ../wf_base
@@ -16,7 +14,7 @@ step "Start services.."
 eval "$(docker-machine env --swarm development-machine)"
 docker-compose -p wfms -f ../wfms.yml up -d
 
-sleep 10 # wait for the databases to be started
+sleep 10 # wait for the databases to be started and create the tables
 docker exec wfms_organization_1 rake wfms:setup_db
 docker exec wfms_definition_1 rake wfms:setup_db
 docker exec wfms_worklist_1 rake wfms:setup_db

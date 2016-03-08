@@ -1,0 +1,64 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{}!/bin/sh}
+\PYG{c}{\PYGZsh{} This script should setup the docker machines for the example scenario}
+\PYG{c}{\PYGZsh{} Precondition: Docker, Docker\PYGZhy{}Compose, Docker Machine and VirtualBox are installed}
+step\PYG{o}{()\PYGZob{}}
+    \PYG{n+nb}{echo} \PYG{l+s+s2}{\PYGZdq{}\PYGZbs{}n\PYGZbs{}n}\PYG{n+nv}{\PYGZdl{}@}\PYG{l+s+s2}{\PYGZdq{}}
+\PYG{o}{\PYGZcb{}}
+
+step \PYG{l+s+s2}{\PYGZdq{}Create machine on which the discovery service and the registry will run...\PYGZdq{}}
+docker\PYGZhy{}machine create \PYGZhy{}d\PYG{o}{=}virtualbox                         \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}swarm                                                 \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}swarm\PYGZhy{}discovery\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}consul://127.0.0.1:8500\PYGZdq{}}             \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}opt\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}cluster\PYGZhy{}store=consul://127.0.0.1:8500\PYGZdq{}}    \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}opt\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}cluster\PYGZhy{}advertise=eth1:2376\PYGZdq{}}              \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}virtualbox\PYGZhy{}memory \PYG{l+s+s2}{\PYGZdq{}2048\PYGZdq{}}                              \PYG{l+s+se}{\PYGZbs{}}
+    coordination\PYGZhy{}machine
+
+\PYG{n+nv}{coordination\PYGZus{}machine\PYGZus{}ip}\PYG{o}{=}\PYG{k}{\PYGZdl{}(}docker\PYGZhy{}machine ip coordination\PYGZhy{}machine\PYG{k}{)}
+\PYG{n+nv}{consul\PYGZus{}url}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}consul://}\PYG{n+nv}{\PYGZdl{}coordination\PYGZus{}machine\PYGZus{}ip}\PYG{l+s+s2}{:8500\PYGZdq{}}
+\PYG{n+nv}{registry\PYGZus{}url}\PYG{o}{=}\PYG{k}{\PYGZdl{}(}docker\PYGZhy{}machine ip coordination\PYGZhy{}machine\PYG{k}{)}:5000
+
+step \PYG{l+s+s2}{\PYGZdq{}Start consul key\PYGZhy{}value store...\PYGZdq{}}
+\PYG{n+nb}{eval} \PYG{l+s+s2}{\PYGZdq{}}\PYG{k}{\PYGZdl{}(}docker\PYGZhy{}machine env coordination\PYGZhy{}machine\PYG{k}{)}\PYG{l+s+s2}{\PYGZdq{}}
+docker\PYGZhy{}compose \PYGZhy{}p consul \PYGZhy{}f ../consul.yml up \PYGZhy{}d
+
+step \PYG{l+s+s2}{\PYGZdq{}Create machine on which the swarm master and the development services will run...\PYGZdq{}}
+docker\PYGZhy{}machine create \PYGZhy{}d virtualbox                        \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}swarm \PYGZhy{}\PYGZhy{}swarm\PYGZhy{}master                                 \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}swarm\PYGZhy{}discovery\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}consul\PYGZus{}url}\PYG{l+s+s2}{\PYGZdq{}}                        \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}opt\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}cluster\PYGZhy{}store=}\PYG{n+nv}{\PYGZdl{}consul\PYGZus{}url}\PYG{l+s+s2}{\PYGZdq{}}               \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}opt\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}cluster\PYGZhy{}advertise=eth1:2376\PYGZdq{}}             \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}label edu.proto.machine\PYGZus{}env\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}internal\PYGZdq{}}        \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}label edu.proto.ram\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}500\PYGZdq{}}                     \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}insecure\PYGZhy{}registry \PYG{n+nv}{\PYGZdl{}registry\PYGZus{}url}               \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}insecure\PYGZhy{}registry registry\PYGZus{}service\PYGZus{}1:5000     \PYG{l+s+se}{\PYGZbs{}}
+    development\PYGZhy{}machine
+
+step \PYG{l+s+s2}{\PYGZdq{}Create machine on which the internal enactment will run...\PYGZdq{}}
+docker\PYGZhy{}machine create \PYGZhy{}d virtualbox                        \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}swarm                                                \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}swarm\PYGZhy{}discovery\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}consul\PYGZus{}url}\PYG{l+s+s2}{\PYGZdq{}}                        \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}opt\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}cluster\PYGZhy{}store=}\PYG{n+nv}{\PYGZdl{}consul\PYGZus{}url}\PYG{l+s+s2}{\PYGZdq{}}               \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}opt\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}cluster\PYGZhy{}advertise=eth1:2376\PYGZdq{}}             \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}label edu.proto.machine\PYGZus{}env\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}internal\PYGZdq{}}        \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}label edu.proto.ram\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}500\PYGZdq{}}                     \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}insecure\PYGZhy{}registry \PYG{n+nv}{\PYGZdl{}registry\PYGZus{}url}               \PYG{l+s+se}{\PYGZbs{}}
+    internal\PYGZhy{}machine
+
+step \PYG{l+s+s2}{\PYGZdq{}Create machine on which the external enactment for wfs with space needs will run...\PYGZdq{}}
+docker\PYGZhy{}machine create \PYGZhy{}d virtualbox                        \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}swarm                                                \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}swarm\PYGZhy{}discovery\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{n+nv}{\PYGZdl{}consul\PYGZus{}url}\PYG{l+s+s2}{\PYGZdq{}}                        \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}opt\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}cluster\PYGZhy{}store=}\PYG{n+nv}{\PYGZdl{}consul\PYGZus{}url}\PYG{l+s+s2}{\PYGZdq{}}               \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}opt\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}cluster\PYGZhy{}advertise=eth1:2376\PYGZdq{}}             \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}label edu.proto.machine\PYGZus{}env\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}external\PYGZdq{}}        \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}label edu.proto.ram\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}1024\PYGZdq{}}                    \PYG{l+s+se}{\PYGZbs{}}
+    \PYGZhy{}\PYGZhy{}engine\PYGZhy{}insecure\PYGZhy{}registry \PYG{n+nv}{\PYGZdl{}registry\PYGZus{}url}               \PYG{l+s+se}{\PYGZbs{}}
+    cloud\PYGZhy{}machine
+
+step \PYG{l+s+s2}{\PYGZdq{}Swarm master info:\PYGZdq{}}
+docker info
+step \PYG{l+s+s2}{\PYGZdq{}Created machines with the following IPs:\PYGZdq{}}
+docker run \PYGZhy{}\PYGZhy{}rm swarm list \PYG{n+nv}{\PYGZdl{}consul\PYGZus{}url}
+\end{Verbatim}

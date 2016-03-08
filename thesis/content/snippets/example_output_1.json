@@ -1,0 +1,15 @@
+{
+  "this": "is a test",
+  "d5ccecd9-55e7-40ed-9870-295610cbce34": {
+    "activity": "ed1778ce-3f60-4376-80ca-6f953901a3f7",
+    "activity_instance": "d5ccecd9-55e7-40ed-9870-295610cbce34"
+  },
+  "8e84bd6c-5af0-44b9-8b80-abc7b06578c1": {
+    "container_out": "\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b\"cho ho o\"\n",
+    "container_err": ""
+  },
+  "9bf024a5-9f67-4a48-a795-e14304e6eb7e": {
+    "activity": "300d64dd-af49-4d79-ae35-049db4e23c21",
+    "activity_instance": "9bf024a5-9f67-4a48-a795-e14304e6eb7e"
+  }
+}

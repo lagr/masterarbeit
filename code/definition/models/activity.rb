@@ -7,7 +7,6 @@ class Activity < ActiveRecord::Base
 
   belongs_to :process_definition
   belongs_to :subworkflow, class_name: 'Workflow', foreign_key: 'subworkflow_id'
-  has_many :assignments
 
   store_accessor :input_schema
   store_accessor :output_schema

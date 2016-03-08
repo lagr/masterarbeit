@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c}{\PYGZsh{}!/bin/sh}
+\PYG{c}{\PYGZsh{} This script should setup the development and administration services}
+\PYG{c}{\PYGZsh{} Precondition: Environment setup was successfully executed}
+step\PYG{o}{()\PYGZob{}}
+	\PYG{n+nb}{echo} \PYG{l+s+s2}{\PYGZdq{}\PYGZbs{}n\PYGZbs{}n}\PYG{n+nv}{\PYGZdl{}@}\PYG{l+s+s2}{\PYGZdq{}}
+\PYG{o}{\PYGZcb{}}
+
+step \PYG{l+s+s2}{\PYGZdq{}Build base images..\PYGZdq{}}
+\PYG{n+nb}{eval} \PYG{l+s+s2}{\PYGZdq{}}\PYG{k}{\PYGZdl{}(}docker\PYGZhy{}machine env development\PYGZhy{}machine\PYG{k}{)}\PYG{l+s+s2}{\PYGZdq{}}
+docker build \PYGZhy{}t \PYG{l+s+s2}{\PYGZdq{}wf\PYGZus{}base\PYGZdq{}} ../wf\PYGZus{}base
+docker build \PYGZhy{}t \PYG{l+s+s2}{\PYGZdq{}ac\PYGZus{}base\PYGZdq{}} ../ac\PYGZus{}base
+
+step \PYG{l+s+s2}{\PYGZdq{}Start services..\PYGZdq{}}
+\PYG{n+nb}{eval} \PYG{l+s+s2}{\PYGZdq{}}\PYG{k}{\PYGZdl{}(}docker\PYGZhy{}machine env \PYGZhy{}\PYGZhy{}swarm development\PYGZhy{}machine\PYG{k}{)}\PYG{l+s+s2}{\PYGZdq{}}
+docker\PYGZhy{}compose \PYGZhy{}p wfms \PYGZhy{}f ../wfms.yml up \PYGZhy{}d
+
+sleep \PYG{l+m}{10} \PYG{c}{\PYGZsh{} wait for the databases to be started and create the tables}
+docker \PYG{n+nb}{exec }wfms\PYGZus{}organization\PYGZus{}1 rake wfms:setup\PYGZus{}db
+docker \PYG{n+nb}{exec }wfms\PYGZus{}definition\PYGZus{}1 rake wfms:setup\PYGZus{}db
+docker \PYG{n+nb}{exec }wfms\PYGZus{}worklist\PYGZus{}1 rake wfms:setup\PYGZus{}db
+\end{Verbatim}

@@ -39,7 +39,5 @@ module ImageManager
 
     image.tag(repo: repo_tag, tag: image_name, force: true)
     image.push(nil, repo_tag: "#{repo_tag}:#{image_name}") {|status| puts status }
-
-    Hutch.publish 'wfms.image.pushed', image: "#{repo_tag}:#{image_name}"
   end
 end

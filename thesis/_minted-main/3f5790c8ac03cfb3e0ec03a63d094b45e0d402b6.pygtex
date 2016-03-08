@@ -8,7 +8,6 @@
 
   \PYG{n}{belongs\PYGZus{}to} \PYG{l+s+ss}{:process\PYGZus{}definition}
   \PYG{n}{belongs\PYGZus{}to} \PYG{l+s+ss}{:subworkflow}\PYG{p}{,} \PYG{l+s+ss}{class\PYGZus{}name}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}Workflow\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{foreign\PYGZus{}key}\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}subworkflow\PYGZus{}id\PYGZsq{}}
-  \PYG{n}{has\PYGZus{}many} \PYG{l+s+ss}{:assignments}
 
   \PYG{n}{store\PYGZus{}accessor} \PYG{l+s+ss}{:input\PYGZus{}schema}
   \PYG{n}{store\PYGZus{}accessor} \PYG{l+s+ss}{:output\PYGZus{}schema}

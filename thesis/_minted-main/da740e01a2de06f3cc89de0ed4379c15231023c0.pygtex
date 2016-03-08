@@ -40,11 +40,11 @@
         \PYG{l+s+ss}{worklist\PYGZus{}item}\PYG{p}{:} \PYG{p}{\PYGZob{}}
           \PYG{n+nb}{id}\PYG{p}{:} \PYG{n+nb}{id}\PYG{p}{,}
           \PYG{l+s+ss}{role\PYGZus{}id}\PYG{p}{:} \PYG{n+nv+vi}{@configuration}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}participant\PYGZus{}role\PYGZus{}id\PYGZsq{}}\PYG{o}{]}\PYG{p}{,}
-          \PYG{l+s+ss}{config}\PYG{p}{:} \PYG{n+nv+vi}{@configuration}\PYG{p}{,}
+          \PYG{l+s+ss}{config}\PYG{p}{:} \PYG{n+nv+vi}{@configuration}\PYG{o}{[}\PYG{l+s+s1}{\PYGZsq{}configuration\PYGZsq{}}\PYG{o}{]}\PYG{p}{,}
           \PYG{l+s+ss}{activity\PYGZus{}instance\PYGZus{}id}\PYG{p}{:} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{activity\PYGZus{}instance\PYGZus{}id}\PYG{p}{,}
           \PYG{l+s+ss}{workflow\PYGZus{}instance\PYGZus{}id}\PYG{p}{:} \PYG{n+no}{Activity}\PYG{o}{::}\PYG{n+no}{Configuration}\PYG{o}{.}\PYG{n}{workflow\PYGZus{}instance\PYGZus{}id}
         \PYG{p}{\PYGZcb{}}
-      \PYG{p}{\PYGZcb{}}
+      \PYG{p}{\PYGZcb{}}\PYG{o}{.}\PYG{n}{with\PYGZus{}indifferent\PYGZus{}access}
 
       \PYG{n}{created\PYGZus{}queue} \PYG{o}{=} \PYG{n}{new\PYGZus{}response\PYGZus{}queue}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.created\PYGZdq{}}\PYG{p}{)}
       \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s2}{\PYGZdq{}wfms.worklist\PYGZus{}item.create\PYGZdq{}}\PYG{p}{,} \PYG{n+nv+vi}{@item}

@@ -40,8 +40,6 @@
 
     \PYG{n}{image}\PYG{o}{.}\PYG{n}{tag}\PYG{p}{(}\PYG{l+s+ss}{repo}\PYG{p}{:} \PYG{n}{repo\PYGZus{}tag}\PYG{p}{,} \PYG{l+s+ss}{tag}\PYG{p}{:} \PYG{n}{image\PYGZus{}name}\PYG{p}{,} \PYG{l+s+ss}{force}\PYG{p}{:} \PYG{k+kp}{true}\PYG{p}{)}
     \PYG{n}{image}\PYG{o}{.}\PYG{n}{push}\PYG{p}{(}\PYG{k+kp}{nil}\PYG{p}{,} \PYG{l+s+ss}{repo\PYGZus{}tag}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{repo\PYGZus{}tag}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{image\PYGZus{}name}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)} \PYG{p}{\PYGZob{}}\PYG{o}{|}\PYG{n}{status}\PYG{o}{|} \PYG{n+nb}{puts} \PYG{n}{status} \PYG{p}{\PYGZcb{}}
-
-    \PYG{n+no}{Hutch}\PYG{o}{.}\PYG{n}{publish} \PYG{l+s+s1}{\PYGZsq{}wfms.image.pushed\PYGZsq{}}\PYG{p}{,} \PYG{l+s+ss}{image}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{repo\PYGZus{}tag}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{:}\PYG{l+s+si}{\PYGZsh{}\PYGZob{}}\PYG{n}{image\PYGZus{}name}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
   \PYG{k}{end}
 \PYG{k}{end}
 \end{Verbatim}

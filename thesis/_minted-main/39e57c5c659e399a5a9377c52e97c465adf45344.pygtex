@@ -23,8 +23,8 @@
       \PYG{n}{instance\PYGZus{}network}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{n}{container}\PYG{p}{)}
       \PYG{n}{process\PYGZus{}instance}\PYG{o}{.}\PYG{n}{start}
       \PYG{n}{instance\PYGZus{}network}\PYG{o}{.}\PYG{n}{disconnect}\PYG{p}{(}\PYG{n}{container}\PYG{p}{)}
-    \PYG{k}{ensure}
-      \PYG{n}{instance\PYGZus{}network}\PYG{o}{.}\PYG{n}{disconnect}\PYG{p}{(}\PYG{n}{container}\PYG{p}{)}
+      \PYG{n}{instance\PYGZus{}network}\PYG{o}{.}\PYG{n}{remove}
+    \PYG{k}{rescue}
       \PYG{n}{instance\PYGZus{}network}\PYG{o}{.}\PYG{n}{remove}
     \PYG{k}{end}
   \PYG{k}{end}

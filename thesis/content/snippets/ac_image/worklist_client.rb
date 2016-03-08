@@ -39,11 +39,11 @@ module Activity
         worklist_item: {
           id: id,
           role_id: @configuration['participant_role_id'],
-          config: @configuration['configuration'],
+          config: @configuration,
           activity_instance_id: Activity::Configuration.activity_instance_id,
           workflow_instance_id: Activity::Configuration.workflow_instance_id
         }
-      }.with_indifferent_access
+      }
 
       created_queue = new_response_queue("wfms.worklist_item.created")
       Hutch.publish "wfms.worklist_item.create", @item
