@@ -1,0 +1,39 @@
+%md-sidenav.md-sidenav-right.md-whiteframe-z2{ md_component_id: "details_bar" }
+  %md-toolbar.md-theme-light
+    .md-toolbar-tools
+      %h1 Activity Settings
+      %h2 {{processDesigner.selected[0].name}}
+      %h3 {{processDesigner.selected[0].activityType}}
+  %md-content{ layout_padding: true}
+    %form
+      %md-input-container.md-block{ flex_gt_sm: true, ng_show: 'processDesigner.selected[0].activityType == "subworkflow"' }
+        %label Subworkflow
+        %md-select{ ng_model: "processDesigner.selected[0].subworkflowId" }
+          %md-option{ ng_repeat: "workflow in wfmgmtCtrl.workflows", value: "{{workflow.id}}" }
+            {{workflow.name}}
+
+      %md-input-container.md-block{ flex_gt_sm: true, ng_show: 'processDesigner.selected[0].activityType == "manual"' }
+        %label Participant
+        %md-select{ ng_model: "processDesigner.selected[0].participantRoleId" }
+          %md-option{ ng_repeat: "role in processDesigner.roles", value: "{{role.id}}" }
+            {{role.name}}
+
+      %md-input-container.md-block{ flex_gt_sm: true, ng_show: 'processDesigner.selected[0].activityType == "container"' }
+        %label Image
+        %input{ ng_model: "processDesigner.selected[0].activityConfiguration.image" }
+
+      %md-input-container.md-block{ flex_gt_sm: true, ng_show: 'processDesigner.selected[0].activityType == "container"' }
+        %label Image Version
+        %input{ ng_model: "processDesigner.selected[0].activityConfiguration.imageVersion" }
+
+      %md-input-container.md-block{ flex_gt_sm: true, ng_show: 'processDesigner.selected[0].activityType == "container"' }
+        %label Command
+        %input{ ng_model: "processDesigner.selected[0].activityConfiguration.cmd" }
+
+      %md-input-container.md-block{ flex_gt_sm: true }
+        %label Input Schema
+        %div{ ng_jsoneditor: true, ng_model: "processDesigner.selected[0].inputSchema" }
+
+      %md-input-container.md-block{ flex_gt_sm: true }
+        %label Output Schema
+        %div{ ng_jsoneditor: true, ng_model: "processDesigner.selected[0].outputSchema" }

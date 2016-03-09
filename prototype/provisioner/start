@@ -1,0 +1,2 @@
+#!/bin/bash
+hutch --config config.yml --require /app/provisioner.rb

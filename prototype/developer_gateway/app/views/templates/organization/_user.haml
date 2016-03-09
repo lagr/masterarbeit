@@ -1,0 +1,26 @@
+%md-content
+  %md-toolbar{md_scroll_shrink: true}
+    .md-toolbar-tools
+      %md-button{ui_sref: 'app.organization.users'}
+        Go Back
+      %h2 {{(userCtrl.user.firstName + ' ' + userCtrl.user.lastName) || 'New user'}}
+      %span{flex: true}
+      %md-button.md-raised{ng_click: 'userCtrl.saveUser()'} Save
+      %md-button.md-warn{ng_click: 'userCtrl.deleteUser()'} Delete
+
+  %form{ name: "userForm", layout_padding: true }
+    %div{ layout_gt_sm: "row" }
+      %md-input-container.md-block{ flex_gt_sm: true }
+        %label First name
+        %input{ ng_model: "userCtrl.user.firstName" }
+
+    %div{ layout_gt_sm: "row" }
+      %md-input-container.md-block{ flex_gt_sm: true }
+        %label Last name
+        %input{ ng_model: "userCtrl.user.lastName" }
+
+      %md-input-container.md-block{ flex_gt_sm: true }
+        %label Role
+        %md-select{ ng_model: "userCtrl.user.roleId" }
+          %md-option{ ng_repeat: "role in orgCtrl.roles", value: "{{role.id}}" }
+            {{role.name}}

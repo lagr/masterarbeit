@@ -1,0 +1,7 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: wfms_worklist_db_1
+  user: worklist
+  password: masterarbeit

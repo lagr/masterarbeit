@@ -36,11 +36,11 @@
   \\ [0.5ex]
   Analogously, this is done with workflow images. Since it implies losing the internal image versioning mechanism, this solution should only be used as a workaround until cross-repository sharing of layers is possible.
 
-  The workflow instance is structured as depicted in ** \ref{fig:uml_class_diagram_wf_base}. It contains the classes \texttt{ProcessInstance} and \texttt{ActivityInstance} which coordinate the enactment of the workflow instance, and the utility classes \texttt{ProcessDefinition}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, which provide auxiliary functionality.
+  The workflow instance is structured as depicted in \ref{fig:class_diagram_wf_base}. It contains the classes \texttt{ProcessInstance} and \texttt{ActivityInstance} which coordinate the enactment of the workflow instance, and the utility classes \texttt{ProcessDefinition}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, which provide auxiliary functionality.
   \texttt{ProcessDefinition} parses the process definition file and creates objects for the process definition itself and its contained activities to facilitate accessing their respective properties.
   \texttt{Configuration} wraps the access to relevant environment variables in methods, which may provide defaults for missing values. Everything that is related to file system access, \eg constructing paths, linking and creating directories etc, is performed by the \texttt{FileHelper} class. The \texttt{Validator} is used to validate the workflow instance's input data.
 
-  The activity image contains the classes \texttt{ActivityInstance}, \texttt{WorklistClient}, \texttt{ContainerInvocation}, \texttt{SubworkflowInvocation}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, as depicted in \ref{fig:uml_class_diagram_activity_image}.
+  The activity image contains the classes \texttt{ActivityInstance}, \texttt{WorklistClient}, \texttt{ContainerInvocation}, \texttt{SubworkflowInvocation}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, as depicted in \ref{fig:uml_class_diagram_ac_base}.
   \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator} have the same functionalities as their counterparts in the workflow image. The image should be able to start a sub-workflow or a third-party container, or create a worklist item and wait for its completion. The classes \texttt{SubworkflowInvocation}, \texttt{ContainerInvocation}, and \texttt{WorklistClient} encompass these functionalities respectively. The decision as to which class is invoked for the actual functionality is made by the \texttt{Instance} class.
 
 % subsection workflow_activity_images (end)

@@ -1,0 +1,16 @@
+.application{layout: 'row', layout_fill: true}
+  %md-sidenav.md-sidenav-left.md-whiteframe-z2{ layout: 'column', md_component_id: 'left', md_is_locked_open: "$mdMedia('gt-sm')"}
+    %md-toolbar.md-tall
+      %h1.md-toolbar-tools
+        %a{ ui_sref: 'app.dashboard', ui_sref_opts: '{reload: true}' } WFMS Administration
+    %md-list
+      %md-list-item
+        %md-button{ ui_sref: 'app.infrastructure.servers' } Infrastructure
+      %md-list-item
+        %md-button{ ui_sref: 'app.workflow_management.workflows' } Workflows
+      %md-list-item
+        %md-button{ ui_sref: 'app.organization.roles' } Roles
+      %md-list-item
+        %md-button{ ui_sref: 'app.organization.users' } Users
+
+  .relative{ layout: :row, flex: true, role: 'main', ui_view: "" }

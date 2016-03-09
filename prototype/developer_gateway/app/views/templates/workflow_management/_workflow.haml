@@ -1,0 +1,10 @@
+%md-content{ layout: :column, flex: true }
+  %md-toolbar{md_scroll_shrink: true}
+    .md-toolbar-tools
+      %md-button{ui_sref: 'app.workflow_management.workflows'} Go Back
+      %input{ ng_model: 'wfCtrl.workflow.name' }
+      %md-button.md-raised{ng_click: 'wfCtrl.saveWorkflow()'} Save & Export
+      %md-button.md-raised{ ng_click: 'wfCtrl.workflow.startInstance()' } Start Instance
+      %span{flex: true}
+
+  = render partial: 'templates/process_designer/process_designer'

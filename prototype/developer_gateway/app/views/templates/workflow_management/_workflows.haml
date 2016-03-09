@@ -1,0 +1,11 @@
+%md-content
+  %md-toolbar{md_scroll_shrink: true}
+    .md-toolbar-tools
+      %h2 Workflows
+      %span{flex: true}
+      %md-button.md-raised{ng_click: 'wfmgmtCtrl.createWorkflow()'} New
+
+  %md-list{layout_padding: true}
+    %md-list-item.secondary-button-padding{ ng_repeat: "workflow in wfmgmtCtrl.workflows" }
+      .md-list-item-text{ layout: "column", ui_sref: 'app.workflow_management.workflow({ workflow_id: workflow.id})'}
+        %p {{ workflow.name || 'unnamed'}}

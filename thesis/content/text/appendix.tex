@@ -32,14 +32,77 @@
       \caption[Docker Container Life Cycle]{Docker Container Life Cycle \cite{Docker2016Docker}}
       \label{fig:docker_container_lifecycle}
     \end{figure}
-
+\clearpage
 \AnhChapter{Architecture and design}
+
+  % \begin{figure}[htbp]
+  %   \centering
+  %   \includegraphics[width=0.65\textwidth]{content/images/class_diagram_organization-crop.pdf}
+  %   \caption{UML class diagram for the organization service}
+  % \label{fig:uml_class_diagram_organization}
+  % \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{content/images/class_diagram_activity_image-crop.pdf}
+    \caption{UML class diagram for the activity image}
+  \label{fig:uml_class_diagram_ac_base}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{content/images/class_diagram_definition-crop.pdf}
+    \caption{UML class diagram for the definition service}
+    \label{fig:class_diagram_definition}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{content/images/class_diagram_developer_gateway-crop.pdf}
+    \caption{UML class diagram for the developer gateway}
+    \label{fig:class_diagram_developer_gateway}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{content/images/class_diagram_engine-crop.pdf}
+    \caption{UML class diagram for the workflow engine service}
+    \label{fig:class_diagram_engine}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{content/images/class_diagram_infrastructure-crop.pdf}
+    \caption{UML class diagram the infrastructure management service}
+    \label{fig:class_diagram_infrastructure}
+  \end{figure}
 
   \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{content/images/class_diagram_organization-crop.pdf}
-    \caption{UML Class Diagram for the Organization Service}
-  \label{fig:uml_class_diagram_organization}
+    \caption{UML class diagram the organization management service}
+    \label{fig:class_diagram_organization}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{content/images/class_diagram_user_gateway-crop.pdf}
+    \caption{UML class diagram the user gateway}
+    \label{fig:class_diagram_user_gateway}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{content/images/class_diagram_wf_base-crop.pdf}
+    \caption{UML class diagram the workflow image}
+    \label{fig:class_diagram_wf_base}
+  \end{figure}
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{content/images/class_diagram_worklist-crop.pdf}
+    \caption{UML class diagram the worklist service}
+    \label{fig:class_diagram_worklist}
   \end{figure}
 
  \clearpage
@@ -78,16 +141,27 @@
     \end{listing}
 
     \begin{listing}[!h]
-      \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/wf_base/file_helper.rb}
-      \caption{FileHelper helper class in workflow image}
+      \inputminted[lastline=49,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/wf_base/file_helper.rb}
+      \caption{FileHelper helper class in workflow image (1/2)}
     \label{lst:wf_image_file_helper}
     \end{listing}
-    ** overflow
 
     \begin{listing}[!h]
-      \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/wf_base/process_definition.rb}
-      \caption{ProcessDefinition class in workflow image}
+      \inputminted[firstline=50,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/wf_base/file_helper.rb}
+      \caption{FileHelper helper class in workflow image (2/2)}
+    \label{lst:wf_image_file_helper_2}
+    \end{listing}
+
+    \begin{listing}[!h]
+      \inputminted[lastline=43,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/wf_base/process_definition.rb}
+      \caption{ProcessDefinition class in workflow image (1/2)}
     \label{lst:wf_image_process_definition}
+    \end{listing}
+
+    \begin{listing}[!h]
+      \inputminted[firstline=44,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/wf_base/process_definition.rb}
+      \caption{ProcessDefinition class in workflow image (2/2)}
+    \label{lst:wf_image_process_definition_2}
     \end{listing}
 
     \begin{listing}[!h]
@@ -165,9 +239,6 @@
     \label{lst:activity_info_json}
     \end{listing}
 
-
-    ** get lines right everywhere
-
   \clearpage
   \AnhSection{Workflow definition service}
 
@@ -190,9 +261,15 @@
     \end{listing}
 
     \begin{listing}[!h]
-      \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/definition/models/activity.rb}
-      \caption{Activity class}
+      \inputminted[lastline=45,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/definition/models/activity.rb}
+      \caption{Activity class (1/2)}
     \label{lst:activity}
+    \end{listing}
+
+    \begin{listing}[!h]
+      \inputminted[firstline=46,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/definition/models/activity.rb}
+      \caption{Activity class (2/2)}
+    \label{lst:activity_2}
     \end{listing}
 
     \begin{listing}[!h]
@@ -214,9 +291,15 @@
     \end{listing}
 
     \begin{listing}[!h]
-      \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/definition/lib/image_builder.rb}
-      \caption{ImageBuilder class}
+      \inputminted[lastline=49,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/definition/lib/image_builder.rb}
+      \caption{ImageBuilder class (1/2)}
     \label{lst:image_builder}
+    \end{listing}
+
+    \begin{listing}[!h]
+      \inputminted[firstline=50,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/definition/lib/image_builder.rb}
+      \caption{ImageBuilder class (2/2)}
+    \label{lst:image_builder_2}
     \end{listing}
 
     \begin{listing}[!h]
@@ -292,9 +375,15 @@
     \end{listing}
 
     \begin{listing}[!h]
-      \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/engine/lib/workflow_instance.rb}
-      \caption{WorkflowInstance class in workflow engine service}
+      \inputminted[lastline=52,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/engine/lib/workflow_instance.rb}
+      \caption{WorkflowInstance class in workflow engine service (1/2)}
     \label{lst:workflow_instance_class_in_workflow_engine_service}
+    \end{listing}
+
+    \begin{listing}[!h]
+      \inputminted[firstline=53,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/engine/lib/workflow_instance.rb}
+      \caption{WorkflowInstance class in workflow engine service (2/2)}
+    \label{lst:workflow_instance_class_in_workflow_engine_service_2}
     \end{listing}
 
     \begin{listing}[!h]
@@ -307,7 +396,7 @@
   \AnhSection{Event converter service}
     \begin{listing}[!h]
       \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/event_converter/event_converter.rb}
-      \caption{Conversion of Docker events to \ac{MOM} messages}
+      \caption{Conversion of Docker events to MOM messages}
     \label{lst:conversion_of_docker_events_to_mom_messages}
     \end{listing}
 
@@ -326,9 +415,15 @@
     \end{listing}
 
     \begin{listing}[!h]
-      \inputminted[fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/infrastructure/lib/environment_manager.rb}
-      \caption{EnvironmentManager class in infrastructure managment service}
+      \inputminted[lastline=57,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/infrastructure/lib/environment_manager.rb}
+      \caption{EnvironmentManager class in infrastructure managment service (1/2)}
     \label{lst:environment_manager_in_infrastructure_managment_service}
+    \end{listing}
+
+    \begin{listing}[!h]
+      \inputminted[firstline=58,fontsize=\footnotesize,linenos=true,numberblanklines=true,showspaces=false,breaklines=true,baselinestretch=1]{ruby}{../code/infrastructure/lib/environment_manager.rb}
+      \caption{EnvironmentManager class in infrastructure managment service (2/2)}
+    \label{lst:environment_manager_in_infrastructure_managment_service_2}
     \end{listing}
 
   \clearpage

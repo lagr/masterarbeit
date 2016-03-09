@@ -170,7 +170,7 @@ Finally, rather independent from the previous variants and hence discussed in is
 
     Data interactions between activity instances, a sub-workflow activity and its related components and vice versa are supported by $G_{*}^{DV}$. Exchanging data between two running workflow instances is not possible this way, since mounting volumes to running containers is not supported by Docker yet. This kind of interaction thus requires additional means of communication. It would be possible to grant access to workflow instances running on the same machine -- at the price of loss of control over data visibility -- by mounting the top-level working directory of that machine in all containers.
 
-    As long as no requests to external sources are made within the workflow, data has to be transferred over the network only twice in this approach -- for the input and output of the workflow instance. All subsequent data transfers are either implicit, \eg by accessing the respective working directory or a symbolic link to it, or take place on the local machine, \eg copying one or more files. Because of transfer rates *QUOTE*, $G_{*}^{DV}$ has an advantage over message-based approaches when it comes to processing of large and/or many data sets, \ie log files, genome research data or images. Also, unless required by the activities themselves, data conversion is less of an issue since relying on the file system allows arbitrary file types to be used.
+    As long as no requests to external sources are made within the workflow, data has to be transferred over the network only twice in this approach -- for the input and output of the workflow instance. All subsequent data transfers are either implicit, \eg by accessing the respective working directory or a symbolic link to it, or take place on the local machine, \eg copying one or more files. As few data has to be transmitted over the network, $G_{*}^{DV}$ has an advantage over message-based approaches when it comes to processing of large and/or many data sets, \ie log files, genome research data or images. Also, unless required by the activities themselves, data conversion is less of an issue since relying on the file system allows arbitrary file types to be used.
 
     Sharing a data volume using only Docker tools requires all containers to be on the same machine, which is why there no spread version $S_{*}^{DV}$ of this concept exists. Approaches exist to utilize \ac{NFS} or \ac{P2P} file sharing for distributed access to data volumes, though \cite{Miell2015How}.
 
@@ -257,8 +257,8 @@ Finally, rather independent from the previous variants and hence discussed in is
 
   Ac = Activity ~|~ SubWF = Sub-workflow~|~ MultInst = Multiple instance ~|~ WFInst = Workflow instance~|~ WF = Workflow ~|~ Env = Environment
   }
-  \label{tab:docker_variants_capabilities}
   \caption{Supported types of data visiblity and data interaction by the variants}
+  \label{tab:docker_variants_capabilities}
 \end{table}
 
 \subsection{Identification of promising combinations} % (fold)

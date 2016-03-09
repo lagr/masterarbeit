@@ -1,0 +1,13 @@
+%h1 Worklists
+
+%p= @users
+
+%table
+  %thead
+    %tr
+      %th Worklist of
+
+  %tbody
+    - @users['users'].each do |user|
+      %tr
+        %td= link_to "#{user['first_name']} #{user['last_name']}", worklist_items_path(role_id: user['role_id'])

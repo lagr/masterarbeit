@@ -1,0 +1,21 @@
+%g.workflow-designer--paths
+  %g.arrow
+    %line{ ng_show: 'processDesigner.newControlFlowVisible()',
+      ng_attr_x1: '{{processDesigner.newControlFlow.activity.representation.x + 100}}',
+      ng_attr_y1: '{{processDesigner.newControlFlow.activity.representation.y + 50}}',
+      ng_attr_x2: '{{processDesigner.newControlFlow.xTo}}',
+      ng_attr_y2: '{{processDesigner.newControlFlow.yTo}}',
+      style: 'marker-start: url(#markerCircle); marker-end: url(#markerArrow);' }
+
+  %g.arrow{ ng_repeat: 'cf in processDesigner.controlFlows' }
+    %line{ ng_attr_x1: '{{cf.xFrom()}}', ng_attr_y1: '{{cf.yFrom()}}', ng_attr_x2: '{{cf.xTo()}}', ng_attr_y2: '{{cf.yTo()}}', style: 'marker-end: url(#markerArrow);' }
+
+    %line{ control_flow: true, control_flow: 'cf' }
+
+%g.workflow-designer--activities
+  %g.activity{ ng_repeat: 'activity in processDesigner.activities', id: '{{activity.id}}',
+    activity: 'activity',
+    ng_class: '{selected: processDesigner.isSelected(activity), dragging: processDesigner.isSelected(activity) && processDesigner.dragging }',
+    ng_attr_transform: 'translate({{activity.representation.x}} {{activity.representation.y}})',
+    ng_mousedown: 'processDesigner.activityMousedown(activity, $event)',
+    ng_mouseup: 'processDesigner.activityMouseup(activity, $event)' }

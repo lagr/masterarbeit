@@ -1,0 +1,20 @@
+%md-content
+  %md-toolbar{md_scroll_shrink: true}
+    .md-toolbar-tools
+      %md-button{ui_sref: 'app.infrastructure.servers'}
+        Go Back
+      %h2 {{serverCtrl.server.name}}
+      %span{flex: true}
+
+  %div{layout: :row}
+    %md-list{layout_padding: true}
+      %md-list-item.md-2-line{ ng_repeat: "container in serverCtrl.server.containers" }
+        .md-list-item-text{ layout: "column"}
+          %h3 {{ container.info.Names[0] }}
+          %h4 {{ container.info.Image }}
+
+    %md-list{layout_padding: true}
+      %md-list-item.md-2-line{ ng_repeat: "image in serverCtrl.server.images" }
+        .md-list-item-text{ layout: "column"}
+          %h3 {{ image.info.RepoTags[0] }}
+          %h4

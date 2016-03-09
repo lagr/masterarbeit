@@ -1,0 +1,4 @@
+#!/bin/bash
+sleep 2
+rake wfms:setup_db
+hutch --config config.yml --require /app/definition.rb

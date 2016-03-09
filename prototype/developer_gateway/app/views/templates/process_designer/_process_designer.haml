@@ -1,0 +1,20 @@
+.process-designer{ process_designer: 'wfCtrl.workflow', layout: :row, flex: true }
+  %svg.workflow-designer--canvas{ flex: true,
+    ng_click: 'processDesigner.canvasClicked($event)',
+    ng_mouseup:   'processDesigner.canvasMouseup($event)',
+    ng_mousedown: 'processDesigner.canvasMousedown($event)',
+    ng_keypress:  'processDesigner.canvasKeypress($event)',
+    ng_mousemove: 'processDesigner.canvasMousemove($event)' }
+
+    %defs
+      = render partial: 'templates/process_designer/definitions/grid'
+      = render partial: 'templates/process_designer/definitions/marker_arrow'
+
+    %rect.grid{ width: '100%', height: '100%', fill: 'url(#grid)', ng_click: 'processDesigner.canvasClicked($event)' }
+
+    %g.activities{ transform: 'matrix(1,0,0,1,0,0)' }
+      = render partial: 'templates/process_designer/activities'
+
+    = render partial: 'templates/process_designer/menu'
+
+  = render partial: 'templates/process_designer/details_bar'

@@ -1,0 +1,7 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: wfms_organization_db_1
+  user: organization
+  password: masterarbeit

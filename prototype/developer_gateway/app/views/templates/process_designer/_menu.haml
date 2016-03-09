@@ -1,0 +1,5 @@
+%g.workflow-designer--menu{ ng_show: 'processDesigner.menuVisible', ng_attr_transform: 'translate({{processDesigner.menuPos.x}},{{processDesigner.menuPos.y}}) ' }
+  %g.create-element-button{ ng_repeat: "type in #{['start', 'end', 'manual', 'container', 'andsplit', 'orsplit', 'andjoin', 'orjoin', 'subworkflow']}", ng_mouseup: 'processDesigner.createActivity(type)', ng_attr_transform: 'translate(0,{{50 * $index}})' }
+    %rect{ width: '200', height: '50', fill: 'blue' }
+    %text{ x: '100', y: '25', "text-anchor" => 'middle' } {{type}}
+

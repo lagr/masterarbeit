@@ -1,0 +1,21 @@
+%md-content
+  %md-toolbar{md_scroll_shrink: true}
+    .md-toolbar-tools
+      %md-button{ui_sref: 'app.organization.roles'}
+        Go Back
+      %h2 {{roleCtrl.role.name}}
+      %span{flex: true}
+      %md-button.md-raised{ng_click: 'roleCtrl.saveRole()'} Save
+      %md-button.md-warn{ng_click: 'roleCtrl.deleteRole()'} Delete
+
+  %form{ name: "roleForm", layout_padding: true }
+    %div{ layout_gt_sm: "row" }
+      %md-input-container.md-block{ flex_gt_sm: true }
+        %label Role name
+        %input{ ng_model: "roleCtrl.role.name" }
+
+      %md-input-container.md-block{ flex_gt_sm: true }
+        %label Parent role
+        %md-select{ ng_model: "roleCtrl.role.parentRoleId" }
+          %md-option{ ng_repeat: "role in orgCtrl.roles", value: "{{role.id}}" }
+            {{role.name}}

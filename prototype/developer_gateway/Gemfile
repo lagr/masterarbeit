@@ -1,0 +1,50 @@
+source 'https://rubygems.org'
+
+gem 'rails', '4.2.5'
+
+# Rails extensions
+gem 'sprockets'
+gem 'therubyracer'
+gem 'hutch'
+
+# DB related
+gem 'pg'
+
+#Asset related
+gem 'haml-rails'
+gem 'sass-rails', '~> 5.0'
+gem 'uglifier', '>= 1.3.0'
+gem 'coffee-rails', '~> 4.1.0'
+
+gem 'docker-api'
+
+# Web related
+gem 'jquery-rails'
+gem 'jbuilder', '~> 2.0'
+gem 'angular_rails_csrf'
+gem 'angularjs-rails-resource', '~> 2.0.0'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-lodash'
+  gem 'rails-assets-angular'
+  gem 'rails-assets-ui-router'
+  gem 'rails-assets-ui-router-extras'
+  gem 'rails-assets-angular-animate'
+  gem 'rails-assets-angular-aria'
+  gem 'rails-assets-angular-material'
+  gem 'rails-assets-angular-uuid4'
+  gem 'rails-assets-angular-formly'
+  gem 'rails-assets-api-check'
+  gem 'rails-assets-svg-pan-zoom'
+  gem 'rails-assets-jsoneditor'
+end
+
+group :development, :test do
+  gem 'pry'
+end
+
+group :development do
+  gem 'web-console', '~> 2.0'
+  gem 'spring'
+end
+

@@ -1,0 +1,10 @@
+discovery_service:
+  image: gliderlabs/consul-server:0.6
+  restart: always
+  hostname: coordination-machine
+  ports:
+    - 8300-8302:8300-8302
+    - 8400:8400
+    - 8600:53/udp
+    - 8500:8500
+  command: "-bootstrap -client 0.0.0.0"

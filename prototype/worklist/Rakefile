@@ -1,0 +1,16 @@
+require 'active_record_migrations'
+ActiveRecordMigrations.load_tasks
+
+namespace :wfms do
+  task :setup_db do
+    begin
+      ActiveRecord::Base.connection
+    rescue
+      Rake::Task["db:create"].invoke
+      Rake::Task["db:migrate"].invoke
+      Rake::Task["db:seed"].invoke
+    else
+      true
+    end
+  end
+end

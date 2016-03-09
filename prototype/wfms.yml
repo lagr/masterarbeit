@@ -1,0 +1,249 @@
+version: "2"
+
+networks:
+  frontend:
+    driver: overlay
+  backend:
+    driver: overlay
+  enactment:
+    driver: overlay
+
+services:
+  registry:
+    image: registry:2.3
+    restart: always
+    ports:
+      - 5000:5000
+    networks:
+      - backend
+    environment:
+      - "constraint:node==coordination-machine"
+
+  mom:
+    image: rabbitmq:3-management
+    restart: on-failure:3
+    networks:
+      - backend
+      - enactment
+      - frontend
+    ports:
+      - "8080:15672"
+    environment:
+      - "constraint:node==internal-machine"
+
+  engine:
+    image: wf_engine
+    build:
+      context: ./engine
+      args:
+        - "constraint:node==development-machine"
+    restart: on-failure:3
+    depends_on:
+      - mom
+    networks:
+      - backend
+      - enactment
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    environment:
+      SWARM_MANAGER_CERT_PATH: /root/.docker
+
+  organization_db:
+    image: postgres
+    restart: on-failure:3
+    depends_on:
+      - organization_db_data
+    volumes_from:
+      - organization_db_data
+    networks:
+      - backend
+    environment:
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=organization"
+
+  organization_db_data:
+    image: cogniteev/echo
+    networks:
+      - backend
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - "constraint:node==development-machine"
+
+  organization:
+    image: organization
+    build:
+      context: ./organization
+      args:
+        - "constraint:node==development-machine"
+    restart: on-failure:3
+    depends_on:
+      - organization_db
+      - mom
+    networks:
+      - backend
+    environment:
+      - "constraint:node==development-machine"
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=organization"
+
+  worklist_db:
+    image: postgres
+    restart: on-failure:3
+    volumes_from:
+      - worklist_db_data
+    networks:
+      - enactment
+    environment:
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=worklist"
+
+  worklist_db_data:
+    image: cogniteev/echo
+    networks:
+      - enactment
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - "constraint:node==internal-machine"
+
+  worklist:
+    image: worklist
+    build:
+      context: ./worklist
+      args:
+        - "constraint:node==internal-machine"
+    restart: on-failure:3
+    depends_on:
+      - worklist_db
+      - mom
+    networks:
+      - enactment
+    environment:
+      - "constraint:node==internal-machine"
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=worklist"
+
+  definition_db:
+    image: postgres
+    restart: on-failure:3
+    depends_on:
+      - definition_db_data
+    volumes_from:
+      - definition_db_data
+    networks:
+      - backend
+    environment:
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=definition"
+
+  definition_db_data:
+    image: cogniteev/echo
+    networks:
+      - backend
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - "constraint:node==development-machine"
+
+  definition:
+    image: definition
+    build:
+      context: ./definition
+      args:
+        - "constraint:node==development-machine"
+    restart: on-failure:3
+    depends_on:
+      - definition_db
+      - mom
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    networks:
+      - backend
+    environment:
+      - "constraint:node==development-machine"
+      - "POSTGRES_PASSWORD=masterarbeit"
+      - "POSTGRES_USER=definition"
+
+  infrastructure:
+    image: infrastructure
+    build:
+      context: ./infrastructure
+      args:
+        - "constraint:node==development-machine"
+    restart: on-failure:3
+    depends_on:
+      - mom
+    networks:
+      - backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    environment:
+      - "SWARM_MANAGER_CERT_PATH=/root/.docker"
+      - "constraint:node==development-machine"
+
+  user_gateway:
+    image: user_gateway
+    build:
+      context: ./user_gateway
+      args:
+        - "constraint:node==internal-machine"
+    restart: on-failure:3
+    depends_on:
+      - mom
+    ports:
+      - "3001:3000"
+    networks:
+      - frontend
+    environment:
+      - "constraint:node==internal-machine"
+
+  developer_gateway:
+    image: developer_gateway
+    build:
+      context: ./developer_gateway
+      args:
+        - "constraint:node==development-machine"
+    restart: on-failure:3
+    depends_on:
+      - mom
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend
+    environment:
+      - "constraint:node==development-machine"
+
+  provisioner:
+    image: provisioner
+    build:
+      context: ./provisioner
+      args:
+        - "constraint:node==cloud-machine"
+    restart: on-failure:3
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    environment:
+      - "SWARM_MANAGER_IP=192.168.99.101"
+      - "SWARM_MANAGER_CERT_PATH=/root/.docker"
+      - "constraint:node==cloud-machine"
+
+  event_converter:
+    image: event_converter
+    build:
+      context: ./event_converter
+      args:
+        - "constraint:node==development-machine"
+    restart: on-failure:3
+    networks:
+      - backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/machine/certs/:/root/.docker
+    environment:
+      - "SWARM_MANAGER_CERT_PATH=/root/.docker"
+      - "constraint:node==development-machine"

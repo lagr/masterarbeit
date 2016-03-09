@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'hutch'
+gem 'docker-api'
+gem 'activeresource'
+gem 'pry'

@@ -77,7 +77,7 @@ angular.module 'WFMS.ProcessDefinition'
     activityMousedown = (activity, event) ->
       vm.canvas.disablePan()
 
-      if event.altKey
+      if event.ctrlKey
         selectActivity(activity)
         showActivityDetails()
         return
@@ -85,7 +85,7 @@ angular.module 'WFMS.ProcessDefinition'
       if event.shiftKey
         startNewControlFlow(activity, event)
       else
-        if event.ctrlKey
+        if event.altKey
           toggleActivitySelected(activity)
         else
           selectActivity(activity)

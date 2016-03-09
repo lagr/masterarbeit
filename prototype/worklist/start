@@ -1,0 +1,3 @@
+#!/bin/bash
+rake wfms:setup_db
+hutch --config config.yml --require /app/worklist.rb

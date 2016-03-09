@@ -1,0 +1,13 @@
+%md-content
+  %md-toolbar{md_scroll_shrink: true}
+    .md-toolbar-tools
+      %h2 Servers
+      %span{flex: true}
+
+  %md-list{layout_padding: true}
+    %md-list-item.md-2-line{ ng_repeat: "server in infCtrl.servers" }
+      .md-list-item-text{ layout: "column", ui_sref: 'app.infrastructure.server({ name: server.name})'}
+        %h3 {{ server.name }}
+        %h4 {{ server.ip }}
+
+
