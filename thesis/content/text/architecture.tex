@@ -55,7 +55,6 @@
   To cope with these disadvantages, the ambassador pattern was introduced \cite{Docker2016Docker}. The idea behind that pattern is the introduction of a container that acts as an intermediator between two services. This container is linked to both original containers and forwards their requests. In case that one of them needs to be restarted, this container is restarted to restore the connection -- in place of the other container.
   By using two ambassador containers that point at each other, a multi-host setup can be created.
   An obvious drawback of this pattern is, that it does not scale well, since each connection requires at least one additional container to be added to the setup. In a clique-like connection setup between five containers \emph{on the same host}, the ambassador pattern would already require ten additional containers. In a two-host setup, this number would grow to twenty additional containers.
-  %While they are still supported under the name \emph{legacy links}, they will be deprecated with the introduction of Docker networking due to their drawbacks.
 
   Another solution is based on the Docker networking feature set, which was introduced in the end of 2015.
   This solution utilizes overlay networks, which were briefly presented in \ref{sub:docker_networks}. During the development of this feature set, the \emph{Container Network Model} was added, which allows containers to become member of multiple networks \cite{Tucker2015Docker}.

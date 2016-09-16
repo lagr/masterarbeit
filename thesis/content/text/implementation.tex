@@ -61,9 +61,6 @@
   \label{sub:activity_containers}
     Analogous to the workflow image, the activity image is implemented according to its design in \ref{sub:workflow_activity_images}. Instead of a \texttt{/workflow} directory, the \texttt{/activity} directory is created which contains the necessary code for the activity instance. The file \texttt{run.rb} is set as the default command for the container.
 
-    %The activity image contains the classes \texttt{ActivityInstance}, \texttt{WorklistClient}, \texttt{ContainerInvocation}, \texttt{SubworkflowInvocation}, \texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator}, as depicted in \ref{fig:uml_class_diagram_activity_image}.
-    %\texttt{FileHelper}, \texttt{Configuration}, and \texttt{Validator} have the same functionalities as their counterparts in the workflow image.
-
     The code and the activity configuration files reside in the \texttt{/activity} directory. These files are \texttt{activity.info.json} and \texttt{input.schema.json}. \texttt{activity.info.json} contains configuration data of the activity, \eg name, version and parameters for a third-party container for a container-type image, or the assigned role for a manual-typed image (Lst.~\ref{lst:activity_info_json}). \texttt{input.schema.json} contains the \ac{JSON} schema that is used to validate the activity instance's input.
 
     Depending on the activity type, the activity instance either starts a specified third-party container (container activity), a workflow instance container (sub-workflow activity), or issues a worklist item for manual data input (manual activity), by using the \texttt{ContainerInvocation}, \texttt{SubworkflowInvocation}, or \texttt{WorklistClient} classes respectively. The outcome of these actions is then stored in the output data file. For this prototype all other activities, \ie the control flow activities, log the activity and activity instance \acp{ID} to that data file as a proof of their invocation.

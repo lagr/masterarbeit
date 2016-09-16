@@ -2,8 +2,6 @@
 
   In Chapter~\ref{cha:implementation}, the prototypical implementation of a Docker-based \ac{WfMS} is presented. This implementation is based on the design decisions that are made in Chapter~\ref{cha:solution_design}. In that chapter, objectives for the prototypical implementation were gathered, together with the requirements that must be met in order for these objectives to be considered fulfilled (see Table~\ref{tab:objectives_and_requirements}).
 
-  % Using the prototype, a developer is able to model an organization hierarchy, create workflows and define their processes graphically. The workflows can be exported to Docker images and distributed to all nodes. The developer can start workflows, and -- if a manual activity is present -- a user can enter data. The developer can pause and unpause the workflow by addressing the respective commands directly via RabbitMQ.
-
   The first objective was that the solution supports updates of its components at runtime.
   In \ref{sub:application_level_communication} it is explained how the loose coupling of micro-services via \ac{MOM} and the encapsulation of these services in separate containers can enable such updates.
 
