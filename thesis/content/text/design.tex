@@ -164,7 +164,6 @@
 
   \subsubsection{Workflow Engine Service} % (fold)
     \label{subs:workflow_engine_service}
-    % In wide parts, the workflow engine service is congruent to the \emph{workflow engine} component identified by the \ac{WfMC} in terms of functionality, which is described in \ref{par:workflow_engine}.
     The way how Docker is utilized for the workflow enactment chosen in \ref{sec:docker_for_wf_execution} has an impact on the range of functionalities that this service has. In case of the selected $G_{SEPC}^{DV}$ variant, the engine is responsible for the creation of a workflow instance container from the appropriate workflow image on a suitable node. It further pauses, unpauses or terminates the enactment of a workflow.
 
     The \texttt{WorkflowEngine} class is notified by the \texttt{WorkflowConsumer} and \texttt{WorkflowInstanceConsumer} on incoming messages. To alter the state of a running workflow instance, it contacts the swarm master directly. The more complex instantiation of a workflow is handled by the \texttt{WorkflowInstance} class.
